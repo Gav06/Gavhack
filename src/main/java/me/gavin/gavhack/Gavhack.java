@@ -2,8 +2,12 @@ package me.gavin.gavhack;
 
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
+import me.gavin.gavhack.events.KeyPressEvent;
+import me.gavin.gavhack.events.PacketEvent;
 import me.gavin.gavhack.events.PlayerLivingUpdateEvent;
 import me.gavin.gavhack.events.RenderEvent;
+import me.gavin.gavhack.mods.BowShot;
+import me.gavin.gavhack.mods.api.Module;
 import me.gavin.gavhack.mods.api.ModuleManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
@@ -11,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Keyboard;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -49,19 +54,24 @@ public final class Gavhack {
         this.moduleManager = new ModuleManager();
 
         EventManager.register(this);
-
-        for (Field field : Minecraft.class.getDeclaredFields()) {
-            System.out.println(field.getName() + " " + field.getType());
-        }
     }
 
     @EventTarget
-    public void onPlayerLivingTick(PlayerLivingUpdateEvent event) {
+    public void onKeyPress(KeyPressEvent event) {
+        for (Module module : moduleManager.getModuleList()) {
+            if (module.getBind() == event.getKey()) {
+                module.toggle();
+            }
+        }
     }
 
     @EventTarget
     public void onRenderScreen(RenderEvent.Screen event) {
         Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(NAME + " " + VERSION, 2f, 2f, 0xff0000);
+
+        if (moduleManager.getModule(BowShot.class).isEnabled()) {
+            Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("we gaming", 20f, 2f, 0xff0000);
+        }
     }
 
     public Logger getLogger() {

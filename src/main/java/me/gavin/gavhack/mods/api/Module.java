@@ -2,8 +2,12 @@ package me.gavin.gavhack.mods.api;
 
 import com.darkmagician6.eventapi.EventManager;
 import me.gavin.gavhack.misc.Bind;
+import net.minecraft.client.Minecraft;
 
 public abstract class Module extends Bind {
+
+
+    protected final Minecraft mc = Minecraft.getMinecraft();
 
     private boolean enabled;
 

@@ -1,0 +1,28 @@
+package me.gavin.gavhack.asm.patches;
+
+import me.gavin.gavhack.asm.MethodPatch;
+import me.gavin.gavhack.asm.Patch;
+import me.gavin.gavhack.misc.Hooks;
+import org.objectweb.asm.tree.*;
+
+public class NetworkManagerPatch extends Patch {
+    public NetworkManagerPatch() {
+        super(ASM.Classes.NetworkManager);
+
+        methodPatches.add(sendPacketPatch);
+    }
+
+
+    private final MethodPatch sendPacketPatch = new MethodPatch(ASM.Methods.NetworkManager$sendPacket$NAME,  ASM.Methods.NetworkManager$sendPacket$DESC, node -> {
+        final InsnList insnList = new InsnList();
+
+        insnList.add(new VarInsnNode(ALOAD, 1));
+        insnList.add(new MethodInsnNode(INVOKESTATIC, Hooks.INTERNAL_NAME, "NetworkManager$sendPacket", "(" + ASM.Classes.Packet.getInternalName(isObf(), true) + ")Z", false));
+        final LabelNode label = new LabelNode();
+        insnList.add(new JumpInsnNode(IFEQ, label));
+        insnList.add(new InsnNode(RETURN));
+        insnList.add(label);
+
+        node.instructions.insert(insnList);
+    });
+}

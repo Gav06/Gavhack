@@ -3,6 +3,7 @@ package me.gavin.gavhack.asm;
 import me.gavin.gavhack.asm.patches.EntityPlayerSPPatch;
 import me.gavin.gavhack.asm.patches.GuiIngameForgePatch;
 import me.gavin.gavhack.asm.patches.MinecraftPatch;
+import me.gavin.gavhack.asm.patches.NetworkManagerPatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +24,8 @@ public class PatchManager {
         register(new MinecraftPatch());
         register(new EntityPlayerSPPatch());
         register(new GuiIngameForgePatch());
+        register(new MinecraftPatch());
+        register(new NetworkManagerPatch());
     }
 
     public Patch getPatch(String className) {
@@ -30,7 +33,7 @@ public class PatchManager {
     }
 
     private void register(Patch patch) {
-        patches.put(patch.getClassName().getCurrentName(isObfuscated), patch);
+        patches.put(patch.getClassName().getActualName(isObfuscated), patch);
     }
 
     public Logger getAsmLogger() {

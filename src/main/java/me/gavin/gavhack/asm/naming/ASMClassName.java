@@ -11,7 +11,7 @@ public class ASMClassName extends ASMName {
     }
 
     public String getInternalName(boolean obf, boolean desc) {
-        String s = getCurrentName(obf).replaceAll("\\.", "/");
+        String s = getActualName(obf).replaceAll("\\.", "/");
         if (desc) {
             return "L" + s + ";";
         } else {

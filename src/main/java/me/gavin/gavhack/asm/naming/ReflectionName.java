@@ -23,7 +23,7 @@ public class ReflectionName implements IName {
     // its ok to use srg name here, because we will be reflection after
     // forge has transformed all of the minecraft classes from notch to searge
     @Override
-    public String getCurrentName(boolean isObfuscated) {
+    public String getActualName(boolean isObfuscated) {
         return isObfuscated ? srgName : mcpName;
     }
 }

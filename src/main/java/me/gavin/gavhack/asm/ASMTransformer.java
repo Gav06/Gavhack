@@ -2,7 +2,6 @@ package me.gavin.gavhack.asm;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 
 public class ASMTransformer implements IClassTransformer {
@@ -18,7 +17,7 @@ public class ASMTransformer implements IClassTransformer {
                 final boolean obf = patchManager.isObfuscated;
                 for (MethodNode methodNode : node.methods) {
                     for (MethodPatch methodPatch : patch.methodPatches) {
-                        if (methodPatch.getName().getCurrentName(obf).equals(methodNode.name) && methodPatch.getDescriptor().getCurrentName(obf).equals(methodNode.desc)) {
+                        if (methodPatch.getName().getActualName(obf).equals(methodNode.name) && methodPatch.getDescriptor().getActualName(obf).equals(methodNode.desc)) {
                             methodPatch.run(methodNode);
                             PatchManager.asmLogger.info("Patching " + transformedName + "." + methodNode.name + methodNode.desc);
                         }

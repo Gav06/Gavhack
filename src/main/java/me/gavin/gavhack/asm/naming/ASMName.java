@@ -23,7 +23,7 @@ public class ASMName implements IName {
     }
 
     @Override
-    public String getCurrentName(boolean isObfuscated) {
+    public String getActualName(boolean isObfuscated) {
         return isObfuscated ? notchName : mcpName;
     }
 }
