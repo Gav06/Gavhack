@@ -1,8 +1,9 @@
 package me.gavin.gavhack.asm;
 
+import me.gavin.gavhack.asm.naming.ASMName;
+import me.gavin.gavhack.asm.naming.Names;
 import org.objectweb.asm.Opcodes;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public abstract class Patch implements Opcodes, Names {

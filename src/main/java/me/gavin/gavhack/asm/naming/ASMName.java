@@ -1,4 +1,4 @@
-package me.gavin.gavhack.asm;
+package me.gavin.gavhack.asm.naming;
 
 public class ASMName implements IName {
 

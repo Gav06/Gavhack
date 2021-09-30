@@ -1,6 +1,9 @@
-package me.gavin.gavhack.asm;
+package me.gavin.gavhack.asm.naming;
 
 // where all mapped and obfuscated names for reflections and asm are stored
+
+import me.gavin.gavhack.asm.naming.ASMClassName;
+import me.gavin.gavhack.asm.naming.ASMName;
 
 @SuppressWarnings("all")
 public interface Names {

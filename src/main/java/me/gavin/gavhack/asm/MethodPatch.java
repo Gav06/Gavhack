@@ -1,11 +1,7 @@
 package me.gavin.gavhack.asm;
 
+import me.gavin.gavhack.asm.naming.ASMName;
 import org.objectweb.asm.tree.MethodNode;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 public class MethodPatch {
 

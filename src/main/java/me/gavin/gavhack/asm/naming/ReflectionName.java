@@ -1,4 +1,6 @@
-package me.gavin.gavhack.asm;
+package me.gavin.gavhack.asm.naming;
+
+import me.gavin.gavhack.asm.naming.IName;
 
 public class ReflectionName implements IName {
 
