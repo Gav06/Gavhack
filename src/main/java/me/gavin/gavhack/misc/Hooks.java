@@ -16,7 +16,7 @@ public final class Hooks {
         }
     }
 
-    public static void GuiIngameForgePatch$renderGameOverlay(float partialTicks, ScaledResolution scaledResolution) {
+    public static void GuiIngameForge$renderGameOverlay(float partialTicks, ScaledResolution scaledResolution) {
         EventManager.call(new RenderEvent.Screen(partialTicks, scaledResolution));
     }
 }
