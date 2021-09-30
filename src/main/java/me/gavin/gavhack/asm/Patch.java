@@ -8,17 +8,16 @@ import java.util.ArrayList;
 
 public abstract class Patch implements Opcodes, Names {
 
+
     private final ASMName name;
     protected final PatchManager patchManager = ASMTransformer.patchManager;
     protected final ArrayList<MethodPatch> methodPatches;
     protected final ArrayList<ClassPatch> classPatches;
-    protected final ArrayList<AccessPatch> accessPatches;
 
     public Patch(ASMName className) {
         this.name = className;
         this.methodPatches = new ArrayList<>();
         this.classPatches = new ArrayList<>();
-        this.accessPatches = new ArrayList<>();
     }
 
     public ASMName getClassName() {

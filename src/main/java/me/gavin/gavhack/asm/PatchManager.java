@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 
 // this patcher is heavily inspired by seppuku and forgehax
+// and the access patching is from MIXIN's accessors
 public class PatchManager {
 
     public static final Logger asmLogger = LogManager.getLogger("Gavhack ASM");

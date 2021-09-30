@@ -13,7 +13,7 @@ public class ASMTransformer implements IClassTransformer {
         if (patchManager != null) {
             Patch patch = patchManager.getPatch(name);
             if (patch != null) {
-                PatchManager.asmLogger.info("Running on class " + name);
+                PatchManager.asmLogger.info("Patching class " + name);
                 ClassNode node = ASMHelper.bytesToNode(basicClass);
                 final boolean obf = patchManager.isObfuscated;
                 for (MethodNode methodNode : node.methods) {
@@ -21,24 +21,6 @@ public class ASMTransformer implements IClassTransformer {
                         if (methodPatch.getName().getCurrentName(obf).equals(methodNode.name) && methodPatch.getDescriptor().getCurrentName(obf).equals(methodNode.desc)) {
                             methodPatch.run(methodNode);
                             PatchManager.asmLogger.info("Patching " + transformedName + "." + methodNode.name + methodNode.desc);
-                        }
-                    }
-
-                    for (AccessPatch accessPatch : patch.accessPatches) {
-                        if (accessPatch.getMemberType() == AccessPatch.MemberType.METHOD) {
-                            if (accessPatch.getName().getCurrentName(obf).equals(methodNode.name) && accessPatch.getDesc().getCurrentName(obf).equals(methodNode.desc)) {
-                                methodNode.access = accessPatch.getAccess();
-                            }
-                        }
-                    }
-                }
-
-                for (FieldNode fieldNode : node.fields) {
-                    for (AccessPatch accessPatch : patch.accessPatches) {
-                        if (accessPatch.getMemberType() == AccessPatch.MemberType.FIELD) {
-                            if (accessPatch.getName().getCurrentName(obf).equals(fieldNode.name) && accessPatch.getDesc().getCurrentName(obf).equals(fieldNode.desc)) {
-                                fieldNode.access = accessPatch.getAccess();
-                            }
                         }
                     }
                 }
