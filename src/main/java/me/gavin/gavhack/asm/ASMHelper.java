@@ -2,7 +2,10 @@ package me.gavin.gavhack.asm;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.MethodNode;
 
 public class ASMHelper {
 
@@ -17,5 +20,9 @@ public class ASMHelper {
         final ClassNode node = new ClassNode();
         reader.accept(node, ClassReader.EXPAND_FRAMES);
         return node;
+    }
+
+    public static AbstractInsnNode findBottom(MethodNode method) {
+        return method.instructions.get(method.instructions.size() - 2);
     }
 }

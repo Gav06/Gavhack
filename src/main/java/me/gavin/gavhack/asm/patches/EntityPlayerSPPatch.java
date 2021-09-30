@@ -8,17 +8,18 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
-public class EntityPlayerSPPatch extends Patch {
+public final class EntityPlayerSPPatch extends Patch {
     public EntityPlayerSPPatch() {
         super(ASM.Classes.EntityPlayerSP);
 
         methodPatches.add(onLivingUpdatePatch);
     }
 
-    private final MethodPatch onLivingUpdatePatch = new MethodPatch(ASM.Methods.EntityPlayersP$onLivingUpdate$NAME, ASM.Methods.EntityPlayerSP$onLivingUpdate$DESC, node -> {
-        final InsnList insnList = new InsnList();
-        insnList.add(new InsnNode(ICONST_0));
-        insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "EntityPlayerSP$onLivingUpdate", "(I)V", false));
-        node.instructions.insert(insnList);
-    });
+    private final MethodPatch onLivingUpdatePatch = new MethodPatch(ASM.Methods.EntityPlayersP$onLivingUpdate$NAME, ASM.Methods.EntityPlayerSP$onLivingUpdate$DESC,
+            node -> {
+                final InsnList insnList0 = new InsnList();
+                insnList0.add(new InsnNode(ICONST_0));
+                insnList0.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "EntityPlayerSP$onLivingUpdate", "(I)V", false));
+                node.instructions.insert(insnList0);
+            });
 }

@@ -39,4 +39,8 @@ public abstract class Patch implements Opcodes, Names {
     public ASMName getClassName() {
         return name;
     }
+
+    protected boolean isObf() {
+        return ASMTransformer.patchManager.isObfuscated;
+    }
 }

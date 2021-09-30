@@ -1,11 +1,15 @@
 package me.gavin.gavhack.asm;
 
 // where all mapped and obfuscated names for reflections and asm are stored
+
+@SuppressWarnings("all")
 public interface Names {
     interface ASM {
         interface Classes {
-            ASMName Minecraft = new ASMName("net.minecraft.client.Minecraft", "bhz");
-            ASMName EntityPlayerSP = new ASMName("net.minecraft.client.entity.EntityPlayerSP", "bud");
+            ASMClassName Minecraft = new ASMClassName("net.minecraft.client.Minecraft", "bhz");
+            ASMClassName EntityPlayerSP = new ASMClassName("net.minecraft.client.entity.EntityPlayerSP", "bud");
+            ASMClassName ScaledResolution = new ASMClassName("net.minecraft.client.gui.ScaledResolution", "bit");
+            ASMClassName GuiIngameForge = new ASMClassName("net.minecraftforge.client.GuiIngameForge");
         }
         interface Methods {
             ASMName Minecraft$init$NAME = new ASMName("<init>");
@@ -13,6 +17,9 @@ public interface Names {
 
             ASMName EntityPlayersP$onLivingUpdate$NAME = new ASMName("onLivingUpdate", "n");
             ASMName EntityPlayerSP$onLivingUpdate$DESC = new ASMName("()V");
+
+            ASMName GuiIngameForge$renderGameOverlay$NAME = new ASMName("renderGameOverlay");
+            ASMName GuiIngameForge$renderGameOverlay$DESC = new ASMName("(F)V");
         }
     }
 
