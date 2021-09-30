@@ -3,6 +3,7 @@ package me.gavin.gavhack.mods.api;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@SuppressWarnings("unchecked")
 public final class ModuleManager {
 
     private final HashMap<String, Module> nameMap = new HashMap<>();
@@ -15,6 +16,18 @@ public final class ModuleManager {
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);
+    }
+
+    public <T extends Module> T getModule(String name) {
+        return  (T) nameMap.get(name);
+    }
+
+    public <T extends Module> T getModule(Class<T> clazz) {
+        return (T) classMap.get(clazz);
+    }
+
+    public ArrayList<Module> getModuleList() {
+        return moduleList;
     }
 
     private void register(Module module) {

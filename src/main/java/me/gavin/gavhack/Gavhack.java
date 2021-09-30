@@ -34,8 +34,7 @@ public final class Gavhack {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-//        EventManager.register(this);
-        EventManager.call(new PlayerLivingUpdateEvent());
+        EventManager.register(this);
     }
 
     @EventTarget
