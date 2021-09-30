@@ -27,6 +27,7 @@ minecraft {
     version = "1.12.2-14.23.5.2847"
     runDir = "run"
     mappings = "stable_39"
+    coreMod = "me.gavin.gavhack.asm.ASMLoader"
 }
 
 repositories {
@@ -70,5 +71,11 @@ reobf {
         classpath = sourceSets.main.compileClasspath
     }
 }
+
+jar.manifest.attributes(
+        "FMLCorePluginContainsFMLMod": true,
+        "ForceLoadAsMod": true,
+        "FMLCorePlugin": "me.gavin.gavhack.asm.ASMLoader"
+)
 
 build.dependsOn(shadowJar)
