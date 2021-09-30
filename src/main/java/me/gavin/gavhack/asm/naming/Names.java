@@ -9,7 +9,7 @@ import me.gavin.gavhack.asm.naming.ASMName;
 public interface Names {
     interface ASM {
         interface Classes {
-            ASMClassName Minecraft = new ASMClassName("net.minecraft.client.Minecraft", "bhz");
+            ASMClassName Minecraft = new ASMClassName("net.minecraft.client.Minecraft", "bib");
             ASMClassName EntityPlayerSP = new ASMClassName("net.minecraft.client.entity.EntityPlayerSP", "bud");
             ASMClassName ScaledResolution = new ASMClassName("net.minecraft.client.gui.ScaledResolution", "bit");
             ASMClassName GuiIngameForge = new ASMClassName("net.minecraftforge.client.GuiIngameForge");
@@ -28,7 +28,7 @@ public interface Names {
 
     interface Reflection {
         interface Fields {
-
+            ReflectionName Minecraft$rightClickDelayTimer = new ReflectionName("rightClickDelayTimer", "field_71467_ac");
         }
         interface Methods {
 

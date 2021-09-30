@@ -11,6 +11,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
+import java.io.FileOutputStream;
+import java.lang.reflect.Field;
 
 @Mod(
         name = Gavhack.NAME,
@@ -43,6 +49,14 @@ public final class Gavhack {
         this.moduleManager = new ModuleManager();
 
         EventManager.register(this);
+
+        for (Field field : Minecraft.class.getDeclaredFields()) {
+            System.out.println(field.getName() + " " + field.getType());
+        }
+    }
+
+    @EventTarget
+    public void onPlayerLivingTick(PlayerLivingUpdateEvent event) {
     }
 
     @EventTarget
