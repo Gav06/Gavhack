@@ -4,6 +4,7 @@ import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import me.gavin.gavhack.events.KeyPressEvent;
 import me.gavin.gavhack.events.RenderEvent;
+import me.gavin.gavhack.gui.GavhackGui;
 import me.gavin.gavhack.mods.api.Module;
 import me.gavin.gavhack.mods.api.ModuleManager;
 import net.minecraft.client.Minecraft;
@@ -31,6 +32,8 @@ public final class Gavhack {
 
     private ModuleManager moduleManager;
 
+    private GavhackGui gavhackGui;
+
     /* Instance that will be created by forge */
     @Mod.Instance(ID)
     public static Gavhack INSTANCE;
@@ -43,6 +46,7 @@ public final class Gavhack {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         this.moduleManager = new ModuleManager();
+        this.gavhackGui = new GavhackGui();
 
         EventManager.register(this);
     }
@@ -77,5 +81,9 @@ public final class Gavhack {
 
     public ModuleManager getModuleManager() {
         return moduleManager;
+    }
+
+    public GavhackGui getGui() {
+        return gavhackGui;
     }
 }

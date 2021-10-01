@@ -1,6 +1,7 @@
 package me.gavin.gavhack.mods.api;
 
 import com.darkmagician6.eventapi.EventManager;
+import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.misc.Bind;
 import me.gavin.gavhack.settings.Setting;
 import net.minecraft.client.Minecraft;
@@ -12,6 +13,7 @@ public abstract class Module extends Bind {
 
     protected final ArrayList<Setting> settings = new ArrayList<>();
     protected final Minecraft mc = Minecraft.getMinecraft();
+    protected final Gavhack gavhack = Gavhack.INSTANCE;
 
     private boolean enabled;
 
