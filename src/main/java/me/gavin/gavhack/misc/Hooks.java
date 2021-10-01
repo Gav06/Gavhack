@@ -32,4 +32,10 @@ public final class Hooks {
         EventManager.call(event);
         return event.isCancelled();
     }
+
+    public static boolean NetworkManager$channelRead0(Packet<?> packet) {
+        final PacketEvent.Receive event = new PacketEvent.Receive(packet);
+        EventManager.call(event);
+        return event.isCancelled();
+    }
 }

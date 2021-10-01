@@ -27,6 +27,8 @@ public interface Names {
 
             ASMName NetworkManager$sendPacket$NAME = new ASMName("sendPacket", "a");
             ASMName NetworkManager$sendPacket$DESC = new ASMName("(Lnet/minecraft/network/Packet;)V", "");
+            ASMName NetworkManager$channelRead0$NAME = new ASMName("channelRead0", "a");
+            ASMName NetworkManager$channelRead0$DESC = new ASMName("(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/Packet;)V", "(Lio/netty/channel/ChannelHandlerContext;Lht;)V");
         }
     }
 

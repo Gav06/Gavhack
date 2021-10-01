@@ -21,4 +21,11 @@ public abstract class PacketEvent extends EventCancellable {
             super(packet);
         }
     }
+
+    public static final class Receive extends PacketEvent {
+
+        public Receive(Packet<?> packet) {
+            super(packet);
+        }
+    }
 }
