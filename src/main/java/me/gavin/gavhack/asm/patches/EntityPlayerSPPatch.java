@@ -15,11 +15,10 @@ public final class EntityPlayerSPPatch extends Patch {
         methodPatches.add(onLivingUpdatePatch);
     }
 
-    private final MethodPatch onLivingUpdatePatch = new MethodPatch(ASM.Methods.EntityPlayersP$onLivingUpdate$NAME, ASM.Methods.EntityPlayerSP$onLivingUpdate$DESC,
-            node -> {
-                final InsnList insnList0 = new InsnList();
-                insnList0.add(new InsnNode(ICONST_0));
-                insnList0.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "EntityPlayerSP$onLivingUpdate", "(I)V", false));
-                node.instructions.insert(insnList0);
-            });
+    private final MethodPatch onLivingUpdatePatch = new MethodPatch(ASM.Methods.EntityPlayersP$onLivingUpdate$NAME, ASM.Methods.EntityPlayerSP$onLivingUpdate$DESC, node -> {
+        final InsnList insnList0 = new InsnList();
+        insnList0.add(new InsnNode(ICONST_0));
+        insnList0.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "EntityPlayerSP$onLivingUpdate", "(I)V", false));
+        node.instructions.insert(insnList0);
+    });
 }

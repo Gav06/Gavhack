@@ -14,18 +14,15 @@ public final class GuiIngameForgePatch extends Patch {
         methodPatches.add(renderGameOverlayPatch);
     }
 
-    private final MethodPatch renderGameOverlayPatch = new MethodPatch(
-            ASM.Methods.GuiIngameForge$renderGameOverlay$NAME,
-            ASM.Methods.GuiIngameForge$renderGameOverlay$DESC,
-            node -> {
-                final InsnList insnList = new InsnList();
-                // partialTicks
-                insnList.add(new VarInsnNode(FLOAD, 1));
-                // scaledResolution
-                insnList.add(new VarInsnNode(ALOAD, 0));
-                insnList.add(new FieldInsnNode(GETFIELD, ASM.Classes.GuiIngameForge.getInternalName(false, false), "res", ASM.Classes.ScaledResolution.getInternalName(isObf(), true)));
-                insnList.add(new MethodInsnNode(INVOKESTATIC, Hooks.INTERNAL_NAME, "GuiIngameForge$renderGameOverlay", "(F" + ASM.Classes.ScaledResolution.getInternalName(isObf(), true) + ")V", false));
+    private final MethodPatch renderGameOverlayPatch = new MethodPatch(ASM.Methods.GuiIngameForge$renderGameOverlay$NAME, ASM.Methods.GuiIngameForge$renderGameOverlay$DESC, node -> {
+        final InsnList insnList = new InsnList();
+        // partialTicks
+        insnList.add(new VarInsnNode(FLOAD, 1));
+        // scaledResolution
+        insnList.add(new VarInsnNode(ALOAD, 0));
+        insnList.add(new FieldInsnNode(GETFIELD, ASM.Classes.GuiIngameForge.getInternalName(false, false), "res", ASM.Classes.ScaledResolution.getInternalName(isObf(), true)));
+        insnList.add(new MethodInsnNode(INVOKESTATIC, Hooks.INTERNAL_NAME, "GuiIngameForge$renderGameOverlay", "(F" + ASM.Classes.ScaledResolution.getInternalName(isObf(), true) + ")V", false));
 
-                node.instructions.insertBefore(ASMHelper.findBottom(node), insnList);
-            });
+        node.instructions.insertBefore(ASMHelper.findBottom(node), insnList);
+    });
 }

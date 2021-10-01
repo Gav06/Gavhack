@@ -5,18 +5,15 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-//        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-//apply plugin: 'com.github.johnrengelman.shadow'
 
-version = "1.0"
+version = "2.0"
 group = "me.gavin.gavhack"
 archivesBaseName = "gavhack"
 
 configurations {
-//    shadow
 }
 
 compileJava {
@@ -35,9 +32,6 @@ repositories {
 }
 
 dependencies {
-
-
-//    implementation configurations.shadow
 }
 
 processResources {
@@ -61,24 +55,9 @@ processResources {
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
-//shadowJar {
-//    configurations = [project.configurations.shadow]
-//    exclude('dummyThing')
-//    exclude('LICENSE.txt')
-//    setClassifier("release")
-//}
-//
-//reobf {
-//    shadowJar {
-//        classpath = sourceSets.main.compileClasspath
-//    }
-//}
-
 jar.manifest.attributes(
         "FMLCorePluginContainsFMLMod": true,
         "ForceLoadAsMod": true,
         "FMLCorePlugin": "me.gavin.gavhack.asm.ASMLoader",
         "FMLAT": "gavhack_at.cfg"
 )
-
-//build.dependsOn(shadowJar)
