@@ -1,5 +1,7 @@
 package me.gavin.gavhack.mods.api;
 
+import me.gavin.gavhack.mods.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

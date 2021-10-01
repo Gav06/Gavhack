@@ -22,7 +22,7 @@ public interface Names {
             ASMName EntityPlayersP$onLivingUpdate$NAME = new ASMName("onLivingUpdate", "n");
             ASMName EntityPlayerSP$onLivingUpdate$DESC = new ASMName("()V");
 
-            ASMName GuiIngameForge$renderGameOverlay$NAME = new ASMName("renderGameOverlay");
+            ASMName GuiIngameForge$renderGameOverlay$NAME = new ASMName("renderGameOverlay", "a");
             ASMName GuiIngameForge$renderGameOverlay$DESC = new ASMName("(F)V");
 
             ASMName NetworkManager$sendPacket$NAME = new ASMName("sendPacket", "a");
