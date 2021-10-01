@@ -41,7 +41,7 @@ public final class Hooks {
         return event.isCancelled();
     }
 
-    public float EntityRenderer$updateLightmap(float original) {
+    public static float EntityRenderer$updateLightmap(float original) {
         return Gavhack.INSTANCE.getModuleManager().getModule(Fullbright.class).isEnabled() ? 24f : original;
     }
 }

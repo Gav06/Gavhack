@@ -32,7 +32,7 @@ public class ASMLoader implements IFMLLoadingPlugin {
     public void injectData(Map<String, Object> data) {
         isObfuscatedEnvironment = (boolean) data.get("runtimeDeobfuscationEnabled");
         ASMTransformer.patchManager = new PatchManager(isObfuscatedEnvironment);
-        PatchManager.asmLogger.info("Is deobfuscated environment: " + isObfuscatedEnvironment);
+        PatchManager.asmLogger.info("Is obfuscated environment: " + isObfuscatedEnvironment);
     }
 
     @Nullable

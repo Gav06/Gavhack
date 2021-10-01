@@ -11,6 +11,8 @@ import org.objectweb.asm.tree.VarInsnNode;
 public final class EntityRendererPatch extends Patch {
     public EntityRendererPatch() {
         super(Classes.EntityRenderer);
+
+        methodPatches.add(updateLightmapPatch);
     }
 
     private final MethodPatch updateLightmapPatch = new MethodPatch(Methods.EntityRenderer$updateLightmap$NAME, Methods.EntityRenderer$updateLightmap$DESC, node -> {
