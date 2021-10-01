@@ -1,9 +1,6 @@
 package me.gavin.gavhack.asm;
 
-import me.gavin.gavhack.asm.patches.EntityPlayerSPPatch;
-import me.gavin.gavhack.asm.patches.GuiIngameForgePatch;
-import me.gavin.gavhack.asm.patches.MinecraftPatch;
-import me.gavin.gavhack.asm.patches.NetworkManagerPatch;
+import me.gavin.gavhack.asm.patches.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,6 +23,7 @@ public class PatchManager {
         register(new GuiIngameForgePatch());
         register(new MinecraftPatch());
         register(new NetworkManagerPatch());
+        register(new EntityRendererPatch());
     }
 
     public Patch getPatch(String className) {

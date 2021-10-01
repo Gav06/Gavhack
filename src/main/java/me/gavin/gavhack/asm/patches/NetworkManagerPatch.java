@@ -7,18 +7,18 @@ import org.objectweb.asm.tree.*;
 
 public final class NetworkManagerPatch extends Patch {
     public NetworkManagerPatch() {
-        super(ASM.Classes.NetworkManager);
+        super(Classes.NetworkManager);
 
         methodPatches.add(sendPacketPatch);
         methodPatches.add(channelRead0Patch);
     }
 
 
-    private final MethodPatch sendPacketPatch = new MethodPatch(ASM.Methods.NetworkManager$sendPacket$NAME,  ASM.Methods.NetworkManager$sendPacket$DESC, node -> {
+    private final MethodPatch sendPacketPatch = new MethodPatch(Methods.NetworkManager$sendPacket$NAME,  Methods.NetworkManager$sendPacket$DESC, node -> {
         final InsnList insnList = new InsnList();
 
         insnList.add(new VarInsnNode(ALOAD, 1));
-        insnList.add(new MethodInsnNode(INVOKESTATIC, Hooks.INTERNAL_NAME, "NetworkManager$sendPacket", "(" + ASM.Classes.Packet.getInternalName(isObf(), true) + ")Z", false));
+        insnList.add(new MethodInsnNode(INVOKESTATIC, Hooks.INTERNAL_NAME, "NetworkManager$sendPacket", "(" + Classes.Packet.getInternalName(isObf(), true) + ")Z", false));
         final LabelNode label = new LabelNode();
         insnList.add(new JumpInsnNode(IFEQ, label));
         insnList.add(new InsnNode(RETURN));
@@ -27,11 +27,11 @@ public final class NetworkManagerPatch extends Patch {
         node.instructions.insert(insnList);
     });
 
-    private final MethodPatch channelRead0Patch = new MethodPatch(ASM.Methods.NetworkManager$channelRead0$NAME, ASM.Methods.NetworkManager$channelRead0$DESC, node -> {
+    private final MethodPatch channelRead0Patch = new MethodPatch(Methods.NetworkManager$channelRead0$NAME, Methods.NetworkManager$channelRead0$DESC, node -> {
         final InsnList insnList = new InsnList();
 
         insnList.add(new VarInsnNode(ALOAD, 2));
-        insnList.add(new MethodInsnNode(INVOKESTATIC, Hooks.INTERNAL_NAME, "NetworkManager$channelRead0", "(" + ASM.Classes.Packet.getInternalName(isObf(), true) + ")Z", false));
+        insnList.add(new MethodInsnNode(INVOKESTATIC, Hooks.INTERNAL_NAME, "NetworkManager$channelRead0", "(" + Classes.Packet.getInternalName(isObf(), true) + ")Z", false));
         final LabelNode label = new LabelNode();
         insnList.add(new JumpInsnNode(IFEQ, label));
         insnList.add(new InsnNode(RETURN));

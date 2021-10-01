@@ -1,10 +1,12 @@
 package me.gavin.gavhack.misc;
 
 import com.darkmagician6.eventapi.EventManager;
+import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.events.KeyPressEvent;
 import me.gavin.gavhack.events.PacketEvent;
 import me.gavin.gavhack.events.PlayerLivingUpdateEvent;
 import me.gavin.gavhack.events.RenderEvent;
+import me.gavin.gavhack.mods.Fullbright;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.network.Packet;
 import scala.tools.asm.Type;
@@ -37,5 +39,9 @@ public final class Hooks {
         final PacketEvent.Receive event = new PacketEvent.Receive(packet);
         EventManager.call(event);
         return event.isCancelled();
+    }
+
+    public float EntityRenderer$updateLightmap(float original) {
+        return Gavhack.INSTANCE.getModuleManager().getModule(Fullbright.class).isEnabled() ? 24f : original;
     }
 }

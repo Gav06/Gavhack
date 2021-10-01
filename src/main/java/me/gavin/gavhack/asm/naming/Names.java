@@ -12,6 +12,7 @@ public interface Names {
             ASMClassName GuiIngameForge = new ASMClassName("net.minecraftforge.client.GuiIngameForge");
             ASMClassName NetworkManager = new ASMClassName("net.minecraft.network.NetworkManager", "gw");
             ASMClassName Packet = new ASMClassName("net.minecraft.network.Packet", "ht");
+            ASMClassName EntityRenderer = new ASMClassName("net.minecraft.client.renderer.EntityRenderer", "buo");
         }
         interface Methods {
             ASMName Minecraft$init$NAME = new ASMName("<init>");
@@ -29,15 +30,18 @@ public interface Names {
             ASMName NetworkManager$sendPacket$DESC = new ASMName("(Lnet/minecraft/network/Packet;)V", "");
             ASMName NetworkManager$channelRead0$NAME = new ASMName("channelRead0", "a");
             ASMName NetworkManager$channelRead0$DESC = new ASMName("(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/Packet;)V", "(Lio/netty/channel/ChannelHandlerContext;Lht;)V");
+
+            ASMName EntityRenderer$updateLightmap$NAME = new ASMClassName("updateLightmap", "g");
+            ASMName EntityRenderer$updateLightmap$DESC = new ASMClassName("(F)V");
         }
     }
-
-    interface Reflection {
-        interface Fields {
-            ReflectionName Minecraft$rightClickDelayTimer = new ReflectionName("rightClickDelayTimer", "field_71467_ac");
-        }
-        interface Methods {
-
-        }
-    }
+//
+//    interface Reflection {
+//        interface Fields {
+//            ReflectionName Minecraft$rightClickDelayTimer = new ReflectionName("rightClickDelayTimer", "field_71467_ac");
+//        }
+//        interface Methods {
+//
+//        }
+//    }
 }

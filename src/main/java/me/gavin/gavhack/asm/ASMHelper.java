@@ -58,6 +58,20 @@ public class ASMHelper {
         return list.get(ordinal);
     }
 
+    public static VarInsnNode findVarInsn(MethodNode parentMethod, int opcode, int variable, int ordinal) {
+        final List<VarInsnNode> list = new ArrayList<>();
+        for (AbstractInsnNode insn : parentMethod.instructions.toArray()) {
+            if (insn instanceof VarInsnNode) {
+                final VarInsnNode varInsn = (VarInsnNode) insn;
+                if (varInsn.getOpcode() == opcode && varInsn.var == variable) {
+                    list.add(varInsn);
+                }
+            }
+        }
+
+        return list.get(ordinal);
+    }
+
     public static InsnList findPatternInsn(InsnList insns, int... bytecodes) {
         int patternIndex = 0;
         final InsnList list = new InsnList();

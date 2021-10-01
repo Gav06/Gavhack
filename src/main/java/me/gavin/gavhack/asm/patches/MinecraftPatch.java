@@ -10,12 +10,12 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 public final class MinecraftPatch extends Patch {
     public MinecraftPatch() {
-        super(ASM.Classes.Minecraft);
+        super(Classes.Minecraft);
 
         methodPatches.add(runTickKeyboardPatch);
     }
 
-    private final MethodPatch runTickKeyboardPatch = new MethodPatch(ASM.Methods.Minecraft$runTickKeyboard$NAME, ASM.Methods.Minecraft$runTickKeyboard$DESC, node -> {
+    private final MethodPatch runTickKeyboardPatch = new MethodPatch(Methods.Minecraft$runTickKeyboard$NAME, Methods.Minecraft$runTickKeyboard$DESC, node -> {
 
         final InsnList targetInsns = ASMHelper.findPatternInsn(node.instructions,
                 F_NEW,

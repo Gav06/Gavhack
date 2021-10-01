@@ -19,7 +19,7 @@ public class ASMTransformer implements IClassTransformer {
                     for (MethodPatch methodPatch : patch.methodPatches) {
                         if (methodPatch.getName().getActualName(obf).equals(methodNode.name) && methodPatch.getDescriptor().getActualName(obf).equals(methodNode.desc)) {
                             methodPatch.run(methodNode);
-                            PatchManager.asmLogger.info("Patching " + transformedName + "." + methodNode.name + methodNode.desc);
+                            PatchManager.asmLogger.info("Patching method " + transformedName + "." + methodNode.name + methodNode.desc);
                         }
                     }
                 }

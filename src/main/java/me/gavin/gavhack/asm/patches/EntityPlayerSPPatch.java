@@ -10,12 +10,12 @@ import org.objectweb.asm.tree.MethodInsnNode;
 
 public final class EntityPlayerSPPatch extends Patch {
     public EntityPlayerSPPatch() {
-        super(ASM.Classes.EntityPlayerSP);
+        super(Classes.EntityPlayerSP);
 
         methodPatches.add(onLivingUpdatePatch);
     }
 
-    private final MethodPatch onLivingUpdatePatch = new MethodPatch(ASM.Methods.EntityPlayersP$onLivingUpdate$NAME, ASM.Methods.EntityPlayerSP$onLivingUpdate$DESC, node -> {
+    private final MethodPatch onLivingUpdatePatch = new MethodPatch(Methods.EntityPlayersP$onLivingUpdate$NAME, Methods.EntityPlayerSP$onLivingUpdate$DESC, node -> {
         final InsnList insnList0 = new InsnList();
         insnList0.add(new InsnNode(ICONST_0));
         insnList0.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "EntityPlayerSP$onLivingUpdate", "(I)V", false));

@@ -7,6 +7,7 @@ import me.gavin.gavhack.events.RenderEvent;
 import me.gavin.gavhack.mods.api.Module;
 import me.gavin.gavhack.mods.api.ModuleManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -57,7 +58,17 @@ public final class Gavhack {
 
     @EventTarget
     public void onRenderScreen(RenderEvent.Screen event) {
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(NAME + " " + VERSION, 2f, 2f, 0xff0000);
+        final FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+        fr.drawStringWithShadow(NAME + " " + VERSION, 2f, 2f, 0xff0000);
+
+        float y = 2f;
+        for (Module module : moduleManager.getModuleList()) {
+            if (module.isEnabled()) {
+                final float x = event.getScaledResolution().getScaledWidth() - fr.getStringWidth(module.getName()) - 2f;
+                fr.drawStringWithShadow(module.getName(), x, y, 0xff0000);
+                y += fr.FONT_HEIGHT + 1f;
+            }
+        }
     }
 
     public Logger getLogger() {

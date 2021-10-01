@@ -2,11 +2,15 @@ package me.gavin.gavhack.mods.api;
 
 import com.darkmagician6.eventapi.EventManager;
 import me.gavin.gavhack.misc.Bind;
+import me.gavin.gavhack.settings.Setting;
 import net.minecraft.client.Minecraft;
+
+import java.util.ArrayList;
 
 public abstract class Module extends Bind {
 
 
+    protected final ArrayList<Setting> settings = new ArrayList<>();
     protected final Minecraft mc = Minecraft.getMinecraft();
 
     private boolean enabled;
@@ -68,6 +72,10 @@ public abstract class Module extends Bind {
 
     public String getDesc() {
         return desc;
+    }
+
+    public ArrayList<Setting> getSettings() {
+        return settings;
     }
 
     public enum Category {

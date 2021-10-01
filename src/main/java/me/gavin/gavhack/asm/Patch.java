@@ -6,7 +6,7 @@ import org.objectweb.asm.Opcodes;
 
 import java.util.ArrayList;
 
-public abstract class Patch implements Opcodes, Names {
+public abstract class Patch implements Opcodes, Names.ASM {
 
 
     private final ASMName name;

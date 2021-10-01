@@ -14,7 +14,8 @@ public final class ModuleManager {
 
     public ModuleManager() {
         // register mods
-
+        register(new KillAura());
+        register(new Fullbright());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);
