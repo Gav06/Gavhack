@@ -15,7 +15,7 @@ public final class EntityRendererPatch extends Patch {
         methodPatches.add(updateLightmapPatch);
     }
 
-    private final MethodPatch updateLightmapPatch = new MethodPatch(Methods.EntityRenderer$updateLightmap$NAME, Methods.EntityRenderer$updateLightmap$DESC, node -> {
+    private final MethodPatch updateLightmapPatch = new MethodPatch(Methods.EntityRenderer$updateLightmap, node -> {
         final VarInsnNode target = ASMHelper.findVarInsn(node, FSTORE, 16, 1);
 
         final InsnList insnList = new InsnList();

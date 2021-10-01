@@ -14,7 +14,7 @@ public final class NetworkManagerPatch extends Patch {
     }
 
 
-    private final MethodPatch sendPacketPatch = new MethodPatch(Methods.NetworkManager$sendPacket$NAME,  Methods.NetworkManager$sendPacket$DESC, node -> {
+    private final MethodPatch sendPacketPatch = new MethodPatch(Methods.NetworkManager$sendPacket, node -> {
         final InsnList insnList = new InsnList();
 
         insnList.add(new VarInsnNode(ALOAD, 1));
@@ -27,7 +27,7 @@ public final class NetworkManagerPatch extends Patch {
         node.instructions.insert(insnList);
     });
 
-    private final MethodPatch channelRead0Patch = new MethodPatch(Methods.NetworkManager$channelRead0$NAME, Methods.NetworkManager$channelRead0$DESC, node -> {
+    private final MethodPatch channelRead0Patch = new MethodPatch(Methods.NetworkManager$channelRead0, node -> {
         final InsnList insnList = new InsnList();
 
         insnList.add(new VarInsnNode(ALOAD, 2));

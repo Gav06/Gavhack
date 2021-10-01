@@ -10,8 +10,8 @@ public abstract class DragComponent extends AbstractComponent {
 
     public void draw(int mouseX, int mouseY, float partialTicks) {
         if (dragging) {
-            x = (dragX - mouseX);
-            y = (dragY - mouseY);
+            x = (mouseX - dragX);
+            y = (mouseY - dragY);
         }
     }
 

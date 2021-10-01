@@ -15,7 +15,7 @@ public final class EntityPlayerSPPatch extends Patch {
         methodPatches.add(onLivingUpdatePatch);
     }
 
-    private final MethodPatch onLivingUpdatePatch = new MethodPatch(Methods.EntityPlayersP$onLivingUpdate$NAME, Methods.EntityPlayerSP$onLivingUpdate$DESC, node -> {
+    private final MethodPatch onLivingUpdatePatch = new MethodPatch(Methods.EntityPlayerSP$onLivingUpdate, node -> {
         final InsnList insnList0 = new InsnList();
         insnList0.add(new InsnNode(ICONST_0));
         insnList0.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(Hooks.class), "EntityPlayerSP$onLivingUpdate", "(I)V", false));

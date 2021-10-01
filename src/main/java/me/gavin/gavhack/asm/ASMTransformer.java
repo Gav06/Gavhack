@@ -17,7 +17,7 @@ public class ASMTransformer implements IClassTransformer {
                 final boolean obf = patchManager.isObfuscated;
                 for (MethodNode methodNode : node.methods) {
                     for (MethodPatch methodPatch : patch.methodPatches) {
-                        if (methodPatch.getName().getActualName(obf).equals(methodNode.name) && methodPatch.getDescriptor().getActualName(obf).equals(methodNode.desc)) {
+                        if (methodPatch.getName().getName().getActualName(obf).equals(methodNode.name) && methodPatch.getName().getDesc().getActualName(obf).equals(methodNode.desc)) {
                             methodPatch.run(methodNode);
                             PatchManager.asmLogger.info("Patching method " + transformedName + "." + methodNode.name + methodNode.desc);
                         }

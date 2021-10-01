@@ -13,26 +13,20 @@ public interface Names {
             ASMClassName NetworkManager = new ASMClassName("net.minecraft.network.NetworkManager", "gw");
             ASMClassName Packet = new ASMClassName("net.minecraft.network.Packet", "ht");
             ASMClassName EntityRenderer = new ASMClassName("net.minecraft.client.renderer.EntityRenderer", "buo");
+            ASMClassName VisGraph = new ASMClassName("net.minecraft.client.renderer.chunk.VisGraph", "bxs");
         }
         interface Methods {
-            ASMName Minecraft$init$NAME = new ASMName("<init>");
-            ASMName Minecraft$init$DESC = new ASMName("(Lnet/minecraft/client/main/GameConfiguration;)V", "(Lboz;)V");
-            ASMName Minecraft$runTickKeyboard$NAME = new ASMName("runTickKeyboard", "aD");
-            ASMName Minecraft$runTickKeyboard$DESC = new ASMName("()V");
+            ASMMethodName Minecraft$init = new ASMMethodName(new ASMName("<init>"), new ASMName("(Lnet/minecraft/client/main/GameConfiguration;)V", "(Lboz;)V"));
+            ASMMethodName Minecraft$runTickKeyboard = new ASMMethodName(new ASMName("runTickKeyboard", "aD"), new ASMName("()V"));
 
-            ASMName EntityPlayersP$onLivingUpdate$NAME = new ASMName("onLivingUpdate", "n");
-            ASMName EntityPlayerSP$onLivingUpdate$DESC = new ASMName("()V");
+            ASMMethodName EntityPlayerSP$onLivingUpdate = new ASMMethodName(new ASMName("onLivingUpdate", "n"), new ASMName("()V"));
 
-            ASMName GuiIngameForge$renderGameOverlay$NAME = new ASMName("renderGameOverlay", "a");
-            ASMName GuiIngameForge$renderGameOverlay$DESC = new ASMName("(F)V");
+            ASMMethodName GuiIngameForge$renderGameOverlay = new ASMMethodName(new ASMName("renderGameOverlay", "a"), new ASMName("(F)V"));
 
-            ASMName NetworkManager$sendPacket$NAME = new ASMName("sendPacket", "a");
-            ASMName NetworkManager$sendPacket$DESC = new ASMName("(Lnet/minecraft/network/Packet;)V", "");
-            ASMName NetworkManager$channelRead0$NAME = new ASMName("channelRead0", "a");
-            ASMName NetworkManager$channelRead0$DESC = new ASMName("(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/Packet;)V", "(Lio/netty/channel/ChannelHandlerContext;Lht;)V");
+            ASMMethodName NetworkManager$sendPacket = new ASMMethodName(new ASMName("sendPacket", "a"), new ASMName("(Lnet/minecraft/network/Packet;)V", "(Lht;)V"));
+            ASMMethodName NetworkManager$channelRead0 = new ASMMethodName(new ASMName("channelRead0", "a"), new ASMName("(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/Packet;)V", "(Lio/netty/channel/ChannelHandlerContext;Lht;)V"));
 
-            ASMName EntityRenderer$updateLightmap$NAME = new ASMClassName("updateLightmap", "g");
-            ASMName EntityRenderer$updateLightmap$DESC = new ASMClassName("(F)V");
+            ASMMethodName EntityRenderer$updateLightmap = new ASMMethodName(new ASMName("updateLightmap", "g"), new ASMName("(F)V"));
         }
     }
 //

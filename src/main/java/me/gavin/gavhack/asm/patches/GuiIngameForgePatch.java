@@ -14,7 +14,7 @@ public final class GuiIngameForgePatch extends Patch {
         methodPatches.add(renderGameOverlayPatch);
     }
 
-    private final MethodPatch renderGameOverlayPatch = new MethodPatch(Methods.GuiIngameForge$renderGameOverlay$NAME, Methods.GuiIngameForge$renderGameOverlay$DESC, node -> {
+    private final MethodPatch renderGameOverlayPatch = new MethodPatch(Methods.GuiIngameForge$renderGameOverlay, node -> {
         final InsnList insnList = new InsnList();
         // partialTicks
         insnList.add(new VarInsnNode(FLOAD, 1));
