@@ -24,6 +24,7 @@ public class PatchManager {
         register(new MinecraftPatch());
         register(new NetworkManagerPatch());
         register(new EntityRendererPatch());
+        register(new VisGraphPatch());
     }
 
     public Patch getPatch(String className) {

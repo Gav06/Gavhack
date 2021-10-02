@@ -27,6 +27,8 @@ public interface Names {
             ASMMethodName NetworkManager$channelRead0 = new ASMMethodName(new ASMName("channelRead0", "a"), new ASMName("(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/Packet;)V", "(Lio/netty/channel/ChannelHandlerContext;Lht;)V"));
 
             ASMMethodName EntityRenderer$updateLightmap = new ASMMethodName(new ASMName("updateLightmap", "g"), new ASMName("(F)V"));
+
+            ASMMethodName VisGraph$setOpaqueCube = new ASMMethodName(new ASMName("setOpaqueCube", " a"), new ASMName("(Lnet/minecraft/util/math/BlockPos;)V", "(Let;)V"));
         }
     }
 //

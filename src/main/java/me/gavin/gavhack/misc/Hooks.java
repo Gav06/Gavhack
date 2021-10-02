@@ -7,6 +7,7 @@ import me.gavin.gavhack.events.PacketEvent;
 import me.gavin.gavhack.events.PlayerLivingUpdateEvent;
 import me.gavin.gavhack.events.RenderEvent;
 import me.gavin.gavhack.mods.Fullbright;
+import me.gavin.gavhack.mods.NoCaveCulling;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.network.Packet;
 import scala.tools.asm.Type;
@@ -43,5 +44,9 @@ public final class Hooks {
 
     public static float EntityRenderer$updateLightmap(float original) {
         return Gavhack.INSTANCE.getModuleManager().getModule(Fullbright.class).isEnabled() ? 24f : original;
+    }
+
+    public static boolean VisGraph$setOpaqueCube() {
+        return Gavhack.INSTANCE.getModuleManager().getModule(NoCaveCulling.class).isEnabled();
     }
 }

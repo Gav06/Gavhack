@@ -17,6 +17,7 @@ public final class ModuleManager {
         register(new KillAura());
         register(new Fullbright());
         register(new ClickGui());
+        register(new NoCaveCulling());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);
