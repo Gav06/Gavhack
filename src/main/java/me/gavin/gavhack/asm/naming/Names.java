@@ -15,6 +15,9 @@ public interface Names {
             ASMClassName EntityRenderer = new ASMClassName("net.minecraft.client.renderer.EntityRenderer", "buo");
             ASMClassName VisGraph = new ASMClassName("net.minecraft.client.renderer.chunk.VisGraph", "bxs");
             ASMClassName Timer = new ASMClassName("net.minecraft.util.Timer", "bif");
+            ASMClassName RenderLivingBase = new ASMClassName("net.minecraft.client.renderer.entity.RenderLivingBase", "bzy");
+            ASMClassName Entity = new ASMClassName("net.minecraft.entity.Entity", "ve");
+            ASMClassName EntityLivingBase = new ASMClassName("net.minecraft.entity.EntityLivingBase", "vn");
         }
         interface Methods {
             ASMMethodName Minecraft$init = new ASMMethodName(new ASMName("<init>"), new ASMName("(Lnet/minecraft/client/main/GameConfiguration;)V", "(Lboz;)V"));
@@ -32,6 +35,8 @@ public interface Names {
             ASMMethodName VisGraph$setOpaqueCube = new ASMMethodName(new ASMName("setOpaqueCube", " a"), new ASMName("(Lnet/minecraft/util/math/BlockPos;)V", "(Let;)V"));
 
             ASMMethodName Timer$updateTimer = new ASMMethodName(new ASMName("updateTimer", "a"), new ASMName("()V"));
+
+            ASMMethodName RenderLivingBase$doRender = new ASMMethodName(new ASMName("doRender", "a"), new ASMName("(Lnet/minecraft/entity/Entity;DDDFF)V", "(Lve;DDDFF)V"));
         }
     }
 //

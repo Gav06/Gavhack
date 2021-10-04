@@ -6,6 +6,7 @@ import me.gavin.gavhack.events.PlayerLivingUpdateEvent;
 import me.gavin.gavhack.mods.Fullbright;
 import me.gavin.gavhack.mods.NoCaveCulling;
 import me.gavin.gavhack.mods.Timer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.Packet;
 import net.minecraftforge.common.MinecraftForge;
 import scala.tools.asm.Type;

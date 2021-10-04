@@ -23,6 +23,7 @@ public final class ModuleManager {
 //        register(new JohnESP());
         register(new Velocity());
         register(new Criticals());
+        register(new ESP());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);

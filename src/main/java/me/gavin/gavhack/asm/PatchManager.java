@@ -23,6 +23,7 @@ public class PatchManager {
         register(new EntityRendererPatch());
         register(new VisGraphPatch());
         register(new TimerPatch());
+        register(new RenderLivingBasePatch());
     }
 
     public Patch getPatch(String className) {
