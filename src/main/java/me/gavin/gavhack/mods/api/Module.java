@@ -71,26 +71,23 @@ public abstract class Module extends Bind implements MC, Configurable {
     }
 
     @Override
-    public JsonObject read() {
-        final JsonObject obj = new JsonObject();
+    public void saveProperties(JsonObject object) {
 
-        obj.addProperty("bind", getBind());
-        obj.addProperty("enabled", enabled);
+        object.addProperty("bind", getBind());
+        object.addProperty("enabled", enabled);
         for (Setting setting : settings) {
             if (setting instanceof BooleanSetting) {
-                obj.addProperty(setting.getName(), ((BooleanSetting) setting).isEnabled());
+                object.addProperty(setting.getName(), ((BooleanSetting) setting).isEnabled());
             } else if (setting instanceof FloatSetting) {
-                obj.addProperty(setting.getName(), ((FloatSetting) setting).getValue());
+                object.addProperty(setting.getName(), ((FloatSetting) setting).getValue());
             } else if (setting instanceof ModeSetting) {
-                obj.addProperty(setting.getName(), ((ModeSetting) setting).getIndex());
+                object.addProperty(setting.getName(), ((ModeSetting) setting).getIndex());
             }
         }
-
-        return obj;
     }
 
     @Override
-    public void write(JsonObject object) {
+    public void loadProperties(JsonObject object) {
         this.setBind(object.get("bind").getAsInt());
         this.setEnabled(object.get("enabled").getAsBoolean());
         for (Setting setting : settings) {
@@ -113,7 +110,7 @@ public abstract class Module extends Bind implements MC, Configurable {
     }
 
     @Override
-    public String getGroup() {
+    public String getConfigGroup() {
         return "mods";
     }
 

@@ -51,7 +51,7 @@ public final class ModuleManager {
         classMap.put(module.getClass(), module);
         moduleList.add(module);
 
-        Gavhack.INSTANCE.getConfigManager().register(module);
+        Gavhack.INSTANCE.getConfigManager().registerConfigurable(module);
     }
 
     private int sortAlphabetically(Module module1, Module module2) {
