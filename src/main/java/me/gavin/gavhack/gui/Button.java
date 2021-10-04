@@ -1,12 +1,13 @@
 package me.gavin.gavhack.gui;
 
-import it.unimi.dsi.fastutil.booleans.BooleanSet;
 import me.gavin.gavhack.gui.setting.BindComponent;
 import me.gavin.gavhack.gui.setting.BooleanComponent;
+import me.gavin.gavhack.gui.setting.ModeComponent;
 import me.gavin.gavhack.gui.setting.SliderComponent;
 import me.gavin.gavhack.mods.api.Module;
 import me.gavin.gavhack.settings.BooleanSetting;
 import me.gavin.gavhack.settings.FloatSetting;
+import me.gavin.gavhack.settings.ModeSetting;
 import me.gavin.gavhack.settings.Setting;
 import net.minecraft.client.gui.Gui;
 
@@ -27,6 +28,8 @@ public class Button extends AbstractComponent {
                 settings.add(new BooleanComponent((BooleanSetting) setting, 0, 0, width, height));
             } else if (setting instanceof FloatSetting) {
                 settings.add(new SliderComponent((FloatSetting) setting, 0, 0, width, height));
+            } else if (setting instanceof ModeSetting) {
+                settings.add(new ModeComponent((ModeSetting) setting, 0, 0, width, height));
             }
         }
 

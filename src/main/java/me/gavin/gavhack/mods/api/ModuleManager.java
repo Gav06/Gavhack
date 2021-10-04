@@ -26,6 +26,8 @@ public final class ModuleManager {
         register(new ESP());
         register(new BlockHighlight());
         register(new UnfocusedCPU());
+        register(new XCarry());
+        register(new PortalGodMode());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);
