@@ -20,8 +20,9 @@ public final class ModuleManager {
         register(new NoCaveCulling());
         register(new Timer());
         register(new Lawnmower());
-        register(new JohnESP());
+//        register(new JohnESP());
         register(new Velocity());
+        register(new Criticals());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);
