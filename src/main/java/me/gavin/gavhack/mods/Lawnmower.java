@@ -30,20 +30,22 @@ public class Lawnmower extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerLivingUpdateEvent event) {
-        List<BlockPos> posList = BlockUtil.getSurroundingPositions(mc.player, (int)range.getValue(), true).stream()
-                .filter(this::isMowable)
-                .sorted(Comparator.comparing(pos -> mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ())))
-                .collect(Collectors.toList());
+        if (shouldRun()) {
+            List<BlockPos> posList = BlockUtil.getSurroundingPositions(mc.player, (int) range.getValue(), true).stream()
+                    .filter(this::isMowable)
+                    .sorted(Comparator.comparing(pos -> mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ())))
+                    .collect(Collectors.toList());
 
-        for (BlockPos pos : posList) {
-            if (blocksMined < blocksPerTick.getValue()) {
-                mc.playerController.clickBlock(pos, EnumFacing.getDirectionFromEntityLiving(pos, mc.player));
-                mc.player.swingArm(EnumHand.MAIN_HAND);
-                blocksMined++;
+            for (BlockPos pos : posList) {
+                if (blocksMined < blocksPerTick.getValue()) {
+                    mc.playerController.clickBlock(pos, EnumFacing.getDirectionFromEntityLiving(pos, mc.player));
+                    mc.player.swingArm(EnumHand.MAIN_HAND);
+                    blocksMined++;
+                }
             }
-        }
 
-        blocksMined = 0;
+            blocksMined = 0;
+        }
     }
 
     private boolean isMowable(BlockPos pos) {

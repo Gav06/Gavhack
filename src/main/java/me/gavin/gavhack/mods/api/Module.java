@@ -3,6 +3,7 @@ package me.gavin.gavhack.mods.api;
 import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.misc.Bind;
 import me.gavin.gavhack.misc.MC;
+import me.gavin.gavhack.mods.UnfocusedCPU;
 import me.gavin.gavhack.settings.Setting;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -86,6 +87,10 @@ public abstract class Module extends Bind implements MC {
         World,
         Misc,
         Client
+    }
+
+    protected boolean shouldRun() {
+        return !gavhack.getModuleManager().getModule(UnfocusedCPU.class).isEnabled();
     }
 }
 

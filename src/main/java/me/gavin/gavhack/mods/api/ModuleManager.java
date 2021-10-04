@@ -24,6 +24,8 @@ public final class ModuleManager {
         register(new Velocity());
         register(new Criticals());
         register(new ESP());
+        register(new BlockHighlight());
+        register(new UnfocusedCPU());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);

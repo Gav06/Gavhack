@@ -1,5 +1,6 @@
 package me.gavin.gavhack.misc;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.entity.Entity;
@@ -8,6 +9,9 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.lwjgl.opengl.GL32;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class RenderUtil implements MC {
 
@@ -73,5 +77,27 @@ public class RenderUtil implements MC {
         }
 
         return null;
+    }
+
+    public static void prepare3d() {
+        glPushMatrix();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
+        GlStateManager.disableTexture2D();
+        glEnable(GL32.GL_DEPTH_CLAMP);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    }
+
+    public static void release3d() {
+        glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
+        GlStateManager.disableAlpha();
+        GlStateManager.enableLighting();
+        GlStateManager.enableDepth();
+        GlStateManager.enableTexture2D();
+        glDisable(GL32.GL_DEPTH_CLAMP);
+        glPopMatrix();
     }
 }

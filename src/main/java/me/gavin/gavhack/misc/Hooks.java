@@ -6,7 +6,6 @@ import me.gavin.gavhack.events.PlayerLivingUpdateEvent;
 import me.gavin.gavhack.mods.Fullbright;
 import me.gavin.gavhack.mods.NoCaveCulling;
 import me.gavin.gavhack.mods.Timer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.Packet;
 import net.minecraftforge.common.MinecraftForge;
 import scala.tools.asm.Type;
@@ -38,11 +37,7 @@ public final class Hooks implements MC {
     }
 
     public static float Timer$updateTimer() {
-        if (player != null || world != null) {
-            final Timer timer = Gavhack.INSTANCE.getModuleManager().getModule(Timer.class);
-            return timer.isEnabled() ? timer.speed.getValue() : 1.0f;
-        } else {
-            return 1.0f;
-        }
+        final Timer timer = Gavhack.INSTANCE.getModuleManager().getModule(Timer.class);
+        return timer.isEnabled() ? timer.speed.getValue() : 1.0f;
     }
 }

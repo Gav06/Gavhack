@@ -9,7 +9,7 @@ public class ESP extends Module {
 //    Framebuffer entityFBO = new Framebuffer(mc.displayWidth, mc.displayHeight, false);
 //    Framebuffer overlayFBO = new Framebuffer(mc.displayWidth, mc.displayHeight, false);
 
-    public final ModeSetting espMode = new ModeSetting("Mode", "Stencil", "Stencil");
+    public final ModeSetting espMode = new ModeSetting("Mode", "Stencil", "Stencil", "Shader", "CSGO");
 
     public ESP() {
         super("ESP", "Highlights entities", Category.Render);

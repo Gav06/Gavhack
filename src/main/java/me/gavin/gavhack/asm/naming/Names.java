@@ -19,6 +19,7 @@ public interface Names {
             ASMClassName Entity = new ASMClassName("net.minecraft.entity.Entity", "ve");
             ASMClassName EntityLivingBase = new ASMClassName("net.minecraft.entity.EntityLivingBase", "vn");
         }
+
         interface Methods {
             ASMMethodName Minecraft$init = new ASMMethodName(new ASMName("<init>"), new ASMName("(Lnet/minecraft/client/main/GameConfiguration;)V", "(Lboz;)V"));
             ASMMethodName Minecraft$runTickKeyboard = new ASMMethodName(new ASMName("runTickKeyboard", "aD"), new ASMName("()V"));
