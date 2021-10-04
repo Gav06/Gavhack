@@ -21,6 +21,7 @@ public final class ModuleManager {
         register(new Timer());
         register(new Lawnmower());
         register(new JohnESP());
+        register(new Velocity());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);
