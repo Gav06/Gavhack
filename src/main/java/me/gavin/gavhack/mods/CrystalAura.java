@@ -15,6 +15,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -75,6 +76,7 @@ public class CrystalAura extends Module {
         if (placing.isEnabled()) {
             EntityLivingBase entity = mc.world.loadedEntityList.stream()
                     .filter(e -> e instanceof EntityLivingBase)
+                    .filter(e -> !e.equals(mc.player))
                     .map(e -> (EntityLivingBase) e)
                     .sorted(Comparator.comparing(e -> e.getDistance(mc.player)))
                     .filter(this::shouldAttack)
@@ -90,6 +92,11 @@ public class CrystalAura extends Module {
                             break;
                         }
                     }
+                }
+
+                if (crystalSlot != mc.player.inventory.currentItem) {
+                    mc.player.inventory.currentItem = crystalSlot;
+                    mc.player.connection.sendPacket(new CPacketHeldItemChange());
                 }
 
                 List<BlockPos> blocks = getPossibleBlocks();
