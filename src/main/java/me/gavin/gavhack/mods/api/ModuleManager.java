@@ -1,5 +1,6 @@
 package me.gavin.gavhack.mods.api;
 
+import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.mods.*;
 
 import java.util.ArrayList;
@@ -49,6 +50,8 @@ public final class ModuleManager {
         nameMap.put(module.getName(), module);
         classMap.put(module.getClass(), module);
         moduleList.add(module);
+
+        Gavhack.INSTANCE.getConfigManager().register(module);
     }
 
     private int sortAlphabetically(Module module1, Module module2) {

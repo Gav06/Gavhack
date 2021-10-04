@@ -31,12 +31,20 @@ public class ModeSetting extends Setting {
         }
     }
 
-    private int indexOf(String mode) {
+    public int indexOf(String mode) {
         for (int i = 0; i < modes.length; i++) {
             if (modes[i].equals(mode))
                 return i;
         }
 
         return -1;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

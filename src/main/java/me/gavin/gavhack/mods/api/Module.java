@@ -1,15 +1,21 @@
 package me.gavin.gavhack.mods.api;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import me.gavin.gavhack.Gavhack;
+import me.gavin.gavhack.config.Configurable;
 import me.gavin.gavhack.misc.Bind;
 import me.gavin.gavhack.misc.MC;
 import me.gavin.gavhack.mods.UnfocusedCPU;
+import me.gavin.gavhack.settings.BooleanSetting;
+import me.gavin.gavhack.settings.FloatSetting;
+import me.gavin.gavhack.settings.ModeSetting;
 import me.gavin.gavhack.settings.Setting;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
 
-public abstract class Module extends Bind implements MC {
+public abstract class Module extends Bind implements MC, Configurable {
 
 
     protected final ArrayList<Setting> settings = new ArrayList<>();
@@ -64,8 +70,51 @@ public abstract class Module extends Bind implements MC {
         return enabled;
     }
 
+    @Override
+    public JsonObject read() {
+        final JsonObject obj = new JsonObject();
+
+        obj.addProperty("bind", getBind());
+        obj.addProperty("enabled", enabled);
+        for (Setting setting : settings) {
+            if (setting instanceof BooleanSetting) {
+                obj.addProperty(setting.getName(), ((BooleanSetting) setting).isEnabled());
+            } else if (setting instanceof FloatSetting) {
+                obj.addProperty(setting.getName(), ((FloatSetting) setting).getValue());
+            } else if (setting instanceof ModeSetting) {
+                obj.addProperty(setting.getName(), ((ModeSetting) setting).getIndex());
+            }
+        }
+
+        return obj;
+    }
+
+    @Override
+    public void write(JsonObject object) {
+        this.setBind(object.get("bind").getAsInt());
+        this.setEnabled(object.get("enabled").getAsBoolean());
+        for (Setting setting : settings) {
+            if (setting instanceof BooleanSetting) {
+                ((BooleanSetting)(setting)).setEnabled(object.get(setting.getName()).getAsBoolean());
+            } else if (setting instanceof FloatSetting) {
+                ((FloatSetting)(setting)).setValue(object.get(setting.getName()).getAsFloat());
+            } else if (setting instanceof ModeSetting) {
+                final ModeSetting modeSetting = (ModeSetting) setting;
+                int index = modeSetting.indexOf(object.get(setting.getName()).getAsString());
+                if (index != -1) {
+                    modeSetting.setIndex(index);
+                }
+            }
+        }
+    }
+
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getGroup() {
+        return "mods";
     }
 
     public Category getCategory() {
@@ -93,4 +142,3 @@ public abstract class Module extends Bind implements MC {
         return !gavhack.getModuleManager().getModule(UnfocusedCPU.class).isEnabled();
     }
 }
-

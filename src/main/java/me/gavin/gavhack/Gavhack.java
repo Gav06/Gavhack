@@ -1,5 +1,6 @@
 package me.gavin.gavhack;
 
+import me.gavin.gavhack.config.ConfigManager;
 import me.gavin.gavhack.gui.GavhackGui;
 import me.gavin.gavhack.misc.ProjectionUtil;
 import me.gavin.gavhack.mods.api.Module;
@@ -12,6 +13,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -38,6 +40,8 @@ public final class Gavhack {
 
     private GavhackGui gavhackGui;
 
+    private ConfigManager configManager;
+
     /* Instance that will be created by forge */
     @Mod.Instance(ID)
     public static Gavhack INSTANCE;
@@ -49,10 +53,18 @@ public final class Gavhack {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        this.configManager = new ConfigManager();
         this.moduleManager = new ModuleManager();
         this.gavhackGui = new GavhackGui();
 
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        configManager.loadAll();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(configManager::saveAll));
     }
 
     @SubscribeEvent
@@ -97,5 +109,9 @@ public final class Gavhack {
 
     public GavhackGui getGui() {
         return gavhackGui;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 }
