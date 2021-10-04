@@ -8,7 +8,7 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
-public class TimerPatch extends Patch {
+public final class TimerPatch extends Patch {
     public TimerPatch() {
         super(Classes.Timer);
 

@@ -2,6 +2,7 @@ package me.gavin.gavhack.asm.naming;
 
 import me.gavin.gavhack.asm.naming.IName;
 
+@Deprecated
 public class ReflectionName implements IName {
 
     private final String mcpName;

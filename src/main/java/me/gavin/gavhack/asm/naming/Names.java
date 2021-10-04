@@ -8,7 +8,9 @@ public interface Names {
         interface Classes {
             ASMClassName Minecraft = new ASMClassName("net.minecraft.client.Minecraft", "bib");
             ASMClassName EntityPlayerSP = new ASMClassName("net.minecraft.client.entity.EntityPlayerSP", "bud");
+            @Deprecated
             ASMClassName ScaledResolution = new ASMClassName("net.minecraft.client.gui.ScaledResolution", "bit");
+            @Deprecated
             ASMClassName GuiIngameForge = new ASMClassName("net.minecraftforge.client.GuiIngameForge");
             ASMClassName NetworkManager = new ASMClassName("net.minecraft.network.NetworkManager", "gw");
             ASMClassName Packet = new ASMClassName("net.minecraft.network.Packet", "ht");
@@ -43,13 +45,16 @@ public interface Names {
             ASMMethodName World$spawnParticle = new ASMMethodName(new ASMName("spawnParticle", "a"), new ASMName("(IZDDDDDD[I)V"));
         }
     }
-//
-//    interface Reflection {
-//        interface Fields {
-//            ReflectionName Minecraft$rightClickDelayTimer = new ReflectionName("rightClickDelayTimer", "field_71467_ac");
-//        }
-//        interface Methods {
-//
-//        }
-//    }
+
+    @Deprecated
+    interface Reflection {
+        @Deprecated
+        interface Fields {
+            ReflectionName Minecraft$rightClickDelayTimer = new ReflectionName("rightClickDelayTimer", "field_71467_ac");
+        }
+        @Deprecated
+        interface Methods {
+
+        }
+    }
 }

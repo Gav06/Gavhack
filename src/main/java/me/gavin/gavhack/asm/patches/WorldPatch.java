@@ -1,11 +1,11 @@
 package me.gavin.gavhack.asm.patches;
 
+import org.objectweb.asm.tree.*;
 import me.gavin.gavhack.asm.MethodPatch;
 import me.gavin.gavhack.asm.Patch;
 import me.gavin.gavhack.misc.Hooks;
-import org.objectweb.asm.tree.*;
 
-public class WorldPatch extends Patch {
+public final class WorldPatch extends Patch {
 
     public WorldPatch() {
         super(Classes.World);
@@ -15,6 +15,7 @@ public class WorldPatch extends Patch {
 
     private final MethodPatch spawnParticlePatch = new MethodPatch(Methods.World$spawnParticle, node -> {
         final InsnList insnList = new InsnList();
+
         insnList.add(new VarInsnNode(ILOAD, 1));
         insnList.add(new MethodInsnNode(INVOKESTATIC, Hooks.INTERNAL_NAME, "World$spawnParticle", "(I)Z", false));
         final LabelNode jump = new LabelNode();

@@ -9,11 +9,10 @@ import me.gavin.gavhack.mods.NoCaveCulling;
 import me.gavin.gavhack.mods.Timer;
 import net.minecraft.network.Packet;
 import net.minecraftforge.common.MinecraftForge;
-import scala.tools.asm.Type;
 
 public final class Hooks implements MC {
 
-    public static final String INTERNAL_NAME = Type.getInternalName(Hooks.class);
+    public static final String INTERNAL_NAME = "me/gavin/gavhack/misc/Hooks";
 
     public static void EntityPlayerSP$onLivingUpdate(int stage) {
         if (stage == 0) {

@@ -91,15 +91,19 @@ public abstract class Module extends Bind implements MC, Configurable {
         this.setBind(object.get("bind").getAsInt());
         this.setEnabled(object.get("enabled").getAsBoolean());
         for (Setting setting : settings) {
-            if (setting instanceof BooleanSetting) {
-                ((BooleanSetting)(setting)).setEnabled(object.get(setting.getName()).getAsBoolean());
-            } else if (setting instanceof FloatSetting) {
-                ((FloatSetting)(setting)).setValue(object.get(setting.getName()).getAsFloat());
-            } else if (setting instanceof ModeSetting) {
-                final ModeSetting modeSetting = (ModeSetting) setting;
-                int index = modeSetting.indexOf(object.get(setting.getName()).getAsString());
-                if (index != -1) {
-                    modeSetting.setIndex(index);
+            if (setting != null) {
+                if (object.get(setting.getName()) != null) {
+                    if (setting instanceof BooleanSetting) {
+                        ((BooleanSetting) (setting)).setEnabled(object.get(setting.getName()).getAsBoolean());
+                    } else if (setting instanceof FloatSetting) {
+                        ((FloatSetting) (setting)).setValue(object.get(setting.getName()).getAsFloat());
+                    } else if (setting instanceof ModeSetting) {
+                        final ModeSetting modeSetting = (ModeSetting) setting;
+                        int index = modeSetting.indexOf(object.get(setting.getName()).getAsString());
+                        if (index != -1) {
+                            modeSetting.setIndex(index);
+                        }
+                    }
                 }
             }
         }
