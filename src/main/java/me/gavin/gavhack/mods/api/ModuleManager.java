@@ -29,6 +29,7 @@ public final class ModuleManager {
         register(new UnfocusedCPU());
         register(new XCarry());
         register(new PortalGodMode());
+        register(new CrystalAura());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);
