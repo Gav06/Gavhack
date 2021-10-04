@@ -69,7 +69,7 @@ public final class Gavhack {
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        if (Keyboard.getEventKeyState()) {
+        if (Keyboard.getEventKeyState() && Keyboard.isCreated() && Keyboard.getEventKey() != Keyboard.KEY_NONE) {
             for (Module module : moduleManager.getModuleList()) {
                 if (module.getBind() == Keyboard.getEventKey()) {
                     module.toggle();

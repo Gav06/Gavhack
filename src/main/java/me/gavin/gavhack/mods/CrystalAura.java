@@ -74,7 +74,6 @@ public class CrystalAura extends Module {
             if (mc.player.getDistance(targetCrystal) <= range) {
                 mc.playerController.attackEntity(mc.player, targetCrystal);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
-                return;
             }
         }
 
