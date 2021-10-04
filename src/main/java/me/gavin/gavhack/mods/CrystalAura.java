@@ -98,7 +98,7 @@ public class CrystalAura extends Module {
                     }
                 }
 
-                if (crystalSlot != mc.player.inventory.currentItem) {
+                if (crystalSlot != mc.player.inventory.currentItem && crystalSlot != -1) {
                     mc.player.inventory.currentItem = crystalSlot;
                     mc.player.connection.sendPacket(new CPacketHeldItemChange());
                 }

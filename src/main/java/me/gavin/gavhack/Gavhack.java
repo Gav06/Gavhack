@@ -2,7 +2,9 @@ package me.gavin.gavhack;
 
 import me.gavin.gavhack.config.ConfigManager;
 import me.gavin.gavhack.gui.GavhackGui;
+import me.gavin.gavhack.misc.FPSHelper;
 import me.gavin.gavhack.misc.ProjectionUtil;
+import me.gavin.gavhack.misc.TPSHelper;
 import me.gavin.gavhack.mods.api.Module;
 import me.gavin.gavhack.mods.api.ModuleManager;
 import net.minecraft.client.Minecraft;
@@ -87,7 +89,9 @@ public final class Gavhack {
     public void onRenderScreen(RenderGameOverlayEvent.Text event) {
         final ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         final FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-        fr.drawStringWithShadow(NAME + " " + VERSION, 2f, 2f, 0xff0000);
+        fr.drawStringWithShadow(NAME + " v" + VERSION, 2f, 2f, 0xff0000);
+        fr.drawStringWithShadow(String.format("FPS: %.1f", FPSHelper.INSTANCE.getFPS()), 2f, 12f, 0xff0000);
+        fr.drawStringWithShadow(String.format("TPS: %.2f", TPSHelper.INSTANCE.getTPS()), 2f , 22f, 0xff0000);
 
         float y = 2f;
         for (Module module : moduleManager.getModuleList()) {

@@ -72,10 +72,14 @@ public class Button extends AbstractComponent {
     public void draw(int mouseX, int mouseY, float partialTicks) {
         super.draw(mouseX, mouseY, partialTicks);
 
+        final int color = module.isEnabled() ? -1 : 0x787878;
+
         Gui.drawRect(x, y, x + width, y + height, 0x80000000);
-        fr.drawStringWithShadow(module.getName(), x + 3f, y + 3f, module.isEnabled() ? -1 : 0x787878);
+        if (module.isEnabled())
+            Gui.drawRect(x, y, x + width, y + height, 0xc8ff0000);
+        fr.drawStringWithShadow(module.getName(), x + 3f, y + 3f, color);
         final String text = isOpen ? "-" : "+";
-        fr.drawStringWithShadow(text, x + width - fr.getStringWidth(text) - 1f, y + 3f, -1);
+        fr.drawStringWithShadow(text, x + width - fr.getStringWidth(text) - 1f, y + 3f, color);
 
         if (isOpen) {
             int yOffset = height;

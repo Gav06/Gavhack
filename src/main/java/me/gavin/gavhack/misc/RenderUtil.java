@@ -93,7 +93,6 @@ public class RenderUtil implements MC {
 
     public static void release3d() {
         glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
-        GlStateManager.disableAlpha();
         GlStateManager.enableLighting();
         GlStateManager.enableDepth();
         GlStateManager.enableTexture2D();
