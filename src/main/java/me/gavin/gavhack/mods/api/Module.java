@@ -1,18 +1,17 @@
 package me.gavin.gavhack.mods.api;
 
-import com.darkmagician6.eventapi.EventManager;
 import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.misc.Bind;
+import me.gavin.gavhack.misc.MC;
 import me.gavin.gavhack.settings.Setting;
-import net.minecraft.client.Minecraft;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
 
-public abstract class Module extends Bind {
+public abstract class Module extends Bind implements MC {
 
 
     protected final ArrayList<Setting> settings = new ArrayList<>();
-    protected final Minecraft mc = Minecraft.getMinecraft();
     protected final Gavhack gavhack = Gavhack.INSTANCE;
 
     private boolean enabled;
@@ -30,13 +29,13 @@ public abstract class Module extends Bind {
 
     public void enable() {
         enabled = true;
-        EventManager.register(this);
+        MinecraftForge.EVENT_BUS.register(this);
         onEnable();
     }
 
     public void disable() {
         enabled = false;
-        EventManager.unregister(this);
+        MinecraftForge.EVENT_BUS.unregister(this);
         onDisable();
     }
 

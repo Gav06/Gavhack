@@ -1,6 +1,5 @@
 package me.gavin.gavhack.mods;
 
-import com.darkmagician6.eventapi.EventTarget;
 import me.gavin.gavhack.events.PlayerLivingUpdateEvent;
 import me.gavin.gavhack.mods.api.Module;
 import me.gavin.gavhack.settings.BooleanSetting;
@@ -10,6 +9,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Comparator;
@@ -38,7 +38,7 @@ public class KillAura extends Module {
 
     private EntityLivingBase target;
 
-    @EventTarget
+    @SubscribeEvent
     public void onUpdate(PlayerLivingUpdateEvent event) {
         if (this.target == null) {
             final List<EntityLivingBase> list = mc.world.loadedEntityList.stream()

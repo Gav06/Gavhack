@@ -13,5 +13,6 @@ public class ClickGui extends Module {
     @Override
     protected void onEnable() {
         mc.displayGuiScreen(gavhack.getGui());
+        disable();
     }
 }

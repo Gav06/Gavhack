@@ -1,5 +1,6 @@
 package me.gavin.gavhack.gui;
 
+import me.gavin.gavhack.mods.api.Module;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
@@ -12,7 +13,11 @@ public final class GavhackGui extends GuiScreen {
     public GavhackGui() {
         this.components = new ArrayList<>();
 
-        components.add(new TestComponent(50, 50, 100, 100));
+        int x = 2;
+        for (Module.Category category : Module.Category.values()) {
+            this.components.add(new Frame(category, x, 2, 110, 12));
+            x += 112;
+        }
     }
 
     @Override
@@ -39,6 +44,15 @@ public final class GavhackGui extends GuiScreen {
     @Override
     public void keyTyped(char keyChar, int keyCode) throws IOException {
         super.keyTyped(keyChar, keyCode);
+
+        for (AbstractComponent component : components) {
+            component.keyTyped(keyCode);
+        }
+    }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
     }
 
     public ArrayList<AbstractComponent> getComponents() {

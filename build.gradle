@@ -34,6 +34,10 @@ repositories {
 dependencies {
 }
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
 processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version

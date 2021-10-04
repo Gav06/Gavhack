@@ -1,19 +1,23 @@
 package me.gavin.gavhack;
 
-import com.darkmagician6.eventapi.EventManager;
-import com.darkmagician6.eventapi.EventTarget;
-import me.gavin.gavhack.events.KeyPressEvent;
-import me.gavin.gavhack.events.RenderEvent;
 import me.gavin.gavhack.gui.GavhackGui;
+import me.gavin.gavhack.misc.ProjectionUtil;
 import me.gavin.gavhack.mods.api.Module;
 import me.gavin.gavhack.mods.api.ModuleManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Keyboard;
 
 @Mod(
         name = Gavhack.NAME,
@@ -48,27 +52,35 @@ public final class Gavhack {
         this.moduleManager = new ModuleManager();
         this.gavhackGui = new GavhackGui();
 
-        EventManager.register(this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @EventTarget
-    public void onKeyPress(KeyPressEvent event) {
-        for (Module module : moduleManager.getModuleList()) {
-            if (module.getBind() == event.getKey()) {
-                module.toggle();
+    @SubscribeEvent
+    public void onKeyPress(InputEvent.KeyInputEvent event) {
+        if (Keyboard.getEventKeyState()) {
+            for (Module module : moduleManager.getModuleList()) {
+                if (module.getBind() == Keyboard.getEventKey()) {
+                    module.toggle();
+                }
             }
         }
     }
 
-    @EventTarget
-    public void onRenderScreen(RenderEvent.Screen event) {
+    @SubscribeEvent
+    public void onRenderWorld(RenderWorldLastEvent event) {
+        ProjectionUtil.updateMatrix();
+    }
+
+    @SubscribeEvent
+    public void onRenderScreen(RenderGameOverlayEvent.Text event) {
+        final ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         final FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
         fr.drawStringWithShadow(NAME + " " + VERSION, 2f, 2f, 0xff0000);
 
         float y = 2f;
         for (Module module : moduleManager.getModuleList()) {
             if (module.isEnabled()) {
-                final float x = event.getScaledResolution().getScaledWidth() - fr.getStringWidth(module.getName()) - 2f;
+                final float x = sr.getScaledWidth() - fr.getStringWidth(module.getName()) - 2f;
                 fr.drawStringWithShadow(module.getName(), x, y, 0xff0000);
                 y += fr.FONT_HEIGHT + 1f;
             }

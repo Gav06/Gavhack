@@ -1,9 +1,11 @@
 package me.gavin.gavhack.events;
 
-import com.darkmagician6.eventapi.events.callables.EventCancellable;
 import net.minecraft.network.Packet;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
-public abstract class PacketEvent extends EventCancellable {
+@Cancelable
+public abstract class PacketEvent extends Event {
 
     private final Packet<?> packet;
 

@@ -14,6 +14,7 @@ public interface Names {
             ASMClassName Packet = new ASMClassName("net.minecraft.network.Packet", "ht");
             ASMClassName EntityRenderer = new ASMClassName("net.minecraft.client.renderer.EntityRenderer", "buo");
             ASMClassName VisGraph = new ASMClassName("net.minecraft.client.renderer.chunk.VisGraph", "bxs");
+            ASMClassName Timer = new ASMClassName("net.minecraft.util.Timer", "bif");
         }
         interface Methods {
             ASMMethodName Minecraft$init = new ASMMethodName(new ASMName("<init>"), new ASMName("(Lnet/minecraft/client/main/GameConfiguration;)V", "(Lboz;)V"));
@@ -29,6 +30,8 @@ public interface Names {
             ASMMethodName EntityRenderer$updateLightmap = new ASMMethodName(new ASMName("updateLightmap", "g"), new ASMName("(F)V"));
 
             ASMMethodName VisGraph$setOpaqueCube = new ASMMethodName(new ASMName("setOpaqueCube", " a"), new ASMName("(Lnet/minecraft/util/math/BlockPos;)V", "(Let;)V"));
+
+            ASMMethodName Timer$updateTimer = new ASMMethodName(new ASMName("updateTimer", "a"), new ASMName("()V"));
         }
     }
 //

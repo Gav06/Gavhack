@@ -1,6 +1,8 @@
 package me.gavin.gavhack.gui;
 
-public abstract class AbstractComponent extends Rect implements IComponent {
+import me.gavin.gavhack.misc.MC;
+
+public abstract class AbstractComponent extends Rect implements IComponent, MC {
     public AbstractComponent(int x, int y, int width, int height) {
         super(x, y, width, height);
     }

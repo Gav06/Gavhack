@@ -1,5 +1,5 @@
 package me.gavin.gavhack.events;
 
-import com.darkmagician6.eventapi.events.Event;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
-public final class PlayerLivingUpdateEvent implements Event { }
+public final class PlayerLivingUpdateEvent extends Event { }

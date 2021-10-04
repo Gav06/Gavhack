@@ -18,6 +18,9 @@ public final class ModuleManager {
         register(new Fullbright());
         register(new ClickGui());
         register(new NoCaveCulling());
+        register(new Timer());
+        register(new Lawnmower());
+        register(new JohnESP());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);
@@ -43,5 +46,16 @@ public final class ModuleManager {
 
     private int sortAlphabetically(Module module1, Module module2) {
         return module1.getName().compareTo(module2.getName());
+    }
+
+    public ArrayList<Module> getCategoryModules(Module.Category category) {
+        final ArrayList<Module> list = new ArrayList<>();
+
+        for (Module module : moduleList) {
+            if (module.getCategory() == category)
+                list.add(module);
+        }
+
+        return list;
     }
 }

@@ -18,13 +18,11 @@ public class PatchManager {
         this.isObfuscated = isObfuscated;
 
         // register patches here
-        register(new MinecraftPatch());
         register(new EntityPlayerSPPatch());
-        register(new GuiIngameForgePatch());
-        register(new MinecraftPatch());
         register(new NetworkManagerPatch());
         register(new EntityRendererPatch());
         register(new VisGraphPatch());
+        register(new TimerPatch());
     }
 
     public Patch getPatch(String className) {
