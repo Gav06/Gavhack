@@ -52,6 +52,11 @@ public class CrystalAura extends Module {
         this.settings.add(placeSpeed);
         this.settings.add(range);
         this.settings.add(wallsRange);
+
+        this.settings.add(players);
+        this.settings.add(animals);
+        this.settings.add(mobs);
+        this.settings.add(others);
     }
 
     @SubscribeEvent

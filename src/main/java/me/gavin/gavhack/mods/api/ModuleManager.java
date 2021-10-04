@@ -30,6 +30,7 @@ public final class ModuleManager {
         register(new XCarry());
         register(new PortalGodMode());
         register(new CrystalAura());
+        register(new NoParticles());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);

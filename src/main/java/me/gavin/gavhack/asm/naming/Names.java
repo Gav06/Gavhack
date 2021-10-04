@@ -18,6 +18,7 @@ public interface Names {
             ASMClassName RenderLivingBase = new ASMClassName("net.minecraft.client.renderer.entity.RenderLivingBase", "bzy");
             ASMClassName Entity = new ASMClassName("net.minecraft.entity.Entity", "ve");
             ASMClassName EntityLivingBase = new ASMClassName("net.minecraft.entity.EntityLivingBase", "vn");
+            ASMClassName World = new ASMClassName("net.minecraft.world.World", "ams");
         }
 
         interface Methods {
@@ -38,6 +39,8 @@ public interface Names {
             ASMMethodName Timer$updateTimer = new ASMMethodName(new ASMName("updateTimer", "a"), new ASMName("()V"));
 
             ASMMethodName RenderLivingBase$doRender = new ASMMethodName(new ASMName("doRender", "a"), new ASMName("(Lnet/minecraft/entity/Entity;DDDFF)V", "(Lve;DDDFF)V"));
+
+            ASMMethodName World$spawnParticle = new ASMMethodName(new ASMName("spawnParticle", "a"), new ASMName("(IZDDDDDD[I)V"));
         }
     }
 //

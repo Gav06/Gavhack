@@ -2,6 +2,7 @@ package me.gavin.gavhack.misc;
 
 import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.events.PacketEvent;
+import me.gavin.gavhack.events.ParticleSpawnEvent;
 import me.gavin.gavhack.events.PlayerLivingUpdateEvent;
 import me.gavin.gavhack.mods.Fullbright;
 import me.gavin.gavhack.mods.NoCaveCulling;
@@ -39,5 +40,9 @@ public final class Hooks implements MC {
     public static float Timer$updateTimer() {
         final Timer timer = Gavhack.INSTANCE.getModuleManager().getModule(Timer.class);
         return timer.isEnabled() ? timer.speed.getValue() : 1.0f;
+    }
+
+    public static boolean World$spawnParticle(int particleId) {
+        return MinecraftForge.EVENT_BUS.post(new ParticleSpawnEvent(particleId));
     }
 }
