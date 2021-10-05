@@ -23,7 +23,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,9 +38,9 @@ public class CrystalAura extends Module {
     private final FloatSetting wallsRange = new FloatSetting("WallsRange", 3f, 0f, 5f);
 
     private final BooleanSetting players = new BooleanSetting("Players", true);
-    private final BooleanSetting animals = new BooleanSetting("Animals", true);
-    private final BooleanSetting mobs = new BooleanSetting("Mobs", true);
-    private final BooleanSetting others = new BooleanSetting("Players", true);
+    private final BooleanSetting animals = new BooleanSetting("Animals", false);
+    private final BooleanSetting mobs = new BooleanSetting("Mobs", false);
+    private final BooleanSetting others = new BooleanSetting("Others", true);
 
     public CrystalAura() {
         super("CrystalAura", "Place/Break crystals automatically", Category.Combat);
