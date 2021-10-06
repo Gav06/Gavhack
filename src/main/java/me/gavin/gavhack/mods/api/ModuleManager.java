@@ -31,6 +31,8 @@ public final class ModuleManager {
         register(new PortalGodMode());
         register(new CrystalAura());
         register(new NoParticles());
+        register(new Scaffold());
+        register(new Optimizer());
 
         // sort modules alphabetically
         moduleList.sort(this::sortAlphabetically);

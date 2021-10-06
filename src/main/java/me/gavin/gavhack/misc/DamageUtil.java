@@ -19,7 +19,7 @@ public final class DamageUtil implements MC {
         float doubleExplosionSize = 6.0F * 2.0F;
         double distancedsize = entity.getDistance(posX, posY, posZ) / (double) doubleExplosionSize;
         Vec3d vec3d = new Vec3d(posX, posY, posZ);
-        double blockDensity = (double) entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
+        double blockDensity = entity.world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
         double v = (1.0D - distancedsize) * blockDensity;
         float damage = (float) ((int) ((v * v + v) / 2.0D * 7.0D * (double) doubleExplosionSize + 1.0D));
         double finald = 1;

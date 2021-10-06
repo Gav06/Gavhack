@@ -15,7 +15,9 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
+import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -58,6 +60,10 @@ public class CrystalAura extends Module {
         this.settings.add(others);
     }
 
+    private boolean hasBroken = false;
+
+    private EntityEnderCrystal lastTargetedCrystal;
+
     @SubscribeEvent
     public void onTick(PlayerLivingUpdateEvent event) {
         final EntityEnderCrystal targetCrystal = mc.world.loadedEntityList.stream()
@@ -68,25 +74,27 @@ public class CrystalAura extends Module {
                 .orElse(null);
 
         if (targetCrystal != null && breaking.isEnabled()) {
+            lastTargetedCrystal = targetCrystal;
             float range = mc.player.canEntityBeSeen(targetCrystal) ? this.range.getValue() : this.wallsRange.getValue();
 
             if (mc.player.getDistance(targetCrystal) <= range) {
                 mc.playerController.attackEntity(mc.player, targetCrystal);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
+                hasBroken = true;
             }
         }
 
         if (placing.isEnabled()) {
             EntityLivingBase entity = mc.world.loadedEntityList.stream()
                     .filter(e -> e instanceof EntityLivingBase)
-                    .filter(e -> !e.equals(mc.player))
+                    .filter(e -> e != mc.player)
                     .map(e -> (EntityLivingBase) e)
                     .sorted(Comparator.comparing(e -> e.getDistance(mc.player)))
                     .filter(this::shouldAttack)
                     .findFirst()
                     .orElse(null);
 
-            if (entity != null) {
+            if (entity != null && entity != mc.player) {
                 int crystalSlot = mc.player.getHeldItemMainhand().getItem() == Items.END_CRYSTAL ? mc.player.inventory.currentItem : -1;
                 if (crystalSlot == -1) {
                     for (int l = 0; l < 9; ++l) {
@@ -115,8 +123,11 @@ public class CrystalAura extends Module {
                 }
 
                 if (bestPos != null) {
-                    mc.playerController.processRightClickBlock(mc.player, mc.world, bestPos, EnumFacing.UP, Vec3d.ZERO, EnumHand.MAIN_HAND);
-                    mc.player.swingArm(EnumHand.MAIN_HAND);
+                    if (hasBroken) {
+                        mc.playerController.processRightClickBlock(mc.player, mc.world, bestPos, EnumFacing.UP, Vec3d.ZERO, EnumHand.MAIN_HAND);
+                        mc.player.swingArm(EnumHand.MAIN_HAND);
+                        hasBroken = false;
+                    }
                 }
             }
         }
@@ -124,7 +135,16 @@ public class CrystalAura extends Module {
 
     @SubscribeEvent
     public void onPacket(PacketEvent.Receive event) {
+        if (event.getPacket() instanceof SPacketSoundEffect) {
+            final SPacketSoundEffect packet = (SPacketSoundEffect) event.getPacket();
 
+            if (packet.getSound() == SoundEvents.ENTITY_GENERIC_EXPLODE) {
+                if (lastTargetedCrystal != null && lastTargetedCrystal.isEntityAlive()) {
+                    lastTargetedCrystal.setDead();
+                    lastTargetedCrystal = null;
+                }
+            }
+        }
     }
 
     private List<BlockPos> getPossibleBlocks() {
