@@ -1,12 +1,16 @@
 package dev.gavhack.module;
 
 import dev.gavhack.Gavhack;
+import dev.gavhack.settings.Setting;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
+
 public abstract class Module {
 
+    protected final ArrayList<? extends Setting> settings = new ArrayList<>();
     protected final Minecraft mc = Minecraft.getMinecraft();
     protected final Gavhack gavhack = Gavhack.INSTANCE;;
 
@@ -75,5 +79,9 @@ public abstract class Module {
 
     public Category getCategory() {
         return category;
+    }
+
+    public ArrayList<? extends Setting> getSettings() {
+        return settings;
     }
 }
