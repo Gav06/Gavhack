@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public abstract class Module {
 
-    protected final ArrayList<? extends Setting> settings = new ArrayList<>();
+    protected final ArrayList<Setting> settings = new ArrayList<>();
     protected final Minecraft mc = Minecraft.getMinecraft();
     protected final Gavhack gavhack = Gavhack.INSTANCE;;
 
@@ -81,7 +81,7 @@ public abstract class Module {
         return category;
     }
 
-    public ArrayList<? extends Setting> getSettings() {
+    public ArrayList<Setting> getSettings() {
         return settings;
     }
 }
