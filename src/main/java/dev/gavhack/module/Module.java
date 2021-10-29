@@ -1,0 +1,79 @@
+package dev.gavhack.module;
+
+import dev.gavhack.Gavhack;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.input.Keyboard;
+
+public abstract class Module {
+
+    protected final Minecraft mc = Minecraft.getMinecraft();
+    protected final Gavhack gavhack = Gavhack.INSTANCE;;
+
+    private final String name;
+    private final String description;
+    private final Category category;
+
+    private int bind;
+    private boolean enabled;
+
+    public Module(String name, String description, Category category) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.bind = Keyboard.KEY_NONE;
+        this.enabled = false;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void toggle() {
+        if (enabled) {
+            disable();
+        } else {
+            enable();
+        }
+    }
+
+    public void enable() {
+        if (!enabled) {
+            enabled = true;
+            MinecraftForge.EVENT_BUS.register(this);
+            onEnable();
+        }
+    }
+
+    public void disable() {
+        if (enabled) {
+            enabled = false;
+            MinecraftForge.EVENT_BUS.unregister(this);
+            onDisable();
+        }
+    }
+
+    protected void onEnable() { }
+
+    protected void onDisable() { }
+
+    public int getBind() {
+        return bind;
+    }
+
+    public void setBind(int bind) {
+        this.bind = bind;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+}

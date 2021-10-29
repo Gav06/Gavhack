@@ -1,0 +1,11 @@
+{
+  "package": "dev.gavhack.mixin",
+  "refmap": "refmap.gavhack.json",
+  "required": true,
+  "minVersion": "0.7",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "mixins.MixinEntityPlayerSP",
+    "mixins.MixinNetworkManager"
+  ]
+}

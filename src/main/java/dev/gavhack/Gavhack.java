@@ -1,14 +1,8 @@
 package dev.gavhack;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import dev.gavhack.module.ModuleManager;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 @Mod(
         modid = Gavhack.MOD_ID,
@@ -25,8 +19,15 @@ public class Gavhack {
     @Mod.Instance(MOD_ID)
     public static Gavhack INSTANCE;
 
+    private ModuleManager moduleManager;
+
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        this.moduleManager = new ModuleManager();
+    }
 
+    public ModuleManager getModuleManager() {
+        return moduleManager;
     }
 }
