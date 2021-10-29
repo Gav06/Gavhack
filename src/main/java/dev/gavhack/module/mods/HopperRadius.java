@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Arrays;
+
 public class HopperRadius extends Module {
 
     private final FloatSetting renderRange = new FloatSetting("RenderRange", 15f, 50f, 7.5f);
@@ -32,15 +34,23 @@ public class HopperRadius extends Module {
     public void onRenderWorld(RenderWorldLastEvent event) {
         for (TileEntity tileEntity : mc.world.loadedTileEntityList) {
             if (tileEntity instanceof TileEntityHopper) {
+                final TileEntityHopper hopper = (TileEntityHopper) tileEntity;
                 if (tileEntity.getPos().getDistance((int) mc.player.posX, (int) mc.player.posY, (int) mc.player.posZ) <= renderRange.getValue()) {
+                    RenderUtil.prepareGL();
+                    GlStateManager.glLineWidth(1.5f);
+                    GlStateManager.color(1f, 0f, 0f, 1f);
                     final Tessellator tessellator = Tessellator.getInstance();
                     final BufferBuilder bufferBuilder = tessellator.getBuffer();
-
-                    RenderUtil.prepareGL();
-                    GlStateManager.color(1f, 0f, 0f, 1f);
                     bufferBuilder.begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION);
                     for (Vec2f vec : vectors) {
-                        bufferBuilder.pos(vec.x + tileEntity.getPos().getX() + 0.5d, tileEntity.getPos().getY() + 1.0, vec.y + tileEntity.getPos().getZ() + 0.5d);
+                        final double x = hopper.getXPos() + vec.x + 0.5;
+                        final double y = hopper.getYPos() + 1.0;
+                        final double z = hopper.getZPos() + vec.y + 0.5;
+                        bufferBuilder.pos(
+                                x - mc.getRenderManager().viewerPosX,
+                                y - mc.getRenderManager().viewerPosY,
+                                z - mc.getRenderManager().viewerPosZ
+                        );
                     }
                     tessellator.draw();
                     GlStateManager.color(1f, 1f, 1f, 1f);

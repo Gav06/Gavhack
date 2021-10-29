@@ -7,7 +7,9 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 @Mod(
         modid = Gavhack.MOD_ID,
         name = Gavhack.MOD_NAME,
-        version = Gavhack.VERSION
+        version = Gavhack.VERSION,
+        acceptedMinecraftVersions = "[1.12.2]",
+        clientSideOnly = true
 )
 public class Gavhack {
 
