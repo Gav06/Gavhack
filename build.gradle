@@ -1,41 +1,40 @@
 buildscript {
     repositories {
-        jcenter()
-        maven { url = "https://files.minecraftforge.net/maven" }
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "https://files.minecraftforge.net/maven"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "2.0"
-group = "me.gavin.gavhack"
-archivesBaseName = "gavhack"
+apply plugin: "net.minecraftforge.gradle.forge"
 
-configurations {
-}
-
-compileJava {
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
-}
+group = 'dev'
+version = '3.0'
+archivesBaseName = 'gavhack'
 
 minecraft {
-    version = "1.12.2-14.23.5.2847"
+    version = project.forgeVersion
     runDir = "run"
-    mappings = "stable_39"
-    coreMod = "me.gavin.gavhack.asm.ASMLoader"
+
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = project.mcpVersion
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 repositories {
-    
+    mavenCentral()
 }
 
 dependencies {
-}
-
-sourceSets.main.resources {
-    srcDir 'src/generated/resources'
 }
 
 processResources {
@@ -45,23 +44,14 @@ processResources {
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
+        include "mcmod.info"
+
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand "version": project.version, "mcversion": project.minecraft.version
     }
-        
-    // copy everything else except the mcmod.info
+
+    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude "mcmod.info"
     }
-
-    rename '(.+_at.cfg)', 'META-INF/$1'
 }
-
-jar.manifest.attributes(
-        "FMLCorePluginContainsFMLMod": true,
-        "ForceLoadAsMod": true,
-        "FMLCorePlugin": "me.gavin.gavhack.asm.ASMLoader",
-        "FMLAT": "gavhack_at.cfg"
-)
