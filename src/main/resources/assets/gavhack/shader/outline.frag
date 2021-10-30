@@ -1,40 +1,23 @@
 #version 120
 
 uniform sampler2D DiffuseSampler;
-uniform sampler2D PrevSampler;
+uniform vec2 TexelSize;
 
-varying vec2 texCoord;
-varying vec2 oneTexel;
-
-uniform vec3 color;
-uniform float outlineAlpha;
-uniform float filledAlpha;
-uniform float width;
-
-void main(){
-    int intWidth = int(width);
-    vec4 center = texture2D(DiffuseSampler, texCoord);
-
-    if (center.a == 0.0) {
-        // Scan pixels nearby
-        for (int sampleX = -intWidth; sampleX <= intWidth; sampleX++) {
-            for (int sampleY = -intWidth; sampleY <= intWidth; sampleY++) {
-                vec2 sampleCoord = vec2(float(sampleX), float(sampleY)) * oneTexel;
-                vec4 sampleColor = texture2D(DiffuseSampler, texCoord + sampleCoord);
-                if (sampleColor.a > 0.0) {
-                    // If we find a pixel that isn't transparent, set the frag color to it and replace the alpha.
-                    center = vec4(color, outlineAlpha);
-                }
-            }
-        }
-    } else {
-        // Replace the color
-        center = vec4(color, 1.0);
-
-        // Mix it with the blured background
-//        vec4 backgroundColor = texture2D(PrevSampler, texCoord);
-//        center = mix(backgroundColor, center, filledAlpha);
+void main(void) {
+    vec4 centerCol = texture2D(DiffuseSampler, gl_TexCoord[0].st);
+    if(centerCol.r == 1.0f && centerCol.g == 1.0f && centerCol.b == 1.0f) {
+        gl_FragColor = vec4(0, 0, 0, 0);
     }
 
-    gl_FragColor = center;
+    vec4 colAvg = vec4(0, 0, 0, 0);
+    for(int xo = -7; xo < 7; xo++) {
+        for(int yo = -7; yo < 7; yo++) {
+            vec4 currCol = texture2D(DiffuseSampler, gl_TexCoord[0].st + vec2(xo * TexelSize.x, yo * TexelSize.y));
+            if(currCol.r != 0.0F || currCol.g != 0.0F || currCol.b != 0.0F) {
+                colAvg += vec4(1, 0, 0, max(0, (6.0f - sqrt(xo*xo*1.0f + yo*yo*1.0f)) / 2.0F));
+            }
+        }
+    }
+    colAvg.a /= 64.0F;
+    gl_FragColor = colAvg;
 }

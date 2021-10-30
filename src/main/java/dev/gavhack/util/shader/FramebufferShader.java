@@ -34,7 +34,7 @@ public abstract class FramebufferShader extends Shader
     public void stopDraw() {
         mc.gameSettings.entityShadows = this.entityShadows;
         GL11.glEnable(3042);
-        GL11.glBlendFunc(770, 771);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         mc.getFramebuffer().bindFramebuffer(true);
         mc.entityRenderer.disableLightmap();
         RenderHelper.disableStandardItemLighting();

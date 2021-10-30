@@ -4,9 +4,16 @@ import dev.gavhack.events.PlayerUpdateEvent;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.settings.FloatSetting;
+import dev.gavhack.util.RenderUtil;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.util.Comparator;
 
@@ -34,6 +41,32 @@ public class KillAura extends Module {
             }
         } else {
             targetEntity = findTarget();
+        }
+    }
+
+    @SubscribeEvent
+    public void onRender(RenderWorldLastEvent event) {
+        if (targetEntity != null) {
+            final double x = MathHelper.clampedLerp(targetEntity.prevPosX, targetEntity.posX, event.getPartialTicks());
+            final double y = MathHelper.clampedLerp(targetEntity.prevPosY, targetEntity.posY, event.getPartialTicks());
+            final double z = MathHelper.clampedLerp(targetEntity.prevPosZ, targetEntity.posZ, event.getPartialTicks());
+            final double halfWidth = targetEntity.width / 2.0;
+            final AxisAlignedBB bb = new AxisAlignedBB(
+                    x - halfWidth, y, z - halfWidth,
+                    x + halfWidth, y + targetEntity.height, z + halfWidth
+            ).grow(0.2).offset(RenderUtil.getRenderOffset());
+
+            Vector3f color = new Vector3f(0f, 1f, 0f);
+
+            if (targetEntity.hurtTime > 0) {
+                color.x = 1f;
+                color.y = 0f;
+            }
+
+            RenderUtil.prepareGL();
+            GlStateManager.glLineWidth(1.5f);
+            RenderGlobal.drawSelectionBoundingBox(bb, color.x, color.y, color.z, 1f);
+            RenderUtil.releaseGL();
         }
     }
 
