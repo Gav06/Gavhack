@@ -14,8 +14,6 @@ public class MixinBlockLiquid {
 
     @Inject(method = "canCollideCheck", at = @At("HEAD"), cancellable = true)
     public void collide(IBlockState state, boolean hitIfLiquid, CallbackInfoReturnable<Boolean> cir) {
-        if (Gavhack.INSTANCE.getModuleManager().isModuleEnabled(LiquidInteract.class)) {
-            cir.setReturnValue(hitIfLiquid && state.getValue(BlockLiquid.LEVEL) == 0);
-        }
+        cir.setReturnValue(Gavhack.INSTANCE.getModuleManager().isModuleEnabled(LiquidInteract.class) || (hitIfLiquid && state.getValue(BlockLiquid.LEVEL) == 0));
     }
 }

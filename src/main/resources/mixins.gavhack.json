@@ -5,8 +5,11 @@
   "minVersion": "0.7",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "accessors.IMinecraft",
     "mixins.MixinAbstractHorse",
     "mixins.MixinBlock",
+    "mixins.MixinBlockLiquid",
+    "mixins.MixinBlockPortal",
     "mixins.MixinBufferBuilder",
     "mixins.MixinEntityLlama",
     "mixins.MixinEntityPig",
@@ -14,8 +17,6 @@
     "mixins.MixinEntityRenderer",
     "mixins.MixinMovementInputFromOptions",
     "mixins.MixinNetworkManager",
-    "mixins.MixinVisGraph",
-    "mixins.MixinBlockPortal",
-    "mixins.MixinBlockLiquid"
+    "mixins.MixinVisGraph"
   ]
 }

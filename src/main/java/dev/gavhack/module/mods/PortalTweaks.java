@@ -4,14 +4,14 @@ import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.settings.BooleanSetting;
 
-public class Portals extends Module {
+public class PortalTweaks extends Module {
 
     public static BooleanSetting hitbox;
     public static BooleanSetting chat;
 
-    public Portals() {
-        super("Portals", "modify portal behavior", Category.PLAYER);
+    public PortalTweaks() {
+        super("PortalTweaks", "modify portal behavior", Category.PLAYER);
         hitbox = new BooleanSetting("Hitbox", true);
-        chat = new BooleanSetting("Chat", true);
+        chat = new BooleanSetting("Gui's", true);
     }
 }

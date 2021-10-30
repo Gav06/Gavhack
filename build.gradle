@@ -64,6 +64,10 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+
+    shade('com.moandjiezana.toml:toml4j:0.7.2') {
+        exclude module: 'gson'
+    }
 }
 
 processResources {
