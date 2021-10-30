@@ -79,6 +79,17 @@ public class ModuleManager {
         return getModule(module).isEnabled();
     }
 
+    public List<Module> getCategoryModules(Category category) {
+        final List<Module> list = new ArrayList<>();
+        for (Module module : modules) {
+            if (module.getCategory() == category) {
+                list.add(module);
+            }
+        }
+
+        return list;
+    }
+
     @SubscribeEvent
     public void onKeyEvent(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState() && Keyboard.getEventKey() != Keyboard.KEY_NONE) {

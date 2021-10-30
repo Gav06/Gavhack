@@ -6,7 +6,8 @@ public enum Category {
     RENDER("Render"),
     PLAYER("Player"),
     OTHER("Other"),
-    CLIENT("Client");
+    CLIENT("Client"),
+    HUD("Hud");
 
     private final String name;
     Category(String name) {

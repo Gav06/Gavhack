@@ -1,6 +1,6 @@
 package dev.gavhack.gui.api;
 
-public class DragComponent extends AbstractComponent {
+public abstract class DragComponent extends AbstractComponent {
 
     private int dragX, dragY;
     private boolean dragging;

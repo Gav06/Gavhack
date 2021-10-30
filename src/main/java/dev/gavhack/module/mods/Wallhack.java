@@ -3,7 +3,6 @@ package dev.gavhack.module.mods;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraftforge.common.ForgeModContainer;
 import org.lwjgl.input.Keyboard;
 

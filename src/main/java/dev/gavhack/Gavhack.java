@@ -1,5 +1,6 @@
 package dev.gavhack;
 
+import dev.gavhack.gui.GuiDisplayScreen;
 import dev.gavhack.module.ModuleManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,14 +23,19 @@ public class Gavhack {
     public static Gavhack INSTANCE;
 
     private ModuleManager moduleManager;
-
+    private GuiDisplayScreen gui;
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         this.moduleManager = new ModuleManager();
+        this.gui = new GuiDisplayScreen(moduleManager);
     }
 
     public ModuleManager getModuleManager() {
         return moduleManager;
+    }
+
+    public GuiDisplayScreen getGui() {
+        return gui;
     }
 }
