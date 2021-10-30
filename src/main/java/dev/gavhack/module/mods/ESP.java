@@ -3,6 +3,7 @@ package dev.gavhack.module.mods;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.util.shader.FramebufferShader;
+import dev.gavhack.util.shader.shaders.GalaxyShader;
 import dev.gavhack.util.shader.shaders.RedShader;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -14,7 +15,7 @@ public class ESP extends Module {
         super("ESP", "shader esp", Category.RENDER);
     }
 
-    private final FramebufferShader shader = new RedShader();
+    private final FramebufferShader shader = GalaxyShader.GALAXY_SHADER;
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent event) {

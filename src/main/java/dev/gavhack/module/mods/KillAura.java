@@ -71,7 +71,7 @@ public class KillAura extends Module {
     }
 
     private boolean targetCheck(EntityLivingBase ent) {
-        return ent.getDistance(mc.player) <= range.getValue() && ent.isEntityAlive() && ent.getHealth() > 0;
+        return ent.getDistance(mc.player) <= range.getValue() && ent.isEntityAlive() && ent.getHealth() > 0 && mc.player.getRidingEntity() != ent;
     }
 
     private EntityLivingBase findTarget() {
