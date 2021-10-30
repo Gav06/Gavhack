@@ -10,6 +10,8 @@
     "mixins.MixinNetworkManager",
     "mixins.MixinAbstractHorse",
     "mixins.MixinEntityPig",
-    "mixins.MixinEntityLlama"
+    "mixins.MixinEntityLlama",
+    "mixins.MixinBlock",
+    "mixins.MixinBufferBuilder"
   ]
 }

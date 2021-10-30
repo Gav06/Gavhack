@@ -105,4 +105,11 @@ reobf {
     }
 }
 
+jar.manifest.attributes(
+        "Manifest-Version": "1.0",
+        "FMLCorePlugin": "dev.gavhack.mixin.MixinLoader",
+        "FMLCorePluginContainsFMLMod": true,
+        "ForceLoadAsMod": true
+)
+
 build.dependsOn(shadowJar)
