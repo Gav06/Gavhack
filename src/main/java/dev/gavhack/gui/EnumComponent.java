@@ -32,7 +32,7 @@ public class EnumComponent extends AbstractComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         Gui.drawRect(x, y, x + width, y + height, 0xAC000000);
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(setting.getName() + ": " + setting.getValue().toString(), x + 2f, y + 2f, -1);
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(setting.getName() + ": " + setting.getValue().toString(), x + 4f, y + 2f, -1);
     }
 
     @Override

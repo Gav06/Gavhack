@@ -32,7 +32,8 @@ public class BindComponent extends AbstractComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         Gui.drawRect(x, y, x + width, y + height, 0xAC000000);
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("Bind: " + Keyboard.getKeyName(bind.getKeyCode()), x + 2f, y + 2f, -1);
+        final String str = binding ? "Press a key..." : "Bind: " + Keyboard.getKeyName(bind.getKeyCode());
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(str, x + 4f, y + 2f, -1);
     }
 
     @Override
