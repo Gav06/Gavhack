@@ -19,15 +19,6 @@ public class Wallhack extends Module {
     public Wallhack() {
         super("Wallhack", "Peep through walls :^)", Category.RENDER);
         setBind(Keyboard.KEY_X);
-
-        blocks.add(Blocks.DIAMOND_ORE);
-        blocks.add(Blocks.REDSTONE_ORE);
-        blocks.add(Blocks.IRON_ORE);
-        blocks.add(Blocks.LAPIS_ORE);
-        blocks.add(Blocks.COAL_ORE);
-        blocks.add(Blocks.GOLD_ORE);
-        blocks.add(Blocks.QUARTZ_ORE);
-        blocks.add(Blocks.EMERALD_ORE);
     }
 
     @Override
