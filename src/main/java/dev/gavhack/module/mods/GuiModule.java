@@ -8,7 +8,7 @@ public class GuiModule extends Module {
 
     public GuiModule() {
         super("Gui", "Opens the client GUI", Category.CLIENT);
-        setBind(Keyboard.KEY_RSHIFT);
+        setBindKey(Keyboard.KEY_RSHIFT);
     }
 
     @Override

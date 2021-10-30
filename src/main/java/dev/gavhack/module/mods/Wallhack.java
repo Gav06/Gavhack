@@ -17,7 +17,7 @@ public class Wallhack extends Module {
 
     public Wallhack() {
         super("Wallhack", "Peep through walls :^)", Category.RENDER);
-        setBind(Keyboard.KEY_X);
+        setBindKey(Keyboard.KEY_X);
     }
 
     @Override

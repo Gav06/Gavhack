@@ -3,6 +3,7 @@ package dev.gavhack.module;
 import dev.gavhack.Gavhack;
 import dev.gavhack.settings.Setting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
@@ -18,14 +19,14 @@ public abstract class Module {
     private final String description;
     private final Category category;
 
-    private int bind;
+    private KeyBinding bind;
     private boolean enabled;
 
     public Module(String name, String description, Category category) {
         this.name = name;
         this.description = description;
         this.category = category;
-        this.bind = Keyboard.KEY_NONE;
+        this.bind = new KeyBinding(name, Keyboard.KEY_NONE, Gavhack.MOD_NAME);
         this.enabled = false;
     }
 
@@ -61,12 +62,16 @@ public abstract class Module {
 
     protected void onDisable() { }
 
-    public int getBind() {
+    public int getBindKey() {
+        return bind.getKeyCode();
+    }
+
+    public KeyBinding getKeyBinding() {
         return bind;
     }
 
-    public void setBind(int bind) {
-        this.bind = bind;
+    public void setBindKey(int bind) {
+        this.bind.setKeyCode(bind);
     }
 
     public String getName() {

@@ -9,12 +9,10 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -25,7 +23,7 @@ public class HopperRadius extends Module {
 
     public HopperRadius() {
         super("HopperRadius", "Shows how far you can walk from hoppers without them closing", Category.RENDER);
-        setBind(Keyboard.KEY_H);
+        setBindKey(Keyboard.KEY_H);
     }
 
     private final double HOPPER_RANGE = 8.0D;

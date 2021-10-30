@@ -8,6 +8,6 @@ public class Fullbright extends Module {
 
     public Fullbright() {
         super("Fullbright", "shutup", Category.RENDER);
-        setBind(Keyboard.KEY_V);
+        setBindKey(Keyboard.KEY_V);
     }
 }

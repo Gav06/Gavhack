@@ -43,7 +43,12 @@ public class ModuleManager {
             }
         }
 
+        modules.sort(this::sortAlphabetically);
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private int sortAlphabetically(Module module1, Module module2) {
+        return module1.getName().compareTo(module2.getName());
     }
 
     private void addModule(Module module) {
@@ -94,7 +99,7 @@ public class ModuleManager {
     public void onKeyEvent(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState() && Keyboard.getEventKey() != Keyboard.KEY_NONE) {
             for (Module module : modules) {
-                if (module.getBind() == Keyboard.getEventKey()) {
+                if (module.getBindKey() == Keyboard.getEventKey()) {
                     module.toggle();
                 }
             }

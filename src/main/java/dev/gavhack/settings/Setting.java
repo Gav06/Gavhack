@@ -8,5 +8,9 @@ public abstract class Setting {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public abstract void reset();
 }

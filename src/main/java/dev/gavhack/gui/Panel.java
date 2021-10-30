@@ -32,7 +32,7 @@ public class Panel extends DragComponent {
             for (Button<?> button : buttons) {
                 button.x = x;
                 button.y = y + height + yAdd;
-                yAdd += button.height;
+                yAdd += button.height + button.getSettingHeight();
                 button.draw(mouseX, mouseY, partialTicks);
             }
         }
