@@ -14,6 +14,8 @@
     "mixins.MixinEntityRenderer",
     "mixins.MixinMovementInputFromOptions",
     "mixins.MixinNetworkManager",
-    "mixins.MixinVisGraph"
+    "mixins.MixinVisGraph",
+    "mixins.MixinBlockPortal",
+    "mixins.MixinBlockLiquid"
   ]
 }
