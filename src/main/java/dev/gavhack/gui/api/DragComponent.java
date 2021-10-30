@@ -27,7 +27,7 @@ public abstract class DragComponent extends AbstractComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         if (dragging) {
-            x = mouseX - dragY;
+            x = mouseX - dragX;
             y = mouseY - dragY;
         }
     }

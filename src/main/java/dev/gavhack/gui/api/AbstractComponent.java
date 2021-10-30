@@ -2,6 +2,8 @@ package dev.gavhack.gui.api;
 
 public abstract class AbstractComponent extends Rect {
 
+    protected final char S = '\u00A7';
+
     public AbstractComponent(int x, int y, int width, int height) {
         super(x, y, width, height);
     }

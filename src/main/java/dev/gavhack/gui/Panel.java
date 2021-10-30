@@ -25,7 +25,7 @@ public class Panel extends DragComponent {
     public void draw(int mouseX, int mouseY, float partialTicks) {
         super.draw(mouseX, mouseY, partialTicks);
         Gui.drawRect(x, y, x + width, y + height, 0xc8000000);
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow("§a" + category.toString() + "§f (" + buttons.size() + ")", x + 2f, y + 2f, -1);
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(S + "a" + category.toString() + S + "f (" + buttons.size() + ")", x + 2f, y + 2f, -1);
         if (open) {
 
             int yAdd = 0;
@@ -41,6 +41,10 @@ public class Panel extends DragComponent {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+        if (inside(mouseX, mouseY) && mouseButton == 1) {
+            open = !open;
+            GuiDisplayScreen.clickSound();
+        }
         if (open) {
             buttons.forEach(b -> b.mouseClicked(mouseX, mouseY, mouseButton));
         }

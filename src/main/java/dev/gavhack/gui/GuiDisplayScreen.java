@@ -4,13 +4,17 @@ import dev.gavhack.gui.api.AbstractComponent;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.module.ModuleManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.init.SoundEvents;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuiDisplayScreen extends GuiScreen {
+
 
     private final List<AbstractComponent> components;
 
@@ -60,5 +64,9 @@ public class GuiDisplayScreen extends GuiScreen {
 
     public List<AbstractComponent> getComponents() {
         return components;
+    }
+
+    public static void clickSound() {
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 }
