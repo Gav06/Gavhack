@@ -5,13 +5,15 @@
   "minVersion": "0.7",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "mixins.MixinAbstractHorse",
+    "mixins.MixinBlock",
+    "mixins.MixinBufferBuilder",
+    "mixins.MixinEntityLlama",
+    "mixins.MixinEntityPig",
     "mixins.MixinEntityPlayerSP",
+    "mixins.MixinEntityRenderer",
     "mixins.MixinMovementInputFromOptions",
     "mixins.MixinNetworkManager",
-    "mixins.MixinAbstractHorse",
-    "mixins.MixinEntityPig",
-    "mixins.MixinEntityLlama",
-    "mixins.MixinBlock",
-    "mixins.MixinBufferBuilder"
+    "mixins.MixinVisGraph"
   ]
 }
