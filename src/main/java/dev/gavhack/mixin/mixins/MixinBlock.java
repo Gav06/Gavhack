@@ -6,13 +6,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
 
 @Mixin(Block.class)
 public class MixinBlock {
@@ -58,5 +62,10 @@ public class MixinBlock {
     public void isCube(IBlockState state, CallbackInfoReturnable<Boolean> cir) {
         if (Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Wallhack.class))
             cir.setReturnValue(Wallhack.blocks.contains(state.getBlock()));
+    }
+
+    @Inject(method = "addCollisionBoxToList(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/AxisAlignedBB;Ljava/util/List;Lnet/minecraft/util/math/AxisAlignedBB;)V", at = @At("HEAD"), cancellable = true)
+    private static void box(BlockPos axisalignedbb, AxisAlignedBB pos, List<AxisAlignedBB> entityBox, AxisAlignedBB collidingBoxes, CallbackInfo ci) {
+
     }
 }

@@ -4,6 +4,7 @@ import dev.gavhack.gui.api.AbstractComponent;
 import dev.gavhack.module.Module;
 import dev.gavhack.settings.BooleanSetting;
 import dev.gavhack.settings.EnumSetting;
+import dev.gavhack.settings.FloatSetting;
 import dev.gavhack.settings.Setting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -27,6 +28,8 @@ public class Button<T extends Module> extends AbstractComponent {
                 settings.add(new BooleanComponent((BooleanSetting) setting, 0, 0, width, height));
             } else if (setting instanceof EnumSetting<?>) {
                 settings.add(new EnumComponent((EnumSetting<?>) setting, 0, 0, width, height));
+            } else if (setting instanceof FloatSetting) {
+                settings.add(new FloatComponent((FloatSetting) setting, 0, 0, width, height));
             }
         }
 
