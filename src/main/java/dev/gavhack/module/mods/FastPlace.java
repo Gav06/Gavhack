@@ -14,6 +14,6 @@ public class FastPlace extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        ((IMinecraft) mc).Minecraft_rightClickDelayTimer_ghack(0);
+        ((IMinecraft) mc).Minecraft_rightClickDelayTimer_gavhack(0);
     }
 }

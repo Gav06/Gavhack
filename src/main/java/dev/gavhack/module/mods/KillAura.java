@@ -5,6 +5,7 @@ import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.settings.FloatSetting;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Comparator;
@@ -27,7 +28,8 @@ public class KillAura extends Module {
                 return;
             } else {
                 if (mc.player.getCooledAttackStrength(0f) >= 1f) {
-                    
+                    mc.playerController.attackEntity(mc.player, targetEntity);
+                    mc.player.swingArm(EnumHand.MAIN_HAND);
                 }
             }
         } else {

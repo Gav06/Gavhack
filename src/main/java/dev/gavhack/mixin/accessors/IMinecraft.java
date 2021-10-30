@@ -8,5 +8,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface IMinecraft {
 
     @Accessor("rightClickDelayTimer")
-    void Minecraft_rightClickDelayTimer_ghack(int value);
+    void Minecraft_rightClickDelayTimer_gavhack(int value);
 }

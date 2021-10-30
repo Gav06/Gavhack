@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class BoatBypass extends Module {
 
     public BoatBypass() {
-        super("BoatBypass", "bypass ncp's restrictions for boat placements", Category.PLAYER);
+        super("BoatBypass", "bypass ncp's restrictions for boat placements", Category.OTHER);
     }
 
     @SubscribeEvent
