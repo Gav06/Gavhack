@@ -18,12 +18,12 @@ public class HudModule extends Module {
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
         final FontRenderer fr = mc.fontRenderer;
-        fr.drawString(ChatFormatting.GREEN + Gavhack.MOD_NAME + " " + Gavhack.VERSION, 2f, 2f, -1, false);
+        fr.drawStringWithShadow(ChatFormatting.GREEN + Gavhack.MOD_NAME + " " + Gavhack.VERSION, 2f, 2f, -1);
 
         int y = fr.FONT_HEIGHT + 3;
         for (Module module : gavhack.getModuleManager().getModules()) {
             if (module.isEnabled()) {
-                fr.drawString(ChatFormatting.GREEN + ">" + module.getName(), 2f, y, -1, false);
+                fr.drawStringWithShadow(ChatFormatting.GREEN + ">" + module.getName() + " " + module.getExtraInfo(), 2f, y, -1);
                 y += fr.FONT_HEIGHT + 2;
             }
         }

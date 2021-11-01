@@ -89,4 +89,8 @@ public abstract class Module {
     public ArrayList<Setting> getSettings() {
         return settings;
     }
+
+    public String getExtraInfo() {
+        return "";
+    }
 }

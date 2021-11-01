@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 public class HopperRadius extends Module {
 
-    private final FloatSetting renderRange = new FloatSetting("RenderRange", 15f, 50f, 7.5f);
+    private final FloatSetting renderRange = new FloatSetting("RenderRange", 15.0f, 7.5f, 50.0f);
 
     public HopperRadius() {
         super("HopperRadius", "Shows how far you can walk from hoppers without them closing", Category.RENDER);

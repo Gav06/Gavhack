@@ -8,6 +8,7 @@
     "accessors.IEntityRenderer",
     "accessors.IMinecraft",
     "accessors.ISPacketExplosion",
+    "accessors.ITimer",
     "mixins.MixinAbstractHorse",
     "mixins.MixinBlock",
     "mixins.MixinBlockLiquid",
@@ -21,6 +22,7 @@
     "mixins.MixinNetworkManager",
     "mixins.MixinRenderLivingBase",
     "mixins.MixinRenderPlayer",
+    "mixins.MixinTimer",
     "mixins.MixinVisGraph"
   ]
 }
