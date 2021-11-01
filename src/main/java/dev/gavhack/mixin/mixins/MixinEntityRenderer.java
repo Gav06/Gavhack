@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderer.class)
 public class MixinEntityRenderer {
 
-    @ModifyVariable(method = "updateLightmap", at = @At("STORE"), index = 16, ordinal = 12)
+    @ModifyVariable(method = "updateLightmap", at = @At("STORE"), name = "f16")
     public float lightmap(float original) {
         return Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Fullbright.class) ? 24f : original;
     }

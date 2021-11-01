@@ -3,6 +3,7 @@ package dev.gavhack.module.mods;
 import dev.gavhack.events.PlayerUpdateEvent;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
+import dev.gavhack.settings.BooleanSetting;
 import dev.gavhack.settings.FloatSetting;
 import dev.gavhack.util.RenderUtil;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,6 +19,10 @@ import org.lwjgl.util.vector.Vector3f;
 import java.util.Comparator;
 
 public class KillAura extends Module {
+
+    private final BooleanSetting players = new BooleanSetting("Players", true);
+    private final BooleanSetting animals = new BooleanSetting("Animals", false);
+    private final BooleanSetting mobs = new BooleanSetting("Mobs", false);
 
     private final FloatSetting range = new FloatSetting("Range", 4.0f, 2.0f, 5.0f);
 

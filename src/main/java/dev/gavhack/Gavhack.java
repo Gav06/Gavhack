@@ -2,8 +2,12 @@ package dev.gavhack;
 
 import dev.gavhack.gui.GuiDisplayScreen;
 import dev.gavhack.module.ModuleManager;
+import dev.gavhack.util.ProjectionUtil;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(
         modid = Gavhack.MOD_ID,
@@ -29,6 +33,13 @@ public class Gavhack {
     public void init(FMLInitializationEvent event) {
         this.moduleManager = new ModuleManager();
         this.gui = new GuiDisplayScreen(moduleManager);
+
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void onRenderLast(RenderWorldLastEvent event) {
+        ProjectionUtil.updateMatrix();
     }
 
     public ModuleManager getModuleManager() {

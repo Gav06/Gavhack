@@ -7,6 +7,7 @@
   "client": [
     "accessors.IEntityRenderer",
     "accessors.IMinecraft",
+    "accessors.ISPacketExplosion",
     "mixins.MixinAbstractHorse",
     "mixins.MixinBlock",
     "mixins.MixinBlockLiquid",
@@ -19,6 +20,7 @@
     "mixins.MixinMovementInputFromOptions",
     "mixins.MixinNetworkManager",
     "mixins.MixinRenderLivingBase",
+    "mixins.MixinRenderPlayer",
     "mixins.MixinVisGraph"
   ]
 }

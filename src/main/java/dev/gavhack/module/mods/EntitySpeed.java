@@ -6,6 +6,7 @@ import dev.gavhack.module.Module;
 import dev.gavhack.settings.FloatSetting;
 import dev.gavhack.util.MathUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,7 +21,7 @@ public class EntitySpeed extends Module {
 
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
-        if (mc.player.isRiding() && (mc.player.getRidingEntity() instanceof AbstractHorse || mc.player.getRidingEntity() instanceof EntityPig)) {
+        if (mc.player.isRiding() && (mc.player.getRidingEntity() instanceof AbstractHorse || mc.player.getRidingEntity() instanceof EntityPig || mc.player.getRidingEntity() instanceof EntityBoat)) {
             final Entity entity = mc.player.getRidingEntity();
             entity.rotationYaw = mc.player.rotationYaw;
             double[] speed = MathUtil.directionSpeed(this.speed.getValue(), mc.player, mc.getRenderPartialTicks());
