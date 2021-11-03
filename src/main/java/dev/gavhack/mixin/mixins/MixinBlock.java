@@ -42,30 +42,9 @@ public class MixinBlock {
         }
     }
 
-//    @Inject(method = "getLightValue(Lnet/minecraft/block/state/IBlockState;)I", at = @At("HEAD"), cancellable = true)
-//    public void getLight1(IBlockState state, CallbackInfoReturnable<Integer> cir) {
-//        if (Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Wallhack.class)) {
-//            if (Wallhack.blocks.contains(state.getBlock()))
-//                cir.setReturnValue(15);
-//        }
-//    }
-//
-//    @Inject(method = "getLightValue(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/world/IBlockAccess;Lnet/minecraft/util/math/BlockPos;)I", at = @At("HEAD"), cancellable = true, remap = false)
-//    public void getLight(IBlockState state, IBlockAccess access, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
-//        if (Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Wallhack.class)) {
-//            if (Wallhack.blocks.contains(state.getBlock()))
-//            cir.setReturnValue(15);
-//        }
-//    }
-
     @Inject(method = "isFullCube", at = @At("HEAD"), cancellable = true)
     public void isCube(IBlockState state, CallbackInfoReturnable<Boolean> cir) {
         if (Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Wallhack.class))
             cir.setReturnValue(Wallhack.blocks.contains(state.getBlock()));
-    }
-
-    @Inject(method = "addCollisionBoxToList(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/AxisAlignedBB;Ljava/util/List;Lnet/minecraft/util/math/AxisAlignedBB;)V", at = @At("HEAD"), cancellable = true)
-    private static void box(BlockPos axisalignedbb, AxisAlignedBB pos, List<AxisAlignedBB> entityBox, AxisAlignedBB collidingBoxes, CallbackInfo ci) {
-
     }
 }
