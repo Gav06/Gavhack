@@ -12,9 +12,8 @@ import java.nio.IntBuffer;
 @Mixin(BufferBuilder.class)
 public class MixinBufferBuilder {
 
-    // le paste :))))
     @Redirect(method = "putColorMultiplier", at = @At(value = "INVOKE", target = "java/nio/IntBuffer.put(II)Ljava/nio/IntBuffer;", remap = false))
     private IntBuffer putColorMultiplier(IntBuffer buffer, int i, int j) {
-        return buffer.put(i, Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Wallhack.class) ? (j & 0x00ffffff | Wallhack.OPACITY << 24) : j);
+        return buffer.put(i, Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Wallhack.class) ? (j & 0x00ffffff | (int)Wallhack.opacity.getValue() << 24) : j);
     }
 }
