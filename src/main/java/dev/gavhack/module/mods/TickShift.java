@@ -38,7 +38,7 @@ public class TickShift extends Module {
         }
     }
 
-    private float prevTimerSpeed = 0f;
+    private float prevTimerSpeed = Timer.speed.getValue();
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
@@ -51,6 +51,11 @@ public class TickShift extends Module {
         } else {
             lagTicks++;
         }
+    }
+
+    @Override
+    protected void onDisable() {
+        Timer.speed.setValue(prevTimerSpeed);
     }
 
     @Override
