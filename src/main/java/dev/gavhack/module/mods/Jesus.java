@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Jesus extends Module {
     public Jesus() {
-        super("Jesus", "le'boin certified", Category.MOVEMENT);
+        super("Jesus", "water walk", Category.MOVEMENT);
     }
 
 //    @SubscribeEvent

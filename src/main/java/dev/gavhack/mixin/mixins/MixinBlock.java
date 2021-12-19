@@ -24,17 +24,29 @@ public class MixinBlock {
                 cir.setReturnValue(true);
         }
     }
+//
+//    @Redirect(method = "canRenderInLayer", at = @At(value = "INVOKE", target = "net/minecraft/block/Block.getRenderLayer()Lnet/minecraft/util/BlockRenderLayer;"))
+//    public BlockRenderLayer canRender(Block instance) {
+//        if (Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Wallhack.class)) {
+//            if (Wallhack.blocks.contains(instance)) {
+//                return BlockRenderLayer.SOLID;
+//            } else {
+//                return BlockRenderLayer.TRANSLUCENT;
+//            }
+//        } else {
+//            return instance.getRenderLayer();
+//        }
+//    }
 
-    @Redirect(method = "canRenderInLayer", at = @At(value = "INVOKE", target = "net/minecraft/block/Block.getRenderLayer()Lnet/minecraft/util/BlockRenderLayer;"))
-    public BlockRenderLayer canRender(Block instance) {
+    @Inject(method = "canRenderInLayer", at = @At("HEAD"), cancellable = true, remap = false)
+    public void canRenderInLayerInject(IBlockState state, BlockRenderLayer layer, CallbackInfoReturnable<Boolean> cir) {
         if (Gavhack.INSTANCE.getModuleManager().isModuleEnabled(Wallhack.class)) {
-            if (Wallhack.blocks.contains(instance)) {
-                return BlockRenderLayer.SOLID;
+            cir.cancel();
+            if (Wallhack.blocks.contains(state.getBlock())) {
+                cir.setReturnValue(layer == BlockRenderLayer.SOLID);
             } else {
-                return BlockRenderLayer.TRANSLUCENT;
+                cir.setReturnValue(layer == BlockRenderLayer.TRANSLUCENT);
             }
-        } else {
-            return instance.getRenderLayer();
         }
     }
 
