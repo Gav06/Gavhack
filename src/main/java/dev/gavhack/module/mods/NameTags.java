@@ -2,6 +2,7 @@ package dev.gavhack.module.mods;
 
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
+import dev.gavhack.settings.FloatSetting;
 import dev.gavhack.util.ProjectionUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,6 +13,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class NameTags extends Module {
+
+    private final FloatSetting scale = new FloatSetting("Scale", 0.75f, 0.1f, 2f);
 
     public NameTags() {
         super("NameTags", "Better player nametags", Category.RENDER);
@@ -29,11 +32,11 @@ public class NameTags extends Module {
 
             final Vec3d pos = ProjectionUtil.toScaledScreenPos(new Vec3d(posX, posY + player.height + (player.isSneaking() ? -0.2 : 0.25), posZ));
 
-            final String text = player.getDisplayNameString();
+            final String text = player.getName();
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(pos.x, pos.y, 0);
-            GlStateManager.scale(0.75, 0.75, 0.0);
+            GlStateManager.scale(scale.getValue(), scale.getValue(), 0f);
             Gui.drawRect(
                     -((mc.fontRenderer.getStringWidth(text) + 4) / 2),
                     -(mc.fontRenderer.FONT_HEIGHT + 2 ),

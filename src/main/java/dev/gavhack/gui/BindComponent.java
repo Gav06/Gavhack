@@ -27,7 +27,6 @@ public class BindComponent extends AbstractComponent {
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
-
     }
 
     @Override

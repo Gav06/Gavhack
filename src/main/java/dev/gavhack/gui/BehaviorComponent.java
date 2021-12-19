@@ -2,6 +2,8 @@ package dev.gavhack.gui;
 
 import dev.gavhack.gui.api.AbstractComponent;
 import dev.gavhack.settings.BehaviorSetting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 
 public class BehaviorComponent extends AbstractComponent {
 
@@ -26,6 +28,8 @@ public class BehaviorComponent extends AbstractComponent {
 
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
+        Gui.drawRect(x, y, x + width, y + height, 0xAA000000);
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(setting.getName(), x + 4f, y + 2f, -1);
     }
 
     @Override

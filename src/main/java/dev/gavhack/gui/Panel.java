@@ -1,5 +1,8 @@
 package dev.gavhack.gui;
 
+import com.google.gson.JsonObject;
+import dev.gavhack.Gavhack;
+import dev.gavhack.config.Configurable;
 import dev.gavhack.gui.api.DragComponent;
 import dev.gavhack.module.Category;
 import net.minecraft.client.Minecraft;
@@ -8,7 +11,7 @@ import net.minecraft.client.gui.Gui;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Panel extends DragComponent {
+public class Panel extends DragComponent implements Configurable {
 
     private final List<Button<?>> buttons;
     private final Category category;
@@ -19,6 +22,7 @@ public class Panel extends DragComponent {
         super(x, y, width, height);
         this.buttons = new ArrayList<>();
         this.category = category;
+        Gavhack.INSTANCE.getConfigManager().addConfigurable(this);
     }
 
     @Override
@@ -67,5 +71,24 @@ public class Panel extends DragComponent {
 
     public List<Button<?>> getButtons() {
         return buttons;
+    }
+
+    @Override
+    public String getConfigName() {
+        return category.toString() + "Panel";
+    }
+
+    @Override
+    public void writeToConfig(JsonObject jsonObject) {
+        jsonObject.addProperty("x", x);
+        jsonObject.addProperty("y", y);
+        jsonObject.addProperty("open", open);
+    }
+
+    @Override
+    public void readFromConfig(JsonObject jsonObject) {
+        this.x = jsonObject.get("x").getAsInt();
+        this.y = jsonObject.get("y").getAsInt();
+        this.open = jsonObject.get("open").getAsBoolean();
     }
 }

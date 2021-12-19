@@ -8,6 +8,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(
@@ -38,6 +39,13 @@ public class Gavhack {
         this.gui = new GuiDisplayScreen(moduleManager);
 
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        this.configManager.loadConfigSafe();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(configManager::saveConfigSafe));
     }
 
     @SubscribeEvent

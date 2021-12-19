@@ -18,6 +18,10 @@ public class EnumSetting<T extends Enum<T>> extends Setting {
         return value;
     }
 
+    public void setValue(T t) {
+        this.value = t;
+    }
+
     public T increment() {
         if (value.ordinal() == values.length - 1) {
             value = values[0];
@@ -34,12 +38,24 @@ public class EnumSetting<T extends Enum<T>> extends Setting {
         } else {
             value = values[value.ordinal() - 1];
         }
-
         return value;
     }
 
     @Override
     public void reset() {
         this.value = this.defaultValue;
+    }
+
+    public int indexOf(T t) {
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == t)
+                return i;
+        }
+
+        return -1;
+    }
+
+    public T[] getValues() {
+        return values;
     }
 }
