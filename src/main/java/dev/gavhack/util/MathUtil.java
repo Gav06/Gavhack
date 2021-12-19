@@ -1,13 +1,18 @@
 package dev.gavhack.util;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class MathUtil {
 
@@ -105,5 +110,24 @@ public class MathUtil {
         final double dist = MathHelper.sqrt(difX * difX + difZ * difZ);
 
         return new float[]{(float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0f), (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist)))};
+    }
+
+    public static ArrayList<BlockPos> getSurroundingBlocks(int distance, boolean applyMotion, EntityPlayer player) {
+        final Vec3d playerVec = player.getPositionVector();
+        if (applyMotion) {
+            playerVec.add(player.motionX, player.motionY, player.motionZ);
+        }
+
+        final ArrayList<BlockPos> posList = new ArrayList<>();
+
+        for (int x = -distance; x < distance; x++) {
+            for (int y = -distance; y < distance; y++) {
+                for (int z = -distance; z < distance; z++) {
+                    posList.add(new BlockPos(x, y, z).add(playerVec.x, playerVec.y, playerVec.z));
+                }
+            }
+        }
+
+        return posList;
     }
 }

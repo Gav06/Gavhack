@@ -24,7 +24,7 @@ public class HudModule extends Module {
         for (Module module : gavhack.getModuleManager().getModules()) {
             if (module.isEnabled()) {
                 fr.drawStringWithShadow(ChatFormatting.GREEN + ">" + module.getName() + " " + module.getExtraInfo(), 2f, y, -1);
-                y += fr.FONT_HEIGHT + 2;
+                y += fr.FONT_HEIGHT + 1;
             }
         }
     }

@@ -1,5 +1,6 @@
 package dev.gavhack;
 
+import dev.gavhack.config.ConfigManager;
 import dev.gavhack.gui.GuiDisplayScreen;
 import dev.gavhack.module.ModuleManager;
 import dev.gavhack.util.ProjectionUtil;
@@ -26,11 +27,13 @@ public class Gavhack {
     @Mod.Instance(MOD_ID)
     public static Gavhack INSTANCE;
 
+    private ConfigManager configManager;
     private ModuleManager moduleManager;
     private GuiDisplayScreen gui;
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        this.configManager = new ConfigManager();
         this.moduleManager = new ModuleManager();
         this.gui = new GuiDisplayScreen(moduleManager);
 
@@ -40,6 +43,10 @@ public class Gavhack {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         ProjectionUtil.updateMatrix();
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 
     public ModuleManager getModuleManager() {

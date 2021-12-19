@@ -18,15 +18,18 @@ public class Scaffold extends Module {
 
     @SubscribeEvent
     public void onUpdate(PlayerUpdateEvent event) {
-        BlockPos below = mc.player.getPosition().down();
+        if (mc.player.moveForward == 0f && mc.player.moveStrafing == 0f)
+            return;
+
+        BlockPos below = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ).down();
 
         // finding which block to place on
         EnumFacing[] directions = EnumFacing.values();
-        for (int i = 0; i < directions.length; i++) {
-            BlockPos near = below.offset(directions[i]);
+        for (EnumFacing direction : directions) {
+            BlockPos near = below.offset(direction);
             IBlockState nearState = mc.world.getBlockState(near);
             if (nearState.getBlock().canCollideCheck(nearState, false) && !nearState.getBlock().isReplaceable(mc.world, near)) {
-                mc.playerController.processRightClickBlock(mc.player, mc.world, below, directions[i], Vec3d.ZERO, EnumHand.MAIN_HAND);
+                mc.playerController.processRightClickBlock(mc.player, mc.world, below, direction, Vec3d.ZERO, EnumHand.MAIN_HAND);
                 mc.player.swingArm(EnumHand.MAIN_HAND);
             }
         }
