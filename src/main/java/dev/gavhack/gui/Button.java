@@ -33,7 +33,7 @@ public class Button<T extends Module> extends AbstractComponent {
             }
         }
 
-        settings.add(new BindComponent(module.getKeyBinding(), 0, 0, width, height));
+        settings.add(new BindComponent(module, 0, 0, width, height));
     }
 
     @Override

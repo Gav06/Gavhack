@@ -4,7 +4,6 @@ import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.util.shader.FramebufferShader;
 import dev.gavhack.util.shader.shaders.GalaxyShader;
-import dev.gavhack.util.shader.shaders.RedShader;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderWorldLastEvent;

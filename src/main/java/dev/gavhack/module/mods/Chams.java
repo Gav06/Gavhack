@@ -21,7 +21,7 @@ public class Chams extends Module {
         event.setCanceled(true);
 
         if (mode.getValue() == ChamMode.Normal) {
-            GL11.glDepthRange(0.0, 0.001);
+            GL11.glDepthRange(0.0, 0.01);
             event.render();
             GL11.glDepthRange(0.0, 1.0);
         } else if (mode.getValue() == ChamMode.Wireframe) {
@@ -35,6 +35,17 @@ public class Chams extends Module {
             GlStateManager.enableTexture2D();
             GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDepthRange(0.0, 1.0);
+        } else if (mode.getValue() == ChamMode.XQZ) {
+            GlStateManager.color(1f, 0f, 1f);
+            GlStateManager.disableTexture2D();
+            GlStateManager.disableLighting();
+            GlStateManager.disableDepth();
+            event.render();
+            GlStateManager.enableDepth();
+            GlStateManager.enableLighting();
+            GlStateManager.enableTexture2D();
+            GlStateManager.color(1f, 1f, 1f);
+            event.render();
         }
     }
 

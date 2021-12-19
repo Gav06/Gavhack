@@ -2,9 +2,12 @@ package dev.gavhack.module.mods;
 
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
+import dev.gavhack.settings.BooleanSetting;
 import org.lwjgl.input.Keyboard;
 
 public class GuiModule extends Module {
+
+    public static final BooleanSetting descriptions = new BooleanSetting("Descriptions", true);
 
     public GuiModule() {
         super("Gui", "Opens the client GUI", Category.CLIENT);

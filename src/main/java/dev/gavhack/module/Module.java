@@ -19,14 +19,14 @@ public abstract class Module {
     private final String description;
     private final Category category;
 
-    private KeyBinding bind;
+    private int bind;
     private boolean enabled;
 
     public Module(String name, String description, Category category) {
         this.name = name;
         this.description = description;
         this.category = category;
-        this.bind = new KeyBinding(name, Keyboard.KEY_NONE, Gavhack.MOD_NAME);
+        this.bind = Keyboard.KEY_NONE;
         this.enabled = false;
     }
 
@@ -63,15 +63,11 @@ public abstract class Module {
     protected void onDisable() { }
 
     public int getBindKey() {
-        return bind.getKeyCode();
-    }
-
-    public KeyBinding getKeyBinding() {
         return bind;
     }
 
     public void setBindKey(int bind) {
-        this.bind.setKeyCode(bind);
+        this.bind = bind;
     }
 
     public String getName() {

@@ -1,6 +1,7 @@
 package dev.gavhack.gui;
 
 import dev.gavhack.gui.api.AbstractComponent;
+import dev.gavhack.module.Module;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.settings.KeyBinding;
@@ -8,12 +9,12 @@ import org.lwjgl.input.Keyboard;
 
 public class BindComponent extends AbstractComponent {
 
-    private final KeyBinding bind;
+    private final Module module;
     private boolean binding = false;
 
-    public BindComponent(KeyBinding binding, int x, int y, int width, int height) {
+    public BindComponent(Module binding, int x, int y, int width, int height) {
         super(x, y, width, height);
-        this.bind = binding;
+        this.module = binding;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class BindComponent extends AbstractComponent {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         Gui.drawRect(x, y, x + width, y + height, 0xAA000000);
-        final String str = binding ? "Press a key..." : "Bind: " + Keyboard.getKeyName(bind.getKeyCode());
+        final String str = binding ? "Press a key..." : "Bind: " + Keyboard.getKeyName(module.getBindKey());
         Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(str, x + 4f, y + 2f, -1);
     }
 
@@ -40,16 +41,16 @@ public class BindComponent extends AbstractComponent {
     public void keyTyped(int keyCode) {
         if (binding) {
             if (keyCode != Keyboard.KEY_DELETE && keyCode != Keyboard.KEY_NONE) {
-                bind.setKeyCode(keyCode);
+                module.setBindKey(keyCode);
             } else {
-                bind.setKeyCode(Keyboard.KEY_NONE);
+                module.setBindKey(Keyboard.KEY_NONE);
             }
             binding = false;
             GuiDisplayScreen.clickSound();
         }
     }
 
-    public KeyBinding getBind() {
-        return bind;
+    public Module getModule() {
+        return module;
     }
 }

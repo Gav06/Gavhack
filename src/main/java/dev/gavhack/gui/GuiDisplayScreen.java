@@ -4,6 +4,7 @@ import dev.gavhack.gui.api.AbstractComponent;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.module.ModuleManager;
+import dev.gavhack.module.mods.GuiModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
@@ -49,6 +50,20 @@ public class GuiDisplayScreen extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         components.forEach(c -> c.draw(mouseX, mouseY, partialTicks));
+
+        if (GuiModule.descriptions.isEnabled()) {
+            for (AbstractComponent component : components) {
+                if (component instanceof Panel) {
+                    final Panel panel = (Panel) component;
+                    for (Button<?> button : panel.getButtons()) {
+                        if (button.inside(mouseX, mouseY)) {
+                            mc.fontRenderer.drawStringWithShadow(button.getModule().getDescription(), mouseX + 4, mouseY - 6, -1);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

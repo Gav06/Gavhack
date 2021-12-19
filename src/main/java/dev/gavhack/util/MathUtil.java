@@ -1,9 +1,7 @@
 package dev.gavhack.util;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
@@ -12,6 +10,14 @@ import org.lwjgl.util.vector.Vector4f;
 import java.awt.*;
 
 public class MathUtil {
+
+    public static Vec3d getLerpPos(Entity entity, float partialTicks) {
+        return new Vec3d(
+                MathHelper.clampedLerp(entity.lastTickPosX, entity.posX, partialTicks),
+                MathHelper.clampedLerp(entity.lastTickPosY, entity.posY, partialTicks),
+                MathHelper.clampedLerp(entity.lastTickPosZ, entity.posZ, partialTicks)
+        );
+    }
 
     public static Vector4f hexToRGB(int color) {
         float r = (float) (color >> 16 & 0xFF) / 255.0F;
