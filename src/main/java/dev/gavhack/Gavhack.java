@@ -2,6 +2,7 @@ package dev.gavhack;
 
 import dev.gavhack.config.ConfigManager;
 import dev.gavhack.gui.GuiDisplayScreen;
+import dev.gavhack.module.Module;
 import dev.gavhack.module.ModuleManager;
 import dev.gavhack.util.ProjectionUtil;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -65,5 +66,9 @@ public class Gavhack {
 
     public GuiDisplayScreen getGui() {
         return gui;
+    }
+
+    public static boolean isModuleEnabled(Class<? extends Module> clazz) {
+        return INSTANCE.getModuleManager().isModuleEnabled(clazz);
     }
 }

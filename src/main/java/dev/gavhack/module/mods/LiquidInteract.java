@@ -6,6 +6,6 @@ import dev.gavhack.module.Module;
 public class LiquidInteract extends Module {
 
     public LiquidInteract() {
-        super("LiquidInteract", "place blocks on water/lava", Category.OTHER);
+        super("LiquidInteract", "place blocks on water/lava", Category.PLAYER);
     }
 }

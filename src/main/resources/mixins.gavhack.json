@@ -10,6 +10,7 @@
     "accessors.ISPacketExplosion",
     "accessors.ITimer",
     "accessors.ICPacketPlayer",
+    "accessors.ICPacketCustomPayload",
     "mixins.MixinAbstractHorse",
     "mixins.MixinBlock",
     "mixins.MixinBlockLiquid",
@@ -24,6 +25,8 @@
     "mixins.MixinRenderLivingBase",
     "mixins.MixinRenderPlayer",
     "mixins.MixinTimer",
-    "mixins.MixinVisGraph"
+    "mixins.MixinVisGraph",
+    "mixins.MixinEntity",
+    "mixins.MixinC00Handshake"
   ]
 }
