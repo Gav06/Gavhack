@@ -36,7 +36,7 @@ public class NoFall extends Module {
     }
 
     public enum NoFallMode {
-        NCP,
+//        NCP,
         Packet,
         Tick
     }
