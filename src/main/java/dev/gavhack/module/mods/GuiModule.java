@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 
 public class GuiModule extends Module {
 
+    public static final BooleanSetting sound = new BooleanSetting("Sound", true);
     public static final BooleanSetting descriptions = new BooleanSetting("Descriptions", true);
 
     public GuiModule() {

@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
-public final class OppDetector extends Module {
+public class OppDetector extends Module {
 
     private final ICamera camera = new Frustum();
     private final String IMG_PATH = "/assets/gavhack/img/romanian.png";

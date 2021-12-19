@@ -21,21 +21,26 @@ public class Chams extends Module {
         event.setCanceled(true);
 
         if (mode.getValue() == ChamMode.Normal) {
+            GL11.glPushMatrix();
             GL11.glDepthRange(0.0, 0.01);
             event.render();
             GL11.glDepthRange(0.0, 1.0);
+            GL11.glPopMatrix();
         } else if (mode.getValue() == ChamMode.Wireframe) {
-            GL11.glDepthRange(0.0, 0.001);
+            GL11.glPushMatrix();
+            GlStateManager.color(1f, 1f, 1f, 1f);
+            GL11.glDepthRange(0.0, 0.01);
             GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
-            GlStateManager.color(1f, 1f, 1f, 1f);
             event.render();
             GlStateManager.enableLighting();
             GlStateManager.enableTexture2D();
             GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
             GL11.glDepthRange(0.0, 1.0);
+            GL11.glPopMatrix();
         } else if (mode.getValue() == ChamMode.XQZ) {
+            GL11.glPushMatrix();
             GlStateManager.color(1f, 0f, 1f);
             GlStateManager.disableTexture2D();
             GlStateManager.disableLighting();
@@ -46,6 +51,7 @@ public class Chams extends Module {
             GlStateManager.enableTexture2D();
             GlStateManager.color(1f, 1f, 1f);
             event.render();
+            GL11.glPopMatrix();
         }
     }
 

@@ -18,7 +18,7 @@ public class Lawnmower extends Module {
     private final FloatSetting blocksPerTick = new FloatSetting("BlocksPerTick", 1.0f, 1.0f, 3.0f);
 
     public Lawnmower() {
-        super("Lawnmower", "mows da lawn", Category.OTHER);
+        super("Lawnmower", "mows da lawn", Category.PLAYER);
     }
 
     @SubscribeEvent

@@ -7,6 +7,7 @@ import dev.gavhack.module.ModuleManager;
 import dev.gavhack.module.mods.GuiModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.init.SoundEvents;
 
@@ -57,7 +58,13 @@ public class GuiDisplayScreen extends GuiScreen {
                     final Panel panel = (Panel) component;
                     for (Button<?> button : panel.getButtons()) {
                         if (button.inside(mouseX, mouseY)) {
-                            mc.fontRenderer.drawStringWithShadow(button.getModule().getDescription(), mouseX + 4, mouseY - 6, -1);
+                            Gui.drawRect(
+                                    mouseX + 5,
+                                    mouseY - 7,
+                                    mc.fontRenderer.getStringWidth(button.getModule().getDescription()) + mouseX + 7,
+                                    mouseY + 3,
+                                    0x80000000);
+                            mc.fontRenderer.drawStringWithShadow(button.getModule().getDescription(), mouseX + 6, mouseY - 6, -1);
                             return;
                         }
                     }
@@ -82,6 +89,8 @@ public class GuiDisplayScreen extends GuiScreen {
     }
 
     public static void clickSound() {
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        if (GuiModule.sound.isEnabled()) {
+            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        }
     }
 }
