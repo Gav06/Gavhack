@@ -24,6 +24,8 @@ public class Gavhack {
     public static final String MOD_NAME = "Gavhack";
     public static final String VERSION = "3.0";
 
+    public static final long clientStartTime = System.currentTimeMillis();
+
     /** This is the instance of your mod as created by Forge. It will never be null. */
     @Mod.Instance(MOD_ID)
     public static Gavhack INSTANCE;

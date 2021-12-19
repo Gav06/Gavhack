@@ -9,6 +9,7 @@
     "accessors.IMinecraft",
     "accessors.ISPacketExplosion",
     "accessors.ITimer",
+    "accessors.ICPacketPlayer",
     "mixins.MixinAbstractHorse",
     "mixins.MixinBlock",
     "mixins.MixinBlockLiquid",

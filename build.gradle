@@ -64,6 +64,10 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
+
+    shade('club.minnced:java-discord-rpc:2.0.1') {
+        exclude module: 'jna'
+    }
 }
 
 processResources {
