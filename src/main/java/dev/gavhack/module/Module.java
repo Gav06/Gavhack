@@ -125,6 +125,9 @@ public abstract class Module implements Configurable {
             this.enable();
 
         for (Setting setting : settings) {
+            if (!jsonObject.has(setting.getName()))
+                continue;
+
             if (setting instanceof BooleanSetting) {
                 ((BooleanSetting)setting).setValue(jsonObject.get(setting.getName()).getAsBoolean());
             } else if (setting instanceof EnumSetting) {

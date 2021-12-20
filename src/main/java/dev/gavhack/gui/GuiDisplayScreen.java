@@ -50,6 +50,9 @@ public class GuiDisplayScreen extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if (GuiModule.background.isEnabled())
+            drawDefaultBackground();
+
         components.forEach(c -> c.draw(mouseX, mouseY, partialTicks));
 
         if (GuiModule.descriptions.isEnabled()) {

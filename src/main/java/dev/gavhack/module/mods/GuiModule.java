@@ -9,6 +9,7 @@ public class GuiModule extends Module {
 
     public static final BooleanSetting sound = new BooleanSetting("Sound", true);
     public static final BooleanSetting descriptions = new BooleanSetting("Descriptions", true);
+    public static final BooleanSetting background = new BooleanSetting("Background", true);
 
     public GuiModule() {
         super("Gui", "Opens the client GUI", Category.CLIENT);

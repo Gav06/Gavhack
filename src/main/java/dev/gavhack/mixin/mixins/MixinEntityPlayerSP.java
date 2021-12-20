@@ -2,10 +2,12 @@ package dev.gavhack.mixin.mixins;
 
 import dev.gavhack.Gavhack;
 import dev.gavhack.events.PlayerUpdateEvent;
+import dev.gavhack.module.mods.NoSwing;
 import dev.gavhack.module.mods.PortalTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,5 +35,11 @@ public class MixinEntityPlayerSP {
         if (!(Gavhack.INSTANCE.getModuleManager().isModuleEnabled(PortalTweaks.class) && PortalTweaks.chat.isEnabled())) {
             instance.closeScreen();
         }
+    }
+
+    @Inject(method = "swingArm", at = @At("HEAD"), cancellable = true)
+    public void swing(EnumHand hand, CallbackInfo ci) {
+        if (Gavhack.isModuleEnabled(NoSwing.class) && NoSwing.swingMode.getValue() == NoSwing.SwingMode.All)
+            ci.cancel();
     }
 }

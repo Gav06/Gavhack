@@ -1,13 +1,12 @@
 package dev.gavhack.mixin.mixins;
 
 import dev.gavhack.Gavhack;
-import dev.gavhack.module.mods.NoHandshake;
+import dev.gavhack.module.mods.FakeVanilla;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.handshake.client.C00Handshake;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -26,7 +25,7 @@ public class MixinC00Handshake {
 
     @Inject(method = "writePacketData", at = @At("HEAD"), cancellable = true)
     public void writePacket(PacketBuffer buf, CallbackInfo ci) {
-        if (Gavhack.isModuleEnabled(NoHandshake.class)) {
+        if (Gavhack.isModuleEnabled(FakeVanilla.class)) {
             ci.cancel();
             buf.writeVarInt(protocolVersion);
             buf.writeString(ip);

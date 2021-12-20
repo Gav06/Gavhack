@@ -10,10 +10,10 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
-public class NoHandshake extends Module {
+public class FakeVanilla extends Module {
 
-    public NoHandshake() {
-        super("NoHandshake", "Tells the server that you are using a vanilla client", Category.OTHER);
+    public FakeVanilla() {
+        super("FakeVanilla", "Tells the server that you are using a vanilla client", Category.OTHER);
     }
 
     @SubscribeEvent
