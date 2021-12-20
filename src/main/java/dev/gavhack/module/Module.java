@@ -133,12 +133,11 @@ public abstract class Module implements Configurable {
             } else if (setting instanceof EnumSetting) {
                 final EnumSetting enumSetting = (EnumSetting) setting;
                 int ordinal = jsonObject.get(setting.getName()).getAsInt();
-
                 if (ordinal <= enumSetting.getValues().length - 1) {
                     enumSetting.setValue(enumSetting.getValues()[ordinal]);
                 }
             } else if (setting instanceof FloatSetting) {
-                jsonObject.addProperty(setting.getName(), ((FloatSetting)setting).getValue());
+                ((FloatSetting)setting).setValue(jsonObject.get(setting.getName()).getAsFloat());
             }
         }
     }

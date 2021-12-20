@@ -24,13 +24,22 @@ public class MathUtil {
         );
     }
 
-    public static Vector4f hexToRGB(int color) {
+    public static Vector4f hexToRGBA(int color) {
         float r = (float) (color >> 16 & 0xFF) / 255.0F;
         float g = (float) (color >> 8 & 0xFF) / 255.0F;
         float b = (float) (color & 0xFF) / 255.0F;
         float a = (float) (color >> 24 & 0xFF) / 255.0F;
         return new Vector4f(r, g, b, a);
     }
+
+    public static float[] hexToRGB(int color) {
+        final float r = (float) (color >> 16 & 0xFF) / 255f;
+        final float g = (float) (color >> 8 & 0xFF) / 255f;
+        final float b = (float) (color & 0xFF) / 255f;
+        return new float[] { r, g, b };
+    }
+
+
 
     public static int colorToRGB(Color color) {
         return colorToRGB(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
