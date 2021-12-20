@@ -41,7 +41,6 @@ public class RenderUtil {
         final double maxY = aabb.maxY;
         final double maxZ = aabb.maxZ;
 
-        glShadeModel(GL_SMOOTH);
         glBegin(GL_LINE_STRIP);
         glColor4f(r, g, b, 0f);
         glVertex3d(minX, minY, minZ);

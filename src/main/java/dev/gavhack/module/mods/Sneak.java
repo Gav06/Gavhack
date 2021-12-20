@@ -15,6 +15,5 @@ public class Sneak extends Module {
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
         mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
-//        mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
     }
 }

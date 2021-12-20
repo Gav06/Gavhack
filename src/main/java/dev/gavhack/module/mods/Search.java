@@ -48,15 +48,19 @@ public class Search extends Module {
     public void onPacket(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketBlockChange) {
             final SPacketBlockChange packet = (SPacketBlockChange) event.getPacket();
-            blocks.remove(packet.getBlockPosition());
-            recompile = true;
+            if (!desiredBlocks.contains(packet.getBlockState().getBlock())) {
+                blocks.remove(packet.getBlockPosition());
+                recompile = true;
+            }
         } else if (event.getPacket() instanceof SPacketMultiBlockChange) {
             final SPacketMultiBlockChange packet = (SPacketMultiBlockChange) event.getPacket();
             boolean changed = false;
             for (int i = 0; i < packet.getChangedBlocks().length; i++) {
                 final SPacketMultiBlockChange.BlockUpdateData updateData = packet.getChangedBlocks()[i];
-                blocks.remove(updateData.getPos());
-                changed = true;
+                if (!desiredBlocks.contains(updateData.getBlockState().getBlock())) {
+                    blocks.remove(updateData.getPos());
+                    changed = true;
+                }
             }
 
             recompile = changed;
@@ -113,6 +117,7 @@ public class Search extends Module {
                         final BlockPos bpos = new BlockPos(x, y, z);
                         if (desiredBlocks.contains(mc.world.getBlockState(bpos).getBlock())) {
                             blocks.put(bpos, new SearchData(bpos, event.getState(), 0xff0000));
+                            recompile = true;
                         }
                     }
                 }
