@@ -130,4 +130,12 @@ public class MathUtil {
 
         return posList;
     }
+
+    public static float getTime(float seconds) {
+        return (System.currentTimeMillis() % (int) (seconds * 1000)) / (seconds * 1000);
+    }
+
+    public static float getTime(float seconds, long offset) {
+        return ((System.currentTimeMillis() + offset) % (int) (seconds * 1000)) / (seconds * 1000);
+    }
 }

@@ -43,6 +43,11 @@ public class Crasher extends Module {
         }
     }
 
+    @Override
+    public String getExtraInfo() {
+        return "[" + crashMode.getValue().name() + "]";
+    }
+
     private enum CrashMode {
         Offhand,
         Taco,

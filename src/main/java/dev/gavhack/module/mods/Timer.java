@@ -11,4 +11,9 @@ public class Timer extends Module {
     public Timer() {
         super("Timer", "change the game's tick rate", Category.OTHER);
     }
+
+    @Override
+    public String getExtraInfo() {
+        return "[" + speed.getValue() + "]";
+    }
 }
