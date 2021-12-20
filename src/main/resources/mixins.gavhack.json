@@ -27,6 +27,7 @@
     "mixins.MixinTimer",
     "mixins.MixinVisGraph",
     "mixins.MixinEntity",
-    "mixins.MixinC00Handshake"
+    "mixins.MixinC00Handshake",
+    "mixins.MixinWorld"
   ]
 }

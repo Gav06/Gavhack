@@ -1,10 +1,13 @@
 package dev.gavhack;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import dev.gavhack.config.ConfigManager;
 import dev.gavhack.gui.GuiDisplayScreen;
 import dev.gavhack.module.Module;
 import dev.gavhack.module.ModuleManager;
 import dev.gavhack.util.ProjectionUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -70,5 +73,15 @@ public class Gavhack {
 
     public static boolean isModuleEnabled(Class<? extends Module> clazz) {
         return INSTANCE.getModuleManager().isModuleEnabled(clazz);
+    }
+
+    private static final String PREFIX = "[" + ChatFormatting.GREEN + Gavhack.MOD_NAME + ChatFormatting.RESET + "]: ";
+
+    public static void messagePlayer(String message) {
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new TextComponentString(PREFIX + message));
+    }
+
+    public static void messagePlayer(String message, int id) {
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(PREFIX + message), id);
     }
 }

@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class YawLock extends Module {
 
-    private final FloatSetting slice = new FloatSetting("Slice", 4f, 1f, 45f);
+    private final FloatSetting slice = new FloatSetting("Slice", 4f, 1f, 90f);
 
     public YawLock() {
         super("YawLock", "Locks your yaw", Category.PLAYER);

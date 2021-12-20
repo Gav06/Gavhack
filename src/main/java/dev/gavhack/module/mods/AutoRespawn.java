@@ -1,5 +1,6 @@
 package dev.gavhack.module.mods;
 
+import dev.gavhack.Gavhack;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.settings.BooleanSetting;
@@ -20,6 +21,11 @@ public class AutoRespawn extends Module {
     public void onGuiOpened(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiGameOver) {
             mc.player.respawnPlayer();
+            if (deathCoords.isEnabled()) {
+                final String s = String.format("Died at x: %d y: %d z: %d",
+                        (int)mc.player.posX, (int)mc.player.posY, (int)mc.player.posZ);
+                Gavhack.messagePlayer(s);
+            }
         }
     }
 }

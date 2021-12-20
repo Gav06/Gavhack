@@ -11,6 +11,14 @@ import java.util.Map;
 @IFMLLoadingPlugin.Name("Gavhack Mixin Loader")
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class MixinLoader implements IFMLLoadingPlugin {
+
+    public MixinLoader() {
+        MixinBootstrap.init();
+        Mixins.addConfiguration("mixins.gavhack.json");
+        MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
+        MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
+    }
+
     @Override
     public String[] getASMTransformerClass() {
         return new String[0];
@@ -29,10 +37,7 @@ public class MixinLoader implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-        MixinBootstrap.init();
-        Mixins.addConfiguration("mixins.gavhack.json");
-        MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
-        MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
+
     }
 
     @Override

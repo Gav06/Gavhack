@@ -111,6 +111,9 @@ reobf {
 
 jar.manifest.attributes(
         "Manifest-Version": "1.0",
+        "MixinConfigs": "mixins.gavhack.json",
+        "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+        "TweakOrder": 0,
         "FMLCorePlugin": "dev.gavhack.mixin.MixinLoader",
         "FMLCorePluginContainsFMLMod": true,
         "ForceLoadAsMod": true
