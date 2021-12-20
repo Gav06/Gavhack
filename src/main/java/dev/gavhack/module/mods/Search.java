@@ -15,13 +15,14 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.network.play.server.SPacketMultiBlockChange;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,18 +31,33 @@ public class Search extends Module {
 
     public static final HashSet<Block> desiredBlocks = new HashSet<>();
     private static final ConcurrentHashMap<BlockPos, SearchData> blocks = new ConcurrentHashMap<>();
+    private static final HashMap<Block, Integer> defaultColors = new HashMap<>();
+
+    static {
+        defaultColors.put(Blocks.PORTAL, 0x512bab);
+        defaultColors.put(Blocks.SPONGE, 0xede500);
+        defaultColors.put(Blocks.END_PORTAL_FRAME, 0x00eda2);
+    }
 
     private final int renderMesh = GL11.glGenLists(1);
     private static boolean recompile = true;
     private final MilliTimer recompileTimer = new MilliTimer();
 
-    private final FloatSetting regenMeshTimer = new FloatSetting("RegenMeshTime", 500f, 100f, 2000f);
+    private final FloatSetting regenMeshTimer = new FloatSetting("RefreshTime", 500f, 100f, 2000f);
 
     public Search() {
-        super("Search", "Highlighs specific blocks", Category.RENDER);
+        super("Search", "Highlights specific blocks", Category.RENDER);
 
         desiredBlocks.add(Blocks.PORTAL);
         desiredBlocks.add(Blocks.SPONGE);
+        desiredBlocks.add(Blocks.END_PORTAL_FRAME);
+    }
+
+    @Override
+    protected void onEnable() {
+        if (mc.renderGlobal != null) {
+            mc.renderGlobal.loadRenderers();
+        }
     }
 
     @SubscribeEvent
@@ -68,6 +84,11 @@ public class Search extends Module {
     }
 
     @SubscribeEvent
+    public void onChunkUnload(ChunkEvent.Unload event) {
+        blocks.keySet().removeIf(pos -> !mc.world.isBlockLoaded(pos));
+    }
+
+    @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         blocks.clear();
         recompile = true;
@@ -76,6 +97,8 @@ public class Search extends Module {
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
         if (recompileTimer.hasPassed((long) regenMeshTimer.getValue())) {
+            // double-check the blocks
+            blocks.entrySet().removeIf(e -> mc.world.getBlockState(e.getKey()).getBlock() != e.getValue().getState().getBlock());
             recompileTimer.reset();
             recompile = true;
         }
@@ -88,7 +111,9 @@ public class Search extends Module {
             GL11.glNewList(renderMesh, GL11.GL_COMPILE);
             for (Map.Entry<BlockPos, SearchData> entry : blocks.entrySet()) {
                 final float[] colors = MathUtil.hexToRGB(entry.getValue().getColor());
-                RenderUtil.drawImmediateBox(new AxisAlignedBB(entry.getKey()), colors[0], colors[1], colors[2]);
+                GL11.glLineWidth(1f);
+                RenderUtil.drawImmediateBox(entry.getValue().getState().getSelectedBoundingBox(mc.world, entry.getValue().getPos())
+                        , colors[0], colors[1], colors[2]);
             }
             GL11.glEndList();
 
@@ -110,19 +135,32 @@ public class Search extends Module {
             return;
 
         if (event.getState().getBlock() != Blocks.AIR && desiredBlocks.contains(event.getState().getBlock())) {
-            // getting the actual pos
+            // getting the actual pos within the chunk of blocks
             for (int x = pos.getX(); x > pos.getX() - 16; x--) {
                 for (int y = pos.getY(); y > pos.getY() - 16; y--) {
                     for (int z = pos.getZ(); z > pos.getZ() - 16; z--) {
                         final BlockPos bpos = new BlockPos(x, y, z);
-                        if (desiredBlocks.contains(mc.world.getBlockState(bpos).getBlock())) {
-                            blocks.put(bpos, new SearchData(bpos, event.getState(), 0xff0000));
+                        final Block block = mc.world.getBlockState(bpos).getBlock();
+                        if (desiredBlocks.contains(block)) {
+                            blocks.put(bpos, new SearchData(bpos, event.getState(), getColor(block)));
                             recompile = true;
                         }
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public String getExtraInfo() {
+        return "[" + blocks.size() + "]";
+    }
+
+    private int getColor(Block block) {
+        int color = 0x5c5c5c;
+        if (defaultColors.containsKey(block))
+            color = defaultColors.get(block);
+        return color;
     }
 
     public static class SearchData {

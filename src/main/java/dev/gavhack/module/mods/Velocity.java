@@ -18,6 +18,9 @@ public class Velocity extends Module {
 
     @SubscribeEvent
     public void onPacket(PacketEvent.Receive event) {
+        if (mc.player == null)
+            return;
+
         if (event.getPacket() instanceof SPacketExplosion) {
             final SPacketExplosion packet = (SPacketExplosion) event.getPacket();
             final ISPacketExplosion accessor = (ISPacketExplosion) packet;

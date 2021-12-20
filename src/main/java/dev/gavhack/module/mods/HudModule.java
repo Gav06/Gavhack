@@ -33,7 +33,7 @@ public class HudModule extends Module {
         }
 
         // lag detector
-        if (System.currentTimeMillis() - lastPacketTime > 2000L) {
+        if (System.currentTimeMillis() - lastPacketTime > 2000L && !mc.isSingleplayer()) {
             final String s = String.format("Server not responding: %.1fs", ((System.currentTimeMillis() - lastPacketTime) / 1000.0));
             fr.drawStringWithShadow(s, (event.getResolution().getScaledWidth() / 2f) - (fr.getStringWidth(s) / 2f), 12, 0x00ff00);
         }
