@@ -4,6 +4,7 @@ import dev.gavhack.util.shader.FramebufferShader;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBShaderObjects;
+import org.lwjgl.opengl.GL20;
 
 import java.nio.FloatBuffer;
 
@@ -14,19 +15,19 @@ public class OutlineShader extends FramebufferShader {
 
     @Override
     public void setupUniforms() {
-        this.setupUniform("TexelSize");
-        this.setupUniform("DiffuseSampler");
+        setupUniform("texture");
+        setupUniform("texelSize");
+        setupUniform("color");
+        setupUniform("divider");
+        setupUniform("radius");
+        setupUniform("maxSample");
     }
 
     @Override
     public void updateUniforms() {
-        final ScaledResolution scaledResolution = new ScaledResolution(mc);
-        final FloatBuffer texelSizeBuffer = BufferUtils.createFloatBuffer(2);
-        texelSizeBuffer.position(0);
-        texelSizeBuffer.put(1.0F / scaledResolution.getScaledWidth());
-        texelSizeBuffer.put(1.0F / scaledResolution.getScaledHeight());
-        texelSizeBuffer.flip();
-        ARBShaderObjects.glUniform2ARB(getUniform("TexelSize"), texelSizeBuffer);
-        ARBShaderObjects.glUniform1iARB(getUniform("DiffuseSampler"), 0);
+        GL20.glUniform1i(getUniform("texture"), 0);
+        GL20.glUniform2f(getUniform("texelSize"), 1F / mc.displayWidth * (radius * quality), 1F / mc.displayHeight * (radius * quality));
+        GL20.glUniform4f(getUniform("color"), red, green, blue, alpha);
+        GL20.glUniform1f(getUniform("radius"), radius);
     }
 }

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.network.play.server.SPacketMultiBlockChange;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.ChunkEvent;
@@ -27,6 +28,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+// this search is funni but also kinda retarded
 public class Search extends Module {
 
     public static final HashSet<Block> desiredBlocks = new HashSet<>();
@@ -84,11 +86,6 @@ public class Search extends Module {
     }
 
     @SubscribeEvent
-    public void onChunkUnload(ChunkEvent.Unload event) {
-        blocks.keySet().removeIf(pos -> !mc.world.isBlockLoaded(pos));
-    }
-
-    @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         blocks.clear();
         recompile = true;
@@ -97,8 +94,6 @@ public class Search extends Module {
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
         if (recompileTimer.hasPassed((long) regenMeshTimer.getValue())) {
-            // double-check the blocks
-            blocks.entrySet().removeIf(e -> mc.world.getBlockState(e.getKey()).getBlock() != e.getValue().getState().getBlock());
             recompileTimer.reset();
             recompile = true;
         }
@@ -112,8 +107,7 @@ public class Search extends Module {
             for (Map.Entry<BlockPos, SearchData> entry : blocks.entrySet()) {
                 final float[] colors = MathUtil.hexToRGB(entry.getValue().getColor());
                 GL11.glLineWidth(1f);
-                RenderUtil.drawImmediateBox(entry.getValue().getState().getSelectedBoundingBox(mc.world, entry.getValue().getPos())
-                        , colors[0], colors[1], colors[2]);
+                RenderUtil.drawImmediateBox(new AxisAlignedBB(entry.getKey()), colors[0], colors[1], colors[2]);
             }
             GL11.glEndList();
 
@@ -149,6 +143,11 @@ public class Search extends Module {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onChunkUnload(ChunkEvent.Unload event) {
+        blocks.entrySet().removeIf(e -> !mc.world.isBlockLoaded(e.getKey()));
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Gavhack {
 
     public static final String MOD_ID = "gavhack";
     public static final String MOD_NAME = "Gavhack";
-    public static final String VERSION = "3.0";
+    public static final String VERSION = "3.1";
 
     public static final long clientStartTime = System.currentTimeMillis();
 

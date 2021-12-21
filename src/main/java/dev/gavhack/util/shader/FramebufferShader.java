@@ -11,6 +11,10 @@ import org.lwjgl.opengl.GL20;
 
 public abstract class FramebufferShader extends Shader
 {
+    public float red, green, blue, alpha = 1F;
+    public float radius = 2F;
+    public float quality = 1F;
+
     public Minecraft mc;
     public static Framebuffer framebuffer;
     public boolean entityShadows;
