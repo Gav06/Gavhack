@@ -60,7 +60,7 @@ public class Button<T extends Module> extends AbstractComponent {
 
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
-        Gui.drawRect(x, y, x + width, y + height, inside(mouseX, mouseY) ? 0x90CCCCCC : 0xAA000000);
+        Gui.drawRect(x, y, x + width, y + height, inside(mouseX, mouseY) ? 0x90CCCCCC : 0x80000000);
         Minecraft.getMinecraft().fontRenderer.drawStringWithShadow((module.isEnabled() ? S + "a" : "") + module.getName(), (inside(mouseX, mouseY) ? 2f : 0f) + x + 2f, y + 2f, -1);
 
         if (open) {

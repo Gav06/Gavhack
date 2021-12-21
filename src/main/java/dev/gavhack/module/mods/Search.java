@@ -45,7 +45,7 @@ public class Search extends Module {
     private static boolean recompile = true;
     private final MilliTimer recompileTimer = new MilliTimer();
 
-    private final FloatSetting regenMeshTimer = new FloatSetting("RefreshTime", 500f, 100f, 2000f);
+    private final FloatSetting regenMeshTimer = new FloatSetting("RefreshTime", 2000f, 100f, 5000f);
 
     public Search() {
         super("Search", "Highlights specific blocks", Category.RENDER);
@@ -147,7 +147,7 @@ public class Search extends Module {
 
     @SubscribeEvent
     public void onChunkUnload(ChunkEvent.Unload event) {
-        blocks.entrySet().removeIf(e -> !mc.world.isBlockLoaded(e.getKey()));
+        blocks.entrySet().removeIf(e -> !mc.world.isBlockLoaded(e.getKey(), false));
     }
 
     @Override

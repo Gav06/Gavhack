@@ -5,11 +5,14 @@ import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.module.ModuleManager;
 import dev.gavhack.module.mods.GuiModule;
+import dev.gavhack.util.MathUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.math.MathHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.List;
 public class GuiDisplayScreen extends GuiScreen {
 
 
+    private long openedTime = -1L;
     private final List<AbstractComponent> components;
 
     public GuiDisplayScreen(ModuleManager modManager) {
@@ -49,12 +53,24 @@ public class GuiDisplayScreen extends GuiScreen {
     }
 
     @Override
+    public void initGui() {
+        openedTime = System.currentTimeMillis();
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (GuiModule.background.isEnabled())
             drawDefaultBackground();
 
+        GlStateManager.pushMatrix();
+        if (GuiModule.openAnimation.getValue() == GuiModule.OpenAnimation.MoneyMod) {
+            final float scale = MathHelper.clamp(MathUtil.getSmooth2Animation(500, System.currentTimeMillis() - openedTime), 0f, 1.0f);
+            GlStateManager.scale(scale, scale, 0f);
+        }
         components.forEach(c -> c.draw(mouseX, mouseY, partialTicks));
+        GlStateManager.popMatrix();
 
+        GlStateManager.pushMatrix();
         if (GuiModule.descriptions.isEnabled()) {
             for (AbstractComponent component : components) {
                 if (component instanceof Panel) {
@@ -68,12 +84,14 @@ public class GuiDisplayScreen extends GuiScreen {
                                     mouseY + 3,
                                     0x80000000);
                             mc.fontRenderer.drawStringWithShadow(button.getModule().getDescription(), mouseX + 6, mouseY - 6, -1);
+                            GlStateManager.popMatrix();
                             return;
                         }
                     }
                 }
             }
         }
+        GlStateManager.popMatrix();
     }
 
     @Override

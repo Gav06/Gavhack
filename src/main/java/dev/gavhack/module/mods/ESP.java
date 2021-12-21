@@ -12,6 +12,7 @@ import dev.gavhack.util.OutlineUtil;
 import dev.gavhack.util.shader.FramebufferShader;
 import dev.gavhack.util.shader.shaders.DotShader;
 import dev.gavhack.util.shader.shaders.OutlineShader;
+import dev.gavhack.util.shader.shaders.SmoothOutlineShader;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,13 +34,16 @@ public class ESP extends Module {
     private final FloatSetting red = new FloatSetting("Red", 0f, 0f, 1f);
     private final FloatSetting green = new FloatSetting("Green", 1f, 0f, 1f);
     private final FloatSetting blue = new FloatSetting("Blue", 0f, 0f, 1f);
+    private final FloatSetting alpha = new FloatSetting("Alpha", 0.65f, 0f, 1f);
 
     private final FloatSetting shaderRadius = new FloatSetting("ShaderRadius", 1f, 0.1f, 4f);
     private final FloatSetting shaderQuality = new FloatSetting("ShaderQuality", 1f, 0.1f, 5f);
+    private final FloatSetting shaderDivider = new FloatSetting("ShaderDivider", 2f, 0f, 20f);
 
     private final BooleanSetting players = new BooleanSetting("Players", true);
-    private final BooleanSetting animals = new BooleanSetting("Animals", true);
-    private final BooleanSetting mobs = new BooleanSetting("Mobs", true);
+    private final BooleanSetting animals = new BooleanSetting("Animals", false);
+    private final BooleanSetting mobs = new BooleanSetting("Mobs", false);
+    private final BooleanSetting crystals = new BooleanSetting("Crystals", true);
     private final BooleanSetting other = new BooleanSetting("Other", false);
 
     public ESP() {
@@ -49,6 +53,9 @@ public class ESP extends Module {
     private final FramebufferShader outlineShader = new OutlineShader();
     private final FramebufferShader dotShader = new DotShader();
 
+    // Thanks max for this glow shader
+    private final FramebufferShader smoothOutlineShader = new SmoothOutlineShader();
+
     private boolean shouldRenderNametags = true;
 
     @SubscribeEvent
@@ -57,7 +64,7 @@ public class ESP extends Module {
             return;
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            FramebufferShader shader = shaderMode.getValue() == EspShader.Outline ? outlineShader : dotShader;
+            FramebufferShader shader = getShader();
 
             shouldRenderNametags = false;
             shader.radius = shaderRadius.getValue();
@@ -65,6 +72,7 @@ public class ESP extends Module {
             shader.red = red.getValue();
             shader.green = green.getValue();
             shader.blue = blue.getValue();
+            shader.alpha = alpha.getValue();
             shader.startDraw(event.getPartialTicks());
             for (Entity e : mc.world.loadedEntityList) {
                 if (e.equals(mc.player) || !shouldEsp(e))
@@ -75,6 +83,19 @@ public class ESP extends Module {
             shader.stopDraw();
 
             shouldRenderNametags = true;
+        }
+    }
+
+    private FramebufferShader getShader() {
+        switch (shaderMode.getValue()) {
+            case Outline:
+                return outlineShader;
+            case Dots:
+                return dotShader;
+            case SmoothOutline:
+                return smoothOutlineShader;
+            default:
+                return null;
         }
     }
 
@@ -142,6 +163,8 @@ public class ESP extends Module {
                 return animals.isEnabled();
             } else if (entity instanceof EntityMob) {
                 return mobs.isEnabled();
+            } else if (entity instanceof EntityEnderCrystal) {
+                return crystals.isEnabled();
             } else {
                 return other.isEnabled();
             }
@@ -163,6 +186,7 @@ public class ESP extends Module {
 
     public enum EspShader {
         Outline,
-        Dots
+        Dots,
+        SmoothOutline
     }
 }

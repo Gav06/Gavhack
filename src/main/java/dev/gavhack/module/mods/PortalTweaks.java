@@ -15,7 +15,7 @@ public class PortalTweaks extends Module {
     private final BooleanSetting godmode = new BooleanSetting("GodMode", false);
 
     public PortalTweaks() {
-        super("PortalTweaks", "modify portal behavior", Category.OTHER);
+        super("PortalTweaks", "modify portal behavior", Category.PLAYER);
         hitbox = new BooleanSetting("Hitbox", true);
         chat = new BooleanSetting("Gui's", true);
     }

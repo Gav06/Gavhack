@@ -28,8 +28,8 @@ public class Panel extends DragComponent implements Configurable {
     @Override
     public void draw(int mouseX, int mouseY, float partialTicks) {
         super.draw(mouseX, mouseY, partialTicks);
-        Gui.drawRect(x, y, x + width, y + height, 0xc8000000);
-        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(S + "a" + category.toString() + S + "f (" + buttons.size() + ")", x + 2f, y + 2f, -1);
+        Gui.drawRect(x, y, x + width, y + height, 0xca000000);
+        Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(S + "f" + category.toString() + S + "a (" + buttons.size() + ")", x + 2f, y + 2f, -1);
         if (open) {
 
             int yAdd = 0;
