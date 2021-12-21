@@ -1,12 +1,7 @@
 package dev.gavhack.util.shader.shaders;
 
 import dev.gavhack.util.shader.FramebufferShader;
-import net.minecraft.client.gui.ScaledResolution;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL20;
-
-import java.nio.FloatBuffer;
 
 public class OutlineShader extends FramebufferShader {
     public OutlineShader() {

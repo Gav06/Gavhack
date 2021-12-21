@@ -21,7 +21,7 @@ public class MixinRenderLivingBase<T extends EntityLivingBase> {
 
     @Inject(method = "renderModel", at = @At("HEAD"))
     public void modelRender(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, CallbackInfo ci) {
-        MinecraftForge.EVENT_BUS.post(new RenderModelEvent.Pre(mainModel, entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor));
+        MinecraftForge.EVENT_BUS.post(new RenderModelEvent.Pre<>(mainModel, entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor));
     }
 
     @Redirect(method = "renderModel", at = @At(value="INVOKE", target="Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))

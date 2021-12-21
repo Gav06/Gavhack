@@ -9,11 +9,12 @@ import dev.gavhack.settings.EnumSetting;
 import dev.gavhack.settings.FloatSetting;
 import dev.gavhack.util.OutlineUtil;
 import dev.gavhack.util.shader.FramebufferShader;
-import dev.gavhack.util.shader.shaders.Outline2Shader;
+import dev.gavhack.util.shader.shaders.DotShader;
 import dev.gavhack.util.shader.shaders.OutlineShader;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,7 +46,7 @@ public class ESP extends Module {
     }
 
     private final FramebufferShader outlineShader = new OutlineShader();
-    private final FramebufferShader outlineShader2 = new Outline2Shader();
+    private final FramebufferShader dotShader = new DotShader();
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Pre event) {
@@ -53,7 +54,7 @@ public class ESP extends Module {
             return;
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-            FramebufferShader shader = shaderMode.getValue() == EspShader.Outline ? outlineShader : outlineShader2;
+            FramebufferShader shader = shaderMode.getValue() == EspShader.Outline ? outlineShader : dotShader;
 
             shader.radius = shaderRadius.getValue();
             shader.quality = shaderQuality.getValue();
@@ -99,24 +100,9 @@ public class ESP extends Module {
                     GlStateManager.blendFunc(770, 771);
                     GlStateManager.alphaFunc(516, 0.003921569F);
                 }
-//
-//                boolean prevFancy = mc.gameSettings.fancyGraphics;
-//                mc.gameSettings.fancyGraphics = false;
+
                 final Color clr = new Color(red.getValue(), green.getValue(), blue.getValue());
                 GlStateManager.color(1f, 1f, 1f, 1f);
-
-//                OutlineUtil.setColor(clr);
-//                event.render();
-//                OutlineUtil.renderOne(lineWidth.getValue());
-//                event.render();
-//                OutlineUtil.renderTwo();
-//                event.render();
-//                OutlineUtil.renderThree();
-//                OutlineUtil.renderFour(clr);
-//                OutlineUtil.setColor(clr);
-//                event.render();
-//                OutlineUtil.renderFive();
-//                OutlineUtil.setColor(Color.WHITE);
                 event.render();
                 OutlineUtil.renderOne(lineWidth.getValue());
                 event.render();
@@ -126,11 +112,6 @@ public class ESP extends Module {
                 OutlineUtil.renderFour(clr);
                 event.render();
                 OutlineUtil.renderFive();
-
-//                mc.gameSettings.fancyGraphics = prevFancy;
-
-
-//                event.render();
 
                 if (flag1) {
                     GlStateManager.disableBlend();
@@ -143,7 +124,7 @@ public class ESP extends Module {
     }
 
     private boolean shouldEsp(Entity entity) {
-        if (entity instanceof EntityLivingBase) {
+        if (entity instanceof EntityLivingBase || entity instanceof EntityEnderCrystal) {
             if (entity instanceof EntityPlayer) {
                 return players.isEnabled();
             } else if (entity instanceof EntityAnimal) {
@@ -171,6 +152,6 @@ public class ESP extends Module {
 
     public enum EspShader {
         Outline,
-        OutlineFill
+        Dots
     }
 }

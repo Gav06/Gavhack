@@ -65,9 +65,9 @@ public class RenderModelEvent<T extends Entity> extends Event {
         model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
 
-    public static class Pre extends RenderModelEvent<EntityLivingBase> {
+    public static class Pre<T extends Entity> extends RenderModelEvent<T> {
 
-        public Pre(ModelBase modelBase, EntityLivingBase entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        public Pre(ModelBase modelBase, T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
             super(modelBase, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }

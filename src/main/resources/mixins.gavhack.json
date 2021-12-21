@@ -27,6 +27,7 @@
     "mixins.MixinMinecraft",
     "mixins.MixinMovementInputFromOptions",
     "mixins.MixinNetworkManager",
+    "mixins.MixinRenderEnderCrystal",
     "mixins.MixinRenderLivingBase",
     "mixins.MixinRenderPlayer",
     "mixins.MixinTimer",
