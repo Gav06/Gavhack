@@ -1,6 +1,7 @@
 package dev.gavhack.module.mods;
 
 import dev.gavhack.events.RenderModelEvent;
+import dev.gavhack.events.RenderNametagEvent;
 import dev.gavhack.mixin.accessors.IMixinRender;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
@@ -48,6 +49,8 @@ public class ESP extends Module {
     private final FramebufferShader outlineShader = new OutlineShader();
     private final FramebufferShader dotShader = new DotShader();
 
+    private boolean shouldRenderNametags = true;
+
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Pre event) {
         if (espMode.getValue() != EspMode.Shader)
@@ -56,6 +59,7 @@ public class ESP extends Module {
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             FramebufferShader shader = shaderMode.getValue() == EspShader.Outline ? outlineShader : dotShader;
 
+            shouldRenderNametags = false;
             shader.radius = shaderRadius.getValue();
             shader.quality = shaderQuality.getValue();
             shader.red = red.getValue();
@@ -69,11 +73,18 @@ public class ESP extends Module {
                 mc.getRenderManager().renderEntityStatic(e, event.getPartialTicks(), true);
             }
             shader.stopDraw();
+
+            shouldRenderNametags = true;
         }
     }
 
     @SubscribeEvent
-    public void onModelRender(RenderModelEvent.Pre event) {
+    public void onRenderNametag(RenderNametagEvent event) {
+        event.setCanceled(!shouldRenderNametags);
+    }
+
+    @SubscribeEvent
+    public void onModelRender(RenderModelEvent.Pre<Entity> event) {
         if (espMode.getValue() != EspMode.Outline)
             return;
 
@@ -87,7 +98,7 @@ public class ESP extends Module {
 
             if (flag || flag1) {
                 // TODO: maybe make this less autistic
-                if (!((IMixinRender<EntityLivingBase>)(mc.getRenderManager().getEntityRenderObject(event.getEntity())))
+                if (!((IMixinRender<Entity>)(mc.getRenderManager().getEntityRenderObject(event.getEntity())))
                         .Render_bindEntityTexture(event.getEntity())) {
                     return;
                 }
