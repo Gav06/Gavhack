@@ -9,6 +9,7 @@
     "accessors.ICPacketPlayer",
     "accessors.IEntityRenderer",
     "accessors.IMinecraft",
+    "accessors.IMixinRender",
     "accessors.ISPacketExplosion",
     "accessors.ITimer",
     "mixins.MixinAbstractHorse",

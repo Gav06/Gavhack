@@ -1,10 +1,12 @@
 package dev.gavhack.module.mods;
 
+import dev.gavhack.Gavhack;
 import dev.gavhack.events.RenderModelEvent;
 import dev.gavhack.module.Category;
 import dev.gavhack.module.Module;
 import dev.gavhack.settings.EnumSetting;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
@@ -16,8 +18,9 @@ public class Chams extends Module {
         super("Chams", "cham", Category.RENDER);
     }
 
+    // outline esp takes priority over chams
     @SubscribeEvent
-    public void onRenderModel(RenderModelEvent event) {
+    public void onRenderModel(RenderModelEvent<Entity> event) {
         event.setCanceled(true);
 
         if (mode.getValue() == ChamsMode.Normal) {
