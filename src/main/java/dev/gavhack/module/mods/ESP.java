@@ -38,7 +38,6 @@ public class ESP extends Module {
 
     private final FloatSetting shaderRadius = new FloatSetting("ShaderRadius", 1f, 0.1f, 4f);
     private final FloatSetting shaderQuality = new FloatSetting("ShaderQuality", 1f, 0.1f, 5f);
-    private final FloatSetting shaderDivider = new FloatSetting("ShaderDivider", 2f, 0f, 20f);
 
     private final BooleanSetting players = new BooleanSetting("Players", true);
     private final BooleanSetting animals = new BooleanSetting("Animals", false);
@@ -60,6 +59,10 @@ public class ESP extends Module {
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Pre event) {
+        if (mc.player == null) {
+            return;
+        }
+
         if (espMode.getValue() != EspMode.Shader)
             return;
 
@@ -92,7 +95,7 @@ public class ESP extends Module {
                 return outlineShader;
             case Dots:
                 return dotShader;
-            case SmoothOutline:
+            case Glow:
                 return smoothOutlineShader;
             default:
                 return null;
@@ -187,6 +190,6 @@ public class ESP extends Module {
     public enum EspShader {
         Outline,
         Dots,
-        SmoothOutline
+        Glow
     }
 }
