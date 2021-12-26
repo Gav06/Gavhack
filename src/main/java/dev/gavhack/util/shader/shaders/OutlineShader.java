@@ -13,9 +13,7 @@ public class OutlineShader extends FramebufferShader {
         setupUniform("texture");
         setupUniform("texelSize");
         setupUniform("color");
-        setupUniform("divider");
         setupUniform("radius");
-        setupUniform("maxSample");
     }
 
     @Override

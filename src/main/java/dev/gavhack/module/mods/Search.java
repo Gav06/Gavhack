@@ -45,13 +45,12 @@ public class Search extends Module {
     private static boolean recompile = true;
     private final MilliTimer recompileTimer = new MilliTimer();
 
-    private final FloatSetting regenMeshTimer = new FloatSetting("RefreshTime", 2000f, 100f, 5000f);
+//    private final FloatSetting regenMeshTimer = new FloatSetting("RefreshTime", 2000f, 100f, 5000f);
 
     public Search() {
         super("Search", "Highlights specific blocks", Category.RENDER);
 
         desiredBlocks.add(Blocks.PORTAL);
-        desiredBlocks.add(Blocks.SPONGE);
         desiredBlocks.add(Blocks.END_PORTAL_FRAME);
     }
 
@@ -93,10 +92,10 @@ public class Search extends Module {
 
     @SubscribeEvent
     public void onTick(PlayerUpdateEvent event) {
-        if (recompileTimer.hasPassed((long) regenMeshTimer.getValue())) {
-            recompileTimer.reset();
-            recompile = true;
-        }
+//        if (recompileTimer.hasPassed((long) regenMeshTimer.getValue())) {
+//            recompileTimer.reset();
+//            recompile = true;
+//        }
     }
 
     @SubscribeEvent

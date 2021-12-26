@@ -156,4 +156,32 @@ public class MathUtil {
     public static float getTime(float seconds, long offset) {
         return ((System.currentTimeMillis() + offset) % (int) (seconds * 1000)) / (seconds * 1000);
     }
+
+    public static int findDistance1D(double src, double dst) {
+        double x = src;
+        double y = dst;
+
+        if (x < 0) {
+            x *= -1;
+        }
+        if (y < 0) {
+            y *= -1;
+        }
+
+        int value = (int) (y - x);
+
+        if (src > 0 && dst < 0 || src < 0 && dst > 0) {
+            value = (int) ((-1 * src) + dst);
+        }
+
+        if ((src > 0 || src < 0) && dst < 0 && y != x) {
+            value = (int) ((-1 * src) + dst);
+        }
+
+        if ((src < 0 && dst == 0) || (src == 0 && dst < 0)) {
+            value = (int) (-1 * (y - x));
+        }
+
+        return value;
+    }
 }

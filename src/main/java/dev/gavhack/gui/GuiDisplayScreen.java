@@ -6,10 +6,12 @@ import dev.gavhack.module.Module;
 import dev.gavhack.module.ModuleManager;
 import dev.gavhack.module.mods.GuiModule;
 import dev.gavhack.util.MathUtil;
+import dev.gavhack.util.shader.shaders.BlurShader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.MathHelper;
@@ -23,6 +25,8 @@ public class GuiDisplayScreen extends GuiScreen {
 
     private long openedTime = -1L;
     private final List<AbstractComponent> components;
+
+    private final BlurShader blurShader = new BlurShader();
 
     public GuiDisplayScreen(ModuleManager modManager) {
         this.components = new ArrayList<>();
@@ -59,6 +63,11 @@ public class GuiDisplayScreen extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+//        final ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+//        blurShader.startDraw(partialTicks);
+//        drawRect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), 0x30ffffff);
+//        blurShader.stopDraw();
+
         if (GuiModule.background.isEnabled())
             drawDefaultBackground();
 

@@ -10,9 +10,7 @@ import dev.gavhack.settings.EnumSetting;
 import dev.gavhack.settings.FloatSetting;
 import dev.gavhack.util.OutlineUtil;
 import dev.gavhack.util.shader.FramebufferShader;
-import dev.gavhack.util.shader.shaders.DotShader;
-import dev.gavhack.util.shader.shaders.OutlineShader;
-import dev.gavhack.util.shader.shaders.SmoothOutlineShader;
+import dev.gavhack.util.shader.shaders.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,6 +42,7 @@ public class ESP extends Module {
     private final BooleanSetting mobs = new BooleanSetting("Mobs", false);
     private final BooleanSetting crystals = new BooleanSetting("Crystals", true);
     private final BooleanSetting other = new BooleanSetting("Other", false);
+    private final BooleanSetting storages = new BooleanSetting("Storages", true);
 
     public ESP() {
         super("ESP", "highlight specific entities", Category.RENDER);
@@ -54,6 +53,10 @@ public class ESP extends Module {
 
     // Thanks max for this glow shader
     private final FramebufferShader smoothOutlineShader = new SmoothOutlineShader();
+    // Thanks linus for this rainbow outline
+    private final FramebufferShader rainbowOutlineShader = new RainbowOutlineShader();
+
+    private final BlurShader blurShader = new BlurShader();
 
     private boolean shouldRenderNametags = true;
 
@@ -68,7 +71,9 @@ public class ESP extends Module {
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
             FramebufferShader shader = getShader();
+//            shader = blurShader;
 
+            blurShader.blurSize = 2f;
             shouldRenderNametags = false;
             shader.radius = shaderRadius.getValue();
             shader.quality = shaderQuality.getValue();
@@ -76,6 +81,7 @@ public class ESP extends Module {
             shader.green = green.getValue();
             shader.blue = blue.getValue();
             shader.alpha = alpha.getValue();
+
             shader.startDraw(event.getPartialTicks());
             for (Entity e : mc.world.loadedEntityList) {
                 if (e.equals(mc.player) || !shouldEsp(e))
@@ -97,6 +103,8 @@ public class ESP extends Module {
                 return dotShader;
             case Glow:
                 return smoothOutlineShader;
+            case RainbowOutline:
+                return rainbowOutlineShader;
             default:
                 return null;
         }
@@ -190,6 +198,7 @@ public class ESP extends Module {
     public enum EspShader {
         Outline,
         Dots,
-        Glow
+        Glow,
+        RainbowOutline
     }
 }

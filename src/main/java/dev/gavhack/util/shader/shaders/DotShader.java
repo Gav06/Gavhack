@@ -12,18 +12,18 @@ public class DotShader extends FramebufferShader {
 
     @Override
     public void setupUniforms() {
-        setupUniform("resolution");
         setupUniform("texture");
-        setupUniform("customColor");
-        setupUniform("dotCustomColor");
+        setupUniform("resolution");
+        setupUniform("dotColor");
+        setupUniform("fillColor");
     }
 
     @Override
     public void updateUniforms() {
-        GL20.glUniform1i(getUniform("texture"), 0);
+        GL20.glUniform1f(getUniform("texture"), 0);
         final ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         GL20.glUniform2f(getUniform("resolution"), (float)sr.getScaledWidth(), (float)sr.getScaledHeight());
-        GL20.glUniform4f(getUniform("customColor"), red, green, blue, alpha);
-        GL20.glUniform3f(getUniform("dotCustomColor"), red, green, blue);
+        GL20.glUniform3f(getUniform("dotColor"), red, green, blue);
+        GL20.glUniform4f(getUniform("fillColor"), red, green, blue, alpha);
     }
 }
