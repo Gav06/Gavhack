@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -74,6 +75,7 @@ public class HudModule extends Module {
         int right = event.getResolution().getScaledWidth() - edgeBuffer;
         int bottom = edgeBuffer + radarSize;
         // outline
+        glLineWidth(1f);
         glColor3f(0f, 1f, 0f);
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_LINE_SMOOTH);
@@ -102,38 +104,56 @@ public class HudModule extends Module {
         buffer.pos(centerX, top, 0.0).endVertex();
         buffer.pos(centerX, bottom, 0.0).endVertex();
         tessellator.draw();
-        // center point
-        glPointSize(6f);
-        buffer.begin(GL_POINTS, DefaultVertexFormats.POSITION_COLOR);
-        buffer.pos(centerX, centerY, 0.0).color(1f, 1f, 1f, 1f).endVertex();
-        tessellator.draw();
         glEnable(GL_TEXTURE_2D);
 
         // drawing points
-        glPointSize(4f);
+        glPointSize(3f);
         for (EntityPlayer player : mc.world.playerEntities) {
             if (player.equals(mc.player))
                 continue;
 
-            int distX = MathUtil.findDistance1D(mc.player.posX, player.posX);
-            int distY = MathUtil.findDistance1D(mc.player.posZ, player.posZ);
+            final double distX = MathUtil.findDistance1D(
+                    MathHelper.clampedLerp(mc.player.lastTickPosX, mc.player.posX, event.getPartialTicks()),
+                    MathHelper.clampedLerp(player.lastTickPosX, player.posX, event.getPartialTicks()));
+            final double distY = MathUtil.findDistance1D(
+                    MathHelper.clampedLerp(mc.player.lastTickPosZ, mc.player.posZ, event.getPartialTicks()),
+                    MathHelper.clampedLerp(player.lastTickPosZ, player.posZ, event.getPartialTicks()));
 
-            if (distX > radarSize / 2 || distY > radarSize / 2 || distX < -(radarSize / 2) || distY < -(radarSize / 2))
+            if (distX > radarSize / 2.0 || distY > radarSize / 2.0 || distX < -(radarSize / 2.0) || distY < -(radarSize / 2.0))
                 continue;
 
             glDisable(GL_TEXTURE_2D);
             buffer.begin(GL_POINTS, DefaultVertexFormats.POSITION_COLOR);
-            buffer.pos(centerX + distX, centerY + distX, 0.0).color(1f, 0f, 0f, 1f).endVertex();
+            buffer.pos(centerX + distX, centerY + distY, 0.0).color(1f, 1f, 1f, 1f).endVertex();
             tessellator.draw();
             glEnable(GL_TEXTURE_2D);
         }
+
+        // center point
+        glPushMatrix();
+        glTranslatef(centerX, centerY, 0f);
+        glRotatef(mc.player.rotationYaw + 180f, 0f, 0f, 1f);
+        glTranslatef(-centerX, -centerY, 0f);
+        glDisable(GL_TEXTURE_2D);
+        glPointSize(6f);
+        glColor3f(1f, 1f, 1f);
+        glLineWidth(1f);
+        glEnable(GL_LINE_SMOOTH);
+        buffer.begin(GL_LINE_STRIP, DefaultVertexFormats.POSITION);
+        buffer.pos(centerX - 2f, centerY + 2f, 0f).endVertex();
+        buffer.pos(centerX, centerY - 3f, 0f).endVertex();
+        buffer.pos(centerX + 2f, centerY + 2f, 0f).endVertex();
+        tessellator.draw();
+        glDisable(GL_LINE_SMOOTH);
+        glEnable(GL_TEXTURE_2D);
+        glPopMatrix();
 
 
         // compass directions
         fr.drawStringWithShadow("N", centerX - (fr.getStringWidth("N") / 2f), top + 1f, 0xff0000);
         fr.drawStringWithShadow("S", centerX - (fr.getStringWidth("S") / 2f), bottom - fr.FONT_HEIGHT - 1f, -1);
-        fr.drawStringWithShadow("E", centerX - (radarSize / 2f) + 1f, centerY - (fr.FONT_HEIGHT / 2f), -1);
-        fr.drawStringWithShadow("W", centerX + (radarSize / 2f) - fr.getStringWidth("W"), centerY - (fr.FONT_HEIGHT / 2f), -1);
+        fr.drawStringWithShadow("E", centerX + (radarSize / 2f) - fr.getStringWidth("E"), centerY - (fr.FONT_HEIGHT / 2f), -1);
+        fr.drawStringWithShadow("W", centerX - (radarSize / 2f) + 1f, centerY - (fr.FONT_HEIGHT / 2f), -1);
     }
 
     @SubscribeEvent

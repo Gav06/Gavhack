@@ -157,29 +157,29 @@ public class MathUtil {
         return ((System.currentTimeMillis() + offset) % (int) (seconds * 1000)) / (seconds * 1000);
     }
 
-    public static int findDistance1D(double src, double dst) {
+    public static double findDistance1D(double src, double dst) {
         double x = src;
         double y = dst;
 
-        if (x < 0) {
-            x *= -1;
+        if (x < 0.0) {
+            x *= -1.0;
         }
-        if (y < 0) {
-            y *= -1;
-        }
-
-        int value = (int) (y - x);
-
-        if (src > 0 && dst < 0 || src < 0 && dst > 0) {
-            value = (int) ((-1 * src) + dst);
+        if (y < 0.0) {
+            y *= -1.0;
         }
 
-        if ((src > 0 || src < 0) && dst < 0 && y != x) {
-            value = (int) ((-1 * src) + dst);
+        double value = (int) (y - x);
+
+        if (src > 0.0 && dst < 0.0 || src < 0.0 && dst > 0.0) {
+            value = ((-1.0 * src) + dst);
         }
 
-        if ((src < 0 && dst == 0) || (src == 0 && dst < 0)) {
-            value = (int) (-1 * (y - x));
+        if ((src > 0.0 || src < 0.0) && dst < 0.0 && y != x) {
+            value = ((-1.0 * src) + dst);
+        }
+
+        if ((src < 0.0 && dst == 0.0) || (src == 0.0 && dst < 0.0)) {
+            value = (-1.0 * (y - x));
         }
 
         return value;
