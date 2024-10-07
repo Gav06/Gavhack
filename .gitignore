@@ -41,3 +41,4 @@ replay_*.log
 *.hprof
 *.jfr
 run/logs/latest.log
+run/options.txt
