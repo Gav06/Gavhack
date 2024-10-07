@@ -8,8 +8,6 @@ public class Start
 {
     public static void main(String[] args)
     {
-        System.setProperty("http.proxyHost", "betacraft.uk");
-        System.setProperty("http.proxyPort", "80");
         Main.main(concat(new String[] {"--version", "mcp", "--accessToken", "0", "--assetsDir", "assets/virtual/legacy"}, args));
     }
 

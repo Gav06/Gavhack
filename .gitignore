@@ -31,6 +31,8 @@ bin/
 # fabric
 
 run/saves
+run/logs
+run/resourcepacks
 
 # java
 
