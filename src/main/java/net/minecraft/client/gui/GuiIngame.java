@@ -487,7 +487,7 @@ public class GuiIngame extends Gui
                     }
 
                     this.zLevel += 100.0F;
-                    this.drawTexturedModalRect(var22 + var46 - 12, var23, 0 + var51 * 10, 176 + var53 * 8, 10, 8);
+                    this.drawTexturedModalRect(var22 + var46 - 12, var23, 0, 176 + var53 * 8, 10, 8);
                     this.zLevel -= 100.0F;
                 }
             }

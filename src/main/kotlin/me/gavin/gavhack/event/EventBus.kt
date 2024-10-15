@@ -15,12 +15,14 @@ object EventBus {
         listenerMap[clazz]?.add(listener)
     }
 
-    fun <T : Event> post(event: T) {
+    fun <T : Event> post(event: T): Boolean {
         if (listenerMap.contains(event::class)) {
             listenerMap[event::class]?.forEach {
                 it.invoke(event)
             }
         }
+
+        return event.cancelled
     }
 
     fun removeListener(listener: Listener<Event>, clazz: KClass<out Event>) {

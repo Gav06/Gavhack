@@ -1,4 +1,8 @@
 package me.gavin.gavhack.module
 
-class Module {
+abstract class Module(val name: String, val desc: String?, val category: ModCategory, var bind: Int) {
+
+    fun toggle() {
+
+    }
 }

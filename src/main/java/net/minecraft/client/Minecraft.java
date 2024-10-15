@@ -22,6 +22,8 @@ import java.util.concurrent.Callable;
 import javax.imageio.ImageIO;
 
 import me.gavin.gavhack.Gavhack;
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.KeyPressEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -1906,6 +1908,12 @@ public class Minecraft implements IPlayerUsage
                             {
                                 this.gameSettings.smoothCamera = !this.gameSettings.smoothCamera;
                             }
+
+                            EventBus.INSTANCE.post(new KeyPressEvent(
+                                    Keyboard.getEventKey(),
+                                    Keyboard.getEventKeyState(),
+                                    Keyboard.getEventCharacter()
+                            ));
                         }
 
                         if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart)
