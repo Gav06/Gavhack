@@ -18,6 +18,10 @@ object Utils {
 
         val jsonObj = JsonParser().parse(IOUtils.toString(url, StandardCharsets.UTF_8)).asJsonObject
 
+        // check if player even exists
+        if (jsonObj.has("success")) {
+            return "Player does not exist in Cape API (offline account?)"
+        }
         // pull message from json
         if (!jsonObj.has("msg") or !jsonObj.has("imageUrl"))
             return "Cape API JSON missing fields"
