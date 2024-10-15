@@ -215,13 +215,7 @@ public class GuiScreenCreateOnlineWorld extends ScreenWithCallback
             {
                 GuiScreenCreateOnlineWorld.logger.error("Couldn\'t create world");
                 this.func_148416_a(var6.getLocalizedMessage());
-            }
-            catch (IOException var7)
-            {
-                GuiScreenCreateOnlineWorld.logger.error("Could not parse response creating world");
-                this.func_148416_a(var7.getLocalizedMessage());
-            }
-            catch (Exception var8)
+            } catch (Exception var8)
             {
                 GuiScreenCreateOnlineWorld.logger.error("Could not create world");
                 this.func_148416_a(var8.getLocalizedMessage());

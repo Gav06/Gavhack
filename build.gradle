@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
@@ -33,6 +34,10 @@ dependencies {
 tasks.withType(JavaCompile).configureEach {
 	it.sourceCompatibility = project.properties['java_version']
 	it.targetCompatibility = project.properties['java_version']
+}
+
+tasks.withType(KotlinJvmCompile).configureEach {
+	it.compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
 }
 
 
