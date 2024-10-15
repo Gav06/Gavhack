@@ -1,4 +1,4 @@
-package me.gavin.gavhack
+package me.gavin.gavhack.misc
 
 import com.google.gson.JsonParser
 import org.apache.commons.io.IOUtils
@@ -7,6 +7,7 @@ import java.net.URL
 import java.nio.charset.StandardCharsets
 
 object Utils {
+
     fun resolveCape(player: String): String {
         // fetch json file from cape api
         val url = try {
@@ -20,7 +21,7 @@ object Utils {
 
         // check if player even exists
         if (jsonObj.has("success")) {
-            return "Player does not exist in Cape API (offline account?)"
+            return "Player invalid in Cape API (offline account?)"
         }
         // pull message from json
         if (!jsonObj.has("msg") or !jsonObj.has("imageUrl"))
@@ -37,4 +38,5 @@ object Utils {
 
         return errMsg
     }
+
 }

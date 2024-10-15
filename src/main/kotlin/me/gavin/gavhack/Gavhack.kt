@@ -1,6 +1,5 @@
 package me.gavin.gavhack
 
-import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.TestEvent
 import me.gavin.gavhack.ui.OverlayUI
@@ -21,15 +20,16 @@ object Gavhack {
     val log : Logger = LogManager.getFormatterLogger(NAME)
 
     fun init() {
+        val startTime = System.currentTimeMillis()
         log.info("Beginning $NAME v$VER_STR initialization")
 
         // Disable JNDI lookups (no more Log4Shell)
         System.setProperty("log4j2.formatMsgNoLookups", "true")
-
-        // init ui
+        log.info("JNDI lookups disabled")
         OverlayUI
+        log.info("UI renderer initialized")
 
-
+        log.info("Completed $NAME initialization in ${System.currentTimeMillis() - startTime}ms")
     }
 
 }

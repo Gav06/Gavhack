@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.RenderOverlayEvent;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -489,6 +492,8 @@ public class GuiIngame extends Gui
                 }
             }
         }
+
+        EventBus.INSTANCE.post(new RenderOverlayEvent(par1, mc.fontRenderer, var5));
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
