@@ -20,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import javax.imageio.ImageIO;
+
+import me.gavin.gavhack.Gavhack;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -591,6 +593,9 @@ public class Minecraft implements IPlayerUsage
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
+
+        // Startup Gavhack
+        Gavhack.INSTANCE.init();
 
         if (this.serverName != null)
         {
