@@ -15,11 +15,14 @@ import net.minecraft.util.HttpUtil;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.WorldManager;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.WorldServerMulti;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.demo.DemoWorldServer;
 import net.minecraft.world.storage.ISaveHandler;
+import optifine.Reflector;
+import optifine.WorldServerMultiOF;
+import optifine.WorldServerOF;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,47 +50,78 @@ public class IntegratedServer extends MinecraftServer
         this.setConfigurationManager(new IntegratedPlayerList(this));
         this.mc = par1Minecraft;
         this.theWorldSettings = par4WorldSettings;
+        Reflector.callVoid(Reflector.ModLoader_registerServer, new Object[] {this});
     }
 
     protected void loadAllWorlds(String par1Str, String par2Str, long par3, WorldType par5WorldType, String par6Str)
     {
         this.convertMapIfNeeded(par1Str);
-        this.worldServers = new WorldServer[3];
-        this.timeOfLastDimensionTick = new long[this.worldServers.length][100];
         ISaveHandler var7 = this.getActiveAnvilConverter().getSaveLoader(par1Str, true);
 
-        for (int var8 = 0; var8 < this.worldServers.length; ++var8)
+        if (Reflector.DimensionManager.exists())
         {
-            byte var9 = 0;
+            Object var8 = this.isDemo() ? new DemoWorldServer(this, var7, par2Str, 0, this.theProfiler) : new WorldServerOF(this, var7, par2Str, 0, this.theWorldSettings, this.theProfiler);
+            Integer[] var9 = (Integer[])((Integer[])Reflector.call(Reflector.DimensionManager_getStaticDimensionIDs, new Object[0]));
+            Integer[] arr$ = var9;
+            int len$ = var9.length;
 
-            if (var8 == 1)
+            for (int i$ = 0; i$ < len$; ++i$)
             {
-                var9 = -1;
-            }
+                int dim = arr$[i$].intValue();
+                Object world = dim == 0 ? var8 : new WorldServerMultiOF(this, var7, par2Str, dim, this.theWorldSettings, (WorldServer)var8, this.theProfiler);
+                ((WorldServer)world).addWorldAccess(new WorldManager(this, (WorldServer)world));
 
-            if (var8 == 2)
-            {
-                var9 = 1;
-            }
-
-            if (var8 == 0)
-            {
-                if (this.isDemo())
+                if (!this.isSinglePlayer())
                 {
-                    this.worldServers[var8] = new DemoWorldServer(this, var7, par2Str, var9, this.theProfiler);
+                    ((WorldServer)world).getWorldInfo().setGameType(this.getGameType());
+                }
+
+                if (Reflector.EventBus.exists())
+                {
+                    Reflector.postForgeBusEvent(Reflector.WorldEvent_Load_Constructor, new Object[] {world});
+                }
+            }
+
+            this.getConfigurationManager().setPlayerManager(new WorldServer[] {(WorldServer)var8});
+        }
+        else
+        {
+            this.worldServers = new WorldServer[3];
+            this.timeOfLastDimensionTick = new long[this.worldServers.length][100];
+
+            for (int var15 = 0; var15 < this.worldServers.length; ++var15)
+            {
+                byte var16 = 0;
+
+                if (var15 == 1)
+                {
+                    var16 = -1;
+                }
+
+                if (var15 == 2)
+                {
+                    var16 = 1;
+                }
+
+                if (var15 == 0)
+                {
+                    if (this.isDemo())
+                    {
+                        this.worldServers[var15] = new DemoWorldServer(this, var7, par2Str, var16, this.theProfiler);
+                    }
+                    else
+                    {
+                        this.worldServers[var15] = new WorldServerOF(this, var7, par2Str, var16, this.theWorldSettings, this.theProfiler);
+                    }
                 }
                 else
                 {
-                    this.worldServers[var8] = new WorldServer(this, var7, par2Str, var9, this.theWorldSettings, this.theProfiler);
+                    this.worldServers[var15] = new WorldServerMultiOF(this, var7, par2Str, var16, this.theWorldSettings, this.worldServers[0], this.theProfiler);
                 }
-            }
-            else
-            {
-                this.worldServers[var8] = new WorldServerMulti(this, var7, par2Str, var9, this.theWorldSettings, this.worldServers[0], this.theProfiler);
-            }
 
-            this.worldServers[var8].addWorldAccess(new WorldManager(this, this.worldServers[var8]));
-            this.getConfigurationManager().setPlayerManager(this.worldServers);
+                this.worldServers[var15].addWorldAccess(new WorldManager(this, this.worldServers[var15]));
+                this.getConfigurationManager().setPlayerManager(this.worldServers);
+            }
         }
 
         this.func_147139_a(this.func_147135_j());
@@ -107,8 +141,33 @@ public class IntegratedServer extends MinecraftServer
         this.setAllowFlight(true);
         logger.info("Generating keypair");
         this.setKeyPair(CryptManager.createNewKeyPair());
+        Object inst;
+
+        if (Reflector.FMLCommonHandler_handleServerAboutToStart.exists())
+        {
+            inst = Reflector.call(Reflector.FMLCommonHandler_instance, new Object[0]);
+
+            if (!Reflector.callBoolean(inst, Reflector.FMLCommonHandler_handleServerAboutToStart, new Object[] {this}))
+            {
+                return false;
+            }
+        }
+
         this.loadAllWorlds(this.getFolderName(), this.getWorldName(), this.theWorldSettings.getSeed(), this.theWorldSettings.getTerrainType(), this.theWorldSettings.func_82749_j());
         this.setMOTD(this.getServerOwner() + " - " + this.worldServers[0].getWorldInfo().getWorldName());
+
+        if (Reflector.FMLCommonHandler_handleServerStarting.exists())
+        {
+            inst = Reflector.call(Reflector.FMLCommonHandler_instance, new Object[0]);
+
+            if (Reflector.FMLCommonHandler_handleServerStarting.getReturnType() == Boolean.TYPE)
+            {
+                return Reflector.callBoolean(inst, Reflector.FMLCommonHandler_handleServerStarting, new Object[] {this});
+            }
+
+            Reflector.callVoid(inst, Reflector.FMLCommonHandler_handleServerStarting, new Object[] {this});
+        }
+
         return true;
     }
 
@@ -183,15 +242,19 @@ public class IntegratedServer extends MinecraftServer
         par1CrashReport.getCategory().addCrashSectionCallable("Type", new Callable()
         {
             private static final String __OBFID = "CL_00001130";
-            public String call()
+            public String call1()
             {
                 return "Integrated Server (map_client.txt)";
+            }
+            public Object call() throws Exception
+            {
+                return this.call1();
             }
         });
         par1CrashReport.getCategory().addCrashSectionCallable("Is Modded", new Callable()
         {
             private static final String __OBFID = "CL_00001131";
-            public String call()
+            public String call1()
             {
                 String var1 = ClientBrandRetriever.getClientModName();
 
@@ -204,6 +267,10 @@ public class IntegratedServer extends MinecraftServer
                     var1 = IntegratedServer.this.getServerModName();
                     return !var1.equals("vanilla") ? "Definitely; Server brand changed to \'" + var1 + "\'" : (Minecraft.class.getSigners() == null ? "Very likely; Jar signature invalidated" : "Probably not. Jar signature remains and both client + server brands are untouched.");
                 }
+            }
+            public Object call() throws Exception
+            {
+                return this.call1();
             }
         });
         return par1CrashReport;
@@ -230,32 +297,32 @@ public class IntegratedServer extends MinecraftServer
     {
         try
         {
-            int var3 = -1;
+            int var6 = -1;
 
             try
             {
-                var3 = HttpUtil.func_76181_a();
+                var6 = HttpUtil.func_76181_a();
             }
             catch (IOException var5)
             {
                 ;
             }
 
-            if (var3 <= 0)
+            if (var6 <= 0)
             {
-                var3 = 25564;
+                var6 = 25564;
             }
 
-            this.func_147137_ag().addLanEndpoint((InetAddress)null, var3);
-            logger.info("Started on " + var3);
+            this.func_147137_ag().addLanEndpoint((InetAddress)null, var6);
+            logger.info("Started on " + var6);
             this.isPublic = true;
-            this.lanServerPing = new ThreadLanServerPing(this.getMOTD(), var3 + "");
+            this.lanServerPing = new ThreadLanServerPing(this.getMOTD(), var6 + "");
             this.lanServerPing.start();
             this.getConfigurationManager().setGameType(par1EnumGameType);
             this.getConfigurationManager().setCommandsAllowedForAll(par2);
-            return var3 + "";
+            return var6 + "";
         }
-        catch (IOException var6)
+        catch (IOException var61)
         {
             return null;
         }

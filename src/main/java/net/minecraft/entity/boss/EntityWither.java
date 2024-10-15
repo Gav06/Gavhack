@@ -567,7 +567,7 @@ public class EntityWither extends EntityMob implements IBossDisplayData, IRanged
     /**
      * Makes the entity despawn if requirements are reached
      */
-    protected void despawnEntity()
+    public void despawnEntity()
     {
         this.entityAge = 0;
     }

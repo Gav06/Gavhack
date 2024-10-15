@@ -124,7 +124,7 @@ public abstract class EntityLivingBase extends Entity
     protected boolean dead;
 
     /** The age of this EntityLiving (used to determine when it dies) */
-    protected int entityAge;
+    public int entityAge;
     protected float field_70768_au;
     protected float field_110154_aX;
     protected float field_70764_aw;

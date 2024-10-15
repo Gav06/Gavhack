@@ -46,6 +46,14 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import optifine.Config;
+import optifine.ConnectedTextures;
+import optifine.CustomColorizer;
+import optifine.NaturalProperties;
+import optifine.NaturalTextures;
+import optifine.Reflector;
+import optifine.TextureUtils;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -53,106 +61,112 @@ public class RenderBlocks
 {
     /** The IBlockAccess used by this instance of RenderBlocks */
     public IBlockAccess blockAccess;
-    private IIcon overrideBlockTexture;
+    public IIcon overrideBlockTexture;
 
     /**
      * Set to true if the texture should be flipped horizontally during render*Face
      */
-    private boolean flipTexture;
-    private boolean renderAllFaces;
+    public boolean flipTexture;
+    public boolean renderAllFaces;
     public static boolean fancyGrass = true;
+    public static boolean cfgGrassFix = true;
     public boolean useInventoryTint = true;
-    private boolean renderFromInside = false;
+    public boolean renderFromInside = false;
 
     /** The minimum X value for rendering (default 0.0). */
-    private double renderMinX;
+    public double renderMinX;
 
     /** The maximum X value for rendering (default 1.0). */
-    private double renderMaxX;
+    public double renderMaxX;
 
     /** The minimum Y value for rendering (default 0.0). */
-    private double renderMinY;
+    public double renderMinY;
 
     /** The maximum Y value for rendering (default 1.0). */
-    private double renderMaxY;
+    public double renderMaxY;
 
     /** The minimum Z value for rendering (default 0.0). */
-    private double renderMinZ;
+    public double renderMinZ;
 
     /** The maximum Z value for rendering (default 1.0). */
-    private double renderMaxZ;
-    private boolean lockBlockBounds;
-    private boolean partialRenderBounds;
-    private final Minecraft minecraftRB;
-    private int uvRotateEast;
-    private int uvRotateWest;
-    private int uvRotateSouth;
-    private int uvRotateNorth;
-    private int uvRotateTop;
-    private int uvRotateBottom;
-    private boolean enableAO;
-    private float aoLightValueScratchXYZNNN;
-    private float aoLightValueScratchXYNN;
-    private float aoLightValueScratchXYZNNP;
-    private float aoLightValueScratchYZNN;
-    private float aoLightValueScratchYZNP;
-    private float aoLightValueScratchXYZPNN;
-    private float aoLightValueScratchXYPN;
-    private float aoLightValueScratchXYZPNP;
-    private float aoLightValueScratchXYZNPN;
-    private float aoLightValueScratchXYNP;
-    private float aoLightValueScratchXYZNPP;
-    private float aoLightValueScratchYZPN;
-    private float aoLightValueScratchXYZPPN;
-    private float aoLightValueScratchXYPP;
-    private float aoLightValueScratchYZPP;
-    private float aoLightValueScratchXYZPPP;
-    private float aoLightValueScratchXZNN;
-    private float aoLightValueScratchXZPN;
-    private float aoLightValueScratchXZNP;
-    private float aoLightValueScratchXZPP;
-    private int aoBrightnessXYZNNN;
-    private int aoBrightnessXYNN;
-    private int aoBrightnessXYZNNP;
-    private int aoBrightnessYZNN;
-    private int aoBrightnessYZNP;
-    private int aoBrightnessXYZPNN;
-    private int aoBrightnessXYPN;
-    private int aoBrightnessXYZPNP;
-    private int aoBrightnessXYZNPN;
-    private int aoBrightnessXYNP;
-    private int aoBrightnessXYZNPP;
-    private int aoBrightnessYZPN;
-    private int aoBrightnessXYZPPN;
-    private int aoBrightnessXYPP;
-    private int aoBrightnessYZPP;
-    private int aoBrightnessXYZPPP;
-    private int aoBrightnessXZNN;
-    private int aoBrightnessXZPN;
-    private int aoBrightnessXZNP;
-    private int aoBrightnessXZPP;
-    private int brightnessTopLeft;
-    private int brightnessBottomLeft;
-    private int brightnessBottomRight;
-    private int brightnessTopRight;
-    private float colorRedTopLeft;
-    private float colorRedBottomLeft;
-    private float colorRedBottomRight;
-    private float colorRedTopRight;
-    private float colorGreenTopLeft;
-    private float colorGreenBottomLeft;
-    private float colorGreenBottomRight;
-    private float colorGreenTopRight;
-    private float colorBlueTopLeft;
-    private float colorBlueBottomLeft;
-    private float colorBlueBottomRight;
-    private float colorBlueTopRight;
-    private static final String __OBFID = "CL_00000940";
+    public double renderMaxZ;
+    public boolean lockBlockBounds;
+    public boolean partialRenderBounds;
+    public final Minecraft minecraftRB;
+    public int uvRotateEast;
+    public int uvRotateWest;
+    public int uvRotateSouth;
+    public int uvRotateNorth;
+    public int uvRotateTop;
+    public int uvRotateBottom;
+    public boolean enableAO;
+    public float aoLightValueScratchXYZNNN;
+    public float aoLightValueScratchXYNN;
+    public float aoLightValueScratchXYZNNP;
+    public float aoLightValueScratchYZNN;
+    public float aoLightValueScratchYZNP;
+    public float aoLightValueScratchXYZPNN;
+    public float aoLightValueScratchXYPN;
+    public float aoLightValueScratchXYZPNP;
+    public float aoLightValueScratchXYZNPN;
+    public float aoLightValueScratchXYNP;
+    public float aoLightValueScratchXYZNPP;
+    public float aoLightValueScratchYZPN;
+    public float aoLightValueScratchXYZPPN;
+    public float aoLightValueScratchXYPP;
+    public float aoLightValueScratchYZPP;
+    public float aoLightValueScratchXYZPPP;
+    public float aoLightValueScratchXZNN;
+    public float aoLightValueScratchXZPN;
+    public float aoLightValueScratchXZNP;
+    public float aoLightValueScratchXZPP;
+    public int aoBrightnessXYZNNN;
+    public int aoBrightnessXYNN;
+    public int aoBrightnessXYZNNP;
+    public int aoBrightnessYZNN;
+    public int aoBrightnessYZNP;
+    public int aoBrightnessXYZPNN;
+    public int aoBrightnessXYPN;
+    public int aoBrightnessXYZPNP;
+    public int aoBrightnessXYZNPN;
+    public int aoBrightnessXYNP;
+    public int aoBrightnessXYZNPP;
+    public int aoBrightnessYZPN;
+    public int aoBrightnessXYZPPN;
+    public int aoBrightnessXYPP;
+    public int aoBrightnessYZPP;
+    public int aoBrightnessXYZPPP;
+    public int aoBrightnessXZNN;
+    public int aoBrightnessXZPN;
+    public int aoBrightnessXZNP;
+    public int aoBrightnessXZPP;
+    public int brightnessTopLeft;
+    public int brightnessBottomLeft;
+    public int brightnessBottomRight;
+    public int brightnessTopRight;
+    public float colorRedTopLeft;
+    public float colorRedBottomLeft;
+    public float colorRedBottomRight;
+    public float colorRedTopRight;
+    public float colorGreenTopLeft;
+    public float colorGreenBottomLeft;
+    public float colorGreenBottomRight;
+    public float colorGreenTopRight;
+    public float colorBlueTopLeft;
+    public float colorBlueBottomLeft;
+    public float colorBlueBottomRight;
+    public float colorBlueTopRight;
+    public static final String __OBFID = "CL_00000940";
+    public boolean aoLightValuesCalculated;
+    public float aoLightValueOpaque = 0.2F;
+    public boolean betterSnowEnabled = true;
+    private static RenderBlocks instance;
 
     public RenderBlocks(IBlockAccess par1IBlockAccess)
     {
         this.blockAccess = par1IBlockAccess;
         this.minecraftRB = Minecraft.getMinecraft();
+        this.aoLightValueOpaque = 1.0F - Config.getAmbientOcclusionLevel() * 0.8F;
     }
 
     public RenderBlocks()
@@ -259,26 +273,173 @@ public class RenderBlocks
         this.renderAllFaces = false;
     }
 
-    public boolean renderBlockByRenderType(Block p_147805_1_, int p_147805_2_, int p_147805_3_, int p_147805_4_)
+    public boolean renderBlockByRenderType(Block par1Block, int par2, int par3, int par4)
     {
-        int var5 = p_147805_1_.getRenderType();
+        int i = par1Block.getRenderType();
 
-        if (var5 == -1)
+        if (i == -1)
         {
             return false;
         }
         else
         {
-            p_147805_1_.setBlockBoundsBasedOnState(this.blockAccess, p_147805_2_, p_147805_3_, p_147805_4_);
-            this.setRenderBoundsFromBlock(p_147805_1_);
-            return var5 == 0 ? this.renderStandardBlock(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 4 ? this.renderBlockFluids(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 31 ? this.renderBlockLog(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 1 ? this.renderCrossedSquares(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 40 ? this.renderBlockDoublePlant((BlockDoublePlant)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 2 ? this.renderBlockTorch(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 20 ? this.renderBlockVine(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 11 ? this.renderBlockFence((BlockFence)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 39 ? this.renderBlockQuartz(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 5 ? this.renderBlockRedstoneWire(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 13 ? this.renderBlockCactus(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 9 ? this.renderBlockMinecartTrack((BlockRailBase)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 19 ? this.renderBlockStem(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 23 ? this.renderBlockLilyPad(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 6 ? this.renderBlockCrops(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 3 ? this.renderBlockFire((BlockFire)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 8 ? this.renderBlockLadder(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 7 ? this.renderBlockDoor(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 10 ? this.renderBlockStairs((BlockStairs)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 27 ? this.renderBlockDragonEgg((BlockDragonEgg)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 32 ? this.renderBlockWall((BlockWall)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 12 ? this.renderBlockLever(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 29 ? this.renderBlockTripWireSource(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 30 ? this.renderBlockTripWire(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 14 ? this.renderBlockBed(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 15 ? this.renderBlockRepeater((BlockRedstoneRepeater)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 36 ? this.renderBlockRedstoneDiode((BlockRedstoneDiode)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 37 ? this.renderBlockRedstoneComparator((BlockRedstoneComparator)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 16 ? this.renderPistonBase(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_, false) : (var5 == 17 ? this.renderPistonExtension(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_, true) : (var5 == 18 ? this.renderBlockPane((BlockPane)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 41 ? this.renderBlockStainedGlassPane(p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 21 ? this.renderBlockFenceGate((BlockFenceGate)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 24 ? this.renderBlockCauldron((BlockCauldron)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 33 ? this.renderBlockFlowerpot((BlockFlowerPot)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 35 ? this.renderBlockAnvil((BlockAnvil)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 25 ? this.renderBlockBrewingStand((BlockBrewingStand)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 26 ? this.renderBlockEndPortalFrame((BlockEndPortalFrame)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 28 ? this.renderBlockCocoa((BlockCocoa)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 34 ? this.renderBlockBeacon((BlockBeacon)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : (var5 == 38 ? this.renderBlockHopper((BlockHopper)p_147805_1_, p_147805_2_, p_147805_3_, p_147805_4_) : false))))))))))))))))))))))))))))))))))))))));
+            par1Block.setBlockBoundsBasedOnState(this.blockAccess, par2, par3, par4);
+
+            if (Config.isBetterSnow() && par1Block == Blocks.standing_sign && this.hasSnowNeighbours(par2, par3, par4))
+            {
+                this.renderSnow(par2, par3, par4, Blocks.snow_layer.getBlockBoundsMaxY());
+            }
+
+            this.setRenderBoundsFromBlock(par1Block);
+
+            switch (i)
+            {
+                case 0:
+                    return this.renderStandardBlock(par1Block, par2, par3, par4);
+
+                case 1:
+                    return this.renderCrossedSquares(par1Block, par2, par3, par4);
+
+                case 2:
+                    return this.renderBlockTorch(par1Block, par2, par3, par4);
+
+                case 3:
+                    return this.renderBlockFire((BlockFire)par1Block, par2, par3, par4);
+
+                case 4:
+                    return this.renderBlockFluids(par1Block, par2, par3, par4);
+
+                case 5:
+                    return this.renderBlockRedstoneWire(par1Block, par2, par3, par4);
+
+                case 6:
+                    return this.renderBlockCrops(par1Block, par2, par3, par4);
+
+                case 7:
+                    return this.renderBlockDoor(par1Block, par2, par3, par4);
+
+                case 8:
+                    return this.renderBlockLadder(par1Block, par2, par3, par4);
+
+                case 9:
+                    return this.renderBlockMinecartTrack((BlockRailBase)par1Block, par2, par3, par4);
+
+                case 10:
+                    return this.renderBlockStairs((BlockStairs)par1Block, par2, par3, par4);
+
+                case 11:
+                    return this.renderBlockFence((BlockFence)par1Block, par2, par3, par4);
+
+                case 12:
+                    return this.renderBlockLever(par1Block, par2, par3, par4);
+
+                case 13:
+                    return this.renderBlockCactus(par1Block, par2, par3, par4);
+
+                case 14:
+                    return this.renderBlockBed(par1Block, par2, par3, par4);
+
+                case 15:
+                    return this.renderBlockRepeater((BlockRedstoneRepeater)par1Block, par2, par3, par4);
+
+                case 16:
+                    return this.renderPistonBase(par1Block, par2, par3, par4, false);
+
+                case 17:
+                    return this.renderPistonExtension(par1Block, par2, par3, par4, true);
+
+                case 18:
+                    return this.renderBlockPane((BlockPane)par1Block, par2, par3, par4);
+
+                case 19:
+                    return this.renderBlockStem(par1Block, par2, par3, par4);
+
+                case 20:
+                    return this.renderBlockVine(par1Block, par2, par3, par4);
+
+                case 21:
+                    return this.renderBlockFenceGate((BlockFenceGate)par1Block, par2, par3, par4);
+
+                case 22:
+                default:
+                    if (Reflector.ModLoader.exists())
+                    {
+                        return Reflector.callBoolean(Reflector.ModLoader_renderWorldBlock, new Object[] {this, this.blockAccess, Integer.valueOf(par2), Integer.valueOf(par3), Integer.valueOf(par4), par1Block, Integer.valueOf(i)});
+                    }
+                    else
+                    {
+                        if (Reflector.FMLRenderAccessLibrary.exists())
+                        {
+                            return Reflector.callBoolean(Reflector.FMLRenderAccessLibrary_renderWorldBlock, new Object[] {this, this.blockAccess, Integer.valueOf(par2), Integer.valueOf(par3), Integer.valueOf(par4), par1Block, Integer.valueOf(i)});
+                        }
+
+                        return false;
+                    }
+
+                case 23:
+                    return this.renderBlockLilyPad(par1Block, par2, par3, par4);
+
+                case 24:
+                    return this.renderBlockCauldron((BlockCauldron)par1Block, par2, par3, par4);
+
+                case 25:
+                    return this.renderBlockBrewingStand((BlockBrewingStand)par1Block, par2, par3, par4);
+
+                case 26:
+                    return this.renderBlockEndPortalFrame((BlockEndPortalFrame)par1Block, par2, par3, par4);
+
+                case 27:
+                    return this.renderBlockDragonEgg((BlockDragonEgg)par1Block, par2, par3, par4);
+
+                case 28:
+                    return this.renderBlockCocoa((BlockCocoa)par1Block, par2, par3, par4);
+
+                case 29:
+                    return this.renderBlockTripWireSource(par1Block, par2, par3, par4);
+
+                case 30:
+                    return this.renderBlockTripWire(par1Block, par2, par3, par4);
+
+                case 31:
+                    return this.renderBlockLog(par1Block, par2, par3, par4);
+
+                case 32:
+                    return this.renderBlockWall((BlockWall)par1Block, par2, par3, par4);
+
+                case 33:
+                    return this.renderBlockFlowerpot((BlockFlowerPot)par1Block, par2, par3, par4);
+
+                case 34:
+                    return this.renderBlockBeacon((BlockBeacon)par1Block, par2, par3, par4);
+
+                case 35:
+                    return this.renderBlockAnvil((BlockAnvil)par1Block, par2, par3, par4);
+
+                case 36:
+                    return this.renderBlockRedstoneDiode((BlockRedstoneDiode)par1Block, par2, par3, par4);
+
+                case 37:
+                    return this.renderBlockRedstoneComparator((BlockRedstoneComparator)par1Block, par2, par3, par4);
+
+                case 38:
+                    return this.renderBlockHopper((BlockHopper)par1Block, par2, par3, par4);
+
+                case 39:
+                    return this.renderBlockQuartz(par1Block, par2, par3, par4);
+
+                case 40:
+                    return this.renderBlockDoublePlant((BlockDoublePlant)par1Block, par2, par3, par4);
+
+                case 41:
+                    return this.renderBlockStainedGlassPane(par1Block, par2, par3, par4);
+            }
         }
     }
 
     /**
      * Render BlockEndPortalFrame
      */
-    private boolean renderBlockEndPortalFrame(BlockEndPortalFrame p_147743_1_, int p_147743_2_, int p_147743_3_, int p_147743_4_)
+    public boolean renderBlockEndPortalFrame(BlockEndPortalFrame p_147743_1_, int p_147743_2_, int p_147743_3_, int p_147743_4_)
     {
         int var5 = this.blockAccess.getBlockMetadata(p_147743_2_, p_147743_3_, p_147743_4_);
         int var6 = var5 & 3;
@@ -321,12 +482,23 @@ public class RenderBlocks
     /**
      * render a bed at the given coordinates
      */
-    private boolean renderBlockBed(Block p_147773_1_, int p_147773_2_, int p_147773_3_, int p_147773_4_)
+    public boolean renderBlockBed(Block p_147773_1_, int p_147773_2_, int p_147773_3_, int p_147773_4_)
     {
         Tessellator var5 = Tessellator.instance;
         int var6 = this.blockAccess.getBlockMetadata(p_147773_2_, p_147773_3_, p_147773_4_);
         int var7 = BlockBed.func_149895_l(var6);
         boolean var8 = BlockBed.func_149975_b(var6);
+
+        if (Reflector.ForgeBlock_getBedDirection.exists())
+        {
+            var7 = Reflector.callInt(p_147773_1_, Reflector.ForgeBlock_getBedDirection, new Object[] {this.blockAccess, Integer.valueOf(p_147773_2_), Integer.valueOf(p_147773_3_), Integer.valueOf(p_147773_4_)});
+        }
+
+        if (Reflector.ForgeBlock_isBedFoot.exists())
+        {
+            var8 = Reflector.callBoolean(p_147773_1_, Reflector.ForgeBlock_isBedFoot, new Object[] {this.blockAccess, Integer.valueOf(p_147773_2_), Integer.valueOf(p_147773_3_), Integer.valueOf(p_147773_4_)});
+        }
+
         float var9 = 0.5F;
         float var10 = 1.0F;
         float var11 = 0.8F;
@@ -335,6 +507,12 @@ public class RenderBlocks
         var5.setBrightness(var25);
         var5.setColorOpaque_F(var9, var9, var9);
         IIcon var26 = this.getBlockIcon(p_147773_1_, this.blockAccess, p_147773_2_, p_147773_3_, p_147773_4_, 0);
+
+        if (this.overrideBlockTexture != null)
+        {
+            var26 = this.overrideBlockTexture;
+        }
+
         double var27 = (double)var26.getMinU();
         double var29 = (double)var26.getMaxU();
         double var31 = (double)var26.getMinV();
@@ -351,6 +529,12 @@ public class RenderBlocks
         var5.setBrightness(p_147773_1_.getBlockBrightness(this.blockAccess, p_147773_2_, p_147773_3_ + 1, p_147773_4_));
         var5.setColorOpaque_F(var10, var10, var10);
         var26 = this.getBlockIcon(p_147773_1_, this.blockAccess, p_147773_2_, p_147773_3_, p_147773_4_, 1);
+
+        if (this.overrideBlockTexture != null)
+        {
+            var26 = this.overrideBlockTexture;
+        }
+
         var27 = (double)var26.getMinU();
         var29 = (double)var26.getMaxU();
         var31 = (double)var26.getMinV();
@@ -464,7 +648,7 @@ public class RenderBlocks
     /**
      * Render BlockBrewingStand
      */
-    private boolean renderBlockBrewingStand(BlockBrewingStand p_147741_1_, int p_147741_2_, int p_147741_3_, int p_147741_4_)
+    public boolean renderBlockBrewingStand(BlockBrewingStand p_147741_1_, int p_147741_2_, int p_147741_3_, int p_147741_4_)
     {
         this.setRenderBounds(0.4375D, 0.0D, 0.4375D, 0.5625D, 0.875D, 0.5625D);
         this.renderStandardBlock(p_147741_1_, p_147741_2_, p_147741_3_, p_147741_4_);
@@ -487,49 +671,54 @@ public class RenderBlocks
 
         if (EntityRenderer.anaglyphEnable)
         {
-            float var10 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
-            float var11 = (var7 * 30.0F + var8 * 70.0F) / 100.0F;
+            float var32 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
+            float var31 = (var7 * 30.0F + var8 * 70.0F) / 100.0F;
             float var12 = (var7 * 30.0F + var9 * 70.0F) / 100.0F;
-            var7 = var10;
-            var8 = var11;
+            var7 = var32;
+            var8 = var31;
             var9 = var12;
         }
 
         var5.setColorOpaque_F(var7, var8, var9);
-        IIcon var31 = this.getBlockIconFromSideAndMetadata(p_147741_1_, 0, 0);
+        IIcon var311 = this.getBlockIconFromSideAndMetadata(p_147741_1_, 0, 0);
 
         if (this.hasOverrideBlockTexture())
         {
-            var31 = this.overrideBlockTexture;
+            var311 = this.overrideBlockTexture;
         }
 
-        double var32 = (double)var31.getMinV();
-        double var13 = (double)var31.getMaxV();
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            var311 = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147741_1_, p_147741_2_, p_147741_3_, p_147741_4_, -1, var311);
+        }
+
+        double var321 = (double)var311.getMinV();
+        double var13 = (double)var311.getMaxV();
         int var15 = this.blockAccess.getBlockMetadata(p_147741_2_, p_147741_3_, p_147741_4_);
 
         for (int var16 = 0; var16 < 3; ++var16)
         {
             double var17 = (double)var16 * Math.PI * 2.0D / 3.0D + (Math.PI / 2D);
-            double var19 = (double)var31.getInterpolatedU(8.0D);
-            double var21 = (double)var31.getMaxU();
+            double var19 = (double)var311.getInterpolatedU(8.0D);
+            double var21 = (double)var311.getMaxU();
 
             if ((var15 & 1 << var16) != 0)
             {
-                var21 = (double)var31.getMinU();
+                var21 = (double)var311.getMinU();
             }
 
             double var23 = (double)p_147741_2_ + 0.5D;
             double var25 = (double)p_147741_2_ + 0.5D + Math.sin(var17) * 8.0D / 16.0D;
             double var27 = (double)p_147741_4_ + 0.5D;
             double var29 = (double)p_147741_4_ + 0.5D + Math.cos(var17) * 8.0D / 16.0D;
-            var5.addVertexWithUV(var23, (double)(p_147741_3_ + 1), var27, var19, var32);
+            var5.addVertexWithUV(var23, (double)(p_147741_3_ + 1), var27, var19, var321);
             var5.addVertexWithUV(var23, (double)(p_147741_3_ + 0), var27, var19, var13);
             var5.addVertexWithUV(var25, (double)(p_147741_3_ + 0), var29, var21, var13);
-            var5.addVertexWithUV(var25, (double)(p_147741_3_ + 1), var29, var21, var32);
-            var5.addVertexWithUV(var25, (double)(p_147741_3_ + 1), var29, var21, var32);
+            var5.addVertexWithUV(var25, (double)(p_147741_3_ + 1), var29, var21, var321);
+            var5.addVertexWithUV(var25, (double)(p_147741_3_ + 1), var29, var21, var321);
             var5.addVertexWithUV(var25, (double)(p_147741_3_ + 0), var29, var21, var13);
             var5.addVertexWithUV(var23, (double)(p_147741_3_ + 0), var27, var19, var13);
-            var5.addVertexWithUV(var23, (double)(p_147741_3_ + 1), var27, var19, var32);
+            var5.addVertexWithUV(var23, (double)(p_147741_3_ + 1), var27, var19, var321);
         }
 
         p_147741_1_.setBlockBoundsForItemRender();
@@ -539,7 +728,7 @@ public class RenderBlocks
     /**
      * Render block cauldron
      */
-    private boolean renderBlockCauldron(BlockCauldron p_147785_1_, int p_147785_2_, int p_147785_3_, int p_147785_4_)
+    public boolean renderBlockCauldron(BlockCauldron p_147785_1_, int p_147785_2_, int p_147785_3_, int p_147785_4_)
     {
         this.renderStandardBlock(p_147785_1_, p_147785_2_, p_147785_3_, p_147785_4_);
         Tessellator var5 = Tessellator.instance;
@@ -552,29 +741,34 @@ public class RenderBlocks
 
         if (EntityRenderer.anaglyphEnable)
         {
-            float var10 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
+            float var15 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
             var11 = (var7 * 30.0F + var8 * 70.0F) / 100.0F;
-            float var12 = (var7 * 30.0F + var9 * 70.0F) / 100.0F;
-            var7 = var10;
+            float var16 = (var7 * 30.0F + var9 * 70.0F) / 100.0F;
+            var7 = var15;
             var8 = var11;
-            var9 = var12;
+            var9 = var16;
         }
 
         var5.setColorOpaque_F(var7, var8, var9);
-        IIcon var15 = p_147785_1_.getBlockTextureFromSide(2);
+        IIcon var151 = p_147785_1_.getBlockTextureFromSide(2);
         var11 = 0.125F;
-        this.renderFaceXPos(p_147785_1_, (double)((float)p_147785_2_ - 1.0F + var11), (double)p_147785_3_, (double)p_147785_4_, var15);
-        this.renderFaceXNeg(p_147785_1_, (double)((float)p_147785_2_ + 1.0F - var11), (double)p_147785_3_, (double)p_147785_4_, var15);
-        this.renderFaceZPos(p_147785_1_, (double)p_147785_2_, (double)p_147785_3_, (double)((float)p_147785_4_ - 1.0F + var11), var15);
-        this.renderFaceZNeg(p_147785_1_, (double)p_147785_2_, (double)p_147785_3_, (double)((float)p_147785_4_ + 1.0F - var11), var15);
-        IIcon var16 = BlockCauldron.func_150026_e("inner");
-        this.renderFaceYPos(p_147785_1_, (double)p_147785_2_, (double)((float)p_147785_3_ - 1.0F + 0.25F), (double)p_147785_4_, var16);
-        this.renderFaceYNeg(p_147785_1_, (double)p_147785_2_, (double)((float)p_147785_3_ + 1.0F - 0.75F), (double)p_147785_4_, var16);
+        this.renderFaceXPos(p_147785_1_, (double)((float)p_147785_2_ - 1.0F + var11), (double)p_147785_3_, (double)p_147785_4_, var151);
+        this.renderFaceXNeg(p_147785_1_, (double)((float)p_147785_2_ + 1.0F - var11), (double)p_147785_3_, (double)p_147785_4_, var151);
+        this.renderFaceZPos(p_147785_1_, (double)p_147785_2_, (double)p_147785_3_, (double)((float)p_147785_4_ - 1.0F + var11), var151);
+        this.renderFaceZNeg(p_147785_1_, (double)p_147785_2_, (double)p_147785_3_, (double)((float)p_147785_4_ + 1.0F - var11), var151);
+        IIcon var161 = BlockCauldron.func_150026_e("inner");
+        this.renderFaceYPos(p_147785_1_, (double)p_147785_2_, (double)((float)p_147785_3_ - 1.0F + 0.25F), (double)p_147785_4_, var161);
+        this.renderFaceYNeg(p_147785_1_, (double)p_147785_2_, (double)((float)p_147785_3_ + 1.0F - 0.75F), (double)p_147785_4_, var161);
         int var13 = this.blockAccess.getBlockMetadata(p_147785_2_, p_147785_3_, p_147785_4_);
 
         if (var13 > 0)
         {
             IIcon var14 = BlockLiquid.func_149803_e("water_still");
+            int wc = CustomColorizer.getFluidColor(Blocks.water, this.blockAccess, p_147785_2_, p_147785_3_, p_147785_4_);
+            float wr = (float)(wc >> 16 & 255) / 255.0F;
+            float wg = (float)(wc >> 8 & 255) / 255.0F;
+            float wb = (float)(wc & 255) / 255.0F;
+            var5.setColorOpaque_F(wr, wg, wb);
             this.renderFaceYPos(p_147785_1_, (double)p_147785_2_, (double)((float)p_147785_3_ - 1.0F + BlockCauldron.func_150025_c(var13)), (double)p_147785_4_, var14);
         }
 
@@ -584,7 +778,7 @@ public class RenderBlocks
     /**
      * Renders flower pot
      */
-    private boolean renderBlockFlowerpot(BlockFlowerPot p_147752_1_, int p_147752_2_, int p_147752_3_, int p_147752_4_)
+    public boolean renderBlockFlowerpot(BlockFlowerPot p_147752_1_, int p_147752_2_, int p_147752_3_, int p_147752_4_)
     {
         this.renderStandardBlock(p_147752_1_, p_147752_2_, p_147752_3_, p_147752_4_);
         Tessellator var5 = Tessellator.instance;
@@ -599,11 +793,11 @@ public class RenderBlocks
         if (EntityRenderer.anaglyphEnable)
         {
             var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
-            float var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
-            float var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
+            float var21 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
+            float var22 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
             var8 = var11;
-            var9 = var12;
-            var10 = var13;
+            var9 = var21;
+            var10 = var22;
         }
 
         var5.setColorOpaque_F(var8, var9, var10);
@@ -613,16 +807,16 @@ public class RenderBlocks
         this.renderFaceZPos(p_147752_1_, (double)p_147752_2_, (double)p_147752_3_, (double)((float)p_147752_4_ - 0.5F + var11), var7);
         this.renderFaceZNeg(p_147752_1_, (double)p_147752_2_, (double)p_147752_3_, (double)((float)p_147752_4_ + 0.5F - var11), var7);
         this.renderFaceYPos(p_147752_1_, (double)p_147752_2_, (double)((float)p_147752_3_ - 0.5F + var11 + 0.1875F), (double)p_147752_4_, this.getBlockIcon(Blocks.dirt));
-        TileEntity var21 = this.blockAccess.getTileEntity(p_147752_2_, p_147752_3_, p_147752_4_);
+        TileEntity var211 = this.blockAccess.getTileEntity(p_147752_2_, p_147752_3_, p_147752_4_);
 
-        if (var21 != null && var21 instanceof TileEntityFlowerPot)
+        if (var211 != null && var211 instanceof TileEntityFlowerPot)
         {
-            Item var22 = ((TileEntityFlowerPot)var21).func_145965_a();
-            int var14 = ((TileEntityFlowerPot)var21).func_145966_b();
+            Item var221 = ((TileEntityFlowerPot)var211).func_145965_a();
+            int var14 = ((TileEntityFlowerPot)var211).func_145966_b();
 
-            if (var22 instanceof ItemBlock)
+            if (var221 instanceof ItemBlock)
             {
-                Block var15 = Block.getBlockFromItem(var22);
+                Block var15 = Block.getBlockFromItem(var221);
                 int var16 = var15.getRenderType();
                 float var17 = 0.0F;
                 float var18 = 4.0F;
@@ -660,13 +854,18 @@ public class RenderBlocks
             }
         }
 
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147752_2_, p_147752_3_, p_147752_4_))
+        {
+            this.renderSnow(p_147752_2_, p_147752_3_, p_147752_4_, Blocks.snow_layer.getBlockBoundsMaxY());
+        }
+
         return true;
     }
 
     /**
      * Renders anvil
      */
-    private boolean renderBlockAnvil(BlockAnvil p_147725_1_, int p_147725_2_, int p_147725_3_, int p_147725_4_)
+    public boolean renderBlockAnvil(BlockAnvil p_147725_1_, int p_147725_2_, int p_147725_3_, int p_147725_4_)
     {
         return this.renderBlockAnvilMetadata(p_147725_1_, p_147725_2_, p_147725_3_, p_147725_4_, this.blockAccess.getBlockMetadata(p_147725_2_, p_147725_3_, p_147725_4_));
     }
@@ -700,7 +899,7 @@ public class RenderBlocks
     /**
      * Renders anvil block with orientation
      */
-    private boolean renderBlockAnvilOrient(BlockAnvil p_147728_1_, int p_147728_2_, int p_147728_3_, int p_147728_4_, int p_147728_5_, boolean p_147728_6_)
+    public boolean renderBlockAnvilOrient(BlockAnvil p_147728_1_, int p_147728_2_, int p_147728_3_, int p_147728_4_, int p_147728_5_, boolean p_147728_6_)
     {
         int var7 = p_147728_6_ ? 0 : p_147728_5_ & 3;
         boolean var8 = false;
@@ -753,13 +952,13 @@ public class RenderBlocks
     /**
      * Renders anvil block with rotation
      */
-    private float renderBlockAnvilRotate(BlockAnvil p_147737_1_, int p_147737_2_, int p_147737_3_, int p_147737_4_, int p_147737_5_, float p_147737_6_, float p_147737_7_, float p_147737_8_, float p_147737_9_, boolean p_147737_10_, boolean p_147737_11_, int p_147737_12_)
+    public float renderBlockAnvilRotate(BlockAnvil p_147737_1_, int p_147737_2_, int p_147737_3_, int p_147737_4_, int p_147737_5_, float p_147737_6_, float p_147737_7_, float p_147737_8_, float p_147737_9_, boolean p_147737_10_, boolean p_147737_11_, int p_147737_12_)
     {
         if (p_147737_10_)
         {
-            float var13 = p_147737_7_;
+            float var14 = p_147737_7_;
             p_147737_7_ = p_147737_9_;
-            p_147737_9_ = var13;
+            p_147737_9_ = var14;
         }
 
         p_147737_7_ /= 2.0F;
@@ -769,31 +968,31 @@ public class RenderBlocks
 
         if (p_147737_11_)
         {
-            Tessellator var14 = Tessellator.instance;
-            var14.startDrawingQuads();
-            var14.setNormal(0.0F, -1.0F, 0.0F);
+            Tessellator var141 = Tessellator.instance;
+            var141.startDrawingQuads();
+            var141.setNormal(0.0F, -1.0F, 0.0F);
             this.renderFaceYNeg(p_147737_1_, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(p_147737_1_, 0, p_147737_12_));
-            var14.draw();
-            var14.startDrawingQuads();
-            var14.setNormal(0.0F, 1.0F, 0.0F);
+            var141.draw();
+            var141.startDrawingQuads();
+            var141.setNormal(0.0F, 1.0F, 0.0F);
             this.renderFaceYPos(p_147737_1_, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(p_147737_1_, 1, p_147737_12_));
-            var14.draw();
-            var14.startDrawingQuads();
-            var14.setNormal(0.0F, 0.0F, -1.0F);
+            var141.draw();
+            var141.startDrawingQuads();
+            var141.setNormal(0.0F, 0.0F, -1.0F);
             this.renderFaceZNeg(p_147737_1_, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(p_147737_1_, 2, p_147737_12_));
-            var14.draw();
-            var14.startDrawingQuads();
-            var14.setNormal(0.0F, 0.0F, 1.0F);
+            var141.draw();
+            var141.startDrawingQuads();
+            var141.setNormal(0.0F, 0.0F, 1.0F);
             this.renderFaceZPos(p_147737_1_, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(p_147737_1_, 3, p_147737_12_));
-            var14.draw();
-            var14.startDrawingQuads();
-            var14.setNormal(-1.0F, 0.0F, 0.0F);
+            var141.draw();
+            var141.startDrawingQuads();
+            var141.setNormal(-1.0F, 0.0F, 0.0F);
             this.renderFaceXNeg(p_147737_1_, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(p_147737_1_, 4, p_147737_12_));
-            var14.draw();
-            var14.startDrawingQuads();
-            var14.setNormal(1.0F, 0.0F, 0.0F);
+            var141.draw();
+            var141.startDrawingQuads();
+            var141.setNormal(1.0F, 0.0F, 0.0F);
             this.renderFaceXPos(p_147737_1_, 0.0D, 0.0D, 0.0D, this.getBlockIconFromSideAndMetadata(p_147737_1_, 5, p_147737_12_));
-            var14.draw();
+            var141.draw();
         }
         else
         {
@@ -835,6 +1034,11 @@ public class RenderBlocks
         else
         {
             this.renderTorchAtAngle(p_147791_1_, (double)p_147791_2_, (double)p_147791_3_, (double)p_147791_4_, 0.0D, 0.0D, 0);
+
+            if (p_147791_1_ != Blocks.torch && Config.isBetterSnow() && this.hasSnowNeighbours(p_147791_2_, p_147791_3_, p_147791_4_))
+            {
+                this.renderSnow(p_147791_2_, p_147791_3_, p_147791_4_, Blocks.snow_layer.getBlockBoundsMaxY());
+            }
         }
 
         return true;
@@ -843,7 +1047,7 @@ public class RenderBlocks
     /**
      * render a redstone repeater at the given coordinates
      */
-    private boolean renderBlockRepeater(BlockRedstoneRepeater p_147759_1_, int p_147759_2_, int p_147759_3_, int p_147759_4_)
+    public boolean renderBlockRepeater(BlockRedstoneRepeater p_147759_1_, int p_147759_2_, int p_147759_3_, int p_147759_4_)
     {
         int var5 = this.blockAccess.getBlockMetadata(p_147759_2_, p_147759_3_, p_147759_4_);
         int var6 = var5 & 3;
@@ -927,7 +1131,7 @@ public class RenderBlocks
         return true;
     }
 
-    private boolean renderBlockRedstoneComparator(BlockRedstoneComparator p_147781_1_, int p_147781_2_, int p_147781_3_, int p_147781_4_)
+    public boolean renderBlockRedstoneComparator(BlockRedstoneComparator p_147781_1_, int p_147781_2_, int p_147781_3_, int p_147781_4_)
     {
         Tessellator var5 = Tessellator.instance;
         var5.setBrightness(p_147781_1_.getBlockBrightness(this.blockAccess, p_147781_2_, p_147781_3_, p_147781_4_));
@@ -982,14 +1186,14 @@ public class RenderBlocks
         return true;
     }
 
-    private boolean renderBlockRedstoneDiode(BlockRedstoneDiode p_147748_1_, int p_147748_2_, int p_147748_3_, int p_147748_4_)
+    public boolean renderBlockRedstoneDiode(BlockRedstoneDiode p_147748_1_, int p_147748_2_, int p_147748_3_, int p_147748_4_)
     {
         Tessellator var5 = Tessellator.instance;
         this.renderBlockRedstoneDiodeMetadata(p_147748_1_, p_147748_2_, p_147748_3_, p_147748_4_, this.blockAccess.getBlockMetadata(p_147748_2_, p_147748_3_, p_147748_4_) & 3);
         return true;
     }
 
-    private void renderBlockRedstoneDiodeMetadata(BlockRedstoneDiode p_147732_1_, int p_147732_2_, int p_147732_3_, int p_147732_4_, int p_147732_5_)
+    public void renderBlockRedstoneDiodeMetadata(BlockRedstoneDiode p_147732_1_, int p_147732_2_, int p_147732_3_, int p_147732_4_, int p_147732_5_)
     {
         this.renderStandardBlock(p_147732_1_, p_147732_2_, p_147732_3_, p_147732_4_);
         Tessellator var6 = Tessellator.instance;
@@ -1047,7 +1251,7 @@ public class RenderBlocks
         this.renderAllFaces = false;
     }
 
-    private boolean renderPistonBase(Block p_147731_1_, int p_147731_2_, int p_147731_3_, int p_147731_4_, boolean p_147731_5_)
+    public boolean renderPistonBase(Block p_147731_1_, int p_147731_2_, int p_147731_3_, int p_147731_4_, boolean p_147731_5_)
     {
         int var6 = this.blockAccess.getBlockMetadata(p_147731_2_, p_147731_3_, p_147731_4_);
         boolean var7 = p_147731_5_ || (var6 & 8) != 0;
@@ -1163,7 +1367,7 @@ public class RenderBlocks
         return true;
     }
 
-    private void renderPistonRodUD(double p_147763_1_, double p_147763_3_, double p_147763_5_, double p_147763_7_, double p_147763_9_, double p_147763_11_, float p_147763_13_, double p_147763_14_)
+    public void renderPistonRodUD(double p_147763_1_, double p_147763_3_, double p_147763_5_, double p_147763_7_, double p_147763_9_, double p_147763_11_, float p_147763_13_, double p_147763_14_)
     {
         IIcon var16 = BlockPistonBase.func_150074_e("piston_side");
 
@@ -1184,7 +1388,7 @@ public class RenderBlocks
         var17.addVertexWithUV(p_147763_3_, p_147763_7_, p_147763_11_, var22, var24);
     }
 
-    private void renderPistonRodSN(double p_147789_1_, double p_147789_3_, double p_147789_5_, double p_147789_7_, double p_147789_9_, double p_147789_11_, float p_147789_13_, double p_147789_14_)
+    public void renderPistonRodSN(double p_147789_1_, double p_147789_3_, double p_147789_5_, double p_147789_7_, double p_147789_9_, double p_147789_11_, float p_147789_13_, double p_147789_14_)
     {
         IIcon var16 = BlockPistonBase.func_150074_e("piston_side");
 
@@ -1205,7 +1409,7 @@ public class RenderBlocks
         var17.addVertexWithUV(p_147789_3_, p_147789_7_, p_147789_11_, var22, var24);
     }
 
-    private void renderPistonRodEW(double p_147738_1_, double p_147738_3_, double p_147738_5_, double p_147738_7_, double p_147738_9_, double p_147738_11_, float p_147738_13_, double p_147738_14_)
+    public void renderPistonRodEW(double p_147738_1_, double p_147738_3_, double p_147738_5_, double p_147738_7_, double p_147738_9_, double p_147738_11_, float p_147738_13_, double p_147738_14_)
     {
         IIcon var16 = BlockPistonBase.func_150074_e("piston_side");
 
@@ -1233,7 +1437,7 @@ public class RenderBlocks
         this.renderAllFaces = false;
     }
 
-    private boolean renderPistonExtension(Block p_147809_1_, int p_147809_2_, int p_147809_3_, int p_147809_4_, boolean p_147809_5_)
+    public boolean renderPistonExtension(Block p_147809_1_, int p_147809_2_, int p_147809_3_, int p_147809_4_, boolean p_147809_5_)
     {
         int var6 = this.blockAccess.getBlockMetadata(p_147809_2_, p_147809_3_, p_147809_4_);
         int var7 = BlockPistonExtension.func_150085_b(var6);
@@ -1410,73 +1614,73 @@ public class RenderBlocks
         var22[6] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var23, (double)var25, (double)var24);
         var22[7] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var23), (double)var25, (double)var24);
 
-        for (int var26 = 0; var26 < 8; ++var26)
+        for (int var31 = 0; var31 < 8; ++var31)
         {
             if (var7)
             {
-                var22[var26].zCoord -= 0.0625D;
-                var22[var26].rotateAroundX(((float)Math.PI * 2F / 9F));
+                var22[var31].zCoord -= 0.0625D;
+                var22[var31].rotateAroundX(((float)Math.PI * 2F / 9F));
             }
             else
             {
-                var22[var26].zCoord += 0.0625D;
-                var22[var26].rotateAroundX(-((float)Math.PI * 2F / 9F));
+                var22[var31].zCoord += 0.0625D;
+                var22[var31].rotateAroundX(-((float)Math.PI * 2F / 9F));
             }
 
             if (var6 == 0 || var6 == 7)
             {
-                var22[var26].rotateAroundZ((float)Math.PI);
+                var22[var31].rotateAroundZ((float)Math.PI);
             }
 
             if (var6 == 6 || var6 == 0)
             {
-                var22[var26].rotateAroundY(((float)Math.PI / 2F));
+                var22[var31].rotateAroundY(((float)Math.PI / 2F));
             }
 
             if (var6 > 0 && var6 < 5)
             {
-                var22[var26].yCoord -= 0.375D;
-                var22[var26].rotateAroundX(((float)Math.PI / 2F));
+                var22[var31].yCoord -= 0.375D;
+                var22[var31].rotateAroundX(((float)Math.PI / 2F));
 
                 if (var6 == 4)
                 {
-                    var22[var26].rotateAroundY(0.0F);
+                    var22[var31].rotateAroundY(0.0F);
                 }
 
                 if (var6 == 3)
                 {
-                    var22[var26].rotateAroundY((float)Math.PI);
+                    var22[var31].rotateAroundY((float)Math.PI);
                 }
 
                 if (var6 == 2)
                 {
-                    var22[var26].rotateAroundY(((float)Math.PI / 2F));
+                    var22[var31].rotateAroundY(((float)Math.PI / 2F));
                 }
 
                 if (var6 == 1)
                 {
-                    var22[var26].rotateAroundY(-((float)Math.PI / 2F));
+                    var22[var31].rotateAroundY(-((float)Math.PI / 2F));
                 }
 
-                var22[var26].xCoord += (double)p_147790_2_ + 0.5D;
-                var22[var26].yCoord += (double)((float)p_147790_3_ + 0.5F);
-                var22[var26].zCoord += (double)p_147790_4_ + 0.5D;
+                var22[var31].xCoord += (double)p_147790_2_ + 0.5D;
+                var22[var31].yCoord += (double)((float)p_147790_3_ + 0.5F);
+                var22[var31].zCoord += (double)p_147790_4_ + 0.5D;
             }
             else if (var6 != 0 && var6 != 7)
             {
-                var22[var26].xCoord += (double)p_147790_2_ + 0.5D;
-                var22[var26].yCoord += (double)((float)p_147790_3_ + 0.125F);
-                var22[var26].zCoord += (double)p_147790_4_ + 0.5D;
+                var22[var31].xCoord += (double)p_147790_2_ + 0.5D;
+                var22[var31].yCoord += (double)((float)p_147790_3_ + 0.125F);
+                var22[var31].zCoord += (double)p_147790_4_ + 0.5D;
             }
             else
             {
-                var22[var26].xCoord += (double)p_147790_2_ + 0.5D;
-                var22[var26].yCoord += (double)((float)p_147790_3_ + 0.875F);
-                var22[var26].zCoord += (double)p_147790_4_ + 0.5D;
+                var22[var31].xCoord += (double)p_147790_2_ + 0.5D;
+                var22[var31].yCoord += (double)((float)p_147790_3_ + 0.875F);
+                var22[var31].zCoord += (double)p_147790_4_ + 0.5D;
             }
         }
 
-        Vec3 var31 = null;
+        Vec3 var311 = null;
         Vec3 var27 = null;
         Vec3 var28 = null;
         Vec3 var29 = null;
@@ -1500,51 +1704,56 @@ public class RenderBlocks
 
             if (var30 == 0)
             {
-                var31 = var22[0];
+                var311 = var22[0];
                 var27 = var22[1];
                 var28 = var22[2];
                 var29 = var22[3];
             }
             else if (var30 == 1)
             {
-                var31 = var22[7];
+                var311 = var22[7];
                 var27 = var22[6];
                 var28 = var22[5];
                 var29 = var22[4];
             }
             else if (var30 == 2)
             {
-                var31 = var22[1];
+                var311 = var22[1];
                 var27 = var22[0];
                 var28 = var22[4];
                 var29 = var22[5];
             }
             else if (var30 == 3)
             {
-                var31 = var22[2];
+                var311 = var22[2];
                 var27 = var22[1];
                 var28 = var22[5];
                 var29 = var22[6];
             }
             else if (var30 == 4)
             {
-                var31 = var22[3];
+                var311 = var22[3];
                 var27 = var22[2];
                 var28 = var22[6];
                 var29 = var22[7];
             }
             else if (var30 == 5)
             {
-                var31 = var22[0];
+                var311 = var22[0];
                 var27 = var22[3];
                 var28 = var22[7];
                 var29 = var22[4];
             }
 
-            var8.addVertexWithUV(var31.xCoord, var31.yCoord, var31.zCoord, var14, var20);
+            var8.addVertexWithUV(var311.xCoord, var311.yCoord, var311.zCoord, var14, var20);
             var8.addVertexWithUV(var27.xCoord, var27.yCoord, var27.zCoord, var18, var20);
             var8.addVertexWithUV(var28.xCoord, var28.yCoord, var28.zCoord, var18, var16);
             var8.addVertexWithUV(var29.xCoord, var29.yCoord, var29.zCoord, var14, var16);
+        }
+
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147790_2_, p_147790_3_, p_147790_4_))
+        {
+            this.renderSnow(p_147790_2_, p_147790_3_, p_147790_4_, Blocks.snow_layer.getBlockBoundsMaxY());
         }
 
         return true;
@@ -1621,54 +1830,54 @@ public class RenderBlocks
         var26[6] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var27, (double)var29, (double)var28);
         var26[7] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var27), (double)var29, (double)var28);
 
-        for (int var30 = 0; var30 < 8; ++var30)
+        for (int var60 = 0; var60 < 8; ++var60)
         {
-            var26[var30].zCoord += 0.0625D;
+            var26[var60].zCoord += 0.0625D;
 
             if (var9)
             {
-                var26[var30].rotateAroundX(0.5235988F);
-                var26[var30].yCoord -= 0.4375D;
+                var26[var60].rotateAroundX(0.5235988F);
+                var26[var60].yCoord -= 0.4375D;
             }
             else if (var8)
             {
-                var26[var30].rotateAroundX(0.08726647F);
-                var26[var30].yCoord -= 0.4375D;
+                var26[var60].rotateAroundX(0.08726647F);
+                var26[var60].yCoord -= 0.4375D;
             }
             else
             {
-                var26[var30].rotateAroundX(-((float)Math.PI * 2F / 9F));
-                var26[var30].yCoord -= 0.375D;
+                var26[var60].rotateAroundX(-((float)Math.PI * 2F / 9F));
+                var26[var60].yCoord -= 0.375D;
             }
 
-            var26[var30].rotateAroundX(((float)Math.PI / 2F));
+            var26[var60].rotateAroundX(((float)Math.PI / 2F));
 
             if (var7 == 2)
             {
-                var26[var30].rotateAroundY(0.0F);
+                var26[var60].rotateAroundY(0.0F);
             }
 
             if (var7 == 0)
             {
-                var26[var30].rotateAroundY((float)Math.PI);
+                var26[var60].rotateAroundY((float)Math.PI);
             }
 
             if (var7 == 1)
             {
-                var26[var30].rotateAroundY(((float)Math.PI / 2F));
+                var26[var60].rotateAroundY(((float)Math.PI / 2F));
             }
 
             if (var7 == 3)
             {
-                var26[var30].rotateAroundY(-((float)Math.PI / 2F));
+                var26[var60].rotateAroundY(-((float)Math.PI / 2F));
             }
 
-            var26[var30].xCoord += (double)p_147723_2_ + 0.5D;
-            var26[var30].yCoord += (double)((float)p_147723_3_ + 0.3125F);
-            var26[var30].zCoord += (double)p_147723_4_ + 0.5D;
+            var26[var60].xCoord += (double)p_147723_2_ + 0.5D;
+            var26[var60].yCoord += (double)((float)p_147723_3_ + 0.3125F);
+            var26[var60].zCoord += (double)p_147723_4_ + 0.5D;
         }
 
-        Vec3 var60 = null;
+        Vec3 var601 = null;
         Vec3 var31 = null;
         Vec3 var32 = null;
         Vec3 var33 = null;
@@ -1677,11 +1886,11 @@ public class RenderBlocks
         byte var36 = 9;
         byte var37 = 16;
 
-        for (int var38 = 0; var38 < 6; ++var38)
+        for (int var61 = 0; var61 < 6; ++var61)
         {
-            if (var38 == 0)
+            if (var61 == 0)
             {
-                var60 = var26[0];
+                var601 = var26[0];
                 var31 = var26[1];
                 var32 = var26[2];
                 var33 = var26[3];
@@ -1690,16 +1899,16 @@ public class RenderBlocks
                 var22 = (double)var17.getInterpolatedU((double)var35);
                 var24 = (double)var17.getInterpolatedV((double)(var36 + 2));
             }
-            else if (var38 == 1)
+            else if (var61 == 1)
             {
-                var60 = var26[7];
+                var601 = var26[7];
                 var31 = var26[6];
                 var32 = var26[5];
                 var33 = var26[4];
             }
-            else if (var38 == 2)
+            else if (var61 == 2)
             {
-                var60 = var26[1];
+                var601 = var26[1];
                 var31 = var26[0];
                 var32 = var26[4];
                 var33 = var26[5];
@@ -1708,151 +1917,151 @@ public class RenderBlocks
                 var22 = (double)var17.getInterpolatedU((double)var35);
                 var24 = (double)var17.getInterpolatedV((double)var37);
             }
-            else if (var38 == 3)
+            else if (var61 == 3)
             {
-                var60 = var26[2];
+                var601 = var26[2];
                 var31 = var26[1];
                 var32 = var26[5];
                 var33 = var26[6];
             }
-            else if (var38 == 4)
+            else if (var61 == 4)
             {
-                var60 = var26[3];
+                var601 = var26[3];
                 var31 = var26[2];
                 var32 = var26[6];
                 var33 = var26[7];
             }
-            else if (var38 == 5)
+            else if (var61 == 5)
             {
-                var60 = var26[0];
+                var601 = var26[0];
                 var31 = var26[3];
                 var32 = var26[7];
                 var33 = var26[4];
             }
 
-            var5.addVertexWithUV(var60.xCoord, var60.yCoord, var60.zCoord, var18, var24);
+            var5.addVertexWithUV(var601.xCoord, var601.yCoord, var601.zCoord, var18, var24);
             var5.addVertexWithUV(var31.xCoord, var31.yCoord, var31.zCoord, var22, var24);
             var5.addVertexWithUV(var32.xCoord, var32.yCoord, var32.zCoord, var22, var20);
             var5.addVertexWithUV(var33.xCoord, var33.yCoord, var33.zCoord, var18, var20);
         }
 
-        float var61 = 0.09375F;
+        float var611 = 0.09375F;
         float var39 = 0.09375F;
         float var40 = 0.03125F;
-        var26[0] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var61), 0.0D, (double)(-var39));
-        var26[1] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var61, 0.0D, (double)(-var39));
-        var26[2] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var61, 0.0D, (double)var39);
-        var26[3] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var61), 0.0D, (double)var39);
-        var26[4] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var61), (double)var40, (double)(-var39));
-        var26[5] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var61, (double)var40, (double)(-var39));
-        var26[6] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var61, (double)var40, (double)var39);
-        var26[7] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var61), (double)var40, (double)var39);
+        var26[0] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var611), 0.0D, (double)(-var39));
+        var26[1] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var611, 0.0D, (double)(-var39));
+        var26[2] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var611, 0.0D, (double)var39);
+        var26[3] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var611), 0.0D, (double)var39);
+        var26[4] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var611), (double)var40, (double)(-var39));
+        var26[5] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var611, (double)var40, (double)(-var39));
+        var26[6] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)var611, (double)var40, (double)var39);
+        var26[7] = this.blockAccess.getWorldVec3Pool().getVecFromPool((double)(-var611), (double)var40, (double)var39);
 
-        for (int var41 = 0; var41 < 8; ++var41)
+        for (int var62 = 0; var62 < 8; ++var62)
         {
-            var26[var41].zCoord += 0.21875D;
+            var26[var62].zCoord += 0.21875D;
 
             if (var9)
             {
-                var26[var41].yCoord -= 0.09375D;
-                var26[var41].zCoord -= 0.1625D;
-                var26[var41].rotateAroundX(0.0F);
+                var26[var62].yCoord -= 0.09375D;
+                var26[var62].zCoord -= 0.1625D;
+                var26[var62].rotateAroundX(0.0F);
             }
             else if (var8)
             {
-                var26[var41].yCoord += 0.015625D;
-                var26[var41].zCoord -= 0.171875D;
-                var26[var41].rotateAroundX(0.17453294F);
+                var26[var62].yCoord += 0.015625D;
+                var26[var62].zCoord -= 0.171875D;
+                var26[var62].rotateAroundX(0.17453294F);
             }
             else
             {
-                var26[var41].rotateAroundX(0.87266463F);
+                var26[var62].rotateAroundX(0.87266463F);
             }
 
             if (var7 == 2)
             {
-                var26[var41].rotateAroundY(0.0F);
+                var26[var62].rotateAroundY(0.0F);
             }
 
             if (var7 == 0)
             {
-                var26[var41].rotateAroundY((float)Math.PI);
+                var26[var62].rotateAroundY((float)Math.PI);
             }
 
             if (var7 == 1)
             {
-                var26[var41].rotateAroundY(((float)Math.PI / 2F));
+                var26[var62].rotateAroundY(((float)Math.PI / 2F));
             }
 
             if (var7 == 3)
             {
-                var26[var41].rotateAroundY(-((float)Math.PI / 2F));
+                var26[var62].rotateAroundY(-((float)Math.PI / 2F));
             }
 
-            var26[var41].xCoord += (double)p_147723_2_ + 0.5D;
-            var26[var41].yCoord += (double)((float)p_147723_3_ + 0.3125F);
-            var26[var41].zCoord += (double)p_147723_4_ + 0.5D;
+            var26[var62].xCoord += (double)p_147723_2_ + 0.5D;
+            var26[var62].yCoord += (double)((float)p_147723_3_ + 0.3125F);
+            var26[var62].zCoord += (double)p_147723_4_ + 0.5D;
         }
 
-        byte var62 = 5;
+        byte var621 = 5;
         byte var42 = 11;
         byte var43 = 3;
         byte var44 = 9;
 
-        for (int var45 = 0; var45 < 6; ++var45)
+        for (int var63 = 0; var63 < 6; ++var63)
         {
-            if (var45 == 0)
+            if (var63 == 0)
             {
-                var60 = var26[0];
+                var601 = var26[0];
                 var31 = var26[1];
                 var32 = var26[2];
                 var33 = var26[3];
-                var18 = (double)var17.getInterpolatedU((double)var62);
+                var18 = (double)var17.getInterpolatedU((double)var621);
                 var20 = (double)var17.getInterpolatedV((double)var43);
                 var22 = (double)var17.getInterpolatedU((double)var42);
                 var24 = (double)var17.getInterpolatedV((double)var44);
             }
-            else if (var45 == 1)
+            else if (var63 == 1)
             {
-                var60 = var26[7];
+                var601 = var26[7];
                 var31 = var26[6];
                 var32 = var26[5];
                 var33 = var26[4];
             }
-            else if (var45 == 2)
+            else if (var63 == 2)
             {
-                var60 = var26[1];
+                var601 = var26[1];
                 var31 = var26[0];
                 var32 = var26[4];
                 var33 = var26[5];
-                var18 = (double)var17.getInterpolatedU((double)var62);
+                var18 = (double)var17.getInterpolatedU((double)var621);
                 var20 = (double)var17.getInterpolatedV((double)var43);
                 var22 = (double)var17.getInterpolatedU((double)var42);
                 var24 = (double)var17.getInterpolatedV((double)(var43 + 2));
             }
-            else if (var45 == 3)
+            else if (var63 == 3)
             {
-                var60 = var26[2];
+                var601 = var26[2];
                 var31 = var26[1];
                 var32 = var26[5];
                 var33 = var26[6];
             }
-            else if (var45 == 4)
+            else if (var63 == 4)
             {
-                var60 = var26[3];
+                var601 = var26[3];
                 var31 = var26[2];
                 var32 = var26[6];
                 var33 = var26[7];
             }
-            else if (var45 == 5)
+            else if (var63 == 5)
             {
-                var60 = var26[0];
+                var601 = var26[0];
                 var31 = var26[3];
                 var32 = var26[7];
                 var33 = var26[4];
             }
 
-            var5.addVertexWithUV(var60.xCoord, var60.yCoord, var60.zCoord, var18, var24);
+            var5.addVertexWithUV(var601.xCoord, var601.yCoord, var601.zCoord, var18, var24);
             var5.addVertexWithUV(var31.xCoord, var31.yCoord, var31.zCoord, var22, var24);
             var5.addVertexWithUV(var32.xCoord, var32.yCoord, var32.zCoord, var22, var20);
             var5.addVertexWithUV(var33.xCoord, var33.yCoord, var33.zCoord, var18, var20);
@@ -1860,7 +2069,7 @@ public class RenderBlocks
 
         if (var8)
         {
-            double var63 = var26[0].yCoord;
+            double var631 = var26[0].yCoord;
             float var47 = 0.03125F;
             float var48 = 0.5F - var47 / 2.0F;
             float var49 = var48 + var47;
@@ -1877,8 +2086,8 @@ public class RenderBlocks
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var49), (double)p_147723_3_ + var58, (double)p_147723_4_ + 0.25D, var50, var56);
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var49), (double)p_147723_3_ + var58, (double)p_147723_4_, var54, var56);
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var48), (double)p_147723_3_ + var58, (double)p_147723_4_, var54, var52);
-                var5.addVertexWithUV((double)((float)p_147723_2_ + var48), var63, (double)p_147723_4_ + 0.5D, var50, var52);
-                var5.addVertexWithUV((double)((float)p_147723_2_ + var49), var63, (double)p_147723_4_ + 0.5D, var50, var56);
+                var5.addVertexWithUV((double)((float)p_147723_2_ + var48), var631, (double)p_147723_4_ + 0.5D, var50, var52);
+                var5.addVertexWithUV((double)((float)p_147723_2_ + var49), var631, (double)p_147723_4_ + 0.5D, var50, var56);
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var49), (double)p_147723_3_ + var58, (double)p_147723_4_ + 0.25D, var54, var56);
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var48), (double)p_147723_3_ + var58, (double)p_147723_4_ + 0.25D, var54, var52);
             }
@@ -1886,8 +2095,8 @@ public class RenderBlocks
             {
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var48), (double)p_147723_3_ + var58, (double)p_147723_4_ + 0.75D, var50, var52);
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var49), (double)p_147723_3_ + var58, (double)p_147723_4_ + 0.75D, var50, var56);
-                var5.addVertexWithUV((double)((float)p_147723_2_ + var49), var63, (double)p_147723_4_ + 0.5D, var54, var56);
-                var5.addVertexWithUV((double)((float)p_147723_2_ + var48), var63, (double)p_147723_4_ + 0.5D, var54, var52);
+                var5.addVertexWithUV((double)((float)p_147723_2_ + var49), var631, (double)p_147723_4_ + 0.5D, var54, var56);
+                var5.addVertexWithUV((double)((float)p_147723_2_ + var48), var631, (double)p_147723_4_ + 0.5D, var54, var52);
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var48), (double)p_147723_3_ + var58, (double)(p_147723_4_ + 1), var50, var52);
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var49), (double)p_147723_3_ + var58, (double)(p_147723_4_ + 1), var50, var56);
                 var5.addVertexWithUV((double)((float)p_147723_2_ + var49), (double)p_147723_3_ + var58, (double)p_147723_4_ + 0.75D, var54, var56);
@@ -1900,16 +2109,16 @@ public class RenderBlocks
                 var5.addVertexWithUV((double)p_147723_2_ + 0.25D, (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var48), var54, var52);
                 var5.addVertexWithUV((double)p_147723_2_, (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var48), var50, var52);
                 var5.addVertexWithUV((double)p_147723_2_ + 0.25D, (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var49), var50, var56);
-                var5.addVertexWithUV((double)p_147723_2_ + 0.5D, var63, (double)((float)p_147723_4_ + var49), var54, var56);
-                var5.addVertexWithUV((double)p_147723_2_ + 0.5D, var63, (double)((float)p_147723_4_ + var48), var54, var52);
+                var5.addVertexWithUV((double)p_147723_2_ + 0.5D, var631, (double)((float)p_147723_4_ + var49), var54, var56);
+                var5.addVertexWithUV((double)p_147723_2_ + 0.5D, var631, (double)((float)p_147723_4_ + var48), var54, var52);
                 var5.addVertexWithUV((double)p_147723_2_ + 0.25D, (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var48), var50, var52);
             }
             else
             {
-                var5.addVertexWithUV((double)p_147723_2_ + 0.5D, var63, (double)((float)p_147723_4_ + var49), var50, var56);
+                var5.addVertexWithUV((double)p_147723_2_ + 0.5D, var631, (double)((float)p_147723_4_ + var49), var50, var56);
                 var5.addVertexWithUV((double)p_147723_2_ + 0.75D, (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var49), var54, var56);
                 var5.addVertexWithUV((double)p_147723_2_ + 0.75D, (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var48), var54, var52);
-                var5.addVertexWithUV((double)p_147723_2_ + 0.5D, var63, (double)((float)p_147723_4_ + var48), var50, var52);
+                var5.addVertexWithUV((double)p_147723_2_ + 0.5D, var631, (double)((float)p_147723_4_ + var48), var50, var52);
                 var5.addVertexWithUV((double)p_147723_2_ + 0.75D, (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var49), var50, var56);
                 var5.addVertexWithUV((double)(p_147723_2_ + 1), (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var49), var54, var56);
                 var5.addVertexWithUV((double)(p_147723_2_ + 1), (double)p_147723_3_ + var58, (double)((float)p_147723_4_ + var48), var54, var52);
@@ -2072,13 +2281,13 @@ public class RenderBlocks
         double var13 = (double)var8.getMaxU();
         double var15 = (double)var8.getMaxV();
         float var17 = 1.4F;
+        double var32;
         double var20;
         double var22;
         double var24;
         double var26;
         double var28;
         double var30;
-        double var32;
 
         if (!World.doesBlockHaveSolidTopSurface(this.blockAccess, p_147801_2_, p_147801_3_ - 1, p_147801_4_) && !Blocks.fire.func_149844_e(this.blockAccess, p_147801_2_, p_147801_3_ - 1, p_147801_4_))
         {
@@ -2290,9 +2499,21 @@ public class RenderBlocks
             var14 = 0.0F;
         }
 
+        int rsColor = CustomColorizer.getRedstoneColor(var6);
+
+        if (rsColor != -1)
+        {
+            int var15 = rsColor >> 16 & 255;
+            int green = rsColor >> 8 & 255;
+            int var17 = rsColor & 255;
+            var12 = (float)var15 / 255.0F;
+            var13 = (float)green / 255.0F;
+            var14 = (float)var17 / 255.0F;
+        }
+
         var5.setColorOpaque_F(var12, var13, var14);
-        double var15 = 0.015625D;
-        double var17 = 0.015625D;
+        double var151 = 0.015625D;
+        double var171 = 0.015625D;
         boolean var19 = BlockRedstoneWire.func_150174_f(this.blockAccess, p_147788_2_ - 1, p_147788_3_, p_147788_4_, 1) || !this.blockAccess.getBlock(p_147788_2_ - 1, p_147788_3_, p_147788_4_).isBlockNormalCube() && BlockRedstoneWire.func_150174_f(this.blockAccess, p_147788_2_ - 1, p_147788_3_ - 1, p_147788_4_, -1);
         boolean var20 = BlockRedstoneWire.func_150174_f(this.blockAccess, p_147788_2_ + 1, p_147788_3_, p_147788_4_, 3) || !this.blockAccess.getBlock(p_147788_2_ + 1, p_147788_3_, p_147788_4_).isBlockNormalCube() && BlockRedstoneWire.func_150174_f(this.blockAccess, p_147788_2_ + 1, p_147788_3_ - 1, p_147788_4_, -1);
         boolean var21 = BlockRedstoneWire.func_150174_f(this.blockAccess, p_147788_2_, p_147788_3_, p_147788_4_ - 1, 2) || !this.blockAccess.getBlock(p_147788_2_, p_147788_3_, p_147788_4_ - 1).isBlockNormalCube() && BlockRedstoneWire.func_150174_f(this.blockAccess, p_147788_2_, p_147788_3_ - 1, p_147788_4_ - 1, -1);
@@ -2325,21 +2546,21 @@ public class RenderBlocks
         float var24 = (float)(p_147788_2_ + 1);
         float var25 = (float)(p_147788_4_ + 0);
         float var26 = (float)(p_147788_4_ + 1);
-        int var27 = 0;
+        boolean var27 = false;
 
         if ((var19 || var20) && !var21 && !var22)
         {
-            var27 = 1;
+            var27 = true;
         }
 
         if ((var21 || var22) && !var20 && !var19)
         {
-            var27 = 2;
+            var27 = true;
         }
 
-        if (var27 == 0)
+        if (!var27)
         {
-            int var28 = 0;
+            int var33 = 0;
             int var29 = 0;
             int var30 = 16;
             int var31 = 16;
@@ -2352,7 +2573,7 @@ public class RenderBlocks
 
             if (!var19)
             {
-                var28 += 5;
+                var33 += 5;
             }
 
             if (!var20)
@@ -2387,15 +2608,15 @@ public class RenderBlocks
 
             var5.addVertexWithUV((double)var24, (double)p_147788_3_ + 0.015625D, (double)var26, (double)var7.getInterpolatedU((double)var30), (double)var7.getInterpolatedV((double)var31));
             var5.addVertexWithUV((double)var24, (double)p_147788_3_ + 0.015625D, (double)var25, (double)var7.getInterpolatedU((double)var30), (double)var7.getInterpolatedV((double)var29));
-            var5.addVertexWithUV((double)var23, (double)p_147788_3_ + 0.015625D, (double)var25, (double)var7.getInterpolatedU((double)var28), (double)var7.getInterpolatedV((double)var29));
-            var5.addVertexWithUV((double)var23, (double)p_147788_3_ + 0.015625D, (double)var26, (double)var7.getInterpolatedU((double)var28), (double)var7.getInterpolatedV((double)var31));
+            var5.addVertexWithUV((double)var23, (double)p_147788_3_ + 0.015625D, (double)var25, (double)var7.getInterpolatedU((double)var33), (double)var7.getInterpolatedV((double)var29));
+            var5.addVertexWithUV((double)var23, (double)p_147788_3_ + 0.015625D, (double)var26, (double)var7.getInterpolatedU((double)var33), (double)var7.getInterpolatedV((double)var31));
             var5.setColorOpaque_F(1.0F, 1.0F, 1.0F);
             var5.addVertexWithUV((double)var24, (double)p_147788_3_ + 0.015625D, (double)var26, (double)var9.getInterpolatedU((double)var30), (double)var9.getInterpolatedV((double)var31));
             var5.addVertexWithUV((double)var24, (double)p_147788_3_ + 0.015625D, (double)var25, (double)var9.getInterpolatedU((double)var30), (double)var9.getInterpolatedV((double)var29));
-            var5.addVertexWithUV((double)var23, (double)p_147788_3_ + 0.015625D, (double)var25, (double)var9.getInterpolatedU((double)var28), (double)var9.getInterpolatedV((double)var29));
-            var5.addVertexWithUV((double)var23, (double)p_147788_3_ + 0.015625D, (double)var26, (double)var9.getInterpolatedU((double)var28), (double)var9.getInterpolatedV((double)var31));
+            var5.addVertexWithUV((double)var23, (double)p_147788_3_ + 0.015625D, (double)var25, (double)var9.getInterpolatedU((double)var33), (double)var9.getInterpolatedV((double)var29));
+            var5.addVertexWithUV((double)var23, (double)p_147788_3_ + 0.015625D, (double)var26, (double)var9.getInterpolatedU((double)var33), (double)var9.getInterpolatedV((double)var31));
         }
-        else if (var27 == 1)
+        else if (var27)
         {
             var5.addVertexWithUV((double)var24, (double)p_147788_3_ + 0.015625D, (double)var26, (double)var8.getMaxU(), (double)var8.getMaxV());
             var5.addVertexWithUV((double)var24, (double)p_147788_3_ + 0.015625D, (double)var25, (double)var8.getMaxU(), (double)var8.getMinV());
@@ -2422,7 +2643,7 @@ public class RenderBlocks
 
         if (!this.blockAccess.getBlock(p_147788_2_, p_147788_3_ + 1, p_147788_4_).isBlockNormalCube())
         {
-            float var33 = 0.021875F;
+            float var331 = 0.021875F;
 
             if (this.blockAccess.getBlock(p_147788_2_ - 1, p_147788_3_, p_147788_4_).isBlockNormalCube() && this.blockAccess.getBlock(p_147788_2_ - 1, p_147788_3_ + 1, p_147788_4_) == Blocks.redstone_wire)
             {
@@ -2481,6 +2702,11 @@ public class RenderBlocks
             }
         }
 
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147788_2_, p_147788_3_, p_147788_4_))
+        {
+            this.renderSnow(p_147788_2_, p_147788_3_, p_147788_4_, 0.01D);
+        }
+
         return true;
     }
 
@@ -2493,6 +2719,11 @@ public class RenderBlocks
         if (this.hasOverrideBlockTexture())
         {
             var7 = this.overrideBlockTexture;
+        }
+
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            var7 = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147766_1_, p_147766_2_, p_147766_3_, p_147766_4_, 1, var7);
         }
 
         if (p_147766_1_.func_150050_e())
@@ -2567,6 +2798,12 @@ public class RenderBlocks
         var5.addVertexWithUV(var22, var38, var30, var8, var14);
         var5.addVertexWithUV(var20, var36, var28, var12, var14);
         var5.addVertexWithUV(var18, var34, var26, var12, var10);
+
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147766_2_, p_147766_3_, p_147766_4_))
+        {
+            this.renderSnow(p_147766_2_, p_147766_3_, p_147766_4_, 0.05D);
+        }
+
         return true;
     }
 
@@ -2580,13 +2817,19 @@ public class RenderBlocks
             var6 = this.overrideBlockTexture;
         }
 
+        int var15 = this.blockAccess.getBlockMetadata(p_147794_2_, p_147794_3_, p_147794_4_);
+
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            var6 = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147794_1_, p_147794_2_, p_147794_3_, p_147794_4_, var15, var6);
+        }
+
         var5.setBrightness(p_147794_1_.getBlockBrightness(this.blockAccess, p_147794_2_, p_147794_3_, p_147794_4_));
         var5.setColorOpaque_F(1.0F, 1.0F, 1.0F);
         double var7 = (double)var6.getMinU();
         double var9 = (double)var6.getMinV();
         double var11 = (double)var6.getMaxU();
         double var13 = (double)var6.getMaxV();
-        int var15 = this.blockAccess.getBlockMetadata(p_147794_2_, p_147794_3_, p_147794_4_);
         double var16 = 0.0D;
         double var18 = 0.05000000074505806D;
 
@@ -2635,18 +2878,43 @@ public class RenderBlocks
             var6 = this.overrideBlockTexture;
         }
 
+        int var17 = this.blockAccess.getBlockMetadata(p_147726_2_, p_147726_3_, p_147726_4_);
+
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            byte var7 = 0;
+
+            if ((var17 & 1) != 0)
+            {
+                var7 = 2;
+            }
+            else if ((var17 & 2) != 0)
+            {
+                var7 = 5;
+            }
+            else if ((var17 & 4) != 0)
+            {
+                var7 = 3;
+            }
+            else if ((var17 & 8) != 0)
+            {
+                var7 = 4;
+            }
+
+            var6 = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147726_1_, p_147726_2_, p_147726_3_, p_147726_4_, var7, var6);
+        }
+
         var5.setBrightness(p_147726_1_.getBlockBrightness(this.blockAccess, p_147726_2_, p_147726_3_, p_147726_4_));
-        int var7 = p_147726_1_.colorMultiplier(this.blockAccess, p_147726_2_, p_147726_3_, p_147726_4_);
-        float var8 = (float)(var7 >> 16 & 255) / 255.0F;
-        float var9 = (float)(var7 >> 8 & 255) / 255.0F;
-        float var10 = (float)(var7 & 255) / 255.0F;
+        int var71 = CustomColorizer.getColorMultiplier(p_147726_1_, this.blockAccess, p_147726_2_, p_147726_3_, p_147726_4_);
+        float var8 = (float)(var71 >> 16 & 255) / 255.0F;
+        float var9 = (float)(var71 >> 8 & 255) / 255.0F;
+        float var10 = (float)(var71 & 255) / 255.0F;
         var5.setColorOpaque_F(var8, var9, var10);
         double var18 = (double)var6.getMinU();
         double var19 = (double)var6.getMinV();
         double var11 = (double)var6.getMaxU();
         double var13 = (double)var6.getMaxV();
         double var15 = 0.05000000074505806D;
-        int var17 = this.blockAccess.getBlockMetadata(p_147726_2_, p_147726_3_, p_147726_4_);
 
         if ((var17 & 2) != 0)
         {
@@ -2707,399 +2975,487 @@ public class RenderBlocks
         return true;
     }
 
-    public boolean renderBlockStainedGlassPane(Block p_147733_1_, int p_147733_2_, int p_147733_3_, int p_147733_4_)
+    public boolean renderBlockStainedGlassPane(Block block, int x, int y, int z)
     {
         int var5 = this.blockAccess.getHeight();
         Tessellator var6 = Tessellator.instance;
-        var6.setBrightness(p_147733_1_.getBlockBrightness(this.blockAccess, p_147733_2_, p_147733_3_, p_147733_4_));
-        int var7 = p_147733_1_.colorMultiplier(this.blockAccess, p_147733_2_, p_147733_3_, p_147733_4_);
+        var6.setBrightness(block.getBlockBrightness(this.blockAccess, x, y, z));
+        int var7 = block.colorMultiplier(this.blockAccess, x, y, z);
         float var8 = (float)(var7 >> 16 & 255) / 255.0F;
         float var9 = (float)(var7 >> 8 & 255) / 255.0F;
         float var10 = (float)(var7 & 255) / 255.0F;
 
         if (EntityRenderer.anaglyphEnable)
         {
-            float var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
-            float var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
-            float var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
-            var8 = var11;
-            var9 = var12;
-            var10 = var13;
+            float isStainedGlass = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
+            float iconGlass = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
+            float iconGlassPaneTop = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
+            var8 = isStainedGlass;
+            var9 = iconGlass;
+            var10 = iconGlassPaneTop;
         }
 
         var6.setColorOpaque_F(var8, var9, var10);
-        boolean var67 = p_147733_1_ instanceof BlockStainedGlassPane;
-        IIcon var65;
-        IIcon var66;
+        boolean isStainedGlass1 = block instanceof BlockStainedGlassPane;
+        int metadata = 0;
+        IIcon iconGlass1;
+        IIcon iconGlassPaneTop1;
 
         if (this.hasOverrideBlockTexture())
         {
-            var65 = this.overrideBlockTexture;
-            var66 = this.overrideBlockTexture;
+            iconGlass1 = this.overrideBlockTexture;
+            iconGlassPaneTop1 = this.overrideBlockTexture;
         }
         else
         {
-            int var14 = this.blockAccess.getBlockMetadata(p_147733_2_, p_147733_3_, p_147733_4_);
-            var65 = this.getBlockIconFromSideAndMetadata(p_147733_1_, 0, var14);
-            var66 = var67 ? ((BlockStainedGlassPane)p_147733_1_).func_150104_b(var14) : ((BlockPane)p_147733_1_).func_150097_e();
+            metadata = this.blockAccess.getBlockMetadata(x, y, z);
+            iconGlass1 = this.getBlockIconFromSideAndMetadata(block, 0, metadata);
+            iconGlassPaneTop1 = isStainedGlass1 ? ((BlockStainedGlassPane)block).func_150104_b(metadata) : ((BlockPane)block).func_150097_e();
         }
 
-        double var68 = (double)var65.getMinU();
-        double var16 = (double)var65.getInterpolatedU(7.0D);
-        double var18 = (double)var65.getInterpolatedU(9.0D);
-        double var20 = (double)var65.getMaxU();
-        double var22 = (double)var65.getMinV();
-        double var24 = (double)var65.getMaxV();
-        double var26 = (double)var66.getInterpolatedU(7.0D);
-        double var28 = (double)var66.getInterpolatedU(9.0D);
-        double var30 = (double)var66.getMinV();
-        double var32 = (double)var66.getMaxV();
-        double var34 = (double)var66.getInterpolatedV(7.0D);
-        double var36 = (double)var66.getInterpolatedV(9.0D);
-        double var38 = (double)p_147733_2_;
-        double var40 = (double)(p_147733_2_ + 1);
-        double var42 = (double)p_147733_4_;
-        double var44 = (double)(p_147733_4_ + 1);
-        double var46 = (double)p_147733_2_ + 0.5D - 0.0625D;
-        double var48 = (double)p_147733_2_ + 0.5D + 0.0625D;
-        double var50 = (double)p_147733_4_ + 0.5D - 0.0625D;
-        double var52 = (double)p_147733_4_ + 0.5D + 0.0625D;
-        boolean var54 = var67 ? ((BlockStainedGlassPane)p_147733_1_).func_150098_a(this.blockAccess.getBlock(p_147733_2_, p_147733_3_, p_147733_4_ - 1)) : ((BlockPane)p_147733_1_).func_150098_a(this.blockAccess.getBlock(p_147733_2_, p_147733_3_, p_147733_4_ - 1));
-        boolean var55 = var67 ? ((BlockStainedGlassPane)p_147733_1_).func_150098_a(this.blockAccess.getBlock(p_147733_2_, p_147733_3_, p_147733_4_ + 1)) : ((BlockPane)p_147733_1_).func_150098_a(this.blockAccess.getBlock(p_147733_2_, p_147733_3_, p_147733_4_ + 1));
-        boolean var56 = var67 ? ((BlockStainedGlassPane)p_147733_1_).func_150098_a(this.blockAccess.getBlock(p_147733_2_ - 1, p_147733_3_, p_147733_4_)) : ((BlockPane)p_147733_1_).func_150098_a(this.blockAccess.getBlock(p_147733_2_ - 1, p_147733_3_, p_147733_4_));
-        boolean var57 = var67 ? ((BlockStainedGlassPane)p_147733_1_).func_150098_a(this.blockAccess.getBlock(p_147733_2_ + 1, p_147733_3_, p_147733_4_)) : ((BlockPane)p_147733_1_).func_150098_a(this.blockAccess.getBlock(p_147733_2_ + 1, p_147733_3_, p_147733_4_));
+        IIcon iconZ = iconGlass1;
+        boolean drawTop = true;
+        boolean drawBottom = true;
+
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            IIcon gMinU = ConnectedTextures.getConnectedTexture(this.blockAccess, block, x, y, z, 4, iconGlass1);
+            IIcon iz = ConnectedTextures.getConnectedTexture(this.blockAccess, block, x, y, z, 3, iconGlass1);
+
+            if (gMinU != iconGlass1 || iz != iconGlass1)
+            {
+                BlockPane gHalf7U = (BlockPane)block;
+                drawTop = this.blockAccess.getBlock(x, y + 1, z) != block || this.blockAccess.getBlockMetadata(x, y + 1, z) != metadata;
+                drawBottom = this.blockAccess.getBlock(x, y - 1, z) != block || this.blockAccess.getBlockMetadata(x, y - 1, z) != metadata;
+            }
+
+            iconGlass1 = gMinU;
+            iconZ = iz;
+        }
+
+        double gMinU1 = (double)iconGlass1.getMinU();
+        double gHalf7U1 = (double)iconGlass1.getInterpolatedU(7.0D);
+        double gHalf9U = (double)iconGlass1.getInterpolatedU(9.0D);
+        double gMaxU = (double)iconGlass1.getMaxU();
+        double gMinV = (double)iconGlass1.getMinV();
+        double gMaxV = (double)iconGlass1.getMaxV();
+        double gMinUz = (double)iconZ.getMinU();
+        double gHalf7Uz = (double)iconZ.getInterpolatedU(7.0D);
+        double gHalf9Uz = (double)iconZ.getInterpolatedU(9.0D);
+        double gMaxUz = (double)iconZ.getMaxU();
+        double gMinVz = (double)iconZ.getMinV();
+        double gMaxVz = (double)iconZ.getMaxV();
+        double var26 = (double)iconGlassPaneTop1.getInterpolatedU(7.0D);
+        double var28 = (double)iconGlassPaneTop1.getInterpolatedU(9.0D);
+        double var30 = (double)iconGlassPaneTop1.getMinV();
+        double var32 = (double)iconGlassPaneTop1.getMaxV();
+        double var34 = (double)iconGlassPaneTop1.getInterpolatedV(7.0D);
+        double var36 = (double)iconGlassPaneTop1.getInterpolatedV(9.0D);
+        double x0 = (double)x;
+        double x1 = (double)(x + 1);
+        double z0 = (double)z;
+        double z1 = (double)(z + 1);
+        double xHalfMin = (double)x + 0.5D - 0.0625D;
+        double xHalfMax = (double)x + 0.5D + 0.0625D;
+        double zHalfMin = (double)z + 0.5D - 0.0625D;
+        double zHalfMax = (double)z + 0.5D + 0.0625D;
+        boolean connZNeg = isStainedGlass1 ? ((BlockStainedGlassPane)block).func_150098_a(this.blockAccess.getBlock(x, y, z - 1)) : ((BlockPane)block).func_150098_a(this.blockAccess.getBlock(x, y, z - 1));
+        boolean connZPos = isStainedGlass1 ? ((BlockStainedGlassPane)block).func_150098_a(this.blockAccess.getBlock(x, y, z + 1)) : ((BlockPane)block).func_150098_a(this.blockAccess.getBlock(x, y, z + 1));
+        boolean connXNeg = isStainedGlass1 ? ((BlockStainedGlassPane)block).func_150098_a(this.blockAccess.getBlock(x - 1, y, z)) : ((BlockPane)block).func_150098_a(this.blockAccess.getBlock(x - 1, y, z));
+        boolean connXPos = isStainedGlass1 ? ((BlockStainedGlassPane)block).func_150098_a(this.blockAccess.getBlock(x + 1, y, z)) : ((BlockPane)block).func_150098_a(this.blockAccess.getBlock(x + 1, y, z));
         double var58 = 0.001D;
         double var60 = 0.999D;
         double var62 = 0.001D;
-        boolean var64 = !var54 && !var55 && !var56 && !var57;
+        boolean disconnected = !connZNeg && !connZPos && !connXNeg && !connXPos;
+        double yTop = (double)y + 0.999D;
+        double yBottom = (double)y + 0.001D;
 
-        if (!var56 && !var64)
+        if (!drawTop)
         {
-            if (!var54 && !var55)
-            {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var18, var22);
-            }
-        }
-        else if (var56 && var57)
-        {
-            if (!var54)
-            {
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var50, var20, var22);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var50, var20, var24);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var50, var68, var24);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var50, var68, var22);
-            }
-            else
-            {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var50, var68, var24);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var50, var68, var22);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var50, var20, var22);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var50, var20, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var18, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var18, var22);
-            }
-
-            if (!var55)
-            {
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var52, var68, var22);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var52, var68, var24);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var52, var20, var24);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var52, var20, var22);
-            }
-            else
-            {
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var52, var68, var22);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var52, var68, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var16, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var16, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var18, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var52, var20, var24);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var52, var20, var22);
-            }
-
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var52, var28, var30);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var52, var28, var32);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var50, var26, var32);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var50, var26, var30);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var52, var26, var32);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var52, var26, var30);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var50, var28, var30);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var50, var28, var32);
-        }
-        else
-        {
-            if (!var54 && !var64)
-            {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var18, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var18, var24);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var50, var68, var24);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var50, var68, var22);
-            }
-            else
-            {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var50, var68, var24);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var50, var68, var22);
-            }
-
-            if (!var55 && !var64)
-            {
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var52, var68, var22);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var52, var68, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var18, var22);
-            }
-            else
-            {
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var52, var68, var22);
-                var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var52, var68, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var16, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var16, var22);
-            }
-
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var52, var28, var30);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var28, var34);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var26, var34);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var50, var26, var30);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var26, var34);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var52, var26, var30);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var50, var28, var30);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var28, var34);
+            yTop = (double)(y + 1);
         }
 
-        if ((var57 || var64) && !var56)
+        if (!drawBottom)
         {
-            if (!var55 && !var64)
-            {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var16, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var16, var24);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var52, var20, var24);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var52, var20, var22);
-            }
-            else
-            {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var18, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var52, var20, var24);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var52, var20, var22);
-            }
-
-            if (!var54 && !var64)
-            {
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var50, var20, var22);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var50, var20, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-            }
-            else
-            {
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var50, var20, var22);
-                var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var50, var20, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var18, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var18, var22);
-            }
-
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var28, var36);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var52, var28, var30);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var50, var26, var30);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var26, var36);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var52, var26, var32);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var26, var36);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var28, var36);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var50, var28, var32);
-        }
-        else if (!var57 && !var54 && !var55)
-        {
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var16, var22);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var16, var24);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var18, var24);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var18, var22);
+            yBottom = (double)y;
         }
 
-        if (!var54 && !var64)
+        if (!connXNeg && !disconnected)
         {
-            if (!var57 && !var56)
+            if (!connZNeg && !connZPos)
             {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var18, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var18, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var16, var22);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, gHalf7U1, gMinV);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, gHalf7U1, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, gHalf9U, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, gHalf9U, gMinV);
             }
         }
-        else if (var54 && var55)
+        else if (connXNeg && connXPos)
         {
-            if (!var56)
+            if (!connZNeg)
             {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var42, var68, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var42, var68, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var44, var20, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var44, var20, var22);
+                var6.addVertexWithUV(x1, yTop, zHalfMin, gMaxUz, gMinVz);
+                var6.addVertexWithUV(x1, yBottom, zHalfMin, gMaxUz, gMaxVz);
+                var6.addVertexWithUV(x0, yBottom, zHalfMin, gMinUz, gMaxVz);
+                var6.addVertexWithUV(x0, yTop, zHalfMin, gMinUz, gMinVz);
             }
             else
             {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var42, var68, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var42, var68, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var18, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var44, var20, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var44, var20, var22);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, gHalf7Uz, gMinVz);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, gHalf7Uz, gMaxVz);
+                var6.addVertexWithUV(x0, yBottom, zHalfMin, gMinUz, gMaxVz);
+                var6.addVertexWithUV(x0, yTop, zHalfMin, gMinUz, gMinVz);
+                var6.addVertexWithUV(x1, yTop, zHalfMin, gMaxUz, gMinVz);
+                var6.addVertexWithUV(x1, yBottom, zHalfMin, gMaxUz, gMaxVz);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, gHalf9Uz, gMaxVz);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, gHalf9Uz, gMinVz);
             }
 
-            if (!var57)
+            if (!connZPos)
             {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var44, var20, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var44, var20, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var42, var68, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var42, var68, var22);
+                var6.addVertexWithUV(x0, yTop, zHalfMax, gMinUz, gMinVz);
+                var6.addVertexWithUV(x0, yBottom, zHalfMax, gMinUz, gMaxVz);
+                var6.addVertexWithUV(x1, yBottom, zHalfMax, gMaxUz, gMaxVz);
+                var6.addVertexWithUV(x1, yTop, zHalfMax, gMaxUz, gMinVz);
             }
             else
             {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var42, var68, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var42, var68, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var44, var20, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var44, var20, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var18, var22);
+                var6.addVertexWithUV(x0, yTop, zHalfMax, gMinUz, gMinVz);
+                var6.addVertexWithUV(x0, yBottom, zHalfMax, gMinUz, gMaxVz);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, gHalf7Uz, gMaxVz);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, gHalf7Uz, gMinVz);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, gHalf9Uz, gMinVz);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, gHalf9Uz, gMaxVz);
+                var6.addVertexWithUV(x1, yBottom, zHalfMax, gMaxUz, gMaxVz);
+                var6.addVertexWithUV(x1, yTop, zHalfMax, gMaxUz, gMinVz);
             }
 
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var42, var28, var30);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var42, var26, var30);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var44, var26, var32);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var44, var28, var32);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var42, var26, var30);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var42, var28, var30);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var44, var28, var32);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var44, var26, var32);
+            if (drawTop)
+            {
+                var6.addVertexWithUV(x0, yTop, zHalfMax, var28, var30);
+                var6.addVertexWithUV(x1, yTop, zHalfMax, var28, var32);
+                var6.addVertexWithUV(x1, yTop, zHalfMin, var26, var32);
+                var6.addVertexWithUV(x0, yTop, zHalfMin, var26, var30);
+            }
+
+            if (drawBottom)
+            {
+                var6.addVertexWithUV(x1, yBottom, zHalfMax, var26, var32);
+                var6.addVertexWithUV(x0, yBottom, zHalfMax, var26, var30);
+                var6.addVertexWithUV(x0, yBottom, zHalfMin, var28, var30);
+                var6.addVertexWithUV(x1, yBottom, zHalfMin, var28, var32);
+            }
         }
         else
         {
-            if (!var56 && !var64)
+            if (!connZNeg && !disconnected)
             {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var42, var68, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var42, var68, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var18, var22);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, gHalf9Uz, gMinVz);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, gHalf9Uz, gMaxVz);
+                var6.addVertexWithUV(x0, yBottom, zHalfMin, gMinUz, gMaxVz);
+                var6.addVertexWithUV(x0, yTop, zHalfMin, gMinUz, gMinVz);
             }
             else
             {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var42, var68, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var42, var68, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var16, var22);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, gHalf7Uz, gMinVz);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, gHalf7Uz, gMaxVz);
+                var6.addVertexWithUV(x0, yBottom, zHalfMin, gMinUz, gMaxVz);
+                var6.addVertexWithUV(x0, yTop, zHalfMin, gMinUz, gMinVz);
             }
 
-            if (!var57 && !var64)
+            if (!connZPos && !disconnected)
             {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var18, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var42, var68, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var42, var68, var22);
+                var6.addVertexWithUV(x0, yTop, zHalfMax, gMinUz, gMinVz);
+                var6.addVertexWithUV(x0, yBottom, zHalfMax, gMinUz, gMaxVz);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, gHalf9Uz, gMaxVz);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, gHalf9Uz, gMinVz);
             }
             else
             {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var42, var68, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var42, var68, var22);
+                var6.addVertexWithUV(x0, yTop, zHalfMax, gMinUz, gMinVz);
+                var6.addVertexWithUV(x0, yBottom, zHalfMax, gMinUz, gMaxVz);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, gHalf7Uz, gMaxVz);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, gHalf7Uz, gMinVz);
             }
 
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var42, var28, var30);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var42, var26, var30);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var26, var34);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var28, var34);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var42, var26, var30);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var42, var28, var30);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var28, var34);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var26, var34);
+            if (drawTop)
+            {
+                var6.addVertexWithUV(x0, yTop, zHalfMax, var28, var30);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, var28, var34);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, var26, var34);
+                var6.addVertexWithUV(x0, yTop, zHalfMin, var26, var30);
+            }
+
+            if (drawBottom)
+            {
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, var26, var34);
+                var6.addVertexWithUV(x0, yBottom, zHalfMax, var26, var30);
+                var6.addVertexWithUV(x0, yBottom, zHalfMin, var28, var30);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, var28, var34);
+            }
         }
 
-        if ((var55 || var64) && !var54)
+        if ((connXPos || disconnected) && !connXNeg)
         {
-            if (!var56 && !var64)
+            if (!connZPos && !disconnected)
             {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var44, var20, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var44, var20, var22);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, gHalf7Uz, gMinVz);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, gHalf7Uz, gMaxVz);
+                var6.addVertexWithUV(x1, yBottom, zHalfMax, gMaxUz, gMaxVz);
+                var6.addVertexWithUV(x1, yTop, zHalfMax, gMaxUz, gMinVz);
             }
             else
             {
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var18, var22);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var44, var20, var24);
-                var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var44, var20, var22);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, gHalf9Uz, gMinVz);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, gHalf9Uz, gMaxVz);
+                var6.addVertexWithUV(x1, yBottom, zHalfMax, gMaxUz, gMaxVz);
+                var6.addVertexWithUV(x1, yTop, zHalfMax, gMaxUz, gMinVz);
             }
 
-            if (!var57 && !var64)
+            if (!connZNeg && !disconnected)
             {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var44, var20, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var44, var20, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var16, var22);
+                var6.addVertexWithUV(x1, yTop, zHalfMin, gMaxUz, gMinVz);
+                var6.addVertexWithUV(x1, yBottom, zHalfMin, gMaxUz, gMaxVz);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, gHalf7Uz, gMaxVz);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, gHalf7Uz, gMinVz);
             }
             else
             {
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var44, var20, var22);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var44, var20, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-                var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var18, var22);
+                var6.addVertexWithUV(x1, yTop, zHalfMin, gMaxUz, gMinVz);
+                var6.addVertexWithUV(x1, yBottom, zHalfMin, gMaxUz, gMaxVz);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, gHalf9Uz, gMaxVz);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, gHalf9Uz, gMinVz);
             }
 
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var28, var36);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var26, var36);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var44, var26, var32);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var44, var28, var32);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var26, var36);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var28, var36);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var44, var28, var32);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var44, var26, var32);
+            if (drawTop)
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, var28, var36);
+                var6.addVertexWithUV(x1, yTop, zHalfMax, var28, var30);
+                var6.addVertexWithUV(x1, yTop, zHalfMin, var26, var30);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, var26, var36);
+            }
+
+            if (drawBottom)
+            {
+                var6.addVertexWithUV(x1, yBottom, zHalfMax, var26, var32);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, var26, var36);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, var28, var36);
+                var6.addVertexWithUV(x1, yBottom, zHalfMin, var28, var32);
+            }
         }
-        else if (!var55 && !var57 && !var56)
+        else if (!connXPos && !connZNeg && !connZPos)
         {
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var16, var22);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var16, var24);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var18, var22);
+            var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, gHalf7U1, gMinV);
+            var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, gHalf7U1, gMaxV);
+            var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, gHalf9U, gMaxV);
+            var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, gHalf9U, gMinV);
         }
 
-        var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var50, var28, var34);
-        var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var50, var26, var34);
-        var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var52, var26, var36);
-        var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var52, var28, var36);
-        var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var50, var26, var34);
-        var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var50, var28, var34);
-        var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var52, var28, var36);
-        var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var52, var26, var36);
-
-        if (var64)
+        if (!connZNeg && !disconnected)
         {
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var50, var16, var22);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var50, var16, var24);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.001D, var52, var18, var24);
-            var6.addVertexWithUV(var38, (double)p_147733_3_ + 0.999D, var52, var18, var22);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var52, var16, var22);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var52, var16, var24);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.001D, var50, var18, var24);
-            var6.addVertexWithUV(var40, (double)p_147733_3_ + 0.999D, var50, var18, var22);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var42, var18, var22);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var42, var18, var24);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var42, var16, var24);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var42, var16, var22);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.999D, var44, var16, var22);
-            var6.addVertexWithUV(var46, (double)p_147733_3_ + 0.001D, var44, var16, var24);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.001D, var44, var18, var24);
-            var6.addVertexWithUV(var48, (double)p_147733_3_ + 0.999D, var44, var18, var22);
+            if (!connXPos && !connXNeg)
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, gHalf9Uz, gMinVz);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, gHalf9Uz, gMaxVz);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, gHalf7Uz, gMaxVz);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, gHalf7Uz, gMinVz);
+            }
+        }
+        else if (connZNeg && connZPos)
+        {
+            if (!connXNeg)
+            {
+                var6.addVertexWithUV(xHalfMin, yTop, z0, gMinU1, gMinV);
+                var6.addVertexWithUV(xHalfMin, yBottom, z0, gMinU1, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yBottom, z1, gMaxU, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yTop, z1, gMaxU, gMinV);
+            }
+            else
+            {
+                var6.addVertexWithUV(xHalfMin, yTop, z0, gMinU1, gMinV);
+                var6.addVertexWithUV(xHalfMin, yBottom, z0, gMinU1, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, gHalf7U1, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, gHalf7U1, gMinV);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, gHalf9U, gMinV);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, gHalf9U, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yBottom, z1, gMaxU, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yTop, z1, gMaxU, gMinV);
+            }
+
+            if (!connXPos)
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, z1, gMaxU, gMinV);
+                var6.addVertexWithUV(xHalfMax, yBottom, z1, gMaxU, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yBottom, z0, gMinU1, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yTop, z0, gMinU1, gMinV);
+            }
+            else
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, gHalf7U1, gMinV);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, gHalf7U1, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yBottom, z0, gMinU1, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yTop, z0, gMinU1, gMinV);
+                var6.addVertexWithUV(xHalfMax, yTop, z1, gMaxU, gMinV);
+                var6.addVertexWithUV(xHalfMax, yBottom, z1, gMaxU, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, gHalf9U, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, gHalf9U, gMinV);
+            }
+
+            if (drawTop)
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, z0, var28, var30);
+                var6.addVertexWithUV(xHalfMin, yTop, z0, var26, var30);
+                var6.addVertexWithUV(xHalfMin, yTop, z1, var26, var32);
+                var6.addVertexWithUV(xHalfMax, yTop, z1, var28, var32);
+            }
+
+            if (drawBottom)
+            {
+                var6.addVertexWithUV(xHalfMin, yBottom, z0, var26, var30);
+                var6.addVertexWithUV(xHalfMax, yBottom, z0, var28, var30);
+                var6.addVertexWithUV(xHalfMax, yBottom, z1, var28, var32);
+                var6.addVertexWithUV(xHalfMin, yBottom, z1, var26, var32);
+            }
+        }
+        else
+        {
+            if (!connXNeg && !disconnected)
+            {
+                var6.addVertexWithUV(xHalfMin, yTop, z0, gMinU1, gMinV);
+                var6.addVertexWithUV(xHalfMin, yBottom, z0, gMinU1, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, gHalf9U, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, gHalf9U, gMinV);
+            }
+            else
+            {
+                var6.addVertexWithUV(xHalfMin, yTop, z0, gMinU1, gMinV);
+                var6.addVertexWithUV(xHalfMin, yBottom, z0, gMinU1, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, gHalf7U1, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, gHalf7U1, gMinV);
+            }
+
+            if (!connXPos && !disconnected)
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, gHalf9U, gMinV);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, gHalf9U, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yBottom, z0, gMinU1, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yTop, z0, gMinU1, gMinV);
+            }
+            else
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, gHalf7U1, gMinV);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, gHalf7U1, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yBottom, z0, gMinU1, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yTop, z0, gMinU1, gMinV);
+            }
+
+            if (drawTop)
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, z0, var28, var30);
+                var6.addVertexWithUV(xHalfMin, yTop, z0, var26, var30);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, var26, var34);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, var28, var34);
+            }
+
+            if (drawBottom)
+            {
+                var6.addVertexWithUV(xHalfMin, yBottom, z0, var26, var30);
+                var6.addVertexWithUV(xHalfMax, yBottom, z0, var28, var30);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, var28, var34);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, var26, var34);
+            }
+        }
+
+        if ((connZPos || disconnected) && !connZNeg)
+        {
+            if (!connXNeg && !disconnected)
+            {
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, gHalf7U1, gMinV);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, gHalf7U1, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yBottom, z1, gMaxU, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yTop, z1, gMaxU, gMinV);
+            }
+            else
+            {
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, gHalf9U, gMinV);
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, gHalf9U, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yBottom, z1, gMaxU, gMaxV);
+                var6.addVertexWithUV(xHalfMin, yTop, z1, gMaxU, gMinV);
+            }
+
+            if (!connXPos && !disconnected)
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, z1, gMaxU, gMinV);
+                var6.addVertexWithUV(xHalfMax, yBottom, z1, gMaxU, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, gHalf7U1, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, gHalf7U1, gMinV);
+            }
+            else
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, z1, gMaxU, gMinV);
+                var6.addVertexWithUV(xHalfMax, yBottom, z1, gMaxU, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, gHalf9U, gMaxV);
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, gHalf9U, gMinV);
+            }
+
+            if (drawTop)
+            {
+                var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, var28, var36);
+                var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, var26, var36);
+                var6.addVertexWithUV(xHalfMin, yTop, z1, var26, var32);
+                var6.addVertexWithUV(xHalfMax, yTop, z1, var28, var32);
+            }
+
+            if (drawBottom)
+            {
+                var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, var26, var36);
+                var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, var28, var36);
+                var6.addVertexWithUV(xHalfMax, yBottom, z1, var28, var32);
+                var6.addVertexWithUV(xHalfMin, yBottom, z1, var26, var32);
+            }
+        }
+        else if (!connZPos && !connXPos && !connXNeg)
+        {
+            var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, gHalf7Uz, gMinVz);
+            var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, gHalf7Uz, gMaxVz);
+            var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, gHalf9Uz, gMaxVz);
+            var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, gHalf9Uz, gMinVz);
+        }
+
+        if (drawTop)
+        {
+            var6.addVertexWithUV(xHalfMax, yTop, zHalfMin, var28, var34);
+            var6.addVertexWithUV(xHalfMin, yTop, zHalfMin, var26, var34);
+            var6.addVertexWithUV(xHalfMin, yTop, zHalfMax, var26, var36);
+            var6.addVertexWithUV(xHalfMax, yTop, zHalfMax, var28, var36);
+        }
+
+        if (drawBottom)
+        {
+            var6.addVertexWithUV(xHalfMin, yBottom, zHalfMin, var26, var34);
+            var6.addVertexWithUV(xHalfMax, yBottom, zHalfMin, var28, var34);
+            var6.addVertexWithUV(xHalfMax, yBottom, zHalfMax, var28, var36);
+            var6.addVertexWithUV(xHalfMin, yBottom, zHalfMax, var26, var36);
+        }
+
+        if (disconnected)
+        {
+            var6.addVertexWithUV(x0, yTop, zHalfMin, gHalf7U1, gMinV);
+            var6.addVertexWithUV(x0, yBottom, zHalfMin, gHalf7U1, gMaxV);
+            var6.addVertexWithUV(x0, yBottom, zHalfMax, gHalf9U, gMaxV);
+            var6.addVertexWithUV(x0, yTop, zHalfMax, gHalf9U, gMinV);
+            var6.addVertexWithUV(x1, yTop, zHalfMax, gHalf7U1, gMinV);
+            var6.addVertexWithUV(x1, yBottom, zHalfMax, gHalf7U1, gMaxV);
+            var6.addVertexWithUV(x1, yBottom, zHalfMin, gHalf9U, gMaxV);
+            var6.addVertexWithUV(x1, yTop, zHalfMin, gHalf9U, gMinV);
+            var6.addVertexWithUV(xHalfMax, yTop, z0, gHalf9Uz, gMinVz);
+            var6.addVertexWithUV(xHalfMax, yBottom, z0, gHalf9Uz, gMaxVz);
+            var6.addVertexWithUV(xHalfMin, yBottom, z0, gHalf7Uz, gMaxVz);
+            var6.addVertexWithUV(xHalfMin, yTop, z0, gHalf7Uz, gMinVz);
+            var6.addVertexWithUV(xHalfMin, yTop, z1, gHalf7Uz, gMinVz);
+            var6.addVertexWithUV(xHalfMin, yBottom, z1, gHalf7Uz, gMaxVz);
+            var6.addVertexWithUV(xHalfMax, yBottom, z1, gHalf9Uz, gMaxVz);
+            var6.addVertexWithUV(xHalfMax, yTop, z1, gHalf9Uz, gMinVz);
         }
 
         return true;
@@ -3117,40 +3473,67 @@ public class RenderBlocks
 
         if (EntityRenderer.anaglyphEnable)
         {
-            float var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
-            float var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
-            float var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
-            var8 = var11;
-            var9 = var12;
-            var10 = var13;
+            float var64 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
+            float var63 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
+            float kr = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
+            var8 = var64;
+            var9 = var63;
+            var10 = kr;
         }
 
         var6.setColorOpaque_F(var8, var9, var10);
-        IIcon var64;
-        IIcon var63;
+        IIcon var641;
+        IIcon var631;
 
         if (this.hasOverrideBlockTexture())
         {
-            var63 = this.overrideBlockTexture;
-            var64 = this.overrideBlockTexture;
+            var631 = this.overrideBlockTexture;
+            var641 = this.overrideBlockTexture;
         }
         else
         {
-            int var65 = this.blockAccess.getBlockMetadata(p_147767_2_, p_147767_3_, p_147767_4_);
-            var63 = this.getBlockIconFromSideAndMetadata(p_147767_1_, 0, var65);
-            var64 = p_147767_1_.func_150097_e();
+            int kr1 = this.blockAccess.getBlockMetadata(p_147767_2_, p_147767_3_, p_147767_4_);
+            var631 = this.getBlockIconFromSideAndMetadata(p_147767_1_, 0, kr1);
+            var641 = p_147767_1_.func_150097_e();
         }
 
-        double var66 = (double)var63.getMinU();
-        double var15 = (double)var63.getInterpolatedU(8.0D);
-        double var17 = (double)var63.getMaxU();
-        double var19 = (double)var63.getMinV();
-        double var21 = (double)var63.getMaxV();
-        double var23 = (double)var64.getInterpolatedU(7.0D);
-        double var25 = (double)var64.getInterpolatedU(9.0D);
-        double var27 = (double)var64.getMinV();
-        double var29 = (double)var64.getInterpolatedV(8.0D);
-        double var31 = (double)var64.getMaxV();
+        IIcon kr2 = var631;
+        IIcon kz = var631;
+        IIcon kzr = var631;
+
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            var631 = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147767_1_, p_147767_2_, p_147767_3_, p_147767_4_, 2, var631);
+            kr2 = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147767_1_, p_147767_2_, p_147767_3_, p_147767_4_, 3, kr2);
+            kz = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147767_1_, p_147767_2_, p_147767_3_, p_147767_4_, 4, kz);
+            kzr = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147767_1_, p_147767_2_, p_147767_3_, p_147767_4_, 5, kzr);
+        }
+
+        double var65 = (double)var631.getMinU();
+        double var15 = (double)var631.getInterpolatedU(8.0D);
+        double var17 = (double)var631.getMaxU();
+        double var19 = (double)var631.getMinV();
+        double var21 = (double)var631.getMaxV();
+        double dr = (double)kr2.getMinU();
+        double d1r = (double)kr2.getInterpolatedU(8.0D);
+        double d2r = (double)kr2.getMaxU();
+        double d3r = (double)kr2.getMinV();
+        double d4r = (double)kr2.getMaxV();
+        double dz = (double)kz.getMinU();
+        double d1z = (double)kz.getInterpolatedU(8.0D);
+        double d2z = (double)kz.getMaxU();
+        double d3z = (double)kz.getMinV();
+        double d4z = (double)kz.getMaxV();
+        double dzr = (double)kzr.getMinU();
+        double d1zr = (double)kzr.getInterpolatedU(8.0D);
+        double d2zr = (double)kzr.getMaxU();
+        double d3zr = (double)kzr.getMinV();
+        double d4zr = (double)kzr.getMaxV();
+        double var23 = (double)var641.getInterpolatedU(7.0D);
+        double var25 = (double)var641.getInterpolatedU(9.0D);
+        double var27 = (double)var641.getMinV();
+        double var29 = (double)var641.getInterpolatedV(8.0D);
+        double var31 = (double)var641.getMaxV();
         double var33 = (double)p_147767_2_;
         double var35 = (double)p_147767_2_ + 0.5D;
         double var37 = (double)(p_147767_2_ + 1);
@@ -3174,14 +3557,14 @@ public class RenderBlocks
         {
             if (var55 && !var56)
             {
-                var6.addVertexWithUV(var33, (double)(p_147767_3_ + 1), var41, var66, var19);
-                var6.addVertexWithUV(var33, (double)(p_147767_3_ + 0), var41, var66, var21);
+                var6.addVertexWithUV(var33, (double)(p_147767_3_ + 1), var41, var65, var19);
+                var6.addVertexWithUV(var33, (double)(p_147767_3_ + 0), var41, var65, var21);
                 var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, var15, var21);
                 var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, var15, var19);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, var66, var19);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, var66, var21);
-                var6.addVertexWithUV(var33, (double)(p_147767_3_ + 0), var41, var15, var21);
-                var6.addVertexWithUV(var33, (double)(p_147767_3_ + 1), var41, var15, var19);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, d1r, d3r);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, d1r, d4r);
+                var6.addVertexWithUV(var33, (double)(p_147767_3_ + 0), var41, d2r, d4r);
+                var6.addVertexWithUV(var33, (double)(p_147767_3_ + 1), var41, d2r, d3r);
 
                 if (!var54 && !var53)
                 {
@@ -3225,10 +3608,10 @@ public class RenderBlocks
                 var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, var15, var21);
                 var6.addVertexWithUV(var37, (double)(p_147767_3_ + 0), var41, var17, var21);
                 var6.addVertexWithUV(var37, (double)(p_147767_3_ + 1), var41, var17, var19);
-                var6.addVertexWithUV(var37, (double)(p_147767_3_ + 1), var41, var15, var19);
-                var6.addVertexWithUV(var37, (double)(p_147767_3_ + 0), var41, var15, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, var17, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, var17, var19);
+                var6.addVertexWithUV(var37, (double)(p_147767_3_ + 1), var41, dr, d3r);
+                var6.addVertexWithUV(var37, (double)(p_147767_3_ + 0), var41, dr, d4r);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, d1r, d4r);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, d1r, d3r);
 
                 if (!var54 && !var53)
                 {
@@ -3269,14 +3652,14 @@ public class RenderBlocks
         }
         else
         {
-            var6.addVertexWithUV(var33, (double)(p_147767_3_ + 1), var41, var66, var19);
-            var6.addVertexWithUV(var33, (double)(p_147767_3_ + 0), var41, var66, var21);
+            var6.addVertexWithUV(var33, (double)(p_147767_3_ + 1), var41, var65, var19);
+            var6.addVertexWithUV(var33, (double)(p_147767_3_ + 0), var41, var65, var21);
             var6.addVertexWithUV(var37, (double)(p_147767_3_ + 0), var41, var17, var21);
             var6.addVertexWithUV(var37, (double)(p_147767_3_ + 1), var41, var17, var19);
-            var6.addVertexWithUV(var37, (double)(p_147767_3_ + 1), var41, var66, var19);
-            var6.addVertexWithUV(var37, (double)(p_147767_3_ + 0), var41, var66, var21);
-            var6.addVertexWithUV(var33, (double)(p_147767_3_ + 0), var41, var17, var21);
-            var6.addVertexWithUV(var33, (double)(p_147767_3_ + 1), var41, var17, var19);
+            var6.addVertexWithUV(var37, (double)(p_147767_3_ + 1), var41, dr, d3r);
+            var6.addVertexWithUV(var37, (double)(p_147767_3_ + 0), var41, dr, d4r);
+            var6.addVertexWithUV(var33, (double)(p_147767_3_ + 0), var41, d2r, d4r);
+            var6.addVertexWithUV(var33, (double)(p_147767_3_ + 1), var41, d2r, d3r);
 
             if (var57)
             {
@@ -3359,14 +3742,14 @@ public class RenderBlocks
         {
             if (var53 && !var54)
             {
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var39, var66, var19);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var39, var66, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, var15, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, var15, var19);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, var66, var19);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, var66, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var39, var15, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var39, var15, var19);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var39, dz, d3z);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var39, dz, d4z);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, d1z, d4z);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, d1z, d3z);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, d1zr, d3zr);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, d1zr, d4zr);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var39, d2zr, d4zr);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var39, d2zr, d3zr);
 
                 if (!var56 && !var55)
                 {
@@ -3406,14 +3789,14 @@ public class RenderBlocks
             }
             else if (!var53 && var54)
             {
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, var15, var19);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, var15, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var43, var17, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var43, var17, var19);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var43, var15, var19);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var43, var15, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, var17, var21);
-                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, var17, var19);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, d1z, d3z);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, d1z, d4z);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var43, d2z, d4z);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var43, d2z, d3z);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var43, dzr, d3zr);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var43, dzr, d4zr);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var41, d1zr, d4zr);
+                var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var41, d1zr, d3zr);
 
                 if (!var56 && !var55)
                 {
@@ -3454,14 +3837,14 @@ public class RenderBlocks
         }
         else
         {
-            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var43, var66, var19);
-            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var43, var66, var21);
-            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var39, var17, var21);
-            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var39, var17, var19);
-            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var39, var66, var19);
-            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var39, var66, var21);
-            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var43, var17, var21);
-            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var43, var17, var19);
+            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var43, dzr, d3zr);
+            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var43, dzr, d4zr);
+            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var39, d2zr, d4zr);
+            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var39, d2zr, d3zr);
+            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var39, dz, d3z);
+            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var39, dz, d4z);
+            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 0), var43, d2z, d4z);
+            var6.addVertexWithUV(var35, (double)(p_147767_3_ + 1), var43, d2z, d3z);
 
             if (var57)
             {
@@ -3540,6 +3923,11 @@ public class RenderBlocks
             }
         }
 
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147767_2_, p_147767_3_, p_147767_4_))
+        {
+            this.renderSnow(p_147767_2_, p_147767_3_, p_147767_4_, Blocks.snow_layer.getBlockBoundsMaxY());
+        }
+
         return true;
     }
 
@@ -3547,24 +3935,24 @@ public class RenderBlocks
     {
         Tessellator var5 = Tessellator.instance;
         var5.setBrightness(p_147746_1_.getBlockBrightness(this.blockAccess, p_147746_2_, p_147746_3_, p_147746_4_));
-        int var6 = p_147746_1_.colorMultiplier(this.blockAccess, p_147746_2_, p_147746_3_, p_147746_4_);
+        int var6 = CustomColorizer.getColorMultiplier(p_147746_1_, this.blockAccess, p_147746_2_, p_147746_3_, p_147746_4_);
         float var7 = (float)(var6 >> 16 & 255) / 255.0F;
         float var8 = (float)(var6 >> 8 & 255) / 255.0F;
         float var9 = (float)(var6 & 255) / 255.0F;
 
         if (EntityRenderer.anaglyphEnable)
         {
-            float var10 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
+            float var18 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
             float var11 = (var7 * 30.0F + var8 * 70.0F) / 100.0F;
-            float var12 = (var7 * 30.0F + var9 * 70.0F) / 100.0F;
-            var7 = var10;
+            float var19 = (var7 * 30.0F + var9 * 70.0F) / 100.0F;
+            var7 = var18;
             var8 = var11;
-            var9 = var12;
+            var9 = var19;
         }
 
         var5.setColorOpaque_F(var7, var8, var9);
-        double var18 = (double)p_147746_2_;
-        double var19 = (double)p_147746_3_;
+        double var181 = (double)p_147746_2_;
+        double var191 = (double)p_147746_3_;
         double var14 = (double)p_147746_4_;
         long var16;
 
@@ -3572,20 +3960,32 @@ public class RenderBlocks
         {
             var16 = (long)(p_147746_2_ * 3129871) ^ (long)p_147746_4_ * 116129781L ^ (long)p_147746_3_;
             var16 = var16 * var16 * 42317861L + var16 * 11L;
-            var18 += ((double)((float)(var16 >> 16 & 15L) / 15.0F) - 0.5D) * 0.5D;
-            var19 += ((double)((float)(var16 >> 20 & 15L) / 15.0F) - 1.0D) * 0.2D;
+            var181 += ((double)((float)(var16 >> 16 & 15L) / 15.0F) - 0.5D) * 0.5D;
+            var191 += ((double)((float)(var16 >> 20 & 15L) / 15.0F) - 1.0D) * 0.2D;
             var14 += ((double)((float)(var16 >> 24 & 15L) / 15.0F) - 0.5D) * 0.5D;
         }
         else if (p_147746_1_ == Blocks.red_flower || p_147746_1_ == Blocks.yellow_flower)
         {
             var16 = (long)(p_147746_2_ * 3129871) ^ (long)p_147746_4_ * 116129781L ^ (long)p_147746_3_;
             var16 = var16 * var16 * 42317861L + var16 * 11L;
-            var18 += ((double)((float)(var16 >> 16 & 15L) / 15.0F) - 0.5D) * 0.3D;
+            var181 += ((double)((float)(var16 >> 16 & 15L) / 15.0F) - 0.5D) * 0.3D;
             var14 += ((double)((float)(var16 >> 24 & 15L) / 15.0F) - 0.5D) * 0.3D;
         }
 
         IIcon var20 = this.getBlockIconFromSideAndMetadata(p_147746_1_, 0, this.blockAccess.getBlockMetadata(p_147746_2_, p_147746_3_, p_147746_4_));
-        this.drawCrossedSquares(var20, var18, var19, var14, 1.0F);
+
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            var20 = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147746_1_, p_147746_2_, p_147746_3_, p_147746_4_, 2, var20);
+        }
+
+        this.drawCrossedSquares(var20, var181, var191, var14, 1.0F);
+
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147746_2_, p_147746_3_, p_147746_4_))
+        {
+            this.renderSnow(p_147746_2_, p_147746_3_, p_147746_4_, Blocks.snow_layer.getBlockBoundsMaxY());
+        }
+
         return true;
     }
 
@@ -3593,29 +3993,29 @@ public class RenderBlocks
     {
         Tessellator var5 = Tessellator.instance;
         var5.setBrightness(p_147774_1_.getBlockBrightness(this.blockAccess, p_147774_2_, p_147774_3_, p_147774_4_));
-        int var6 = p_147774_1_.colorMultiplier(this.blockAccess, p_147774_2_, p_147774_3_, p_147774_4_);
+        int var6 = CustomColorizer.getColorMultiplier(p_147774_1_, this.blockAccess, p_147774_2_, p_147774_3_, p_147774_4_);
         float var7 = (float)(var6 >> 16 & 255) / 255.0F;
         float var8 = (float)(var6 >> 8 & 255) / 255.0F;
         float var9 = (float)(var6 & 255) / 255.0F;
 
         if (EntityRenderer.anaglyphEnable)
         {
-            float var10 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
+            float var58 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
             float var11 = (var7 * 30.0F + var8 * 70.0F) / 100.0F;
-            float var12 = (var7 * 30.0F + var9 * 70.0F) / 100.0F;
-            var7 = var10;
+            float var59 = (var7 * 30.0F + var9 * 70.0F) / 100.0F;
+            var7 = var58;
             var8 = var11;
-            var9 = var12;
+            var9 = var59;
         }
 
         var5.setColorOpaque_F(var7, var8, var9);
-        long var58 = (long)(p_147774_2_ * 3129871) ^ (long)p_147774_4_ * 116129781L;
-        var58 = var58 * var58 * 42317861L + var58 * 11L;
-        double var59 = (double)p_147774_2_;
+        long var581 = (long)(p_147774_2_ * 3129871) ^ (long)p_147774_4_ * 116129781L;
+        var581 = var581 * var581 * 42317861L + var581 * 11L;
+        double var591 = (double)p_147774_2_;
         double var14 = (double)p_147774_3_;
         double var16 = (double)p_147774_4_;
-        var59 += ((double)((float)(var58 >> 16 & 15L) / 15.0F) - 0.5D) * 0.3D;
-        var16 += ((double)((float)(var58 >> 24 & 15L) / 15.0F) - 0.5D) * 0.3D;
+        var591 += ((double)((float)(var581 >> 16 & 15L) / 15.0F) - 0.5D) * 0.3D;
+        var16 += ((double)((float)(var581 >> 24 & 15L) / 15.0F) - 0.5D) * 0.3D;
         int var18 = this.blockAccess.getBlockMetadata(p_147774_2_, p_147774_3_, p_147774_4_);
         boolean var19 = false;
         boolean var20 = BlockDoublePlant.func_149887_c(var18);
@@ -3636,12 +4036,12 @@ public class RenderBlocks
         }
 
         IIcon var21 = p_147774_1_.func_149888_a(var20, var60);
-        this.drawCrossedSquares(var21, var59, var14, var16, 1.0F);
+        this.drawCrossedSquares(var21, var591, var14, var16, 1.0F);
 
         if (var20 && var60 == 0)
         {
             IIcon var22 = p_147774_1_.field_149891_b[0];
-            double var23 = Math.cos((double)var58 * 0.8D) * Math.PI * 0.1D;
+            double var23 = Math.cos((double)var581 * 0.8D) * Math.PI * 0.1D;
             double var25 = Math.cos(var23);
             double var27 = Math.sin(var23);
             double var29 = (double)var22.getMinU();
@@ -3658,19 +4058,24 @@ public class RenderBlocks
             double var51 = 0.5D + -0.5D * var25 + -0.05D * var27;
             double var53 = 0.5D + -0.05D * var25 - 0.5D * var27;
             double var55 = 0.5D + 0.5D * var25 + -0.05D * var27;
-            var5.addVertexWithUV(var59 + var49, var14 + 1.0D, var16 + var51, var29, var35);
-            var5.addVertexWithUV(var59 + var53, var14 + 1.0D, var16 + var55, var33, var35);
-            var5.addVertexWithUV(var59 + var41, var14 + 0.0D, var16 + var43, var33, var31);
-            var5.addVertexWithUV(var59 + var45, var14 + 0.0D, var16 + var47, var29, var31);
+            var5.addVertexWithUV(var591 + var49, var14 + 1.0D, var16 + var51, var29, var35);
+            var5.addVertexWithUV(var591 + var53, var14 + 1.0D, var16 + var55, var33, var35);
+            var5.addVertexWithUV(var591 + var41, var14 + 0.0D, var16 + var43, var33, var31);
+            var5.addVertexWithUV(var591 + var45, var14 + 0.0D, var16 + var47, var29, var31);
             IIcon var57 = p_147774_1_.field_149891_b[1];
             var29 = (double)var57.getMinU();
             var31 = (double)var57.getMinV();
             var33 = (double)var57.getMaxU();
             var35 = (double)var57.getMaxV();
-            var5.addVertexWithUV(var59 + var53, var14 + 1.0D, var16 + var55, var29, var35);
-            var5.addVertexWithUV(var59 + var49, var14 + 1.0D, var16 + var51, var33, var35);
-            var5.addVertexWithUV(var59 + var45, var14 + 0.0D, var16 + var47, var33, var31);
-            var5.addVertexWithUV(var59 + var41, var14 + 0.0D, var16 + var43, var29, var31);
+            var5.addVertexWithUV(var591 + var53, var14 + 1.0D, var16 + var55, var29, var35);
+            var5.addVertexWithUV(var591 + var49, var14 + 1.0D, var16 + var51, var33, var35);
+            var5.addVertexWithUV(var591 + var45, var14 + 0.0D, var16 + var47, var33, var31);
+            var5.addVertexWithUV(var591 + var41, var14 + 0.0D, var16 + var43, var29, var31);
+        }
+
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147774_2_, p_147774_3_, p_147774_4_))
+        {
+            this.renderSnow(p_147774_2_, p_147774_3_, p_147774_4_, Blocks.snow_layer.getBlockBoundsMaxY());
         }
 
         return true;
@@ -3681,33 +4086,33 @@ public class RenderBlocks
         BlockStem var5 = (BlockStem)p_147724_1_;
         Tessellator var6 = Tessellator.instance;
         var6.setBrightness(var5.getBlockBrightness(this.blockAccess, p_147724_2_, p_147724_3_, p_147724_4_));
-        int var7 = var5.colorMultiplier(this.blockAccess, p_147724_2_, p_147724_3_, p_147724_4_);
+        int var7 = CustomColorizer.getStemColorMultiplier(var5, this.blockAccess, p_147724_2_, p_147724_3_, p_147724_4_);
         float var8 = (float)(var7 >> 16 & 255) / 255.0F;
         float var9 = (float)(var7 >> 8 & 255) / 255.0F;
         float var10 = (float)(var7 & 255) / 255.0F;
 
         if (EntityRenderer.anaglyphEnable)
         {
-            float var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
+            float var14 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
             float var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
             float var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
-            var8 = var11;
+            var8 = var14;
             var9 = var12;
             var10 = var13;
         }
 
         var6.setColorOpaque_F(var8, var9, var10);
         var5.setBlockBoundsBasedOnState(this.blockAccess, p_147724_2_, p_147724_3_, p_147724_4_);
-        int var14 = var5.func_149873_e(this.blockAccess, p_147724_2_, p_147724_3_, p_147724_4_);
+        int var141 = var5.func_149873_e(this.blockAccess, p_147724_2_, p_147724_3_, p_147724_4_);
 
-        if (var14 < 0)
+        if (var141 < 0)
         {
             this.renderBlockStemSmall(var5, this.blockAccess.getBlockMetadata(p_147724_2_, p_147724_3_, p_147724_4_), this.renderMaxY, (double)p_147724_2_, (double)((float)p_147724_3_ - 0.0625F), (double)p_147724_4_);
         }
         else
         {
             this.renderBlockStemSmall(var5, this.blockAccess.getBlockMetadata(p_147724_2_, p_147724_3_, p_147724_4_), 0.5D, (double)p_147724_2_, (double)((float)p_147724_3_ - 0.0625F), (double)p_147724_4_);
-            this.renderBlockStemBig(var5, this.blockAccess.getBlockMetadata(p_147724_2_, p_147724_3_, p_147724_4_), var14, this.renderMaxY, (double)p_147724_2_, (double)((float)p_147724_3_ - 0.0625F), (double)p_147724_4_);
+            this.renderBlockStemBig(var5, this.blockAccess.getBlockMetadata(p_147724_2_, p_147724_3_, p_147724_4_), var141, this.renderMaxY, (double)p_147724_2_, (double)((float)p_147724_3_ - 0.0625F), (double)p_147724_4_);
         }
 
         return true;
@@ -3860,6 +4265,11 @@ public class RenderBlocks
             var6 = this.overrideBlockTexture;
         }
 
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            var6 = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147783_1_, p_147783_2_, p_147783_3_, p_147783_4_, 1, var6);
+        }
+
         float var7 = 0.015625F;
         double var8 = (double)var6.getMinU();
         double var10 = (double)var6.getMinV();
@@ -3873,12 +4283,13 @@ public class RenderBlocks
         float var20 = (float)p_147783_4_ + 0.5F;
         float var21 = (float)(var18 & 1) * 0.5F * (float)(1 - var18 / 2 % 2 * 2);
         float var22 = (float)(var18 + 1 & 1) * 0.5F * (float)(1 - (var18 + 1) / 2 % 2 * 2);
-        var5.setColorOpaque_I(p_147783_1_.getBlockColor());
+        int col = CustomColorizer.getLilypadColor();
+        var5.setColorOpaque_I(col);
         var5.addVertexWithUV((double)(var19 + var21 - var22), (double)((float)p_147783_3_ + var7), (double)(var20 + var21 + var22), var8, var10);
         var5.addVertexWithUV((double)(var19 + var21 + var22), (double)((float)p_147783_3_ + var7), (double)(var20 - var21 + var22), var12, var10);
         var5.addVertexWithUV((double)(var19 - var21 + var22), (double)((float)p_147783_3_ + var7), (double)(var20 - var21 - var22), var12, var14);
         var5.addVertexWithUV((double)(var19 - var21 - var22), (double)((float)p_147783_3_ + var7), (double)(var20 + var21 - var22), var8, var14);
-        var5.setColorOpaque_I((p_147783_1_.getBlockColor() & 16711422) >> 1);
+        var5.setColorOpaque_I((col & 16711422) >> 1);
         var5.addVertexWithUV((double)(var19 - var21 - var22), (double)((float)p_147783_3_ + var7), (double)(var20 + var21 - var22), var8, var14);
         var5.addVertexWithUV((double)(var19 - var21 + var22), (double)((float)p_147783_3_ + var7), (double)(var20 - var21 - var22), var12, var14);
         var5.addVertexWithUV((double)(var19 + var21 + var22), (double)((float)p_147783_3_ + var7), (double)(var20 - var21 + var22), var12, var10);
@@ -3997,7 +4408,7 @@ public class RenderBlocks
     public boolean renderBlockFluids(Block p_147721_1_, int p_147721_2_, int p_147721_3_, int p_147721_4_)
     {
         Tessellator var5 = Tessellator.instance;
-        int var6 = p_147721_1_.colorMultiplier(this.blockAccess, p_147721_2_, p_147721_3_, p_147721_4_);
+        int var6 = CustomColorizer.getFluidColor(p_147721_1_, this.blockAccess, p_147721_2_, p_147721_3_, p_147721_4_);
         float var7 = (float)(var6 >> 16 & 255) / 255.0F;
         float var8 = (float)(var6 >> 8 & 255) / 255.0F;
         float var9 = (float)(var6 & 255) / 255.0F;
@@ -4025,113 +4436,107 @@ public class RenderBlocks
             double var28 = (double)this.getFluidHeight(p_147721_2_ + 1, p_147721_3_, p_147721_4_ + 1, var22);
             double var30 = (double)this.getFluidHeight(p_147721_2_ + 1, p_147721_3_, p_147721_4_, var22);
             double var32 = 0.0010000000474974513D;
-            float var52;
-            float var53;
             float var54;
+            float var53;
+            float var52;
+            double var39;
+            double var43;
+            double var41;
+            double var47;
+            double var45;
+            double var49;
 
             if (this.renderAllFaces || var10)
             {
                 var13 = true;
-                IIcon var34 = this.getBlockIconFromSideAndMetadata(p_147721_1_, 1, var23);
-                float var35 = (float)BlockLiquid.func_149802_a(this.blockAccess, p_147721_2_, p_147721_3_, p_147721_4_, var22);
+                IIcon var57 = this.getBlockIconFromSideAndMetadata(p_147721_1_, 1, var23);
+                float var58 = (float)BlockLiquid.func_149802_a(this.blockAccess, p_147721_2_, p_147721_3_, p_147721_4_, var22);
 
-                if (var35 > -999.0F)
+                if (var58 > -999.0F)
                 {
-                    var34 = this.getBlockIconFromSideAndMetadata(p_147721_1_, 2, var23);
+                    var57 = this.getBlockIconFromSideAndMetadata(p_147721_1_, 2, var23);
                 }
 
                 var24 -= var32;
                 var26 -= var32;
                 var28 -= var32;
                 var30 -= var32;
-                double var36;
-                double var38;
-                double var40;
-                double var42;
-                double var44;
-                double var46;
-                double var48;
-                double var50;
+                double var37;
+                double var51;
 
-                if (var35 < -999.0F)
+                if (var58 < -999.0F)
                 {
-                    var36 = (double)var34.getInterpolatedU(0.0D);
-                    var44 = (double)var34.getInterpolatedV(0.0D);
-                    var38 = var36;
-                    var46 = (double)var34.getInterpolatedV(16.0D);
-                    var40 = (double)var34.getInterpolatedU(16.0D);
-                    var48 = var46;
-                    var42 = var40;
-                    var50 = var44;
+                    var39 = (double)var57.getInterpolatedU(0.0D);
+                    var45 = (double)var57.getInterpolatedV(0.0D);
+                    var37 = var39;
+                    var47 = (double)var57.getInterpolatedV(16.0D);
+                    var41 = (double)var57.getInterpolatedU(16.0D);
+                    var51 = var47;
+                    var43 = var41;
+                    var49 = var45;
                 }
                 else
                 {
-                    var52 = MathHelper.sin(var35) * 0.25F;
-                    var53 = MathHelper.cos(var35) * 0.25F;
+                    var52 = MathHelper.sin(var58) * 0.25F;
+                    var53 = MathHelper.cos(var58) * 0.25F;
                     var54 = 8.0F;
-                    var36 = (double)var34.getInterpolatedU((double)(8.0F + (-var53 - var52) * 16.0F));
-                    var44 = (double)var34.getInterpolatedV((double)(8.0F + (-var53 + var52) * 16.0F));
-                    var38 = (double)var34.getInterpolatedU((double)(8.0F + (-var53 + var52) * 16.0F));
-                    var46 = (double)var34.getInterpolatedV((double)(8.0F + (var53 + var52) * 16.0F));
-                    var40 = (double)var34.getInterpolatedU((double)(8.0F + (var53 + var52) * 16.0F));
-                    var48 = (double)var34.getInterpolatedV((double)(8.0F + (var53 - var52) * 16.0F));
-                    var42 = (double)var34.getInterpolatedU((double)(8.0F + (var53 - var52) * 16.0F));
-                    var50 = (double)var34.getInterpolatedV((double)(8.0F + (-var53 - var52) * 16.0F));
+                    var39 = (double)var57.getInterpolatedU((double)(8.0F + (-var53 - var52) * 16.0F));
+                    var45 = (double)var57.getInterpolatedV((double)(8.0F + (-var53 + var52) * 16.0F));
+                    var37 = (double)var57.getInterpolatedU((double)(8.0F + (-var53 + var52) * 16.0F));
+                    var47 = (double)var57.getInterpolatedV((double)(8.0F + (var53 + var52) * 16.0F));
+                    var41 = (double)var57.getInterpolatedU((double)(8.0F + (var53 + var52) * 16.0F));
+                    var51 = (double)var57.getInterpolatedV((double)(8.0F + (var53 - var52) * 16.0F));
+                    var43 = (double)var57.getInterpolatedU((double)(8.0F + (var53 - var52) * 16.0F));
+                    var49 = (double)var57.getInterpolatedV((double)(8.0F + (-var53 - var52) * 16.0F));
                 }
 
                 var5.setBrightness(p_147721_1_.getBlockBrightness(this.blockAccess, p_147721_2_, p_147721_3_, p_147721_4_));
                 var5.setColorOpaque_F(var15 * var7, var15 * var8, var15 * var9);
-                var5.addVertexWithUV((double)(p_147721_2_ + 0), (double)p_147721_3_ + var24, (double)(p_147721_4_ + 0), var36, var44);
-                var5.addVertexWithUV((double)(p_147721_2_ + 0), (double)p_147721_3_ + var26, (double)(p_147721_4_ + 1), var38, var46);
-                var5.addVertexWithUV((double)(p_147721_2_ + 1), (double)p_147721_3_ + var28, (double)(p_147721_4_ + 1), var40, var48);
-                var5.addVertexWithUV((double)(p_147721_2_ + 1), (double)p_147721_3_ + var30, (double)(p_147721_4_ + 0), var42, var50);
+                double var56 = 3.90625E-5D;
+                var5.addVertexWithUV((double)(p_147721_2_ + 0), (double)p_147721_3_ + var24, (double)(p_147721_4_ + 0), var39 + var56, var45 + var56);
+                var5.addVertexWithUV((double)(p_147721_2_ + 0), (double)p_147721_3_ + var26, (double)(p_147721_4_ + 1), var37 + var56, var47 - var56);
+                var5.addVertexWithUV((double)(p_147721_2_ + 1), (double)p_147721_3_ + var28, (double)(p_147721_4_ + 1), var41 - var56, var51 - var56);
+                var5.addVertexWithUV((double)(p_147721_2_ + 1), (double)p_147721_3_ + var30, (double)(p_147721_4_ + 0), var43 - var56, var49 + var56);
             }
 
             if (this.renderAllFaces || var11)
             {
                 var5.setBrightness(p_147721_1_.getBlockBrightness(this.blockAccess, p_147721_2_, p_147721_3_ - 1, p_147721_4_));
-                var5.setColorOpaque_F(var14, var14, var14);
+                var5.setColorOpaque_F(var14 * var7, var14 * var8, var14 * var9);
                 this.renderFaceYNeg(p_147721_1_, (double)p_147721_2_, (double)p_147721_3_ + var32, (double)p_147721_4_, this.getBlockIconFromSide(p_147721_1_, 0));
                 var13 = true;
             }
 
-            for (int var57 = 0; var57 < 4; ++var57)
+            for (int var571 = 0; var571 < 4; ++var571)
             {
-                int var58 = p_147721_2_;
-                int var37 = p_147721_4_;
+                int var581 = p_147721_2_;
+                int var591 = p_147721_4_;
 
-                if (var57 == 0)
+                if (var571 == 0)
                 {
-                    var37 = p_147721_4_ - 1;
+                    var591 = p_147721_4_ - 1;
                 }
 
-                if (var57 == 1)
+                if (var571 == 1)
                 {
-                    ++var37;
+                    ++var591;
                 }
 
-                if (var57 == 2)
+                if (var571 == 2)
                 {
-                    var58 = p_147721_2_ - 1;
+                    var581 = p_147721_2_ - 1;
                 }
 
-                if (var57 == 3)
+                if (var571 == 3)
                 {
-                    ++var58;
+                    ++var581;
                 }
 
-                IIcon var59 = this.getBlockIconFromSideAndMetadata(p_147721_1_, var57 + 2, var23);
+                IIcon var59 = this.getBlockIconFromSideAndMetadata(p_147721_1_, var571 + 2, var23);
 
-                if (this.renderAllFaces || var12[var57])
+                if (this.renderAllFaces || var12[var571])
                 {
-                    double var39;
-                    double var41;
-                    double var43;
-                    double var45;
-                    double var47;
-                    double var49;
-
-                    if (var57 == 0)
+                    if (var571 == 0)
                     {
                         var39 = var24;
                         var41 = var30;
@@ -4140,7 +4545,7 @@ public class RenderBlocks
                         var45 = (double)p_147721_4_ + var32;
                         var49 = (double)p_147721_4_ + var32;
                     }
-                    else if (var57 == 1)
+                    else if (var571 == 1)
                     {
                         var39 = var28;
                         var41 = var26;
@@ -4149,7 +4554,7 @@ public class RenderBlocks
                         var45 = (double)(p_147721_4_ + 1) - var32;
                         var49 = (double)(p_147721_4_ + 1) - var32;
                     }
-                    else if (var57 == 2)
+                    else if (var571 == 2)
                     {
                         var39 = var26;
                         var41 = var24;
@@ -4169,19 +4574,19 @@ public class RenderBlocks
                     }
 
                     var13 = true;
-                    float var51 = var59.getInterpolatedU(0.0D);
+                    float var60 = var59.getInterpolatedU(0.0D);
                     var52 = var59.getInterpolatedU(8.0D);
                     var53 = var59.getInterpolatedV((1.0D - var39) * 16.0D * 0.5D);
                     var54 = var59.getInterpolatedV((1.0D - var41) * 16.0D * 0.5D);
                     float var55 = var59.getInterpolatedV(8.0D);
-                    var5.setBrightness(p_147721_1_.getBlockBrightness(this.blockAccess, var58, p_147721_3_, var37));
-                    float var56 = 1.0F;
-                    var56 *= var57 < 2 ? var16 : var17;
-                    var5.setColorOpaque_F(var15 * var56 * var7, var15 * var56 * var8, var15 * var56 * var9);
-                    var5.addVertexWithUV(var43, (double)p_147721_3_ + var39, var45, (double)var51, (double)var53);
+                    var5.setBrightness(p_147721_1_.getBlockBrightness(this.blockAccess, var581, p_147721_3_, var591));
+                    float var61 = 1.0F;
+                    var61 *= var571 < 2 ? var16 : var17;
+                    var5.setColorOpaque_F(var15 * var61 * var7, var15 * var61 * var8, var15 * var61 * var9);
+                    var5.addVertexWithUV(var43, (double)p_147721_3_ + var39, var45, (double)var60, (double)var53);
                     var5.addVertexWithUV(var47, (double)p_147721_3_ + var41, var49, (double)var52, (double)var54);
                     var5.addVertexWithUV(var47, (double)(p_147721_3_ + 0), var49, (double)var52, (double)var55);
-                    var5.addVertexWithUV(var43, (double)(p_147721_3_ + 0), var45, (double)var51, (double)var55);
+                    var5.addVertexWithUV(var43, (double)(p_147721_3_ + 0), var45, (double)var60, (double)var55);
                 }
             }
 
@@ -4191,7 +4596,7 @@ public class RenderBlocks
         }
     }
 
-    private float getFluidHeight(int p_147729_1_, int p_147729_2_, int p_147729_3_, Material p_147729_4_)
+    public float getFluidHeight(int p_147729_1_, int p_147729_2_, int p_147729_3_, Material p_147729_4_)
     {
         int var5 = 0;
         float var6 = 0.0F;
@@ -4260,7 +4665,7 @@ public class RenderBlocks
      */
     public boolean renderStandardBlock(Block p_147784_1_, int p_147784_2_, int p_147784_3_, int p_147784_4_)
     {
-        int var5 = p_147784_1_.colorMultiplier(this.blockAccess, p_147784_2_, p_147784_3_, p_147784_4_);
+        int var5 = CustomColorizer.getColorMultiplier(p_147784_1_, this.blockAccess, p_147784_2_, p_147784_3_, p_147784_4_);
         float var6 = (float)(var5 >> 16 & 255) / 255.0F;
         float var7 = (float)(var5 >> 8 & 255) / 255.0F;
         float var8 = (float)(var5 & 255) / 255.0F;
@@ -4285,15 +4690,17 @@ public class RenderBlocks
 
         if (var6 == 4)
         {
-            this.uvRotateEast = 1;
+            this.uvRotateEast = 2;
             this.uvRotateWest = 1;
             this.uvRotateTop = 1;
-            this.uvRotateBottom = 1;
+            this.uvRotateBottom = 2;
         }
         else if (var6 == 8)
         {
-            this.uvRotateSouth = 1;
+            this.uvRotateSouth = 2;
             this.uvRotateNorth = 1;
+            this.uvRotateTop = 3;
+            this.uvRotateBottom = 3;
         }
 
         boolean var7 = this.renderStandardBlock(p_147742_1_, p_147742_2_, p_147742_3_, p_147742_4_);
@@ -4312,15 +4719,17 @@ public class RenderBlocks
 
         if (var5 == 3)
         {
-            this.uvRotateEast = 1;
+            this.uvRotateEast = 2;
             this.uvRotateWest = 1;
             this.uvRotateTop = 1;
-            this.uvRotateBottom = 1;
+            this.uvRotateBottom = 2;
         }
         else if (var5 == 4)
         {
-            this.uvRotateSouth = 1;
+            this.uvRotateSouth = 2;
             this.uvRotateNorth = 1;
+            this.uvRotateTop = 3;
+            this.uvRotateBottom = 3;
         }
 
         boolean var6 = this.renderStandardBlock(p_147779_1_, p_147779_2_, p_147779_3_, p_147779_4_);
@@ -4336,17 +4745,20 @@ public class RenderBlocks
     public boolean renderStandardBlockWithAmbientOcclusion(Block p_147751_1_, int p_147751_2_, int p_147751_3_, int p_147751_4_, float p_147751_5_, float p_147751_6_, float p_147751_7_)
     {
         this.enableAO = true;
+        boolean defaultTexture = Tessellator.instance.defaultTexture;
+        boolean betterGrass = Config.isBetterGrass() && defaultTexture;
+        boolean simpleAO = p_147751_1_ == Blocks.glass;
         boolean var8 = false;
         float var9 = 0.0F;
         float var10 = 0.0F;
         float var11 = 0.0F;
         float var12 = 0.0F;
         boolean var13 = true;
-        int var14 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_);
+        int var14 = -1;
         Tessellator var15 = Tessellator.instance;
         var15.setBrightness(983055);
 
-        if (this.getBlockIcon(p_147751_1_).getIconName().equals("grass_top"))
+        if (p_147751_1_ == Blocks.grass)
         {
             var13 = false;
         }
@@ -4355,12 +4767,12 @@ public class RenderBlocks
             var13 = false;
         }
 
-        boolean var16;
         boolean var17;
-        boolean var18;
+        boolean var16;
         boolean var19;
-        int var20;
+        boolean var18;
         float var21;
+        int var20;
 
         if (this.renderAllFaces || p_147751_1_.shouldSideBeRendered(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_, 0))
         {
@@ -4373,10 +4785,10 @@ public class RenderBlocks
             this.aoBrightnessYZNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ - 1);
             this.aoBrightnessYZNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ + 1);
             this.aoBrightnessXYPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_, p_147751_4_);
-            this.aoLightValueScratchXYNN = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZNN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZNP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXYPN = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXYNN = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_);
+            this.aoLightValueScratchYZNN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ - 1);
+            this.aoLightValueScratchYZNP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ + 1);
+            this.aoLightValueScratchXYPN = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_);
             var16 = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_ - 1, p_147751_4_).getCanBlockGrass();
             var17 = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_ - 1, p_147751_4_).getCanBlockGrass();
             var18 = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_ + 1).getCanBlockGrass();
@@ -4389,7 +4801,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNN = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNN = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_ - 1);
                 this.aoBrightnessXYZNNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_, p_147751_4_ - 1);
             }
 
@@ -4400,7 +4812,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNP = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNP = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_ + 1);
                 this.aoBrightnessXYZNNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_, p_147751_4_ + 1);
             }
 
@@ -4411,7 +4823,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNN = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNN = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_ - 1);
                 this.aoBrightnessXYZPNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_, p_147751_4_ - 1);
             }
 
@@ -4422,13 +4834,18 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNP = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNP = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_ + 1);
                 this.aoBrightnessXYZPNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_, p_147751_4_ + 1);
             }
 
             if (this.renderMinY <= 0.0D)
             {
                 ++p_147751_3_;
+            }
+
+            if (var14 < 0)
+            {
+                var14 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_);
             }
 
             var20 = var14;
@@ -4438,7 +4855,7 @@ public class RenderBlocks
                 var20 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_);
             }
 
-            var21 = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_);
             var9 = (this.aoLightValueScratchXYZNNP + this.aoLightValueScratchXYNN + this.aoLightValueScratchYZNP + var21) / 4.0F;
             var12 = (this.aoLightValueScratchYZNP + var21 + this.aoLightValueScratchXYZPNP + this.aoLightValueScratchXYPN) / 4.0F;
             var11 = (var21 + this.aoLightValueScratchYZNN + this.aoLightValueScratchXYPN + this.aoLightValueScratchXYZPNN) / 4.0F;
@@ -4447,6 +4864,15 @@ public class RenderBlocks
             this.brightnessTopRight = this.getAoBrightness(this.aoBrightnessYZNP, this.aoBrightnessXYZPNP, this.aoBrightnessXYPN, var20);
             this.brightnessBottomRight = this.getAoBrightness(this.aoBrightnessYZNN, this.aoBrightnessXYPN, this.aoBrightnessXYZPNN, var20);
             this.brightnessBottomLeft = this.getAoBrightness(this.aoBrightnessXYNN, this.aoBrightnessXYZNNN, this.aoBrightnessYZNN, var20);
+
+            if (simpleAO)
+            {
+                var10 = var21;
+                var11 = var21;
+                var12 = var21;
+                var9 = var21;
+                this.brightnessTopLeft = this.brightnessTopRight = this.brightnessBottomRight = this.brightnessBottomLeft = var20;
+            }
 
             if (var13)
             {
@@ -4488,10 +4914,10 @@ public class RenderBlocks
             this.aoBrightnessXYPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_, p_147751_4_);
             this.aoBrightnessYZPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ - 1);
             this.aoBrightnessYZPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ + 1);
-            this.aoLightValueScratchXYNP = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXYPP = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZPN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZPP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXYNP = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_);
+            this.aoLightValueScratchXYPP = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_);
+            this.aoLightValueScratchYZPN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ - 1);
+            this.aoLightValueScratchYZPP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ + 1);
             var16 = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_ + 1, p_147751_4_).getCanBlockGrass();
             var17 = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_ + 1, p_147751_4_).getCanBlockGrass();
             var18 = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_ + 1).getCanBlockGrass();
@@ -4504,7 +4930,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPN = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPN = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_ - 1);
                 this.aoBrightnessXYZNPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_, p_147751_4_ - 1);
             }
 
@@ -4515,7 +4941,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPN = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPN = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_ - 1);
                 this.aoBrightnessXYZPPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_, p_147751_4_ - 1);
             }
 
@@ -4526,7 +4952,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPP = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPP = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_ + 1);
                 this.aoBrightnessXYZNPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_, p_147751_4_ + 1);
             }
 
@@ -4537,13 +4963,18 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPP = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPP = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_ + 1);
                 this.aoBrightnessXYZPPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_, p_147751_4_ + 1);
             }
 
             if (this.renderMaxY >= 1.0D)
             {
                 --p_147751_3_;
+            }
+
+            if (var14 < 0)
+            {
+                var14 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_);
             }
 
             var20 = var14;
@@ -4553,7 +4984,7 @@ public class RenderBlocks
                 var20 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ + 1, p_147751_4_);
             }
 
-            var21 = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_);
             var12 = (this.aoLightValueScratchXYZNPP + this.aoLightValueScratchXYNP + this.aoLightValueScratchYZPP + var21) / 4.0F;
             var9 = (this.aoLightValueScratchYZPP + var21 + this.aoLightValueScratchXYZPPP + this.aoLightValueScratchXYPP) / 4.0F;
             var10 = (var21 + this.aoLightValueScratchYZPN + this.aoLightValueScratchXYPP + this.aoLightValueScratchXYZPPN) / 4.0F;
@@ -4562,6 +4993,16 @@ public class RenderBlocks
             this.brightnessTopLeft = this.getAoBrightness(this.aoBrightnessYZPP, this.aoBrightnessXYZPPP, this.aoBrightnessXYPP, var20);
             this.brightnessBottomLeft = this.getAoBrightness(this.aoBrightnessYZPN, this.aoBrightnessXYPP, this.aoBrightnessXYZPPN, var20);
             this.brightnessBottomRight = this.getAoBrightness(this.aoBrightnessXYNP, this.aoBrightnessXYZNPN, this.aoBrightnessYZPN, var20);
+
+            if (simpleAO)
+            {
+                var10 = var21;
+                var11 = var21;
+                var12 = var21;
+                var9 = var21;
+                this.brightnessTopLeft = this.brightnessTopRight = this.brightnessBottomRight = this.brightnessBottomLeft = var20;
+            }
+
             this.colorRedTopLeft = this.colorRedBottomLeft = this.colorRedBottomRight = this.colorRedTopRight = p_147751_5_;
             this.colorGreenTopLeft = this.colorGreenBottomLeft = this.colorGreenBottomRight = this.colorGreenTopRight = p_147751_6_;
             this.colorBlueTopLeft = this.colorBlueBottomLeft = this.colorBlueBottomRight = this.colorBlueTopRight = p_147751_7_;
@@ -4590,10 +5031,10 @@ public class RenderBlocks
                 --p_147751_4_;
             }
 
-            this.aoLightValueScratchXZNN = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZNN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZPN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZPN = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXZNN = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_);
+            this.aoLightValueScratchYZNN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_);
+            this.aoLightValueScratchYZPN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_);
+            this.aoLightValueScratchXZPN = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_);
             this.aoBrightnessXZNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_, p_147751_4_);
             this.aoBrightnessYZNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_);
             this.aoBrightnessYZPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ + 1, p_147751_4_);
@@ -4610,7 +5051,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNN = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNN = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_ - 1, p_147751_4_);
                 this.aoBrightnessXYZNNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_ - 1, p_147751_4_);
             }
 
@@ -4621,7 +5062,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPN = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPN = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_ + 1, p_147751_4_);
                 this.aoBrightnessXYZNPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_ + 1, p_147751_4_);
             }
 
@@ -4632,7 +5073,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNN = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNN = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_ - 1, p_147751_4_);
                 this.aoBrightnessXYZPNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_ - 1, p_147751_4_);
             }
 
@@ -4643,13 +5084,18 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPN = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPN = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_ + 1, p_147751_4_);
                 this.aoBrightnessXYZPPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_ + 1, p_147751_4_);
             }
 
             if (this.renderMinZ <= 0.0D)
             {
                 ++p_147751_4_;
+            }
+
+            if (var14 < 0)
+            {
+                var14 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_);
             }
 
             var20 = var14;
@@ -4659,7 +5105,7 @@ public class RenderBlocks
                 var20 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ - 1);
             }
 
-            var21 = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ - 1);
             var9 = (this.aoLightValueScratchXZNN + this.aoLightValueScratchXYZNPN + var21 + this.aoLightValueScratchYZPN) / 4.0F;
             var10 = (var21 + this.aoLightValueScratchYZPN + this.aoLightValueScratchXZPN + this.aoLightValueScratchXYZPPN) / 4.0F;
             var11 = (this.aoLightValueScratchYZNN + var21 + this.aoLightValueScratchXYZPNN + this.aoLightValueScratchXZPN) / 4.0F;
@@ -4668,6 +5114,15 @@ public class RenderBlocks
             this.brightnessBottomLeft = this.getAoBrightness(this.aoBrightnessYZPN, this.aoBrightnessXZPN, this.aoBrightnessXYZPPN, var20);
             this.brightnessBottomRight = this.getAoBrightness(this.aoBrightnessYZNN, this.aoBrightnessXYZPNN, this.aoBrightnessXZPN, var20);
             this.brightnessTopRight = this.getAoBrightness(this.aoBrightnessXYZNNN, this.aoBrightnessXZNN, this.aoBrightnessYZNN, var20);
+
+            if (simpleAO)
+            {
+                var10 = var21;
+                var11 = var21;
+                var12 = var21;
+                var9 = var21;
+                this.brightnessTopLeft = this.brightnessTopRight = this.brightnessBottomRight = this.brightnessBottomLeft = var20;
+            }
 
             if (var13)
             {
@@ -4695,9 +5150,15 @@ public class RenderBlocks
             this.colorGreenTopRight *= var12;
             this.colorBlueTopRight *= var12;
             var22 = this.getBlockIcon(p_147751_1_, this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_, 2);
+
+            if (betterGrass)
+            {
+                var22 = this.fixAoSideGrassTexture(var22, p_147751_2_, p_147751_3_, p_147751_4_, 2, p_147751_5_, p_147751_6_, p_147751_7_);
+            }
+
             this.renderFaceZNeg(p_147751_1_, (double)p_147751_2_, (double)p_147751_3_, (double)p_147751_4_, var22);
 
-            if (fancyGrass && var22.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (defaultTexture && fancyGrass && var22 == TextureUtils.iconGrassSide && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= p_147751_5_;
                 this.colorRedBottomLeft *= p_147751_5_;
@@ -4724,10 +5185,10 @@ public class RenderBlocks
                 ++p_147751_4_;
             }
 
-            this.aoLightValueScratchXZNP = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZPP = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZNP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZPP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXZNP = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_);
+            this.aoLightValueScratchXZPP = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_);
+            this.aoLightValueScratchYZNP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_);
+            this.aoLightValueScratchYZPP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_);
             this.aoBrightnessXZNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_, p_147751_4_);
             this.aoBrightnessXZPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_, p_147751_4_);
             this.aoBrightnessYZNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_);
@@ -4744,7 +5205,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNP = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNP = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_ - 1, p_147751_4_);
                 this.aoBrightnessXYZNNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_ - 1, p_147751_4_);
             }
 
@@ -4755,7 +5216,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPP = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPP = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_ + 1, p_147751_4_);
                 this.aoBrightnessXYZNPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_ + 1, p_147751_4_);
             }
 
@@ -4766,7 +5227,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNP = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNP = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_ - 1, p_147751_4_);
                 this.aoBrightnessXYZPNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_ - 1, p_147751_4_);
             }
 
@@ -4777,13 +5238,18 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPP = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPP = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_ + 1, p_147751_4_);
                 this.aoBrightnessXYZPPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_ + 1, p_147751_4_);
             }
 
             if (this.renderMaxZ >= 1.0D)
             {
                 --p_147751_4_;
+            }
+
+            if (var14 < 0)
+            {
+                var14 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_);
             }
 
             var20 = var14;
@@ -4793,7 +5259,7 @@ public class RenderBlocks
                 var20 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ + 1);
             }
 
-            var21 = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ + 1);
             var9 = (this.aoLightValueScratchXZNP + this.aoLightValueScratchXYZNPP + var21 + this.aoLightValueScratchYZPP) / 4.0F;
             var12 = (var21 + this.aoLightValueScratchYZPP + this.aoLightValueScratchXZPP + this.aoLightValueScratchXYZPPP) / 4.0F;
             var11 = (this.aoLightValueScratchYZNP + var21 + this.aoLightValueScratchXYZPNP + this.aoLightValueScratchXZPP) / 4.0F;
@@ -4802,6 +5268,15 @@ public class RenderBlocks
             this.brightnessTopRight = this.getAoBrightness(this.aoBrightnessYZPP, this.aoBrightnessXZPP, this.aoBrightnessXYZPPP, var20);
             this.brightnessBottomRight = this.getAoBrightness(this.aoBrightnessYZNP, this.aoBrightnessXYZPNP, this.aoBrightnessXZPP, var20);
             this.brightnessBottomLeft = this.getAoBrightness(this.aoBrightnessXYZNNP, this.aoBrightnessXZNP, this.aoBrightnessYZNP, var20);
+
+            if (simpleAO)
+            {
+                var10 = var21;
+                var11 = var21;
+                var12 = var21;
+                var9 = var21;
+                this.brightnessTopLeft = this.brightnessTopRight = this.brightnessBottomRight = this.brightnessBottomLeft = var20;
+            }
 
             if (var13)
             {
@@ -4829,9 +5304,15 @@ public class RenderBlocks
             this.colorGreenTopRight *= var12;
             this.colorBlueTopRight *= var12;
             var22 = this.getBlockIcon(p_147751_1_, this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_, 3);
-            this.renderFaceZPos(p_147751_1_, (double)p_147751_2_, (double)p_147751_3_, (double)p_147751_4_, this.getBlockIcon(p_147751_1_, this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_, 3));
 
-            if (fancyGrass && var22.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (betterGrass)
+            {
+                var22 = this.fixAoSideGrassTexture(var22, p_147751_2_, p_147751_3_, p_147751_4_, 3, p_147751_5_, p_147751_6_, p_147751_7_);
+            }
+
+            this.renderFaceZPos(p_147751_1_, (double)p_147751_2_, (double)p_147751_3_, (double)p_147751_4_, var22);
+
+            if (defaultTexture && fancyGrass && var22 == TextureUtils.iconGrassSide && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= p_147751_5_;
                 this.colorRedBottomLeft *= p_147751_5_;
@@ -4858,10 +5339,10 @@ public class RenderBlocks
                 --p_147751_2_;
             }
 
-            this.aoLightValueScratchXYNN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZNN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZNP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXYNP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXYNN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_);
+            this.aoLightValueScratchXZNN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ - 1);
+            this.aoLightValueScratchXZNP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ + 1);
+            this.aoLightValueScratchXYNP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_);
             this.aoBrightnessXYNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_);
             this.aoBrightnessXZNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ - 1);
             this.aoBrightnessXZNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ + 1);
@@ -4878,7 +5359,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_ - 1);
                 this.aoBrightnessXYZNNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_ - 1);
             }
 
@@ -4889,7 +5370,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_ + 1);
                 this.aoBrightnessXYZNNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_ + 1);
             }
 
@@ -4900,7 +5381,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_ - 1);
                 this.aoBrightnessXYZNPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ + 1, p_147751_4_ - 1);
             }
 
@@ -4911,13 +5392,18 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_ + 1);
                 this.aoBrightnessXYZNPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ + 1, p_147751_4_ + 1);
             }
 
             if (this.renderMinX <= 0.0D)
             {
                 ++p_147751_2_;
+            }
+
+            if (var14 < 0)
+            {
+                var14 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_);
             }
 
             var20 = var14;
@@ -4927,7 +5413,7 @@ public class RenderBlocks
                 var20 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ - 1, p_147751_3_, p_147751_4_);
             }
 
-            var21 = this.blockAccess.getBlock(p_147751_2_ - 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147751_2_ - 1, p_147751_3_, p_147751_4_);
             var12 = (this.aoLightValueScratchXYNN + this.aoLightValueScratchXYZNNP + var21 + this.aoLightValueScratchXZNP) / 4.0F;
             var9 = (var21 + this.aoLightValueScratchXZNP + this.aoLightValueScratchXYNP + this.aoLightValueScratchXYZNPP) / 4.0F;
             var10 = (this.aoLightValueScratchXZNN + var21 + this.aoLightValueScratchXYZNPN + this.aoLightValueScratchXYNP) / 4.0F;
@@ -4936,6 +5422,15 @@ public class RenderBlocks
             this.brightnessTopLeft = this.getAoBrightness(this.aoBrightnessXZNP, this.aoBrightnessXYNP, this.aoBrightnessXYZNPP, var20);
             this.brightnessBottomLeft = this.getAoBrightness(this.aoBrightnessXZNN, this.aoBrightnessXYZNPN, this.aoBrightnessXYNP, var20);
             this.brightnessBottomRight = this.getAoBrightness(this.aoBrightnessXYZNNN, this.aoBrightnessXYNN, this.aoBrightnessXZNN, var20);
+
+            if (simpleAO)
+            {
+                var10 = var21;
+                var11 = var21;
+                var12 = var21;
+                var9 = var21;
+                this.brightnessTopLeft = this.brightnessTopRight = this.brightnessBottomRight = this.brightnessBottomLeft = var20;
+            }
 
             if (var13)
             {
@@ -4963,9 +5458,15 @@ public class RenderBlocks
             this.colorGreenTopRight *= var12;
             this.colorBlueTopRight *= var12;
             var22 = this.getBlockIcon(p_147751_1_, this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_, 4);
+
+            if (betterGrass)
+            {
+                var22 = this.fixAoSideGrassTexture(var22, p_147751_2_, p_147751_3_, p_147751_4_, 4, p_147751_5_, p_147751_6_, p_147751_7_);
+            }
+
             this.renderFaceXNeg(p_147751_1_, (double)p_147751_2_, (double)p_147751_3_, (double)p_147751_4_, var22);
 
-            if (fancyGrass && var22.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (defaultTexture && fancyGrass && var22 == TextureUtils.iconGrassSide && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= p_147751_5_;
                 this.colorRedBottomLeft *= p_147751_5_;
@@ -4992,10 +5493,10 @@ public class RenderBlocks
                 ++p_147751_2_;
             }
 
-            this.aoLightValueScratchXYPN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZPN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ - 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZPP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_, p_147751_4_ + 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXYPP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXYPN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_);
+            this.aoLightValueScratchXZPN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ - 1);
+            this.aoLightValueScratchXZPP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_, p_147751_4_ + 1);
+            this.aoLightValueScratchXYPP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_);
             this.aoBrightnessXYPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_);
             this.aoBrightnessXZPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ - 1);
             this.aoBrightnessXZPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_ + 1);
@@ -5012,7 +5513,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_ - 1);
                 this.aoBrightnessXYZPNN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_ - 1);
             }
 
@@ -5023,7 +5524,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ - 1, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ - 1, p_147751_4_ + 1);
                 this.aoBrightnessXYZPNP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ - 1, p_147751_4_ + 1);
             }
 
@@ -5034,7 +5535,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPN = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPN = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_ - 1);
                 this.aoBrightnessXYZPPN = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ + 1, p_147751_4_ - 1);
             }
 
@@ -5045,13 +5546,18 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPP = this.blockAccess.getBlock(p_147751_2_, p_147751_3_ + 1, p_147751_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPP = this.getAmbientOcclusionLightValue(p_147751_2_, p_147751_3_ + 1, p_147751_4_ + 1);
                 this.aoBrightnessXYZPPP = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_ + 1, p_147751_4_ + 1);
             }
 
             if (this.renderMaxX >= 1.0D)
             {
                 --p_147751_2_;
+            }
+
+            if (var14 < 0)
+            {
+                var14 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_);
             }
 
             var20 = var14;
@@ -5061,7 +5567,7 @@ public class RenderBlocks
                 var20 = p_147751_1_.getBlockBrightness(this.blockAccess, p_147751_2_ + 1, p_147751_3_, p_147751_4_);
             }
 
-            var21 = this.blockAccess.getBlock(p_147751_2_ + 1, p_147751_3_, p_147751_4_).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147751_2_ + 1, p_147751_3_, p_147751_4_);
             var9 = (this.aoLightValueScratchXYPN + this.aoLightValueScratchXYZPNP + var21 + this.aoLightValueScratchXZPP) / 4.0F;
             var10 = (this.aoLightValueScratchXYZPNN + this.aoLightValueScratchXYPN + this.aoLightValueScratchXZPN + var21) / 4.0F;
             var11 = (this.aoLightValueScratchXZPN + var21 + this.aoLightValueScratchXYZPPN + this.aoLightValueScratchXYPP) / 4.0F;
@@ -5070,6 +5576,15 @@ public class RenderBlocks
             this.brightnessTopRight = this.getAoBrightness(this.aoBrightnessXZPP, this.aoBrightnessXYPP, this.aoBrightnessXYZPPP, var20);
             this.brightnessBottomRight = this.getAoBrightness(this.aoBrightnessXZPN, this.aoBrightnessXYZPPN, this.aoBrightnessXYPP, var20);
             this.brightnessBottomLeft = this.getAoBrightness(this.aoBrightnessXYZPNN, this.aoBrightnessXYPN, this.aoBrightnessXZPN, var20);
+
+            if (simpleAO)
+            {
+                var10 = var21;
+                var11 = var21;
+                var12 = var21;
+                var9 = var21;
+                this.brightnessTopLeft = this.brightnessTopRight = this.brightnessBottomRight = this.brightnessBottomLeft = var20;
+            }
 
             if (var13)
             {
@@ -5097,9 +5612,15 @@ public class RenderBlocks
             this.colorGreenTopRight *= var12;
             this.colorBlueTopRight *= var12;
             var22 = this.getBlockIcon(p_147751_1_, this.blockAccess, p_147751_2_, p_147751_3_, p_147751_4_, 5);
+
+            if (betterGrass)
+            {
+                var22 = this.fixAoSideGrassTexture(var22, p_147751_2_, p_147751_3_, p_147751_4_, 5, p_147751_5_, p_147751_6_, p_147751_7_);
+            }
+
             this.renderFaceXPos(p_147751_1_, (double)p_147751_2_, (double)p_147751_3_, (double)p_147751_4_, var22);
 
-            if (fancyGrass && var22.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (defaultTexture && fancyGrass && var22 == TextureUtils.iconGrassSide && !this.hasOverrideBlockTexture())
             {
                 this.colorRedTopLeft *= p_147751_5_;
                 this.colorRedBottomLeft *= p_147751_5_;
@@ -5136,7 +5657,7 @@ public class RenderBlocks
         Tessellator var15 = Tessellator.instance;
         var15.setBrightness(983055);
 
-        if (this.getBlockIcon(p_147808_1_).getIconName().equals("grass_top"))
+        if (p_147808_1_ == Blocks.grass)
         {
             var13 = false;
         }
@@ -5145,12 +5666,12 @@ public class RenderBlocks
             var13 = false;
         }
 
-        boolean var16;
         boolean var17;
-        boolean var18;
+        boolean var16;
         boolean var19;
-        int var20;
+        boolean var18;
         float var21;
+        int var20;
 
         if (this.renderAllFaces || p_147808_1_.shouldSideBeRendered(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_, 0))
         {
@@ -5163,10 +5684,10 @@ public class RenderBlocks
             this.aoBrightnessYZNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ - 1);
             this.aoBrightnessYZNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ + 1);
             this.aoBrightnessXYPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_, p_147808_4_);
-            this.aoLightValueScratchXYNN = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZNN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZNP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXYPN = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXYNN = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_);
+            this.aoLightValueScratchYZNN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ - 1);
+            this.aoLightValueScratchYZNP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ + 1);
+            this.aoLightValueScratchXYPN = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_);
             var16 = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_ - 1, p_147808_4_).getCanBlockGrass();
             var17 = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_ - 1, p_147808_4_).getCanBlockGrass();
             var18 = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_ + 1).getCanBlockGrass();
@@ -5179,7 +5700,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNN = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNN = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_ - 1);
                 this.aoBrightnessXYZNNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_, p_147808_4_ - 1);
             }
 
@@ -5190,7 +5711,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNP = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNP = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_ + 1);
                 this.aoBrightnessXYZNNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_, p_147808_4_ + 1);
             }
 
@@ -5201,7 +5722,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNN = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNN = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_ - 1);
                 this.aoBrightnessXYZPNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_, p_147808_4_ - 1);
             }
 
@@ -5212,7 +5733,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNP = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNP = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_ + 1);
                 this.aoBrightnessXYZPNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_, p_147808_4_ + 1);
             }
 
@@ -5228,7 +5749,7 @@ public class RenderBlocks
                 var20 = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_);
             }
 
-            var21 = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_);
             var9 = (this.aoLightValueScratchXYZNNP + this.aoLightValueScratchXYNN + this.aoLightValueScratchYZNP + var21) / 4.0F;
             var12 = (this.aoLightValueScratchYZNP + var21 + this.aoLightValueScratchXYZPNP + this.aoLightValueScratchXYPN) / 4.0F;
             var11 = (var21 + this.aoLightValueScratchYZNN + this.aoLightValueScratchXYPN + this.aoLightValueScratchXYZPNN) / 4.0F;
@@ -5278,10 +5799,10 @@ public class RenderBlocks
             this.aoBrightnessXYPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_, p_147808_4_);
             this.aoBrightnessYZPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ - 1);
             this.aoBrightnessYZPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ + 1);
-            this.aoLightValueScratchXYNP = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXYPP = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZPN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZPP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXYNP = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_);
+            this.aoLightValueScratchXYPP = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_);
+            this.aoLightValueScratchYZPN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ - 1);
+            this.aoLightValueScratchYZPP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ + 1);
             var16 = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_ + 1, p_147808_4_).getCanBlockGrass();
             var17 = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_ + 1, p_147808_4_).getCanBlockGrass();
             var18 = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_ + 1).getCanBlockGrass();
@@ -5294,7 +5815,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPN = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPN = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_ - 1);
                 this.aoBrightnessXYZNPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_, p_147808_4_ - 1);
             }
 
@@ -5305,7 +5826,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPN = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPN = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_ - 1);
                 this.aoBrightnessXYZPPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_, p_147808_4_ - 1);
             }
 
@@ -5316,7 +5837,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPP = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPP = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_ + 1);
                 this.aoBrightnessXYZNPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_, p_147808_4_ + 1);
             }
 
@@ -5327,7 +5848,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPP = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPP = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_ + 1);
                 this.aoBrightnessXYZPPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_, p_147808_4_ + 1);
             }
 
@@ -5343,7 +5864,7 @@ public class RenderBlocks
                 var20 = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ + 1, p_147808_4_);
             }
 
-            var21 = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_);
             var12 = (this.aoLightValueScratchXYZNPP + this.aoLightValueScratchXYNP + this.aoLightValueScratchYZPP + var21) / 4.0F;
             var9 = (this.aoLightValueScratchYZPP + var21 + this.aoLightValueScratchXYZPPP + this.aoLightValueScratchXYPP) / 4.0F;
             var10 = (var21 + this.aoLightValueScratchYZPN + this.aoLightValueScratchXYPP + this.aoLightValueScratchXYZPPN) / 4.0F;
@@ -5371,14 +5892,14 @@ public class RenderBlocks
             var8 = true;
         }
 
-        float var22;
         float var23;
-        float var24;
+        float var22;
         float var25;
-        int var26;
+        float var24;
         int var27;
-        int var28;
+        int var26;
         int var29;
+        int var28;
         IIcon var30;
 
         if (this.renderAllFaces || p_147808_1_.shouldSideBeRendered(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ - 1, 2))
@@ -5388,10 +5909,10 @@ public class RenderBlocks
                 --p_147808_4_;
             }
 
-            this.aoLightValueScratchXZNN = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZNN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZPN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZPN = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXZNN = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_);
+            this.aoLightValueScratchYZNN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_);
+            this.aoLightValueScratchYZPN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_);
+            this.aoLightValueScratchXZPN = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_);
             this.aoBrightnessXZNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_, p_147808_4_);
             this.aoBrightnessYZNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_);
             this.aoBrightnessYZPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ + 1, p_147808_4_);
@@ -5408,7 +5929,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNN = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNN = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_ - 1, p_147808_4_);
                 this.aoBrightnessXYZNNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_ - 1, p_147808_4_);
             }
 
@@ -5419,7 +5940,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPN = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPN = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_ + 1, p_147808_4_);
                 this.aoBrightnessXYZNPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_ + 1, p_147808_4_);
             }
 
@@ -5430,7 +5951,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNN = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNN = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_ - 1, p_147808_4_);
                 this.aoBrightnessXYZPNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_ - 1, p_147808_4_);
             }
 
@@ -5441,7 +5962,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPN = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPN = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_ + 1, p_147808_4_);
                 this.aoBrightnessXYZPPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_ + 1, p_147808_4_);
             }
 
@@ -5457,7 +5978,7 @@ public class RenderBlocks
                 var20 = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ - 1);
             }
 
-            var21 = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ - 1);
             var22 = (this.aoLightValueScratchXZNN + this.aoLightValueScratchXYZNPN + var21 + this.aoLightValueScratchYZPN) / 4.0F;
             var23 = (var21 + this.aoLightValueScratchYZPN + this.aoLightValueScratchXZPN + this.aoLightValueScratchXYZPPN) / 4.0F;
             var24 = (this.aoLightValueScratchYZNN + var21 + this.aoLightValueScratchXYZPNN + this.aoLightValueScratchXZPN) / 4.0F;
@@ -5530,10 +6051,10 @@ public class RenderBlocks
                 ++p_147808_4_;
             }
 
-            this.aoLightValueScratchXZNP = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZPP = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZNP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchYZPP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXZNP = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_);
+            this.aoLightValueScratchXZPP = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_);
+            this.aoLightValueScratchYZNP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_);
+            this.aoLightValueScratchYZPP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_);
             this.aoBrightnessXZNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_, p_147808_4_);
             this.aoBrightnessXZPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_, p_147808_4_);
             this.aoBrightnessYZNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_);
@@ -5550,7 +6071,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNP = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNP = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_ - 1, p_147808_4_);
                 this.aoBrightnessXYZNNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_ - 1, p_147808_4_);
             }
 
@@ -5561,7 +6082,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPP = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPP = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_ + 1, p_147808_4_);
                 this.aoBrightnessXYZNPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_ + 1, p_147808_4_);
             }
 
@@ -5572,7 +6093,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNP = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNP = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_ - 1, p_147808_4_);
                 this.aoBrightnessXYZPNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_ - 1, p_147808_4_);
             }
 
@@ -5583,7 +6104,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPP = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPP = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_ + 1, p_147808_4_);
                 this.aoBrightnessXYZPPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_ + 1, p_147808_4_);
             }
 
@@ -5599,7 +6120,7 @@ public class RenderBlocks
                 var20 = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ + 1);
             }
 
-            var21 = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ + 1);
             var22 = (this.aoLightValueScratchXZNP + this.aoLightValueScratchXYZNPP + var21 + this.aoLightValueScratchYZPP) / 4.0F;
             var23 = (var21 + this.aoLightValueScratchYZPP + this.aoLightValueScratchXZPP + this.aoLightValueScratchXYZPPP) / 4.0F;
             var24 = (this.aoLightValueScratchYZNP + var21 + this.aoLightValueScratchXYZPNP + this.aoLightValueScratchXZPP) / 4.0F;
@@ -5672,10 +6193,10 @@ public class RenderBlocks
                 --p_147808_2_;
             }
 
-            this.aoLightValueScratchXYNN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZNN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZNP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXYNP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXYNN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_);
+            this.aoLightValueScratchXZNN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ - 1);
+            this.aoLightValueScratchXZNP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ + 1);
+            this.aoLightValueScratchXYNP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_);
             this.aoBrightnessXYNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_);
             this.aoBrightnessXZNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ - 1);
             this.aoBrightnessXZNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ + 1);
@@ -5692,7 +6213,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_ - 1);
                 this.aoBrightnessXYZNNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_ - 1);
             }
 
@@ -5703,7 +6224,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNNP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNNP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_ + 1);
                 this.aoBrightnessXYZNNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_ + 1);
             }
 
@@ -5714,7 +6235,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_ - 1);
                 this.aoBrightnessXYZNPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ + 1, p_147808_4_ - 1);
             }
 
@@ -5725,7 +6246,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZNPP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZNPP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_ + 1);
                 this.aoBrightnessXYZNPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ + 1, p_147808_4_ + 1);
             }
 
@@ -5741,7 +6262,7 @@ public class RenderBlocks
                 var20 = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ - 1, p_147808_3_, p_147808_4_);
             }
 
-            var21 = this.blockAccess.getBlock(p_147808_2_ - 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147808_2_ - 1, p_147808_3_, p_147808_4_);
             var22 = (this.aoLightValueScratchXYNN + this.aoLightValueScratchXYZNNP + var21 + this.aoLightValueScratchXZNP) / 4.0F;
             var23 = (var21 + this.aoLightValueScratchXZNP + this.aoLightValueScratchXYNP + this.aoLightValueScratchXYZNPP) / 4.0F;
             var24 = (this.aoLightValueScratchXZNN + var21 + this.aoLightValueScratchXYZNPN + this.aoLightValueScratchXYNP) / 4.0F;
@@ -5814,10 +6335,10 @@ public class RenderBlocks
                 ++p_147808_2_;
             }
 
-            this.aoLightValueScratchXYPN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZPN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ - 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXZPP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_, p_147808_4_ + 1).getAmbientOcclusionLightValue();
-            this.aoLightValueScratchXYPP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_).getAmbientOcclusionLightValue();
+            this.aoLightValueScratchXYPN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_);
+            this.aoLightValueScratchXZPN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ - 1);
+            this.aoLightValueScratchXZPP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_, p_147808_4_ + 1);
+            this.aoLightValueScratchXYPP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_);
             this.aoBrightnessXYPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_);
             this.aoBrightnessXZPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ - 1);
             this.aoBrightnessXZPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_, p_147808_4_ + 1);
@@ -5834,7 +6355,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_ - 1);
                 this.aoBrightnessXYZPNN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_ - 1);
             }
 
@@ -5845,7 +6366,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPNP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ - 1, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPNP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ - 1, p_147808_4_ + 1);
                 this.aoBrightnessXYZPNP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ - 1, p_147808_4_ + 1);
             }
 
@@ -5856,7 +6377,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPN = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_ - 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPN = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_ - 1);
                 this.aoBrightnessXYZPPN = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ + 1, p_147808_4_ - 1);
             }
 
@@ -5867,7 +6388,7 @@ public class RenderBlocks
             }
             else
             {
-                this.aoLightValueScratchXYZPPP = this.blockAccess.getBlock(p_147808_2_, p_147808_3_ + 1, p_147808_4_ + 1).getAmbientOcclusionLightValue();
+                this.aoLightValueScratchXYZPPP = this.getAmbientOcclusionLightValue(p_147808_2_, p_147808_3_ + 1, p_147808_4_ + 1);
                 this.aoBrightnessXYZPPP = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_, p_147808_3_ + 1, p_147808_4_ + 1);
             }
 
@@ -5883,7 +6404,7 @@ public class RenderBlocks
                 var20 = p_147808_1_.getBlockBrightness(this.blockAccess, p_147808_2_ + 1, p_147808_3_, p_147808_4_);
             }
 
-            var21 = this.blockAccess.getBlock(p_147808_2_ + 1, p_147808_3_, p_147808_4_).getAmbientOcclusionLightValue();
+            var21 = this.getAmbientOcclusionLightValue(p_147808_2_ + 1, p_147808_3_, p_147808_4_);
             var22 = (this.aoLightValueScratchXYPN + this.aoLightValueScratchXYZPNP + var21 + this.aoLightValueScratchXZPP) / 4.0F;
             var23 = (this.aoLightValueScratchXYZPNN + this.aoLightValueScratchXYPN + this.aoLightValueScratchXZPN + var21) / 4.0F;
             var24 = (this.aoLightValueScratchXZPN + var21 + this.aoLightValueScratchXYZPPN + this.aoLightValueScratchXYPP) / 4.0F;
@@ -5953,7 +6474,7 @@ public class RenderBlocks
         return var8;
     }
 
-    private int getAoBrightness(int p_147778_1_, int p_147778_2_, int p_147778_3_, int p_147778_4_)
+    public int getAoBrightness(int p_147778_1_, int p_147778_2_, int p_147778_3_, int p_147778_4_)
     {
         if (p_147778_1_ == 0)
         {
@@ -5973,7 +6494,7 @@ public class RenderBlocks
         return p_147778_1_ + p_147778_2_ + p_147778_3_ + p_147778_4_ >> 2 & 16711935;
     }
 
-    private int mixAoBrightness(int p_147727_1_, int p_147727_2_, int p_147727_3_, int p_147727_4_, double p_147727_5_, double p_147727_7_, double p_147727_9_, double p_147727_11_)
+    public int mixAoBrightness(int p_147727_1_, int p_147727_2_, int p_147727_3_, int p_147727_4_, double p_147727_5_, double p_147727_7_, double p_147727_9_, double p_147727_11_)
     {
         int var13 = (int)((double)(p_147727_1_ >> 16 & 255) * p_147727_5_ + (double)(p_147727_2_ >> 16 & 255) * p_147727_7_ + (double)(p_147727_3_ >> 16 & 255) * p_147727_9_ + (double)(p_147727_4_ >> 16 & 255) * p_147727_11_) & 255;
         int var14 = (int)((double)(p_147727_1_ & 255) * p_147727_5_ + (double)(p_147727_2_ & 255) * p_147727_7_ + (double)(p_147727_3_ & 255) * p_147727_9_ + (double)(p_147727_4_ & 255) * p_147727_11_) & 255;
@@ -5983,68 +6504,107 @@ public class RenderBlocks
     public boolean renderStandardBlockWithColorMultiplier(Block p_147736_1_, int p_147736_2_, int p_147736_3_, int p_147736_4_, float p_147736_5_, float p_147736_6_, float p_147736_7_)
     {
         this.enableAO = false;
+        boolean defaultTexture = Tessellator.instance.defaultTexture;
+        boolean betterGrass = Config.isBetterGrass() && defaultTexture;
         Tessellator var8 = Tessellator.instance;
         boolean var9 = false;
-        float var10 = 0.5F;
-        float var11 = 1.0F;
-        float var12 = 0.8F;
-        float var13 = 0.6F;
-        float var14 = var11 * p_147736_5_;
-        float var15 = var11 * p_147736_6_;
-        float var16 = var11 * p_147736_7_;
-        float var17 = var10;
-        float var18 = var12;
-        float var19 = var13;
-        float var20 = var10;
-        float var21 = var12;
-        float var22 = var13;
-        float var23 = var10;
-        float var24 = var12;
-        float var25 = var13;
-
-        if (p_147736_1_ != Blocks.grass)
-        {
-            var17 = var10 * p_147736_5_;
-            var18 = var12 * p_147736_5_;
-            var19 = var13 * p_147736_5_;
-            var20 = var10 * p_147736_6_;
-            var21 = var12 * p_147736_6_;
-            var22 = var13 * p_147736_6_;
-            var23 = var10 * p_147736_7_;
-            var24 = var12 * p_147736_7_;
-            var25 = var13 * p_147736_7_;
-        }
-
-        int var26 = p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_);
+        int var26 = -1;
+        float var27;
+        float var13;
+        float var19;
+        float var22;
 
         if (this.renderAllFaces || p_147736_1_.shouldSideBeRendered(this.blockAccess, p_147736_2_, p_147736_3_ - 1, p_147736_4_, 0))
         {
+            if (var26 < 0)
+            {
+                var26 = p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_);
+            }
+
+            var27 = 0.5F;
+            var13 = var27;
+            var19 = var27;
+            var22 = var27;
+
+            if (p_147736_1_ != Blocks.grass)
+            {
+                var13 = var27 * p_147736_5_;
+                var19 = var27 * p_147736_6_;
+                var22 = var27 * p_147736_7_;
+            }
+
             var8.setBrightness(this.renderMinY > 0.0D ? var26 : p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_ - 1, p_147736_4_));
-            var8.setColorOpaque_F(var17, var20, var23);
+            var8.setColorOpaque_F(var13, var19, var22);
             this.renderFaceYNeg(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 0));
             var9 = true;
         }
 
         if (this.renderAllFaces || p_147736_1_.shouldSideBeRendered(this.blockAccess, p_147736_2_, p_147736_3_ + 1, p_147736_4_, 1))
         {
+            if (var26 < 0)
+            {
+                var26 = p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_);
+            }
+
+            var27 = 1.0F;
+            var13 = var27 * p_147736_5_;
+            var19 = var27 * p_147736_6_;
+            var22 = var27 * p_147736_7_;
             var8.setBrightness(this.renderMaxY < 1.0D ? var26 : p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_ + 1, p_147736_4_));
-            var8.setColorOpaque_F(var14, var15, var16);
+            var8.setColorOpaque_F(var13, var19, var22);
             this.renderFaceYPos(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 1));
             var9 = true;
         }
 
-        IIcon var27;
+        float var25;
+        IIcon var271;
 
         if (this.renderAllFaces || p_147736_1_.shouldSideBeRendered(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_ - 1, 2))
         {
-            var8.setBrightness(this.renderMinZ > 0.0D ? var26 : p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_ - 1));
-            var8.setColorOpaque_F(var18, var21, var24);
-            var27 = this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 2);
-            this.renderFaceZNeg(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, var27);
-
-            if (fancyGrass && var27.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (var26 < 0)
             {
-                var8.setColorOpaque_F(var18 * p_147736_5_, var21 * p_147736_6_, var24 * p_147736_7_);
+                var26 = p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_);
+            }
+
+            var13 = 0.8F;
+            var19 = var13;
+            var22 = var13;
+            var25 = var13;
+
+            if (p_147736_1_ != Blocks.grass)
+            {
+                var19 = var13 * p_147736_5_;
+                var22 = var13 * p_147736_6_;
+                var25 = var13 * p_147736_7_;
+            }
+
+            var8.setBrightness(this.renderMinZ > 0.0D ? var26 : p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_ - 1));
+            var8.setColorOpaque_F(var19, var22, var25);
+            var271 = this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 2);
+
+            if (betterGrass)
+            {
+                if (var271 == TextureUtils.iconGrassSide || var271 == TextureUtils.iconMyceliumSide)
+                {
+                    var271 = Config.getSideGrassTexture(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 2, var271);
+
+                    if (var271 == TextureUtils.iconGrassTop)
+                    {
+                        var8.setColorOpaque_F(var19 * p_147736_5_, var22 * p_147736_6_, var25 * p_147736_7_);
+                    }
+                }
+
+                if (var271 == TextureUtils.iconGrassSideSnowed)
+                {
+                    var271 = Config.getSideSnowGrassTexture(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 2);
+                }
+            }
+
+            this.renderFaceZNeg(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, var271);
+
+            if (defaultTexture && fancyGrass && var271 == TextureUtils.iconGrassSide && !this.hasOverrideBlockTexture())
+            {
+                var8.setColorOpaque_F(var19 * p_147736_5_, var22 * p_147736_6_, var25 * p_147736_7_);
                 this.renderFaceZNeg(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, BlockGrass.func_149990_e());
             }
 
@@ -6053,14 +6613,50 @@ public class RenderBlocks
 
         if (this.renderAllFaces || p_147736_1_.shouldSideBeRendered(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_ + 1, 3))
         {
-            var8.setBrightness(this.renderMaxZ < 1.0D ? var26 : p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_ + 1));
-            var8.setColorOpaque_F(var18, var21, var24);
-            var27 = this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 3);
-            this.renderFaceZPos(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, var27);
-
-            if (fancyGrass && var27.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (var26 < 0)
             {
-                var8.setColorOpaque_F(var18 * p_147736_5_, var21 * p_147736_6_, var24 * p_147736_7_);
+                var26 = p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_);
+            }
+
+            var13 = 0.8F;
+            var19 = var13;
+            var22 = var13;
+            var25 = var13;
+
+            if (p_147736_1_ != Blocks.grass)
+            {
+                var19 = var13 * p_147736_5_;
+                var22 = var13 * p_147736_6_;
+                var25 = var13 * p_147736_7_;
+            }
+
+            var8.setBrightness(this.renderMaxZ < 1.0D ? var26 : p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_ + 1));
+            var8.setColorOpaque_F(var19, var22, var25);
+            var271 = this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 3);
+
+            if (betterGrass)
+            {
+                if (var271 == TextureUtils.iconGrassSide || var271 == TextureUtils.iconMyceliumSide)
+                {
+                    var271 = Config.getSideGrassTexture(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 3, var271);
+
+                    if (var271 == TextureUtils.iconGrassTop)
+                    {
+                        var8.setColorOpaque_F(var19 * p_147736_5_, var22 * p_147736_6_, var25 * p_147736_7_);
+                    }
+                }
+
+                if (var271 == TextureUtils.iconGrassSideSnowed)
+                {
+                    var271 = Config.getSideSnowGrassTexture(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 3);
+                }
+            }
+
+            this.renderFaceZPos(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, var271);
+
+            if (defaultTexture && fancyGrass && var271 == TextureUtils.iconGrassSide && !this.hasOverrideBlockTexture())
+            {
+                var8.setColorOpaque_F(var19 * p_147736_5_, var22 * p_147736_6_, var25 * p_147736_7_);
                 this.renderFaceZPos(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, BlockGrass.func_149990_e());
             }
 
@@ -6069,12 +6665,48 @@ public class RenderBlocks
 
         if (this.renderAllFaces || p_147736_1_.shouldSideBeRendered(this.blockAccess, p_147736_2_ - 1, p_147736_3_, p_147736_4_, 4))
         {
+            if (var26 < 0)
+            {
+                var26 = p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_);
+            }
+
+            var13 = 0.6F;
+            var19 = var13;
+            var22 = var13;
+            var25 = var13;
+
+            if (p_147736_1_ != Blocks.grass)
+            {
+                var19 = var13 * p_147736_5_;
+                var22 = var13 * p_147736_6_;
+                var25 = var13 * p_147736_7_;
+            }
+
             var8.setBrightness(this.renderMinX > 0.0D ? var26 : p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_ - 1, p_147736_3_, p_147736_4_));
             var8.setColorOpaque_F(var19, var22, var25);
-            var27 = this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 4);
-            this.renderFaceXNeg(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, var27);
+            var271 = this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 4);
 
-            if (fancyGrass && var27.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (betterGrass)
+            {
+                if (var271 == TextureUtils.iconGrassSide || var271 == TextureUtils.iconMyceliumSide)
+                {
+                    var271 = Config.getSideGrassTexture(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 4, var271);
+
+                    if (var271 == TextureUtils.iconGrassTop)
+                    {
+                        var8.setColorOpaque_F(var19 * p_147736_5_, var22 * p_147736_6_, var25 * p_147736_7_);
+                    }
+                }
+
+                if (var271 == TextureUtils.iconGrassSideSnowed)
+                {
+                    var271 = Config.getSideSnowGrassTexture(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 4);
+                }
+            }
+
+            this.renderFaceXNeg(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, var271);
+
+            if (defaultTexture && fancyGrass && var271 == TextureUtils.iconGrassSide && !this.hasOverrideBlockTexture())
             {
                 var8.setColorOpaque_F(var19 * p_147736_5_, var22 * p_147736_6_, var25 * p_147736_7_);
                 this.renderFaceXNeg(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, BlockGrass.func_149990_e());
@@ -6085,12 +6717,48 @@ public class RenderBlocks
 
         if (this.renderAllFaces || p_147736_1_.shouldSideBeRendered(this.blockAccess, p_147736_2_ + 1, p_147736_3_, p_147736_4_, 5))
         {
+            if (var26 < 0)
+            {
+                var26 = p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_);
+            }
+
+            var13 = 0.6F;
+            var19 = var13;
+            var22 = var13;
+            var25 = var13;
+
+            if (p_147736_1_ != Blocks.grass)
+            {
+                var19 = var13 * p_147736_5_;
+                var22 = var13 * p_147736_6_;
+                var25 = var13 * p_147736_7_;
+            }
+
             var8.setBrightness(this.renderMaxX < 1.0D ? var26 : p_147736_1_.getBlockBrightness(this.blockAccess, p_147736_2_ + 1, p_147736_3_, p_147736_4_));
             var8.setColorOpaque_F(var19, var22, var25);
-            var27 = this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 5);
-            this.renderFaceXPos(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, var27);
+            var271 = this.getBlockIcon(p_147736_1_, this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 5);
 
-            if (fancyGrass && var27.getIconName().equals("grass_side") && !this.hasOverrideBlockTexture())
+            if (betterGrass)
+            {
+                if (var271 == TextureUtils.iconGrassSide || var271 == TextureUtils.iconMyceliumSide)
+                {
+                    var271 = Config.getSideGrassTexture(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 5, var271);
+
+                    if (var271 == TextureUtils.iconGrassTop)
+                    {
+                        var8.setColorOpaque_F(var19 * p_147736_5_, var22 * p_147736_6_, var25 * p_147736_7_);
+                    }
+                }
+
+                if (var271 == TextureUtils.iconGrassSideSnowed)
+                {
+                    var271 = Config.getSideSnowGrassTexture(this.blockAccess, p_147736_2_, p_147736_3_, p_147736_4_, 5);
+                }
+            }
+
+            this.renderFaceXPos(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, var271);
+
+            if (defaultTexture && fancyGrass && var271 == TextureUtils.iconGrassSide && !this.hasOverrideBlockTexture())
             {
                 var8.setColorOpaque_F(var19 * p_147736_5_, var22 * p_147736_6_, var25 * p_147736_7_);
                 this.renderFaceXPos(p_147736_1_, (double)p_147736_2_, (double)p_147736_3_, (double)p_147736_4_, BlockGrass.func_149990_e());
@@ -6102,7 +6770,7 @@ public class RenderBlocks
         return var9;
     }
 
-    private boolean renderBlockCocoa(BlockCocoa p_147772_1_, int p_147772_2_, int p_147772_3_, int p_147772_4_)
+    public boolean renderBlockCocoa(BlockCocoa p_147772_1_, int p_147772_2_, int p_147772_3_, int p_147772_4_)
     {
         Tessellator var5 = Tessellator.instance;
         var5.setBrightness(p_147772_1_.getBlockBrightness(this.blockAccess, p_147772_2_, p_147772_3_, p_147772_4_));
@@ -6259,7 +6927,7 @@ public class RenderBlocks
         return true;
     }
 
-    private boolean renderBlockBeacon(BlockBeacon p_147797_1_, int p_147797_2_, int p_147797_3_, int p_147797_4_)
+    public boolean renderBlockBeacon(BlockBeacon p_147797_1_, int p_147797_2_, int p_147797_3_, int p_147797_4_)
     {
         float var5 = 0.1875F;
         this.setOverrideBlockTexture(this.getBlockIcon(Blocks.glass));
@@ -6269,7 +6937,14 @@ public class RenderBlocks
         this.setOverrideBlockTexture(this.getBlockIcon(Blocks.obsidian));
         this.setRenderBounds(0.125D, 0.0062500000931322575D, 0.125D, 0.875D, (double)var5, 0.875D);
         this.renderStandardBlock(p_147797_1_, p_147797_2_, p_147797_3_, p_147797_4_);
-        this.setOverrideBlockTexture(this.getBlockIcon(Blocks.beacon));
+        IIcon iconBeacon = this.getBlockIcon(Blocks.beacon);
+
+        if (Config.isConnectedTextures())
+        {
+            iconBeacon = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147797_1_, p_147797_2_, p_147797_3_, p_147797_4_, -1, iconBeacon);
+        }
+
+        this.setOverrideBlockTexture(iconBeacon);
         this.setRenderBounds(0.1875D, (double)var5, 0.1875D, 0.8125D, 0.875D, 0.8125D);
         this.renderStandardBlock(p_147797_1_, p_147797_2_, p_147797_3_, p_147797_4_);
         this.renderAllFaces = false;
@@ -6424,6 +7099,12 @@ public class RenderBlocks
         }
 
         p_147735_1_.setBlockBoundsBasedOnState(this.blockAccess, p_147735_2_, p_147735_3_, p_147735_4_);
+
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147735_2_, p_147735_3_, p_147735_4_))
+        {
+            this.renderSnow(p_147735_2_, p_147735_3_, p_147735_4_, Blocks.snow_layer.getBlockBoundsMaxY());
+        }
+
         return var5;
     }
 
@@ -6481,6 +7162,12 @@ public class RenderBlocks
         }
 
         p_147807_1_.setBlockBoundsBasedOnState(this.blockAccess, p_147807_2_, p_147807_3_, p_147807_4_);
+
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147807_2_, p_147807_3_, p_147807_4_))
+        {
+            this.renderSnow(p_147807_2_, p_147807_3_, p_147807_4_, Blocks.snow_layer.getBlockBoundsMaxY());
+        }
+
         return true;
     }
 
@@ -6576,8 +7263,8 @@ public class RenderBlocks
 
         this.renderAllFaces = true;
         float var15;
-        float var16;
         float var17;
+        float var16;
         float var18;
 
         if (var8 != 3 && var8 != 1)
@@ -6617,8 +7304,8 @@ public class RenderBlocks
             }
 
             float var19;
-            float var20;
             float var21;
+            float var20;
 
             if (var8 == 3)
             {
@@ -6761,13 +7448,18 @@ public class RenderBlocks
             this.renderStandardBlock(p_147776_1_, p_147776_2_, p_147776_3_, p_147776_4_);
         }
 
+        if (Config.isBetterSnow() && this.hasSnowNeighbours(p_147776_2_, p_147776_3_, p_147776_4_))
+        {
+            this.renderSnow(p_147776_2_, p_147776_3_, p_147776_4_, Blocks.snow_layer.getBlockBoundsMaxY());
+        }
+
         this.renderAllFaces = false;
         this.uvRotateTop = 0;
         this.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
         return var5;
     }
 
-    private boolean renderBlockHopper(BlockHopper p_147803_1_, int p_147803_2_, int p_147803_3_, int p_147803_4_)
+    public boolean renderBlockHopper(BlockHopper p_147803_1_, int p_147803_2_, int p_147803_3_, int p_147803_4_)
     {
         Tessellator var5 = Tessellator.instance;
         var5.setBrightness(p_147803_1_.getBlockBrightness(this.blockAccess, p_147803_2_, p_147803_3_, p_147803_4_));
@@ -6790,7 +7482,7 @@ public class RenderBlocks
         return this.renderBlockHopperMetadata(p_147803_1_, p_147803_2_, p_147803_3_, p_147803_4_, this.blockAccess.getBlockMetadata(p_147803_2_, p_147803_3_, p_147803_4_), false);
     }
 
-    private boolean renderBlockHopperMetadata(BlockHopper p_147799_1_, int p_147799_2_, int p_147799_3_, int p_147799_4_, int p_147799_5_, boolean p_147799_6_)
+    public boolean renderBlockHopperMetadata(BlockHopper p_147799_1_, int p_147799_2_, int p_147799_3_, int p_147799_4_, int p_147799_5_, boolean p_147799_6_)
     {
         Tessellator var7 = Tessellator.instance;
         int var8 = BlockHopper.func_149918_b(p_147799_5_);
@@ -6834,90 +7526,90 @@ public class RenderBlocks
         if (!p_147799_6_)
         {
             var7.setBrightness(p_147799_1_.getBlockBrightness(this.blockAccess, p_147799_2_, p_147799_3_, p_147799_4_));
-            int var11 = p_147799_1_.colorMultiplier(this.blockAccess, p_147799_2_, p_147799_3_, p_147799_4_);
-            float var12 = (float)(var11 >> 16 & 255) / 255.0F;
-            var13 = (float)(var11 >> 8 & 255) / 255.0F;
-            float var14 = (float)(var11 & 255) / 255.0F;
+            int var24 = p_147799_1_.colorMultiplier(this.blockAccess, p_147799_2_, p_147799_3_, p_147799_4_);
+            float var25 = (float)(var24 >> 16 & 255) / 255.0F;
+            var13 = (float)(var24 >> 8 & 255) / 255.0F;
+            float var26 = (float)(var24 & 255) / 255.0F;
 
             if (EntityRenderer.anaglyphEnable)
             {
-                float var15 = (var12 * 30.0F + var13 * 59.0F + var14 * 11.0F) / 100.0F;
-                float var16 = (var12 * 30.0F + var13 * 70.0F) / 100.0F;
-                float var17 = (var12 * 30.0F + var14 * 70.0F) / 100.0F;
-                var12 = var15;
-                var13 = var16;
-                var14 = var17;
+                float var15 = (var25 * 30.0F + var13 * 59.0F + var26 * 11.0F) / 100.0F;
+                float var27 = (var25 * 30.0F + var13 * 70.0F) / 100.0F;
+                float var17 = (var25 * 30.0F + var26 * 70.0F) / 100.0F;
+                var25 = var15;
+                var13 = var27;
+                var26 = var17;
             }
 
-            var7.setColorOpaque_F(var12, var13, var14);
+            var7.setColorOpaque_F(var25, var13, var26);
         }
 
-        IIcon var24 = BlockHopper.func_149916_e("hopper_outside");
-        IIcon var25 = BlockHopper.func_149916_e("hopper_inside");
+        IIcon var241 = BlockHopper.func_149916_e("hopper_outside");
+        IIcon var251 = BlockHopper.func_149916_e("hopper_inside");
         var13 = 0.125F;
 
         if (p_147799_6_)
         {
             var7.startDrawingQuads();
             var7.setNormal(1.0F, 0.0F, 0.0F);
-            this.renderFaceXPos(p_147799_1_, (double)(-1.0F + var13), 0.0D, 0.0D, var24);
+            this.renderFaceXPos(p_147799_1_, (double)(-1.0F + var13), 0.0D, 0.0D, var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(-1.0F, 0.0F, 0.0F);
-            this.renderFaceXNeg(p_147799_1_, (double)(1.0F - var13), 0.0D, 0.0D, var24);
+            this.renderFaceXNeg(p_147799_1_, (double)(1.0F - var13), 0.0D, 0.0D, var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(0.0F, 0.0F, 1.0F);
-            this.renderFaceZPos(p_147799_1_, 0.0D, 0.0D, (double)(-1.0F + var13), var24);
+            this.renderFaceZPos(p_147799_1_, 0.0D, 0.0D, (double)(-1.0F + var13), var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(0.0F, 0.0F, -1.0F);
-            this.renderFaceZNeg(p_147799_1_, 0.0D, 0.0D, (double)(1.0F - var13), var24);
+            this.renderFaceZNeg(p_147799_1_, 0.0D, 0.0D, (double)(1.0F - var13), var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(0.0F, 1.0F, 0.0F);
-            this.renderFaceYPos(p_147799_1_, 0.0D, -1.0D + var9, 0.0D, var25);
+            this.renderFaceYPos(p_147799_1_, 0.0D, -1.0D + var9, 0.0D, var251);
             var7.draw();
         }
         else
         {
-            this.renderFaceXPos(p_147799_1_, (double)((float)p_147799_2_ - 1.0F + var13), (double)p_147799_3_, (double)p_147799_4_, var24);
-            this.renderFaceXNeg(p_147799_1_, (double)((float)p_147799_2_ + 1.0F - var13), (double)p_147799_3_, (double)p_147799_4_, var24);
-            this.renderFaceZPos(p_147799_1_, (double)p_147799_2_, (double)p_147799_3_, (double)((float)p_147799_4_ - 1.0F + var13), var24);
-            this.renderFaceZNeg(p_147799_1_, (double)p_147799_2_, (double)p_147799_3_, (double)((float)p_147799_4_ + 1.0F - var13), var24);
-            this.renderFaceYPos(p_147799_1_, (double)p_147799_2_, (double)((float)p_147799_3_ - 1.0F) + var9, (double)p_147799_4_, var25);
+            this.renderFaceXPos(p_147799_1_, (double)((float)p_147799_2_ - 1.0F + var13), (double)p_147799_3_, (double)p_147799_4_, var241);
+            this.renderFaceXNeg(p_147799_1_, (double)((float)p_147799_2_ + 1.0F - var13), (double)p_147799_3_, (double)p_147799_4_, var241);
+            this.renderFaceZPos(p_147799_1_, (double)p_147799_2_, (double)p_147799_3_, (double)((float)p_147799_4_ - 1.0F + var13), var241);
+            this.renderFaceZNeg(p_147799_1_, (double)p_147799_2_, (double)p_147799_3_, (double)((float)p_147799_4_ + 1.0F - var13), var241);
+            this.renderFaceYPos(p_147799_1_, (double)p_147799_2_, (double)((float)p_147799_3_ - 1.0F) + var9, (double)p_147799_4_, var251);
         }
 
-        this.setOverrideBlockTexture(var24);
-        double var26 = 0.25D;
-        double var27 = 0.25D;
-        this.setRenderBounds(var26, var27, var26, 1.0D - var26, var9 - 0.002D, 1.0D - var26);
+        this.setOverrideBlockTexture(var241);
+        double var261 = 0.25D;
+        double var271 = 0.25D;
+        this.setRenderBounds(var261, var271, var261, 1.0D - var261, var9 - 0.002D, 1.0D - var261);
 
         if (p_147799_6_)
         {
             var7.startDrawingQuads();
             var7.setNormal(1.0F, 0.0F, 0.0F);
-            this.renderFaceXPos(p_147799_1_, 0.0D, 0.0D, 0.0D, var24);
+            this.renderFaceXPos(p_147799_1_, 0.0D, 0.0D, 0.0D, var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(-1.0F, 0.0F, 0.0F);
-            this.renderFaceXNeg(p_147799_1_, 0.0D, 0.0D, 0.0D, var24);
+            this.renderFaceXNeg(p_147799_1_, 0.0D, 0.0D, 0.0D, var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(0.0F, 0.0F, 1.0F);
-            this.renderFaceZPos(p_147799_1_, 0.0D, 0.0D, 0.0D, var24);
+            this.renderFaceZPos(p_147799_1_, 0.0D, 0.0D, 0.0D, var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(0.0F, 0.0F, -1.0F);
-            this.renderFaceZNeg(p_147799_1_, 0.0D, 0.0D, 0.0D, var24);
+            this.renderFaceZNeg(p_147799_1_, 0.0D, 0.0D, 0.0D, var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(0.0F, 1.0F, 0.0F);
-            this.renderFaceYPos(p_147799_1_, 0.0D, 0.0D, 0.0D, var24);
+            this.renderFaceYPos(p_147799_1_, 0.0D, 0.0D, 0.0D, var241);
             var7.draw();
             var7.startDrawingQuads();
             var7.setNormal(0.0F, -1.0F, 0.0F);
-            this.renderFaceYNeg(p_147799_1_, 0.0D, 0.0D, 0.0D, var24);
+            this.renderFaceYNeg(p_147799_1_, 0.0D, 0.0D, 0.0D, var241);
             var7.draw();
         }
         else
@@ -6929,7 +7621,7 @@ public class RenderBlocks
         {
             double var20 = 0.375D;
             double var22 = 0.25D;
-            this.setOverrideBlockTexture(var24);
+            this.setOverrideBlockTexture(var241);
 
             if (var8 == 0)
             {
@@ -6939,25 +7631,25 @@ public class RenderBlocks
 
             if (var8 == 2)
             {
-                this.setRenderBounds(var20, var27, 0.0D, 1.0D - var20, var27 + var22, var26);
+                this.setRenderBounds(var20, var271, 0.0D, 1.0D - var20, var271 + var22, var261);
                 this.renderStandardBlock(p_147799_1_, p_147799_2_, p_147799_3_, p_147799_4_);
             }
 
             if (var8 == 3)
             {
-                this.setRenderBounds(var20, var27, 1.0D - var26, 1.0D - var20, var27 + var22, 1.0D);
+                this.setRenderBounds(var20, var271, 1.0D - var261, 1.0D - var20, var271 + var22, 1.0D);
                 this.renderStandardBlock(p_147799_1_, p_147799_2_, p_147799_3_, p_147799_4_);
             }
 
             if (var8 == 4)
             {
-                this.setRenderBounds(0.0D, var27, var20, var26, var27 + var22, 1.0D - var20);
+                this.setRenderBounds(0.0D, var271, var20, var261, var271 + var22, 1.0D - var20);
                 this.renderStandardBlock(p_147799_1_, p_147799_2_, p_147799_3_, p_147799_4_);
             }
 
             if (var8 == 5)
             {
-                this.setRenderBounds(1.0D - var26, var27, var20, 1.0D, var27 + var22, 1.0D - var20);
+                this.setRenderBounds(1.0D - var261, var271, var20, 1.0D, var271 + var22, 1.0D - var20);
                 this.renderStandardBlock(p_147799_1_, p_147799_2_, p_147799_3_, p_147799_4_);
             }
         }
@@ -7051,14 +7743,48 @@ public class RenderBlocks
             p_147768_8_ = this.overrideBlockTexture;
         }
 
-        double var10 = (double)p_147768_8_.getInterpolatedU(this.renderMinX * 16.0D);
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            p_147768_8_ = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147768_1_, (int)p_147768_2_, (int)p_147768_4_, (int)p_147768_6_, 0, p_147768_8_);
+        }
+
+        boolean uvRotateSet = false;
+
+        if (Config.isNaturalTextures() && this.overrideBlockTexture == null && this.uvRotateBottom == 0)
+        {
+            NaturalProperties var10 = NaturalTextures.getNaturalProperties(p_147768_8_);
+
+            if (var10 != null)
+            {
+                int rand = Config.getRandom((int)p_147768_2_, (int)p_147768_4_, (int)p_147768_6_, 0);
+
+                if (var10.rotation > 1)
+                {
+                    this.uvRotateBottom = rand & 3;
+                }
+
+                if (var10.rotation == 2)
+                {
+                    this.uvRotateBottom = this.uvRotateBottom / 2 * 3;
+                }
+
+                if (var10.flip)
+                {
+                    this.flipTexture = (rand & 4) != 0;
+                }
+
+                uvRotateSet = true;
+            }
+        }
+
+        double var101 = (double)p_147768_8_.getInterpolatedU(this.renderMinX * 16.0D);
         double var12 = (double)p_147768_8_.getInterpolatedU(this.renderMaxX * 16.0D);
         double var14 = (double)p_147768_8_.getInterpolatedV(this.renderMinZ * 16.0D);
         double var16 = (double)p_147768_8_.getInterpolatedV(this.renderMaxZ * 16.0D);
 
         if (this.renderMinX < 0.0D || this.renderMaxX > 1.0D)
         {
-            var10 = (double)p_147768_8_.getMinU();
+            var101 = (double)p_147768_8_.getMinU();
             var12 = (double)p_147768_8_.getMaxU();
         }
 
@@ -7068,50 +7794,90 @@ public class RenderBlocks
             var16 = (double)p_147768_8_.getMaxV();
         }
 
-        double var18 = var12;
-        double var20 = var10;
+        double var18;
+
+        if (this.flipTexture)
+        {
+            var18 = var101;
+            var101 = var12;
+            var12 = var18;
+        }
+
+        var18 = var12;
+        double var20 = var101;
         double var22 = var14;
         double var24 = var16;
+        double var26;
 
         if (this.uvRotateBottom == 2)
         {
-            var10 = (double)p_147768_8_.getInterpolatedU(this.renderMinZ * 16.0D);
+            var101 = (double)p_147768_8_.getInterpolatedU(this.renderMinZ * 16.0D);
             var14 = (double)p_147768_8_.getInterpolatedV(16.0D - this.renderMaxX * 16.0D);
             var12 = (double)p_147768_8_.getInterpolatedU(this.renderMaxZ * 16.0D);
             var16 = (double)p_147768_8_.getInterpolatedV(16.0D - this.renderMinX * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var22 = var14;
             var24 = var16;
-            var18 = var10;
+            var18 = var101;
             var20 = var12;
             var14 = var16;
             var16 = var22;
         }
         else if (this.uvRotateBottom == 1)
         {
-            var10 = (double)p_147768_8_.getInterpolatedU(16.0D - this.renderMaxZ * 16.0D);
+            var101 = (double)p_147768_8_.getInterpolatedU(16.0D - this.renderMaxZ * 16.0D);
             var14 = (double)p_147768_8_.getInterpolatedV(this.renderMinX * 16.0D);
             var12 = (double)p_147768_8_.getInterpolatedU(16.0D - this.renderMinZ * 16.0D);
             var16 = (double)p_147768_8_.getInterpolatedV(this.renderMaxX * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
-            var10 = var12;
+            var20 = var101;
+            var101 = var12;
             var12 = var20;
             var22 = var16;
             var24 = var14;
         }
         else if (this.uvRotateBottom == 3)
         {
-            var10 = (double)p_147768_8_.getInterpolatedU(16.0D - this.renderMinX * 16.0D);
+            var101 = (double)p_147768_8_.getInterpolatedU(16.0D - this.renderMinX * 16.0D);
             var12 = (double)p_147768_8_.getInterpolatedU(16.0D - this.renderMaxX * 16.0D);
             var14 = (double)p_147768_8_.getInterpolatedV(16.0D - this.renderMinZ * 16.0D);
             var16 = (double)p_147768_8_.getInterpolatedV(16.0D - this.renderMaxZ * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
+            var20 = var101;
             var22 = var14;
             var24 = var16;
         }
 
-        double var26 = p_147768_2_ + this.renderMinX;
+        if (uvRotateSet)
+        {
+            this.uvRotateBottom = 0;
+            this.flipTexture = false;
+        }
+
+        var26 = p_147768_2_ + this.renderMinX;
         double var28 = p_147768_2_ + this.renderMaxX;
         double var30 = p_147768_4_ + this.renderMinY;
         double var32 = p_147768_6_ + this.renderMinZ;
@@ -7130,7 +7896,7 @@ public class RenderBlocks
             var9.addVertexWithUV(var26, var30, var34, var20, var24);
             var9.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             var9.setBrightness(this.brightnessBottomLeft);
-            var9.addVertexWithUV(var26, var30, var32, var10, var14);
+            var9.addVertexWithUV(var26, var30, var32, var101, var14);
             var9.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             var9.setBrightness(this.brightnessBottomRight);
             var9.addVertexWithUV(var28, var30, var32, var18, var22);
@@ -7141,7 +7907,7 @@ public class RenderBlocks
         else
         {
             var9.addVertexWithUV(var26, var30, var34, var20, var24);
-            var9.addVertexWithUV(var26, var30, var32, var10, var14);
+            var9.addVertexWithUV(var26, var30, var32, var101, var14);
             var9.addVertexWithUV(var28, var30, var32, var18, var22);
             var9.addVertexWithUV(var28, var30, var34, var12, var16);
         }
@@ -7156,14 +7922,56 @@ public class RenderBlocks
             p_147806_8_ = this.overrideBlockTexture;
         }
 
-        double var10 = (double)p_147806_8_.getInterpolatedU(this.renderMinX * 16.0D);
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            p_147806_8_ = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147806_1_, (int)p_147806_2_, (int)p_147806_4_, (int)p_147806_6_, 1, p_147806_8_);
+        }
+
+        boolean uvRotateSet = false;
+
+        if (Config.isNaturalTextures() && this.overrideBlockTexture == null && this.uvRotateTop == 0)
+        {
+            NaturalProperties var10 = NaturalTextures.getNaturalProperties(p_147806_8_);
+
+            if (var10 != null)
+            {
+                int rand = Config.getRandom((int)p_147806_2_, (int)p_147806_4_, (int)p_147806_6_, 1);
+
+                if (var10.rotation > 1)
+                {
+                    this.uvRotateTop = rand & 3;
+                }
+
+                if (var10.rotation == 2)
+                {
+                    this.uvRotateTop = this.uvRotateTop / 2 * 3;
+                }
+
+                if (var10.flip)
+                {
+                    this.flipTexture = (rand & 4) != 0;
+                }
+
+                uvRotateSet = true;
+            }
+        }
+
+        double var101 = (double)p_147806_8_.getInterpolatedU(this.renderMinX * 16.0D);
         double var12 = (double)p_147806_8_.getInterpolatedU(this.renderMaxX * 16.0D);
         double var14 = (double)p_147806_8_.getInterpolatedV(this.renderMinZ * 16.0D);
         double var16 = (double)p_147806_8_.getInterpolatedV(this.renderMaxZ * 16.0D);
+        double var18;
+
+        if (this.flipTexture)
+        {
+            var18 = var101;
+            var101 = var12;
+            var12 = var18;
+        }
 
         if (this.renderMinX < 0.0D || this.renderMaxX > 1.0D)
         {
-            var10 = (double)p_147806_8_.getMinU();
+            var101 = (double)p_147806_8_.getMinU();
             var12 = (double)p_147806_8_.getMaxU();
         }
 
@@ -7173,50 +7981,81 @@ public class RenderBlocks
             var16 = (double)p_147806_8_.getMaxV();
         }
 
-        double var18 = var12;
-        double var20 = var10;
+        var18 = var12;
+        double var20 = var101;
         double var22 = var14;
         double var24 = var16;
+        double var26;
 
         if (this.uvRotateTop == 1)
         {
-            var10 = (double)p_147806_8_.getInterpolatedU(this.renderMinZ * 16.0D);
+            var101 = (double)p_147806_8_.getInterpolatedU(this.renderMinZ * 16.0D);
             var14 = (double)p_147806_8_.getInterpolatedV(16.0D - this.renderMaxX * 16.0D);
             var12 = (double)p_147806_8_.getInterpolatedU(this.renderMaxZ * 16.0D);
             var16 = (double)p_147806_8_.getInterpolatedV(16.0D - this.renderMinX * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var22 = var14;
             var24 = var16;
-            var18 = var10;
+            var18 = var101;
             var20 = var12;
             var14 = var16;
             var16 = var22;
         }
         else if (this.uvRotateTop == 2)
         {
-            var10 = (double)p_147806_8_.getInterpolatedU(16.0D - this.renderMaxZ * 16.0D);
+            var101 = (double)p_147806_8_.getInterpolatedU(16.0D - this.renderMaxZ * 16.0D);
             var14 = (double)p_147806_8_.getInterpolatedV(this.renderMinX * 16.0D);
             var12 = (double)p_147806_8_.getInterpolatedU(16.0D - this.renderMinZ * 16.0D);
             var16 = (double)p_147806_8_.getInterpolatedV(this.renderMaxX * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
-            var10 = var12;
+            var20 = var101;
+            var101 = var12;
             var12 = var20;
             var22 = var16;
             var24 = var14;
         }
         else if (this.uvRotateTop == 3)
         {
-            var10 = (double)p_147806_8_.getInterpolatedU(16.0D - this.renderMinX * 16.0D);
+            var101 = (double)p_147806_8_.getInterpolatedU(16.0D - this.renderMinX * 16.0D);
             var12 = (double)p_147806_8_.getInterpolatedU(16.0D - this.renderMaxX * 16.0D);
             var14 = (double)p_147806_8_.getInterpolatedV(16.0D - this.renderMinZ * 16.0D);
             var16 = (double)p_147806_8_.getInterpolatedV(16.0D - this.renderMaxZ * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
+            var20 = var101;
             var22 = var14;
             var24 = var16;
         }
 
-        double var26 = p_147806_2_ + this.renderMinX;
+        if (uvRotateSet)
+        {
+            this.uvRotateTop = 0;
+            this.flipTexture = false;
+        }
+
+        var26 = p_147806_2_ + this.renderMinX;
         double var28 = p_147806_2_ + this.renderMaxX;
         double var30 = p_147806_4_ + this.renderMaxY;
         double var32 = p_147806_6_ + this.renderMinZ;
@@ -7238,7 +8077,7 @@ public class RenderBlocks
             var9.addVertexWithUV(var28, var30, var32, var18, var22);
             var9.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             var9.setBrightness(this.brightnessBottomRight);
-            var9.addVertexWithUV(var26, var30, var32, var10, var14);
+            var9.addVertexWithUV(var26, var30, var32, var101, var14);
             var9.setColorOpaque_F(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight);
             var9.setBrightness(this.brightnessTopRight);
             var9.addVertexWithUV(var26, var30, var34, var20, var24);
@@ -7247,7 +8086,7 @@ public class RenderBlocks
         {
             var9.addVertexWithUV(var28, var30, var34, var12, var16);
             var9.addVertexWithUV(var28, var30, var32, var18, var22);
-            var9.addVertexWithUV(var26, var30, var32, var10, var14);
+            var9.addVertexWithUV(var26, var30, var32, var101, var14);
             var9.addVertexWithUV(var26, var30, var34, var20, var24);
         }
     }
@@ -7261,7 +8100,41 @@ public class RenderBlocks
             p_147761_8_ = this.overrideBlockTexture;
         }
 
-        double var10 = (double)p_147761_8_.getInterpolatedU(this.renderMaxX * 16.0D);
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            p_147761_8_ = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147761_1_, (int)p_147761_2_, (int)p_147761_4_, (int)p_147761_6_, 2, p_147761_8_);
+        }
+
+        boolean uvRotateSet = false;
+
+        if (Config.isNaturalTextures() && this.overrideBlockTexture == null && this.uvRotateEast == 0)
+        {
+            NaturalProperties var10 = NaturalTextures.getNaturalProperties(p_147761_8_);
+
+            if (var10 != null)
+            {
+                int rand = Config.getRandom((int)p_147761_2_, (int)p_147761_4_, (int)p_147761_6_, 2);
+
+                if (var10.rotation > 1)
+                {
+                    this.uvRotateEast = rand & 3;
+                }
+
+                if (var10.rotation == 2)
+                {
+                    this.uvRotateEast = this.uvRotateEast / 2 * 3;
+                }
+
+                if (var10.flip)
+                {
+                    this.flipTexture = (rand & 4) != 0;
+                }
+
+                uvRotateSet = true;
+            }
+        }
+
+        double var101 = (double)p_147761_8_.getInterpolatedU(this.renderMaxX * 16.0D);
         double var12 = (double)p_147761_8_.getInterpolatedU(this.renderMinX * 16.0D);
         double var14 = (double)p_147761_8_.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
         double var16 = (double)p_147761_8_.getInterpolatedV(16.0D - this.renderMinY * 16.0D);
@@ -7269,14 +8142,14 @@ public class RenderBlocks
 
         if (this.flipTexture)
         {
-            var18 = var10;
-            var10 = var12;
+            var18 = var101;
+            var101 = var12;
             var12 = var18;
         }
 
         if (this.renderMinX < 0.0D || this.renderMaxX > 1.0D)
         {
-            var10 = (double)p_147761_8_.getMinU();
+            var101 = (double)p_147761_8_.getMinU();
             var12 = (double)p_147761_8_.getMaxU();
         }
 
@@ -7287,49 +8160,80 @@ public class RenderBlocks
         }
 
         var18 = var12;
-        double var20 = var10;
+        double var20 = var101;
         double var22 = var14;
         double var24 = var16;
+        double var26;
 
         if (this.uvRotateEast == 2)
         {
-            var10 = (double)p_147761_8_.getInterpolatedU(this.renderMinY * 16.0D);
+            var101 = (double)p_147761_8_.getInterpolatedU(this.renderMinY * 16.0D);
             var14 = (double)p_147761_8_.getInterpolatedV(16.0D - this.renderMinX * 16.0D);
             var12 = (double)p_147761_8_.getInterpolatedU(this.renderMaxY * 16.0D);
             var16 = (double)p_147761_8_.getInterpolatedV(16.0D - this.renderMaxX * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var22 = var14;
             var24 = var16;
-            var18 = var10;
+            var18 = var101;
             var20 = var12;
             var14 = var16;
             var16 = var22;
         }
         else if (this.uvRotateEast == 1)
         {
-            var10 = (double)p_147761_8_.getInterpolatedU(16.0D - this.renderMaxY * 16.0D);
+            var101 = (double)p_147761_8_.getInterpolatedU(16.0D - this.renderMaxY * 16.0D);
             var14 = (double)p_147761_8_.getInterpolatedV(this.renderMaxX * 16.0D);
             var12 = (double)p_147761_8_.getInterpolatedU(16.0D - this.renderMinY * 16.0D);
             var16 = (double)p_147761_8_.getInterpolatedV(this.renderMinX * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
-            var10 = var12;
+            var20 = var101;
+            var101 = var12;
             var12 = var20;
             var22 = var16;
             var24 = var14;
         }
         else if (this.uvRotateEast == 3)
         {
-            var10 = (double)p_147761_8_.getInterpolatedU(16.0D - this.renderMinX * 16.0D);
+            var101 = (double)p_147761_8_.getInterpolatedU(16.0D - this.renderMinX * 16.0D);
             var12 = (double)p_147761_8_.getInterpolatedU(16.0D - this.renderMaxX * 16.0D);
             var14 = (double)p_147761_8_.getInterpolatedV(this.renderMaxY * 16.0D);
             var16 = (double)p_147761_8_.getInterpolatedV(this.renderMinY * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
+            var20 = var101;
             var22 = var14;
             var24 = var16;
         }
 
-        double var26 = p_147761_2_ + this.renderMinX;
+        if (uvRotateSet)
+        {
+            this.uvRotateEast = 0;
+            this.flipTexture = false;
+        }
+
+        var26 = p_147761_2_ + this.renderMinX;
         double var28 = p_147761_2_ + this.renderMaxX;
         double var30 = p_147761_4_ + this.renderMinY;
         double var32 = p_147761_4_ + this.renderMaxY;
@@ -7348,7 +8252,7 @@ public class RenderBlocks
             var9.addVertexWithUV(var26, var32, var34, var18, var22);
             var9.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             var9.setBrightness(this.brightnessBottomLeft);
-            var9.addVertexWithUV(var28, var32, var34, var10, var14);
+            var9.addVertexWithUV(var28, var32, var34, var101, var14);
             var9.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             var9.setBrightness(this.brightnessBottomRight);
             var9.addVertexWithUV(var28, var30, var34, var20, var24);
@@ -7359,7 +8263,7 @@ public class RenderBlocks
         else
         {
             var9.addVertexWithUV(var26, var32, var34, var18, var22);
-            var9.addVertexWithUV(var28, var32, var34, var10, var14);
+            var9.addVertexWithUV(var28, var32, var34, var101, var14);
             var9.addVertexWithUV(var28, var30, var34, var20, var24);
             var9.addVertexWithUV(var26, var30, var34, var12, var16);
         }
@@ -7374,7 +8278,41 @@ public class RenderBlocks
             p_147734_8_ = this.overrideBlockTexture;
         }
 
-        double var10 = (double)p_147734_8_.getInterpolatedU(this.renderMinX * 16.0D);
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            p_147734_8_ = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147734_1_, (int)p_147734_2_, (int)p_147734_4_, (int)p_147734_6_, 3, p_147734_8_);
+        }
+
+        boolean uvRotateSet = false;
+
+        if (Config.isNaturalTextures() && this.overrideBlockTexture == null && this.uvRotateWest == 0)
+        {
+            NaturalProperties var10 = NaturalTextures.getNaturalProperties(p_147734_8_);
+
+            if (var10 != null)
+            {
+                int rand = Config.getRandom((int)p_147734_2_, (int)p_147734_4_, (int)p_147734_6_, 3);
+
+                if (var10.rotation > 1)
+                {
+                    this.uvRotateWest = rand & 3;
+                }
+
+                if (var10.rotation == 2)
+                {
+                    this.uvRotateWest = this.uvRotateWest / 2 * 3;
+                }
+
+                if (var10.flip)
+                {
+                    this.flipTexture = (rand & 4) != 0;
+                }
+
+                uvRotateSet = true;
+            }
+        }
+
+        double var101 = (double)p_147734_8_.getInterpolatedU(this.renderMinX * 16.0D);
         double var12 = (double)p_147734_8_.getInterpolatedU(this.renderMaxX * 16.0D);
         double var14 = (double)p_147734_8_.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
         double var16 = (double)p_147734_8_.getInterpolatedV(16.0D - this.renderMinY * 16.0D);
@@ -7382,14 +8320,14 @@ public class RenderBlocks
 
         if (this.flipTexture)
         {
-            var18 = var10;
-            var10 = var12;
+            var18 = var101;
+            var101 = var12;
             var12 = var18;
         }
 
         if (this.renderMinX < 0.0D || this.renderMaxX > 1.0D)
         {
-            var10 = (double)p_147734_8_.getMinU();
+            var101 = (double)p_147734_8_.getMinU();
             var12 = (double)p_147734_8_.getMaxU();
         }
 
@@ -7400,49 +8338,80 @@ public class RenderBlocks
         }
 
         var18 = var12;
-        double var20 = var10;
+        double var20 = var101;
         double var22 = var14;
         double var24 = var16;
+        double var26;
 
         if (this.uvRotateWest == 1)
         {
-            var10 = (double)p_147734_8_.getInterpolatedU(this.renderMinY * 16.0D);
+            var101 = (double)p_147734_8_.getInterpolatedU(this.renderMinY * 16.0D);
             var16 = (double)p_147734_8_.getInterpolatedV(16.0D - this.renderMinX * 16.0D);
             var12 = (double)p_147734_8_.getInterpolatedU(this.renderMaxY * 16.0D);
             var14 = (double)p_147734_8_.getInterpolatedV(16.0D - this.renderMaxX * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var22 = var14;
             var24 = var16;
-            var18 = var10;
+            var18 = var101;
             var20 = var12;
             var14 = var16;
             var16 = var22;
         }
         else if (this.uvRotateWest == 2)
         {
-            var10 = (double)p_147734_8_.getInterpolatedU(16.0D - this.renderMaxY * 16.0D);
+            var101 = (double)p_147734_8_.getInterpolatedU(16.0D - this.renderMaxY * 16.0D);
             var14 = (double)p_147734_8_.getInterpolatedV(this.renderMinX * 16.0D);
             var12 = (double)p_147734_8_.getInterpolatedU(16.0D - this.renderMinY * 16.0D);
             var16 = (double)p_147734_8_.getInterpolatedV(this.renderMaxX * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
-            var10 = var12;
+            var20 = var101;
+            var101 = var12;
             var12 = var20;
             var22 = var16;
             var24 = var14;
         }
         else if (this.uvRotateWest == 3)
         {
-            var10 = (double)p_147734_8_.getInterpolatedU(16.0D - this.renderMinX * 16.0D);
+            var101 = (double)p_147734_8_.getInterpolatedU(16.0D - this.renderMinX * 16.0D);
             var12 = (double)p_147734_8_.getInterpolatedU(16.0D - this.renderMaxX * 16.0D);
             var14 = (double)p_147734_8_.getInterpolatedV(this.renderMaxY * 16.0D);
             var16 = (double)p_147734_8_.getInterpolatedV(this.renderMinY * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
+            var20 = var101;
             var22 = var14;
             var24 = var16;
         }
 
-        double var26 = p_147734_2_ + this.renderMinX;
+        if (uvRotateSet)
+        {
+            this.uvRotateWest = 0;
+            this.flipTexture = false;
+        }
+
+        var26 = p_147734_2_ + this.renderMinX;
         double var28 = p_147734_2_ + this.renderMaxX;
         double var30 = p_147734_4_ + this.renderMinY;
         double var32 = p_147734_4_ + this.renderMaxY;
@@ -7458,7 +8427,7 @@ public class RenderBlocks
         {
             var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
             var9.setBrightness(this.brightnessTopLeft);
-            var9.addVertexWithUV(var26, var32, var34, var10, var14);
+            var9.addVertexWithUV(var26, var32, var34, var101, var14);
             var9.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             var9.setBrightness(this.brightnessBottomLeft);
             var9.addVertexWithUV(var26, var30, var34, var20, var24);
@@ -7471,7 +8440,7 @@ public class RenderBlocks
         }
         else
         {
-            var9.addVertexWithUV(var26, var32, var34, var10, var14);
+            var9.addVertexWithUV(var26, var32, var34, var101, var14);
             var9.addVertexWithUV(var26, var30, var34, var20, var24);
             var9.addVertexWithUV(var28, var30, var34, var12, var16);
             var9.addVertexWithUV(var28, var32, var34, var18, var22);
@@ -7487,7 +8456,41 @@ public class RenderBlocks
             p_147798_8_ = this.overrideBlockTexture;
         }
 
-        double var10 = (double)p_147798_8_.getInterpolatedU(this.renderMinZ * 16.0D);
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            p_147798_8_ = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147798_1_, (int)p_147798_2_, (int)p_147798_4_, (int)p_147798_6_, 4, p_147798_8_);
+        }
+
+        boolean uvRotateSet = false;
+
+        if (Config.isNaturalTextures() && this.overrideBlockTexture == null && this.uvRotateNorth == 0)
+        {
+            NaturalProperties var10 = NaturalTextures.getNaturalProperties(p_147798_8_);
+
+            if (var10 != null)
+            {
+                int rand = Config.getRandom((int)p_147798_2_, (int)p_147798_4_, (int)p_147798_6_, 4);
+
+                if (var10.rotation > 1)
+                {
+                    this.uvRotateNorth = rand & 3;
+                }
+
+                if (var10.rotation == 2)
+                {
+                    this.uvRotateNorth = this.uvRotateNorth / 2 * 3;
+                }
+
+                if (var10.flip)
+                {
+                    this.flipTexture = (rand & 4) != 0;
+                }
+
+                uvRotateSet = true;
+            }
+        }
+
+        double var101 = (double)p_147798_8_.getInterpolatedU(this.renderMinZ * 16.0D);
         double var12 = (double)p_147798_8_.getInterpolatedU(this.renderMaxZ * 16.0D);
         double var14 = (double)p_147798_8_.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
         double var16 = (double)p_147798_8_.getInterpolatedV(16.0D - this.renderMinY * 16.0D);
@@ -7495,14 +8498,14 @@ public class RenderBlocks
 
         if (this.flipTexture)
         {
-            var18 = var10;
-            var10 = var12;
+            var18 = var101;
+            var101 = var12;
             var12 = var18;
         }
 
         if (this.renderMinZ < 0.0D || this.renderMaxZ > 1.0D)
         {
-            var10 = (double)p_147798_8_.getMinU();
+            var101 = (double)p_147798_8_.getMinU();
             var12 = (double)p_147798_8_.getMaxU();
         }
 
@@ -7513,49 +8516,80 @@ public class RenderBlocks
         }
 
         var18 = var12;
-        double var20 = var10;
+        double var20 = var101;
         double var22 = var14;
         double var24 = var16;
+        double var26;
 
         if (this.uvRotateNorth == 1)
         {
-            var10 = (double)p_147798_8_.getInterpolatedU(this.renderMinY * 16.0D);
+            var101 = (double)p_147798_8_.getInterpolatedU(this.renderMinY * 16.0D);
             var14 = (double)p_147798_8_.getInterpolatedV(16.0D - this.renderMaxZ * 16.0D);
             var12 = (double)p_147798_8_.getInterpolatedU(this.renderMaxY * 16.0D);
             var16 = (double)p_147798_8_.getInterpolatedV(16.0D - this.renderMinZ * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var22 = var14;
             var24 = var16;
-            var18 = var10;
+            var18 = var101;
             var20 = var12;
             var14 = var16;
             var16 = var22;
         }
         else if (this.uvRotateNorth == 2)
         {
-            var10 = (double)p_147798_8_.getInterpolatedU(16.0D - this.renderMaxY * 16.0D);
+            var101 = (double)p_147798_8_.getInterpolatedU(16.0D - this.renderMaxY * 16.0D);
             var14 = (double)p_147798_8_.getInterpolatedV(this.renderMinZ * 16.0D);
             var12 = (double)p_147798_8_.getInterpolatedU(16.0D - this.renderMinY * 16.0D);
             var16 = (double)p_147798_8_.getInterpolatedV(this.renderMaxZ * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
-            var10 = var12;
+            var20 = var101;
+            var101 = var12;
             var12 = var20;
             var22 = var16;
             var24 = var14;
         }
         else if (this.uvRotateNorth == 3)
         {
-            var10 = (double)p_147798_8_.getInterpolatedU(16.0D - this.renderMinZ * 16.0D);
+            var101 = (double)p_147798_8_.getInterpolatedU(16.0D - this.renderMinZ * 16.0D);
             var12 = (double)p_147798_8_.getInterpolatedU(16.0D - this.renderMaxZ * 16.0D);
             var14 = (double)p_147798_8_.getInterpolatedV(this.renderMaxY * 16.0D);
             var16 = (double)p_147798_8_.getInterpolatedV(this.renderMinY * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
+            var20 = var101;
             var22 = var14;
             var24 = var16;
         }
 
-        double var26 = p_147798_2_ + this.renderMinX;
+        if (uvRotateSet)
+        {
+            this.uvRotateNorth = 0;
+            this.flipTexture = false;
+        }
+
+        var26 = p_147798_2_ + this.renderMinX;
         double var28 = p_147798_4_ + this.renderMinY;
         double var30 = p_147798_4_ + this.renderMaxY;
         double var32 = p_147798_6_ + this.renderMinZ;
@@ -7574,7 +8608,7 @@ public class RenderBlocks
             var9.addVertexWithUV(var26, var30, var34, var18, var22);
             var9.setColorOpaque_F(this.colorRedBottomLeft, this.colorGreenBottomLeft, this.colorBlueBottomLeft);
             var9.setBrightness(this.brightnessBottomLeft);
-            var9.addVertexWithUV(var26, var30, var32, var10, var14);
+            var9.addVertexWithUV(var26, var30, var32, var101, var14);
             var9.setColorOpaque_F(this.colorRedBottomRight, this.colorGreenBottomRight, this.colorBlueBottomRight);
             var9.setBrightness(this.brightnessBottomRight);
             var9.addVertexWithUV(var26, var28, var32, var20, var24);
@@ -7585,7 +8619,7 @@ public class RenderBlocks
         else
         {
             var9.addVertexWithUV(var26, var30, var34, var18, var22);
-            var9.addVertexWithUV(var26, var30, var32, var10, var14);
+            var9.addVertexWithUV(var26, var30, var32, var101, var14);
             var9.addVertexWithUV(var26, var28, var32, var20, var24);
             var9.addVertexWithUV(var26, var28, var34, var12, var16);
         }
@@ -7600,7 +8634,41 @@ public class RenderBlocks
             p_147764_8_ = this.overrideBlockTexture;
         }
 
-        double var10 = (double)p_147764_8_.getInterpolatedU(this.renderMaxZ * 16.0D);
+        if (Config.isConnectedTextures() && this.overrideBlockTexture == null)
+        {
+            p_147764_8_ = ConnectedTextures.getConnectedTexture(this.blockAccess, p_147764_1_, (int)p_147764_2_, (int)p_147764_4_, (int)p_147764_6_, 5, p_147764_8_);
+        }
+
+        boolean uvRotateSet = false;
+
+        if (Config.isNaturalTextures() && this.overrideBlockTexture == null && this.uvRotateSouth == 0)
+        {
+            NaturalProperties var10 = NaturalTextures.getNaturalProperties(p_147764_8_);
+
+            if (var10 != null)
+            {
+                int rand = Config.getRandom((int)p_147764_2_, (int)p_147764_4_, (int)p_147764_6_, 5);
+
+                if (var10.rotation > 1)
+                {
+                    this.uvRotateSouth = rand & 3;
+                }
+
+                if (var10.rotation == 2)
+                {
+                    this.uvRotateSouth = this.uvRotateSouth / 2 * 3;
+                }
+
+                if (var10.flip)
+                {
+                    this.flipTexture = (rand & 4) != 0;
+                }
+
+                uvRotateSet = true;
+            }
+        }
+
+        double var101 = (double)p_147764_8_.getInterpolatedU(this.renderMaxZ * 16.0D);
         double var12 = (double)p_147764_8_.getInterpolatedU(this.renderMinZ * 16.0D);
         double var14 = (double)p_147764_8_.getInterpolatedV(16.0D - this.renderMaxY * 16.0D);
         double var16 = (double)p_147764_8_.getInterpolatedV(16.0D - this.renderMinY * 16.0D);
@@ -7608,14 +8676,14 @@ public class RenderBlocks
 
         if (this.flipTexture)
         {
-            var18 = var10;
-            var10 = var12;
+            var18 = var101;
+            var101 = var12;
             var12 = var18;
         }
 
         if (this.renderMinZ < 0.0D || this.renderMaxZ > 1.0D)
         {
-            var10 = (double)p_147764_8_.getMinU();
+            var101 = (double)p_147764_8_.getMinU();
             var12 = (double)p_147764_8_.getMaxU();
         }
 
@@ -7626,49 +8694,80 @@ public class RenderBlocks
         }
 
         var18 = var12;
-        double var20 = var10;
+        double var20 = var101;
         double var22 = var14;
         double var24 = var16;
+        double var26;
 
         if (this.uvRotateSouth == 2)
         {
-            var10 = (double)p_147764_8_.getInterpolatedU(this.renderMinY * 16.0D);
+            var101 = (double)p_147764_8_.getInterpolatedU(this.renderMinY * 16.0D);
             var14 = (double)p_147764_8_.getInterpolatedV(16.0D - this.renderMinZ * 16.0D);
             var12 = (double)p_147764_8_.getInterpolatedU(this.renderMaxY * 16.0D);
             var16 = (double)p_147764_8_.getInterpolatedV(16.0D - this.renderMaxZ * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var22 = var14;
             var24 = var16;
-            var18 = var10;
+            var18 = var101;
             var20 = var12;
             var14 = var16;
             var16 = var22;
         }
         else if (this.uvRotateSouth == 1)
         {
-            var10 = (double)p_147764_8_.getInterpolatedU(16.0D - this.renderMaxY * 16.0D);
+            var101 = (double)p_147764_8_.getInterpolatedU(16.0D - this.renderMaxY * 16.0D);
             var14 = (double)p_147764_8_.getInterpolatedV(this.renderMaxZ * 16.0D);
             var12 = (double)p_147764_8_.getInterpolatedU(16.0D - this.renderMinY * 16.0D);
             var16 = (double)p_147764_8_.getInterpolatedV(this.renderMinZ * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
-            var10 = var12;
+            var20 = var101;
+            var101 = var12;
             var12 = var20;
             var22 = var16;
             var24 = var14;
         }
         else if (this.uvRotateSouth == 3)
         {
-            var10 = (double)p_147764_8_.getInterpolatedU(16.0D - this.renderMinZ * 16.0D);
+            var101 = (double)p_147764_8_.getInterpolatedU(16.0D - this.renderMinZ * 16.0D);
             var12 = (double)p_147764_8_.getInterpolatedU(16.0D - this.renderMaxZ * 16.0D);
             var14 = (double)p_147764_8_.getInterpolatedV(this.renderMaxY * 16.0D);
             var16 = (double)p_147764_8_.getInterpolatedV(this.renderMinY * 16.0D);
+
+            if (this.flipTexture)
+            {
+                var26 = var101;
+                var101 = var12;
+                var12 = var26;
+            }
+
             var18 = var12;
-            var20 = var10;
+            var20 = var101;
             var22 = var14;
             var24 = var16;
         }
 
-        double var26 = p_147764_2_ + this.renderMaxX;
+        if (uvRotateSet)
+        {
+            this.uvRotateSouth = 0;
+            this.flipTexture = false;
+        }
+
+        var26 = p_147764_2_ + this.renderMaxX;
         double var28 = p_147764_4_ + this.renderMinY;
         double var30 = p_147764_4_ + this.renderMaxY;
         double var32 = p_147764_6_ + this.renderMinZ;
@@ -7693,14 +8792,14 @@ public class RenderBlocks
             var9.addVertexWithUV(var26, var30, var32, var18, var22);
             var9.setColorOpaque_F(this.colorRedTopRight, this.colorGreenTopRight, this.colorBlueTopRight);
             var9.setBrightness(this.brightnessTopRight);
-            var9.addVertexWithUV(var26, var30, var34, var10, var14);
+            var9.addVertexWithUV(var26, var30, var34, var101, var14);
         }
         else
         {
             var9.addVertexWithUV(var26, var28, var34, var20, var24);
             var9.addVertexWithUV(var26, var28, var32, var12, var16);
             var9.addVertexWithUV(var26, var30, var32, var18, var22);
-            var9.addVertexWithUV(var26, var30, var34, var10, var14);
+            var9.addVertexWithUV(var26, var30, var34, var101, var14);
         }
     }
 
@@ -7744,8 +8843,8 @@ public class RenderBlocks
             {
                 var4.startDrawingQuads();
                 var4.setNormal(0.0F, -1.0F, 0.0F);
-                IIcon var15 = this.getBlockIconFromSideAndMetadata(p_147800_1_, 0, p_147800_2_);
-                this.drawCrossedSquares(var15, -0.5D, -0.5D, -0.5D, 1.0F);
+                IIcon var171 = this.getBlockIconFromSideAndMetadata(p_147800_1_, 0, p_147800_2_);
+                this.drawCrossedSquares(var171, -0.5D, -0.5D, -0.5D, 1.0F);
                 var4.draw();
             }
             else if (var6 == 19)
@@ -7871,51 +8970,51 @@ public class RenderBlocks
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 var4.startDrawingQuads();
 
-                for (int var16 = 0; var16 < 8; ++var16)
+                for (int var181 = 0; var181 < 8; ++var181)
                 {
                     byte var17 = 0;
                     byte var18 = 1;
 
-                    if (var16 == 0)
+                    if (var181 == 0)
                     {
                         var17 = 2;
                     }
 
-                    if (var16 == 1)
+                    if (var181 == 1)
                     {
                         var17 = 3;
                     }
 
-                    if (var16 == 2)
+                    if (var181 == 2)
                     {
                         var17 = 4;
                     }
 
-                    if (var16 == 3)
+                    if (var181 == 3)
                     {
                         var17 = 5;
                         var18 = 2;
                     }
 
-                    if (var16 == 4)
+                    if (var181 == 4)
                     {
                         var17 = 6;
                         var18 = 3;
                     }
 
-                    if (var16 == 5)
+                    if (var181 == 5)
                     {
                         var17 = 7;
                         var18 = 5;
                     }
 
-                    if (var16 == 6)
+                    if (var181 == 6)
                     {
                         var17 = 6;
                         var18 = 2;
                     }
 
-                    if (var16 == 7)
+                    if (var181 == 7)
                     {
                         var17 = 3;
                     }
@@ -8159,6 +9258,14 @@ public class RenderBlocks
                 this.renderBlockHopperMetadata((BlockHopper)p_147800_1_, 0, 0, 0, 0, true);
                 GL11.glTranslatef(0.5F, 0.5F, 0.5F);
             }
+            else if (Reflector.ModLoader.exists())
+            {
+                Reflector.callVoid(Reflector.ModLoader_renderInvBlock, new Object[] {this, p_147800_1_, Integer.valueOf(p_147800_2_), Integer.valueOf(var6)});
+            }
+            else if (Reflector.FMLRenderAccessLibrary.exists())
+            {
+                Reflector.callVoid(Reflector.FMLRenderAccessLibrary_renderInventoryBlock, new Object[] {this, p_147800_1_, Integer.valueOf(p_147800_2_), Integer.valueOf(var6)});
+            }
         }
         else
         {
@@ -8215,9 +9322,58 @@ public class RenderBlocks
         }
     }
 
-    public static boolean renderItemIn3d(int p_147739_0_)
+    public static boolean renderItemIn3d(int par0)
     {
-        return p_147739_0_ == 0 ? true : (p_147739_0_ == 31 ? true : (p_147739_0_ == 39 ? true : (p_147739_0_ == 13 ? true : (p_147739_0_ == 10 ? true : (p_147739_0_ == 11 ? true : (p_147739_0_ == 27 ? true : (p_147739_0_ == 22 ? true : (p_147739_0_ == 21 ? true : (p_147739_0_ == 16 ? true : (p_147739_0_ == 26 ? true : (p_147739_0_ == 32 ? true : (p_147739_0_ == 34 ? true : (p_147739_0_ == 35 ? true : (p_147739_0_ == -1 ? false : false))))))))))))));
+        switch (par0)
+        {
+            case -1:
+                return false;
+
+            case 0:
+            case 10:
+            case 11:
+            case 13:
+            case 16:
+            case 21:
+            case 22:
+            case 26:
+            case 27:
+            case 31:
+            case 32:
+            case 34:
+            case 35:
+            case 39:
+                return true;
+
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 12:
+            case 14:
+            case 15:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 23:
+            case 24:
+            case 25:
+            case 28:
+            case 29:
+            case 30:
+            case 33:
+            case 36:
+            case 37:
+            case 38:
+            default:
+                return Reflector.ModLoader.exists() ? Reflector.callBoolean(Reflector.ModLoader_renderBlockIsItemFull3D, new Object[] {Integer.valueOf(par0)}): (Reflector.FMLRenderAccessLibrary.exists() ? Reflector.callBoolean(Reflector.FMLRenderAccessLibrary_renderItemAsFull3DBlock, new Object[] {Integer.valueOf(par0)}): false);
+        }
     }
 
     public IIcon getBlockIcon(Block p_147793_1_, IBlockAccess p_147793_2_, int p_147793_3_, int p_147793_4_, int p_147793_5_, int p_147793_6_)
@@ -8248,5 +9404,68 @@ public class RenderBlocks
         }
 
         return (IIcon)p_147758_1_;
+    }
+
+    private float getAmbientOcclusionLightValue(int i, int j, int k)
+    {
+        Block block = this.blockAccess.getBlock(i, j, k);
+        return block.isBlockNormalCube() ? this.aoLightValueOpaque : 1.0F;
+    }
+
+    private IIcon fixAoSideGrassTexture(IIcon tex, int x, int y, int z, int side, float f, float f1, float f2)
+    {
+        if (tex == TextureUtils.iconGrassSide || tex == TextureUtils.iconMyceliumSide)
+        {
+            tex = Config.getSideGrassTexture(this.blockAccess, x, y, z, side, tex);
+
+            if (tex == TextureUtils.iconGrassTop)
+            {
+                this.colorRedTopLeft *= f;
+                this.colorRedBottomLeft *= f;
+                this.colorRedBottomRight *= f;
+                this.colorRedTopRight *= f;
+                this.colorGreenTopLeft *= f1;
+                this.colorGreenBottomLeft *= f1;
+                this.colorGreenBottomRight *= f1;
+                this.colorGreenTopRight *= f1;
+                this.colorBlueTopLeft *= f2;
+                this.colorBlueBottomLeft *= f2;
+                this.colorBlueBottomRight *= f2;
+                this.colorBlueTopRight *= f2;
+            }
+        }
+
+        if (tex == TextureUtils.iconGrassSideSnowed)
+        {
+            tex = Config.getSideSnowGrassTexture(this.blockAccess, x, y, z, side);
+        }
+
+        return tex;
+    }
+
+    private boolean hasSnowNeighbours(int x, int y, int z)
+    {
+        Block blockSnow = Blocks.snow_layer;
+        return this.blockAccess.getBlock(x - 1, y, z) != blockSnow && this.blockAccess.getBlock(x + 1, y, z) != blockSnow && this.blockAccess.getBlock(x, y, z - 1) != blockSnow && this.blockAccess.getBlock(x, y, z + 1) != blockSnow ? false : this.blockAccess.getBlock(x, y - 1, z).isOpaqueCube();
+    }
+
+    private void renderSnow(int x, int y, int z, double maxY)
+    {
+        if (this.betterSnowEnabled)
+        {
+            this.setRenderBoundsFromBlock(Blocks.snow_layer);
+            this.renderMaxY = maxY;
+            this.renderStandardBlock(Blocks.snow_layer, x, y, z);
+        }
+    }
+
+    public static RenderBlocks getInstance()
+    {
+        if (instance == null)
+        {
+            instance = new RenderBlocks();
+        }
+
+        return instance;
     }
 }

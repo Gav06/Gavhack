@@ -1,5 +1,8 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 plugins {
 	id 'java'
+	id 'org.jetbrains.kotlin.jvm' version '2.0.21'
 }
 
 version = project.mod_version
@@ -7,8 +10,39 @@ group = project.maven_group
 
 repositories {
 	mavenCentral()
+
+}
+
+configurations {
+	implementation.extendsFrom(shadow)
 }
 
 dependencies {
 	implementation(fileTree('libs'))
+
+	shadow('com.google.code.gson:gson:2.11.0')
+
+	// thanks kami blue :-)
+	shadow("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version") {
+		exclude module: 'kotlin-stdlib-common'
+		exclude module: 'annotations'
+	}
+
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.sourceCompatibility = project.properties['java_version']
+	it.targetCompatibility = project.properties['java_version']
+}
+
+
+jar {
+	from {
+		configurations.shadow.collect {
+			exclude("META-INF/")
+			exclude("dummyThing")
+			it.isDirectory() ? it : zipTree(it)
+		}
+
+	}
 }

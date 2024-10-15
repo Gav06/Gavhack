@@ -12,9 +12,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
+
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.gen.layer.IntCache;
+import optifine.CrashReporter;
+import optifine.Reflector;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -41,6 +45,7 @@ public class CrashReport
     private boolean field_85059_f = true;
     private StackTraceElement[] stacktrace = new StackTraceElement[0];
     private static final String __OBFID = "CL_00000990";
+    private boolean reported = false;
 
     public CrashReport(String par1Str, Throwable par2Throwable)
     {
@@ -62,6 +67,10 @@ public class CrashReport
             {
                 return "1.7.2";
             }
+            public Object call1() throws Exception
+            {
+                return this.call();
+            }
         });
         this.theReportCategory.addCrashSectionCallable("Operating System", new Callable()
         {
@@ -69,6 +78,10 @@ public class CrashReport
             public String call()
             {
                 return System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version");
+            }
+            public Object call1() throws Exception
+            {
+                return this.call();
             }
         });
         this.theReportCategory.addCrashSectionCallable("Java Version", new Callable()
@@ -78,6 +91,10 @@ public class CrashReport
             {
                 return System.getProperty("java.version") + ", " + System.getProperty("java.vendor");
             }
+            public Object call1() throws Exception
+            {
+                return this.call();
+            }
         });
         this.theReportCategory.addCrashSectionCallable("Java VM Version", new Callable()
         {
@@ -85,6 +102,10 @@ public class CrashReport
             public String call()
             {
                 return System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor");
+            }
+            public Object call1() throws Exception
+            {
+                return this.call();
             }
         });
         this.theReportCategory.addCrashSectionCallable("Memory", new Callable()
@@ -100,6 +121,10 @@ public class CrashReport
                 long var10 = var4 / 1024L / 1024L;
                 long var12 = var6 / 1024L / 1024L;
                 return var6 + " bytes (" + var12 + " MB) / " + var4 + " bytes (" + var10 + " MB) up to " + var2 + " bytes (" + var8 + " MB)";
+            }
+            public Object call1() throws Exception
+            {
+                return this.call();
             }
         });
         this.theReportCategory.addCrashSectionCallable("JVM Flags", new Callable()
@@ -130,11 +155,15 @@ public class CrashReport
 
                 return String.format("%d total; %s", new Object[] {Integer.valueOf(var3), var4.toString()});
             }
+            public Object call1() throws Exception
+            {
+                return this.call();
+            }
         });
         this.theReportCategory.addCrashSectionCallable("AABB Pool Size", new Callable()
         {
             private static final String __OBFID = "CL_00001355";
-            public String call()
+            public String call1()
             {
                 int var1 = AxisAlignedBB.getAABBPool().getlistAABBsize();
                 int var2 = 56 * var1;
@@ -144,15 +173,29 @@ public class CrashReport
                 int var6 = var5 / 1024 / 1024;
                 return var1 + " (" + var2 + " bytes; " + var3 + " MB) allocated, " + var4 + " (" + var5 + " bytes; " + var6 + " MB) used";
             }
+            public Object call() throws Exception
+            {
+                return this.call1();
+            }
         });
         this.theReportCategory.addCrashSectionCallable("IntCache", new Callable()
         {
             private static final String __OBFID = "CL_00001382";
-            public String call() throws SecurityException, NoSuchFieldException, IllegalAccessException, IllegalArgumentException
+            public String call1() throws SecurityException, NoSuchFieldException, IllegalAccessException, IllegalArgumentException
             {
                 return IntCache.getCacheSizes();
             }
+            public Object call() throws Exception
+            {
+                return this.call1();
+            }
         });
+
+        if (Reflector.FMLCommonHandler_enhanceCrashReport.exists())
+        {
+            Object instance = Reflector.call(Reflector.FMLCommonHandler_instance, new Object[0]);
+            Reflector.callString(instance, Reflector.FMLCommonHandler_enhanceCrashReport, new Object[] {this, this.theReportCategory});
+        }
     }
 
     /**
@@ -178,19 +221,19 @@ public class CrashReport
     {
         if ((this.stacktrace == null || this.stacktrace.length <= 0) && this.crashReportSections.size() > 0)
         {
-            this.stacktrace = (StackTraceElement[])ArrayUtils.subarray(((CrashReportCategory)this.crashReportSections.get(0)).func_147152_a(), 0, 1);
+            this.stacktrace = (StackTraceElement[])((StackTraceElement[])ArrayUtils.subarray(((CrashReportCategory)this.crashReportSections.get(0)).func_147152_a(), 0, 1));
         }
 
         if (this.stacktrace != null && this.stacktrace.length > 0)
         {
             par1StringBuilder.append("-- Head --\n");
             par1StringBuilder.append("Stacktrace:\n");
-            StackTraceElement[] var2 = this.stacktrace;
-            int var3 = var2.length;
+            StackTraceElement[] var6 = this.stacktrace;
+            int var7 = var6.length;
 
-            for (int var4 = 0; var4 < var3; ++var4)
+            for (int var4 = 0; var4 < var7; ++var4)
             {
-                StackTraceElement var5 = var2[var4];
+                StackTraceElement var5 = var6[var4];
                 par1StringBuilder.append("\t").append("at ").append(var5.toString());
                 par1StringBuilder.append("\n");
             }
@@ -198,12 +241,12 @@ public class CrashReport
             par1StringBuilder.append("\n");
         }
 
-        Iterator var6 = this.crashReportSections.iterator();
+        Iterator var61 = this.crashReportSections.iterator();
 
-        while (var6.hasNext())
+        while (var61.hasNext())
         {
-            CrashReportCategory var7 = (CrashReportCategory)var6.next();
-            var7.appendToStringBuilder(par1StringBuilder);
+            CrashReportCategory var71 = (CrashReportCategory)var61.next();
+            var71.appendToStringBuilder(par1StringBuilder);
             par1StringBuilder.append("\n\n");
         }
 
@@ -260,6 +303,12 @@ public class CrashReport
      */
     public String getCompleteReport()
     {
+        if (!this.reported)
+        {
+            this.reported = true;
+            CrashReporter.onCrashReport(this, this.theReportCategory);
+        }
+
         StringBuilder var1 = new StringBuilder();
         var1.append("---- Minecraft Crash Report ----\n");
         var1.append("// ");
@@ -310,15 +359,15 @@ public class CrashReport
 
             try
             {
-                FileWriter var2 = new FileWriter(p_147149_1_);
-                var2.write(this.getCompleteReport());
-                var2.close();
+                FileWriter var3 = new FileWriter(p_147149_1_);
+                var3.write(this.getCompleteReport());
+                var3.close();
                 this.crashReportFile = p_147149_1_;
                 return true;
             }
-            catch (Throwable var3)
+            catch (Throwable var31)
             {
-                logger.error("Could not save crash report to " + p_147149_1_, var3);
+                logger.error("Could not save crash report to " + p_147149_1_, var31);
                 return false;
             }
         }

@@ -22,15 +22,29 @@ public class ImageBufferDownload implements IImageBuffer
         {
             this.imageWidth = 64;
             this.imageHeight = 32;
-            BufferedImage var2 = new BufferedImage(this.imageWidth, this.imageHeight, 2);
-            Graphics var3 = var2.getGraphics();
-            var3.drawImage(par1BufferedImage, 0, 0, (ImageObserver)null);
-            var3.dispose();
-            this.imageData = ((DataBufferInt)var2.getRaster().getDataBuffer()).getData();
-            this.setAreaOpaque(0, 0, 32, 16);
-            this.setAreaTransparent(32, 0, 64, 32);
-            this.setAreaOpaque(0, 16, 64, 32);
-            return var2;
+            int srcWidth = par1BufferedImage.getWidth();
+            int srcHeight = par1BufferedImage.getHeight();
+
+            if (srcWidth != 64 || srcHeight != 32 && srcHeight != 64)
+            {
+                while (this.imageWidth < srcWidth || this.imageHeight < srcHeight)
+                {
+                    this.imageWidth *= 2;
+                    this.imageHeight *= 2;
+                }
+            }
+
+            BufferedImage bufferedimage = new BufferedImage(this.imageWidth, this.imageHeight, 2);
+            Graphics g = bufferedimage.getGraphics();
+            g.drawImage(par1BufferedImage, 0, 0, (ImageObserver)null);
+            g.dispose();
+            this.imageData = ((DataBufferInt)bufferedimage.getRaster().getDataBuffer()).getData();
+            int w = this.imageWidth;
+            int h = this.imageHeight;
+            this.setAreaOpaque(0, 0, w / 2, h / 2);
+            this.setAreaTransparent(w / 2, 0, w, h);
+            this.setAreaOpaque(0, h / 2, w, h);
+            return bufferedimage;
         }
     }
 

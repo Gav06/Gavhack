@@ -2,6 +2,8 @@ package net.minecraft.client.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
+import optifine.Config;
+
 import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -34,12 +36,15 @@ public class OpenGlHelper
     public static boolean framebufferSupported;
     public static boolean shadersSupported;
     private static final String __OBFID = "CL_00001179";
-
+    public static float lastBrightnessX = 0.0F;
+    public static float lastBrightnessY = 0.0F;
+    
     /**
      * Initializes the texture constants to be used when rendering lightmap values
      */
     public static void initializeTextures()
     {
+        Config.initDisplay();
         useMultitextureARB = GLContext.getCapabilities().GL_ARB_multitexture && !GLContext.getCapabilities().OpenGL13;
 
         if (useMultitextureARB)
@@ -105,6 +110,12 @@ public class OpenGlHelper
         {
             GL13.glMultiTexCoord2f(par0, par1, par2);
         }
+
+        if (par0 == lightmapTexUnit)
+        {
+            lastBrightnessX = par1;
+            lastBrightnessY = par2;
+        }
     }
 
     public static void glBlendFunc(int p_148821_0_, int p_148821_1_, int p_148821_2_, int p_148821_3_)
@@ -121,6 +132,6 @@ public class OpenGlHelper
 
     public static boolean isFramebufferEnabled()
     {
-        return framebufferSupported && Minecraft.getMinecraft().gameSettings.fboEnable;
+        return Config.isFastRender() ? false : framebufferSupported && Minecraft.getMinecraft().gameSettings.fboEnable;
     }
 }

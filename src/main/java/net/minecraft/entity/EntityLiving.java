@@ -32,6 +32,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.BiomeGenBase;
+import optifine.BlockPos;
+import optifine.Reflector;
 
 public abstract class EntityLiving extends EntityLivingBase
 {
@@ -76,6 +79,9 @@ public abstract class EntityLiving extends EntityLivingBase
     private Entity leashedToEntity;
     private NBTTagCompound field_110170_bx;
     private static final String __OBFID = "CL_00001550";
+    public int randomMobsId = 0;
+    public BiomeGenBase spawnBiome = null;
+    public BlockPos spawnPosition = null;
 
     public EntityLiving(World par1World)
     {
@@ -89,10 +95,14 @@ public abstract class EntityLiving extends EntityLivingBase
         this.navigator = new PathNavigate(this, par1World);
         this.senses = new EntitySenses(this);
 
-        for (int var2 = 0; var2 < this.equipmentDropChances.length; ++var2)
+        for (int uuid = 0; uuid < this.equipmentDropChances.length; ++uuid)
         {
-            this.equipmentDropChances[var2] = 0.085F;
+            this.equipmentDropChances[uuid] = 0.085F;
         }
+
+        UUID var5 = this.getUniqueID();
+        long uuidLow = var5.getLeastSignificantBits();
+        this.randomMobsId = (int)(uuidLow & 2147483647L);
     }
 
     protected void applyEntityAttributes()
@@ -143,6 +153,7 @@ public abstract class EntityLiving extends EntityLivingBase
     public void setAttackTarget(EntityLivingBase par1EntityLivingBase)
     {
         this.attackTarget = par1EntityLivingBase;
+        Reflector.callVoid(Reflector.ForgeHooks_onLivingSetAttackTarget, new Object[] {this, par1EntityLivingBase});
     }
 
     /**
@@ -318,27 +329,27 @@ public abstract class EntityLiving extends EntityLivingBase
         NBTTagList var2 = new NBTTagList();
         NBTTagCompound var4;
 
-        for (int var3 = 0; var3 < this.equipment.length; ++var3)
+        for (int var6 = 0; var6 < this.equipment.length; ++var6)
         {
             var4 = new NBTTagCompound();
 
-            if (this.equipment[var3] != null)
+            if (this.equipment[var6] != null)
             {
-                this.equipment[var3].writeToNBT(var4);
+                this.equipment[var6].writeToNBT(var4);
             }
 
             var2.appendTag(var4);
         }
 
         par1NBTTagCompound.setTag("Equipment", var2);
-        NBTTagList var6 = new NBTTagList();
+        NBTTagList var61 = new NBTTagList();
 
-        for (int var7 = 0; var7 < this.equipmentDropChances.length; ++var7)
+        for (int var5 = 0; var5 < this.equipmentDropChances.length; ++var5)
         {
-            var6.appendTag(new NBTTagFloat(this.equipmentDropChances[var7]));
+            var61.appendTag(new NBTTagFloat(this.equipmentDropChances[var5]));
         }
 
-        par1NBTTagCompound.setTag("DropChances", var6);
+        par1NBTTagCompound.setTag("DropChances", var61);
         par1NBTTagCompound.setString("CustomName", this.getCustomNameTag());
         par1NBTTagCompound.setBoolean("CustomNameVisible", this.getAlwaysRenderNameTag());
         par1NBTTagCompound.setBoolean("Leashed", this.isLeashed);
@@ -354,10 +365,10 @@ public abstract class EntityLiving extends EntityLivingBase
             }
             else if (this.leashedToEntity instanceof EntityHanging)
             {
-                EntityHanging var5 = (EntityHanging)this.leashedToEntity;
-                var4.setInteger("X", var5.field_146063_b);
-                var4.setInteger("Y", var5.field_146064_c);
-                var4.setInteger("Z", var5.field_146062_d);
+                EntityHanging var7 = (EntityHanging)this.leashedToEntity;
+                var4.setInteger("X", var7.field_146063_b);
+                var4.setInteger("Y", var7.field_146064_c);
+                var4.setInteger("Z", var7.field_146062_d);
             }
 
             par1NBTTagCompound.setTag("Leash", var4);
@@ -462,16 +473,16 @@ public abstract class EntityLiving extends EntityLivingBase
                                 }
                                 else if (var4.getItem() instanceof ItemSword && var7.getItem() instanceof ItemSword)
                                 {
-                                    ItemSword var8 = (ItemSword)var4.getItem();
-                                    ItemSword var9 = (ItemSword)var7.getItem();
+                                    ItemSword var10 = (ItemSword)var4.getItem();
+                                    ItemSword var12 = (ItemSword)var7.getItem();
 
-                                    if (var8.func_150931_i() == var9.func_150931_i())
+                                    if (var10.func_150931_i() == var12.func_150931_i())
                                     {
                                         var6 = var4.getItemDamage() > var7.getItemDamage() || var4.hasTagCompound() && !var7.hasTagCompound();
                                     }
                                     else
                                     {
-                                        var6 = var8.func_150931_i() > var9.func_150931_i();
+                                        var6 = var10.func_150931_i() > var12.func_150931_i();
                                     }
                                 }
                                 else
@@ -485,16 +496,16 @@ public abstract class EntityLiving extends EntityLivingBase
                             }
                             else if (var4.getItem() instanceof ItemArmor && var7.getItem() instanceof ItemArmor)
                             {
-                                ItemArmor var10 = (ItemArmor)var4.getItem();
-                                ItemArmor var12 = (ItemArmor)var7.getItem();
+                                ItemArmor var101 = (ItemArmor)var4.getItem();
+                                ItemArmor var121 = (ItemArmor)var7.getItem();
 
-                                if (var10.damageReduceAmount == var12.damageReduceAmount)
+                                if (var101.damageReduceAmount == var121.damageReduceAmount)
                                 {
                                     var6 = var4.getItemDamage() > var7.getItemDamage() || var4.hasTagCompound() && !var7.hasTagCompound();
                                 }
                                 else
                                 {
-                                    var6 = var10.damageReduceAmount > var12.damageReduceAmount;
+                                    var6 = var101.damageReduceAmount > var121.damageReduceAmount;
                                 }
                             }
                             else
@@ -512,11 +523,11 @@ public abstract class EntityLiving extends EntityLivingBase
 
                             if (var4.getItem() == Items.diamond && var3.func_145800_j() != null)
                             {
-                                EntityPlayer var11 = this.worldObj.getPlayerEntityByName(var3.func_145800_j());
+                                EntityPlayer var102 = this.worldObj.getPlayerEntityByName(var3.func_145800_j());
 
-                                if (var11 != null)
+                                if (var102 != null)
                                 {
-                                    var11.triggerAchievement(AchievementList.field_150966_x);
+                                    var102.triggerAchievement(AchievementList.field_150966_x);
                                 }
                             }
 
@@ -553,11 +564,26 @@ public abstract class EntityLiving extends EntityLivingBase
     /**
      * Makes the entity despawn if requirements are reached
      */
-    protected void despawnEntity()
+    public void despawnEntity()
     {
+        Object result = null;
+        Object Result_DEFAULT = Reflector.getFieldValue(Reflector.Event_Result_DEFAULT);
+        Object Result_DENY = Reflector.getFieldValue(Reflector.Event_Result_DENY);
+
         if (this.persistenceRequired)
         {
             this.entityAge = 0;
+        }
+        else if ((this.entityAge & 31) == 31 && (result = Reflector.call(Reflector.ForgeEventFactory_canEntityDespawn, new Object[] {this})) != Result_DEFAULT)
+        {
+            if (result == Result_DENY)
+            {
+                this.entityAge = 0;
+            }
+            else
+            {
+                this.setDead();
+            }
         }
         else
         {
@@ -629,11 +655,11 @@ public abstract class EntityLiving extends EntityLivingBase
 
         if (this.rand.nextFloat() < 0.02F)
         {
-            EntityPlayer var2 = this.worldObj.getClosestPlayerToEntity(this, (double)var1);
+            EntityPlayer var4 = this.worldObj.getClosestPlayerToEntity(this, (double)var1);
 
-            if (var2 != null)
+            if (var4 != null)
             {
-                this.currentTarget = var2;
+                this.currentTarget = var4;
                 this.numTicksToChaseTarget = 10 + this.rand.nextInt(20);
             }
             else
@@ -662,10 +688,10 @@ public abstract class EntityLiving extends EntityLivingBase
             this.rotationPitch = this.defaultPitch;
         }
 
-        boolean var4 = this.isInWater();
+        boolean var41 = this.isInWater();
         boolean var3 = this.handleLavaMovement();
 
-        if (var4 || var3)
+        if (var41 || var3)
         {
             this.isJumping = this.rand.nextFloat() < 0.8F;
         }
@@ -691,17 +717,17 @@ public abstract class EntityLiving extends EntityLivingBase
 
         if (par1Entity instanceof EntityLivingBase)
         {
-            EntityLivingBase var10 = (EntityLivingBase)par1Entity;
-            var6 = var10.posY + (double)var10.getEyeHeight() - (this.posY + (double)this.getEyeHeight());
+            EntityLivingBase var14 = (EntityLivingBase)par1Entity;
+            var6 = var14.posY + (double)var14.getEyeHeight() - (this.posY + (double)this.getEyeHeight());
         }
         else
         {
             var6 = (par1Entity.boundingBox.minY + par1Entity.boundingBox.maxY) / 2.0D - (this.posY + (double)this.getEyeHeight());
         }
 
-        double var14 = (double)MathHelper.sqrt_double(var4 * var4 + var8 * var8);
+        double var141 = (double)MathHelper.sqrt_double(var4 * var4 + var8 * var8);
         float var12 = (float)(Math.atan2(var8, var4) * 180.0D / Math.PI) - 90.0F;
-        float var13 = (float)(-(Math.atan2(var6, var14) * 180.0D / Math.PI));
+        float var13 = (float)(-(Math.atan2(var6, var141) * 180.0D / Math.PI));
         this.rotationPitch = this.updateRotation(this.rotationPitch, var13, par3);
         this.rotationYaw = this.updateRotation(this.rotationYaw, var12, par2);
     }
@@ -1173,12 +1199,9 @@ public abstract class EntityLiving extends EntityLivingBase
             this.recreateLeash();
         }
 
-        if (this.isLeashed)
+        if (this.isLeashed && (this.leashedToEntity == null || this.leashedToEntity.isDead))
         {
-            if (this.leashedToEntity == null || this.leashedToEntity.isDead)
-            {
-                this.clearLeashed(true, true);
-            }
+            this.clearLeashed(true, true);
         }
     }
 
@@ -1240,17 +1263,17 @@ public abstract class EntityLiving extends EntityLivingBase
         {
             if (this.field_110170_bx.func_150297_b("UUIDMost", 4) && this.field_110170_bx.func_150297_b("UUIDLeast", 4))
             {
-                UUID var5 = new UUID(this.field_110170_bx.getLong("UUIDMost"), this.field_110170_bx.getLong("UUIDLeast"));
-                List var6 = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(10.0D, 10.0D, 10.0D));
-                Iterator var7 = var6.iterator();
+                UUID var11 = new UUID(this.field_110170_bx.getLong("UUIDMost"), this.field_110170_bx.getLong("UUIDLeast"));
+                List var21 = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(10.0D, 10.0D, 10.0D));
+                Iterator var31 = var21.iterator();
 
-                while (var7.hasNext())
+                while (var31.hasNext())
                 {
-                    EntityLivingBase var8 = (EntityLivingBase)var7.next();
+                    EntityLivingBase var41 = (EntityLivingBase)var31.next();
 
-                    if (var8.getUniqueID().equals(var5))
+                    if (var41.getUniqueID().equals(var11))
                     {
-                        this.leashedToEntity = var8;
+                        this.leashedToEntity = var41;
                         break;
                     }
                 }

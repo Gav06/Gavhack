@@ -14,8 +14,12 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
+import optifine.Config;
+import optifine.RandomMobs;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
 
 public class TextureManager implements ITickable, IResourceManagerReloadListener
 {
@@ -34,6 +38,11 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
 
     public void bindTexture(ResourceLocation par1ResourceLocation)
     {
+        if (Config.isRandomMobs())
+        {
+            par1ResourceLocation = RandomMobs.getTextureLocation(par1ResourceLocation);
+        }
+
         Object var2 = (ITextureObject)this.mapTextureObjects.get(par1ResourceLocation);
 
         if (var2 == null)
@@ -79,11 +88,11 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
     public boolean loadTexture(ResourceLocation par1ResourceLocation, final ITextureObject par2TextureObject)
     {
         boolean var3 = true;
-        ITextureObject par2TextureObject2 = par2TextureObject;
+        Object par2TextureObject2 = par2TextureObject;
 
         try
         {
-            ((ITextureObject)par2TextureObject).loadTexture(this.theResourceManager);
+            par2TextureObject.loadTexture(this.theResourceManager);
         }
         catch (IOException var8)
         {
@@ -100,9 +109,13 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
             var6.addCrashSectionCallable("Texture object class", new Callable()
             {
                 private static final String __OBFID = "CL_00001065";
-                public String call()
+                public String call1()
                 {
                     return par2TextureObject.getClass().getName();
+                }
+                public Object call() throws Exception
+                {
+                    return this.call1();
                 }
             });
             throw new ReportedException(var5);
@@ -119,6 +132,11 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
 
     public ResourceLocation getDynamicTextureLocation(String par1Str, DynamicTexture par2DynamicTexture)
     {
+        if (par1Str.equals("logo"))
+        {
+            par2DynamicTexture = Config.getMojangLogoTexture(par2DynamicTexture);
+        }
+
         Integer var3 = (Integer)this.mapTextureCounters.get(par1Str);
 
         if (var3 == null)
@@ -159,12 +177,34 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
 
     public void onResourceManagerReload(IResourceManager par1ResourceManager)
     {
-        Iterator var2 = this.mapTextureObjects.entrySet().iterator();
+        Config.dbg("*** Reloading textures ***");
+        Config.log("Resource packs: " + Config.getResourcePackNames());
+        Iterator it = this.mapTextureObjects.keySet().iterator();
 
-        while (var2.hasNext())
+        while (it.hasNext())
         {
-            Entry var3 = (Entry)var2.next();
-            this.loadTexture((ResourceLocation)var3.getKey(), (ITextureObject)var3.getValue());
+            ResourceLocation var2 = (ResourceLocation)it.next();
+
+            if (var2.getResourcePath().startsWith("mcpatcher/"))
+            {
+                ITextureObject var3 = (ITextureObject)this.mapTextureObjects.get(var2);
+                int glTexId = var3.getGlTextureId();
+
+                if (glTexId > 0)
+                {
+                    GL11.glDeleteTextures(glTexId);
+                }
+
+                it.remove();
+            }
+        }
+
+        Iterator var21 = this.mapTextureObjects.entrySet().iterator();
+
+        while (var21.hasNext())
+        {
+            Entry var31 = (Entry)var21.next();
+            this.loadTexture((ResourceLocation)var31.getKey(), (ITextureObject)var31.getValue());
         }
     }
 }

@@ -11,6 +11,9 @@ import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import optifine.Config;
+import optifine.ThreadDownloadImage;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +27,7 @@ public class ThreadDownloadImageData extends SimpleTexture
     private Thread imageThread;
     private boolean textureUploaded;
     private static final String __OBFID = "CL_00001049";
+    public boolean enabled = true;
 
     public ThreadDownloadImageData(String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
     {
@@ -34,18 +38,15 @@ public class ThreadDownloadImageData extends SimpleTexture
 
     private void func_147640_e()
     {
-        if (!this.textureUploaded)
+        if (!this.textureUploaded && this.bufferedImage != null)
         {
-            if (this.bufferedImage != null)
+            if (this.textureLocation != null)
             {
-                if (this.textureLocation != null)
-                {
-                    this.func_147631_c();
-                }
-
-                TextureUtil.uploadTextureImage(super.getGlTextureId(), this.bufferedImage);
-                this.textureUploaded = true;
+                this.func_147631_c();
             }
+
+            TextureUtil.uploadTextureImage(super.getGlTextureId(), this.bufferedImage);
+            this.textureUploaded = true;
         }
     }
 
@@ -83,22 +84,28 @@ public class ThreadDownloadImageData extends SimpleTexture
                         var1.setDoOutput(false);
                         var1.connect();
 
-                        if (var1.getResponseCode() / 100 == 2)
+                        if (var1.getResponseCode() / 100 != 2)
                         {
-                            BufferedImage var2 = ImageIO.read(var1.getInputStream());
-
-                            if (ThreadDownloadImageData.this.imageBuffer != null)
+                            if (var1.getErrorStream() != null)
                             {
-                                var2 = ThreadDownloadImageData.this.imageBuffer.parseUserSkin(var2);
+                                Config.readAll(var1.getErrorStream());
                             }
 
-                            ThreadDownloadImageData.this.func_147641_a(var2);
                             return;
                         }
+
+                        BufferedImage var6 = ImageIO.read(var1.getInputStream());
+
+                        if (ThreadDownloadImageData.this.imageBuffer != null)
+                        {
+                            var6 = ThreadDownloadImageData.this.imageBuffer.parseUserSkin(var6);
+                        }
+
+                        ThreadDownloadImageData.this.func_147641_a(var6);
                     }
-                    catch (Exception var6)
+                    catch (Exception var61)
                     {
-                        ThreadDownloadImageData.logger.error("Couldn\'t download http texture", var6);
+                        ThreadDownloadImageData.logger.error("Couldn\'t download http texture", var61);
                         return;
                     }
                     finally
@@ -113,12 +120,41 @@ public class ThreadDownloadImageData extends SimpleTexture
             this.imageThread.setDaemon(true);
             this.imageThread.setName("Skin downloader: " + this.imageUrl);
             this.imageThread.start();
+
+            try
+            {
+                URL e = new URL(this.imageUrl);
+                String path = e.getPath();
+                String prefixSkin = "/MinecraftSkins/";
+                String prefixCape = "/MinecraftCloaks/";
+
+                if (path.startsWith(prefixCape))
+                {
+                    String file = path.substring(prefixCape.length());
+                    String ofUrl = "http://s.optifine.net/capes/" + file;
+                    ThreadDownloadImage t = new ThreadDownloadImage(this, ofUrl, new ImageBufferDownload());
+                    t.setDaemon(true);
+                    t.setName("Cape downloader: " + this.imageUrl);
+                    t.start();
+                }
+            }
+            catch (Exception var9)
+            {
+                ;
+            }
         }
     }
 
     public boolean isTextureUploaded()
     {
-        this.func_147640_e();
-        return this.textureUploaded;
+        if (!this.enabled)
+        {
+            return false;
+        }
+        else
+        {
+            this.func_147640_e();
+            return this.textureUploaded;
+        }
     }
 }

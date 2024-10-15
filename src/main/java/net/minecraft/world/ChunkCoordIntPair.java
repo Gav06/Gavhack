@@ -8,6 +8,7 @@ public class ChunkCoordIntPair
     /** The Z position of this Chunk Coordinate Pair */
     public final int chunkZPos;
     private static final String __OBFID = "CL_00000133";
+    private int cachedHashCode = 0;
 
     public ChunkCoordIntPair(int par1, int par2)
     {
@@ -25,16 +26,31 @@ public class ChunkCoordIntPair
 
     public int hashCode()
     {
-        long var1 = chunkXZ2Int(this.chunkXPos, this.chunkZPos);
-        int var3 = (int)var1;
-        int var4 = (int)(var1 >> 32);
-        return var3 ^ var4;
+        if (this.cachedHashCode == 0)
+        {
+            int var1 = 1664525 * this.chunkXPos + 1013904223;
+            int var2 = 1664525 * (this.chunkZPos ^ -559038737) + 1013904223;
+            this.cachedHashCode = var1 ^ var2;
+        }
+
+        return this.cachedHashCode;
     }
 
     public boolean equals(Object par1Obj)
     {
-        ChunkCoordIntPair var2 = (ChunkCoordIntPair)par1Obj;
-        return var2.chunkXPos == this.chunkXPos && var2.chunkZPos == this.chunkZPos;
+        if (this == par1Obj)
+        {
+            return true;
+        }
+        else if (!(par1Obj instanceof ChunkCoordIntPair))
+        {
+            return false;
+        }
+        else
+        {
+            ChunkCoordIntPair var2 = (ChunkCoordIntPair)par1Obj;
+            return this.chunkXPos == var2.chunkXPos && this.chunkZPos == var2.chunkZPos;
+        }
     }
 
     public int getCenterXPos()

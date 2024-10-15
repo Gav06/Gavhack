@@ -9,6 +9,9 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import optifine.Mipmaps;
+import optifine.Reflector;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
@@ -99,53 +102,7 @@ public class TextureUtil
 
     private static int func_147943_a(int p_147943_0_, int p_147943_1_, int p_147943_2_, int p_147943_3_, boolean p_147943_4_)
     {
-        if (!p_147943_4_)
-        {
-            int var13 = func_147944_a(p_147943_0_, p_147943_1_, p_147943_2_, p_147943_3_, 24);
-            int var14 = func_147944_a(p_147943_0_, p_147943_1_, p_147943_2_, p_147943_3_, 16);
-            int var15 = func_147944_a(p_147943_0_, p_147943_1_, p_147943_2_, p_147943_3_, 8);
-            int var16 = func_147944_a(p_147943_0_, p_147943_1_, p_147943_2_, p_147943_3_, 0);
-            return var13 << 24 | var14 << 16 | var15 << 8 | var16;
-        }
-        else
-        {
-            field_147957_g[0] = p_147943_0_;
-            field_147957_g[1] = p_147943_1_;
-            field_147957_g[2] = p_147943_2_;
-            field_147957_g[3] = p_147943_3_;
-            float var5 = 0.0F;
-            float var6 = 0.0F;
-            float var7 = 0.0F;
-            float var8 = 0.0F;
-            int var9;
-
-            for (var9 = 0; var9 < 4; ++var9)
-            {
-                if (field_147957_g[var9] >> 24 != 0)
-                {
-                    var5 += (float)Math.pow((double)((float)(field_147957_g[var9] >> 24 & 255) / 255.0F), 2.2D);
-                    var6 += (float)Math.pow((double)((float)(field_147957_g[var9] >> 16 & 255) / 255.0F), 2.2D);
-                    var7 += (float)Math.pow((double)((float)(field_147957_g[var9] >> 8 & 255) / 255.0F), 2.2D);
-                    var8 += (float)Math.pow((double)((float)(field_147957_g[var9] >> 0 & 255) / 255.0F), 2.2D);
-                }
-            }
-
-            var5 /= 4.0F;
-            var6 /= 4.0F;
-            var7 /= 4.0F;
-            var8 /= 4.0F;
-            var9 = (int)(Math.pow((double)var5, 0.45454545454545453D) * 255.0D);
-            int var10 = (int)(Math.pow((double)var6, 0.45454545454545453D) * 255.0D);
-            int var11 = (int)(Math.pow((double)var7, 0.45454545454545453D) * 255.0D);
-            int var12 = (int)(Math.pow((double)var8, 0.45454545454545453D) * 255.0D);
-
-            if (var9 < 96)
-            {
-                var9 = 0;
-            }
-
-            return var9 << 24 | var10 << 16 | var11 << 8 | var12;
-        }
+        return Mipmaps.alphaBlend(p_147943_0_, p_147943_1_, p_147943_2_, p_147943_3_);
     }
 
     private static int func_147944_a(int p_147944_0_, int p_147944_1_, int p_147944_2_, int p_147944_3_, int p_147944_4_)
@@ -197,8 +154,18 @@ public class TextureUtil
 
     public static void func_147946_a(int p_147946_0_, int p_147946_1_, int p_147946_2_, int p_147946_3_, float p_147946_4_)
     {
-        deleteTexture(p_147946_0_);
-        bindTexture(p_147946_0_);
+        Class monitor = TextureUtil.class;
+
+        if (Reflector.SplashScreen.exists())
+        {
+            monitor = Reflector.SplashScreen.getTargetClass();
+        }
+
+        synchronized (monitor)
+        {
+            deleteTexture(p_147946_0_);
+            bindTexture(p_147946_0_);
+        }
 
         if (OpenGlHelper.anisotropicFilteringSupported)
         {
@@ -329,11 +296,19 @@ public class TextureUtil
     public static int[] readImageData(IResourceManager par0ResourceManager, ResourceLocation par1ResourceLocation) throws IOException
     {
         BufferedImage var2 = ImageIO.read(par0ResourceManager.getResource(par1ResourceLocation).getInputStream());
-        int var3 = var2.getWidth();
-        int var4 = var2.getHeight();
-        int[] var5 = new int[var3 * var4];
-        var2.getRGB(0, 0, var3, var4, var5, 0, var3);
-        return var5;
+
+        if (var2 == null)
+        {
+            return null;
+        }
+        else
+        {
+            int var3 = var2.getWidth();
+            int var4 = var2.getHeight();
+            int[] var5 = new int[var3 * var4];
+            var2.getRGB(0, 0, var3, var4, var5, 0, var3);
+            return var5;
+        }
     }
 
     public static int[] updateAnaglyph(int[] par0ArrayOfInteger)

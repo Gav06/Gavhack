@@ -3,7 +3,7 @@ package net.minecraft.util;
 public class LongHashMap
 {
     /** the array of all elements in the hash */
-    private transient LongHashMap.Entry[] hashArray = new LongHashMap.Entry[16];
+    private transient LongHashMap.Entry[] hashArray = new LongHashMap.Entry[1024];
 
     /** the number of elements in the hash array */
     private transient int numHashElements;
@@ -11,23 +11,29 @@ public class LongHashMap
     /**
      * the maximum amount of elements in the hash (probably 3/4 the size due to meh hashing function)
      */
-    private int capacity = 12;
+    private int capacity;
 
     /**
      * percent of the hasharray that can be used without hash colliding probably
      */
-    private final float percentUseable = 0.75F;
+    private final float percentUseable;
 
     /** count of times elements have been added/removed */
     private transient volatile int modCount;
     private static final String __OBFID = "CL_00001492";
+
+    public LongHashMap()
+    {
+        this.capacity = (int)(0.75F * (float)this.hashArray.length);
+        this.percentUseable = 0.75F;
+    }
 
     /**
      * returns the hashed key given the original key
      */
     private static int getHashedKey(long par0)
     {
-        return hash((int)(par0 ^ par0 >>> 32));
+        return (int)(par0 ^ par0 >>> 27);
     }
 
     /**
@@ -128,7 +134,9 @@ public class LongHashMap
             LongHashMap.Entry[] var4 = new LongHashMap.Entry[par1];
             this.copyHashTableTo(var4);
             this.hashArray = var4;
-            this.capacity = (int)((float)par1 * this.percentUseable);
+            float var10001 = (float)par1;
+            this.getClass();
+            this.capacity = (int)(var10001 * 0.75F);
         }
     }
 
@@ -221,6 +229,21 @@ public class LongHashMap
         {
             this.resizeTable(2 * this.hashArray.length);
         }
+    }
+
+    public double getKeyDistribution()
+    {
+        int countValid = 0;
+
+        for (int i = 0; i < this.hashArray.length; ++i)
+        {
+            if (this.hashArray[i] != null)
+            {
+                ++countValid;
+            }
+        }
+
+        return 1.0D * (double)countValid / (double)this.numHashElements;
     }
 
     static class Entry

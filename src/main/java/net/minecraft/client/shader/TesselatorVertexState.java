@@ -56,4 +56,25 @@ public class TesselatorVertexState
     {
         return this.hasColor;
     }
+
+    public void addTessellatorVertexState(TesselatorVertexState tsv)
+    {
+        if (tsv != null)
+        {
+            if (tsv.hasBrightness == this.hasBrightness && tsv.hasColor == this.hasColor && tsv.hasNormals == this.hasNormals && tsv.hasTexture == this.hasTexture)
+            {
+                int newRawBufferIndex = this.rawBufferIndex + tsv.rawBufferIndex;
+                int[] newRawBuffer = new int[newRawBufferIndex];
+                System.arraycopy(this.rawBuffer, 0, newRawBuffer, 0, this.rawBufferIndex);
+                System.arraycopy(tsv.rawBuffer, 0, newRawBuffer, this.rawBufferIndex, tsv.rawBufferIndex);
+                this.rawBuffer = newRawBuffer;
+                this.rawBufferIndex = newRawBufferIndex;
+                this.vertexCount += tsv.vertexCount;
+            }
+            else
+            {
+                throw new IllegalArgumentException("Incompatible vertex states");
+            }
+        }
+    }
 }

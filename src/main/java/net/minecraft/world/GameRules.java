@@ -102,7 +102,7 @@ public class GameRules
      */
     public String[] getRules()
     {
-        return (String[])this.theGameRules.keySet().toArray(new String[0]);
+        return (String[])((String[])this.theGameRules.keySet().toArray(new String[0]));
     }
 
     /**
@@ -129,6 +129,22 @@ public class GameRules
         public void setValue(String par1Str)
         {
             this.valueString = par1Str;
+
+            if (par1Str != null)
+            {
+                if (par1Str.equals("false"))
+                {
+                    this.valueBoolean = false;
+                    return;
+                }
+
+                if (par1Str.equals("true"))
+                {
+                    this.valueBoolean = true;
+                    return;
+                }
+            }
+
             this.valueBoolean = Boolean.parseBoolean(par1Str);
 
             try

@@ -710,7 +710,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
     /**
      * Makes the entity despawn if requirements are reached
      */
-    protected void despawnEntity() {}
+    public void despawnEntity() {}
 
     /**
      * Return the Entity parts making up this Entity (currently only for dragons)

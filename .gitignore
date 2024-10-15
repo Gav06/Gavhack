@@ -42,3 +42,6 @@ replay_*.log
 *.jfr
 run/logs/latest.log
 run/options.txt
+/run/screenshots
+run/optionsof.txt
+/run/crash-reports

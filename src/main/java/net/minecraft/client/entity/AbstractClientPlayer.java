@@ -1,6 +1,7 @@
 package net.minecraft.client.entity;
 
 import com.mojang.authlib.GameProfile;
+import me.gavin.gavhack.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ImageBufferDownload;
@@ -11,6 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
+import optifine.Config;
+import optifine.PlayerConfigurations;
 
 public abstract class AbstractClientPlayer extends EntityPlayer
 {
@@ -20,11 +23,20 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     private ResourceLocation locationSkin;
     private ResourceLocation locationCape;
     private static final String __OBFID = "CL_00000935";
+    private String nameClear = null;
 
     public AbstractClientPlayer(World p_i45074_1_, GameProfile p_i45074_2_)
     {
         super(p_i45074_1_, p_i45074_2_);
         this.setupCustomSkin();
+        this.nameClear = p_i45074_2_.getName();
+
+        if (this.nameClear != null && !this.nameClear.isEmpty())
+        {
+            this.nameClear = StringUtils.stripControlCodes(this.nameClear);
+        }
+
+        PlayerConfigurations.getPlayerConfiguration(this);
     }
 
     protected void setupCustomSkin()
@@ -37,6 +49,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
             this.locationCape = getLocationCape(var1);
             this.downloadImageSkin = getDownloadImageSkin(this.locationSkin, var1);
             this.downloadImageCape = getDownloadImageCape(this.locationCape, var1);
+            this.downloadImageCape.enabled = Config.isShowCapes();
         }
     }
 
@@ -86,12 +99,12 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
     public static String getSkinUrl(String par0Str)
     {
-        return String.format("https://minotar.net/skin/%s", StringUtils.stripControlCodes(par0Str));
+        return "https://minotar.net/skin/" + par0Str + ".png";
     }
 
     public static String getCapeUrl(String par0Str)
     {
-        return String.format("http://skins.minecraft.net/MinecraftCloaks/%s.png", new Object[] {StringUtils.stripControlCodes(par0Str)});
+        return Utils.INSTANCE.resolveCape(par0Str);
     }
 
     public static ResourceLocation getLocationSkin(String par0Str)
@@ -107,5 +120,10 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     public static ResourceLocation getLocationSkull(String par0Str)
     {
         return new ResourceLocation("skull/" + StringUtils.stripControlCodes(par0Str));
+    }
+
+    public String getNameClear()
+    {
+        return this.nameClear;
     }
 }
