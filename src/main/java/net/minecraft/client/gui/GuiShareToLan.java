@@ -91,7 +91,7 @@ public class GuiShareToLan extends GuiScreen
                 var3 = new ChatComponentText("commands.publish.failed");
             }
 
-            this.mc.ingameGUI.getChatGUI().func_146227_a((IChatComponent)var3);
+            this.mc.ingameGUI.getChatGUI().addChatMessage((IChatComponent)var3);
         }
     }
 

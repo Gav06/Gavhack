@@ -317,7 +317,7 @@ public class GuiChat extends GuiScreen
                 }
             }
 
-            this.mc.ingameGUI.getChatGUI().func_146234_a(new ChatComponentText(var4.toString()), 1);
+            this.mc.ingameGUI.getChatGUI().addChatMessageID(new ChatComponentText(var4.toString()), 1);
         }
 
         this.field_146415_a.func_146191_b((String)this.field_146412_t.get(this.field_146413_s++));

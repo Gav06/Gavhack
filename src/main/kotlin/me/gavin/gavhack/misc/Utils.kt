@@ -1,6 +1,10 @@
 package me.gavin.gavhack.misc
 
 import com.google.gson.JsonParser
+import me.gavin.gavhack.Gavhack
+import net.minecraft.client.Minecraft
+import net.minecraft.util.ChatComponentText
+import net.minecraft.util.EnumChatFormatting
 import org.apache.commons.io.IOUtils
 import java.net.MalformedURLException
 import java.net.URL
@@ -37,6 +41,16 @@ object Utils {
             return jsonObj["imageUrl"].asString
 
         return errMsg
+    }
+
+    fun gameMessage(msg: String) {
+        val mc = Minecraft.getMinecraft()
+        if (mc != null && mc.ingameGUI.chatGUI != null) {
+            val gray = EnumChatFormatting.GRAY
+            val green = EnumChatFormatting.GREEN;
+            mc.ingameGUI.chatGUI.addChatMessage(ChatComponentText(
+                    "$gray[$green${Gavhack.NAME}$gray]${EnumChatFormatting.RESET} $msg"))
+        }
     }
 
 }

@@ -1208,7 +1208,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 String var2 = "HD_U".replace("HD_U", "HD Ultra").replace("L", "Light");
                 String var13 = var2 + " " + Config.getNewRelease();
                 ChatComponentText var14 = new ChatComponentText("A new \u00a7eOptiFine\u00a7f version is available: \u00a7e" + var13 + "\u00a7f");
-                this.mc.ingameGUI.getChatGUI().func_146227_a(var14);
+                this.mc.ingameGUI.getChatGUI().addChatMessage(var14);
                 Config.setNewRelease((String)null);
             }
 
@@ -1216,7 +1216,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 Config.setNotify64BitJava(false);
                 ChatComponentText var21 = new ChatComponentText(I18n.format("You can install \u00a7e64-bit Java\u00a7f to increase performance", new Object[0]));
-                this.mc.ingameGUI.getChatGUI().func_146227_a(var21);
+                this.mc.ingameGUI.getChatGUI().addChatMessage(var21);
             }
         }
 
@@ -2600,7 +2600,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 {
                     String text = GLU.gluErrorString(err);
                     ChatComponentText msg = new ChatComponentText("\u00a7eOpenGL Error\u00a7f: " + err + " (" + text + ")");
-                    this.mc.ingameGUI.getChatGUI().func_146227_a(msg);
+                    this.mc.ingameGUI.getChatGUI().addChatMessage(msg);
                 }
             }
         }

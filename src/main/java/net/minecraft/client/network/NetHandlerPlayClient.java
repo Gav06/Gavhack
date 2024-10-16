@@ -788,7 +788,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
      */
     public void handleChat(S02PacketChat p_147251_1_)
     {
-        this.gameController.ingameGUI.getChatGUI().func_146227_a(p_147251_1_.func_148915_c());
+        this.gameController.ingameGUI.getChatGUI().addChatMessage(p_147251_1_.func_148915_c());
     }
 
     /**
@@ -1396,15 +1396,15 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             }
             else if (var4 == 101.0F)
             {
-                this.gameController.ingameGUI.getChatGUI().func_146227_a(new ChatComponentTranslation("demo.help.movement", new Object[] {GameSettings.getKeyDisplayString(var6.keyBindForward.getKeyCode()), GameSettings.getKeyDisplayString(var6.keyBindLeft.getKeyCode()), GameSettings.getKeyDisplayString(var6.keyBindBack.getKeyCode()), GameSettings.getKeyDisplayString(var6.keyBindRight.getKeyCode())}));
+                this.gameController.ingameGUI.getChatGUI().addChatMessage(new ChatComponentTranslation("demo.help.movement", new Object[] {GameSettings.getKeyDisplayString(var6.keyBindForward.getKeyCode()), GameSettings.getKeyDisplayString(var6.keyBindLeft.getKeyCode()), GameSettings.getKeyDisplayString(var6.keyBindBack.getKeyCode()), GameSettings.getKeyDisplayString(var6.keyBindRight.getKeyCode())}));
             }
             else if (var4 == 102.0F)
             {
-                this.gameController.ingameGUI.getChatGUI().func_146227_a(new ChatComponentTranslation("demo.help.jump", new Object[] {GameSettings.getKeyDisplayString(var6.keyBindJump.getKeyCode())}));
+                this.gameController.ingameGUI.getChatGUI().addChatMessage(new ChatComponentTranslation("demo.help.jump", new Object[] {GameSettings.getKeyDisplayString(var6.keyBindJump.getKeyCode())}));
             }
             else if (var4 == 103.0F)
             {
-                this.gameController.ingameGUI.getChatGUI().func_146227_a(new ChatComponentTranslation("demo.help.inventory", new Object[] {GameSettings.getKeyDisplayString(var6.keyBindInventory.getKeyCode())}));
+                this.gameController.ingameGUI.getChatGUI().addChatMessage(new ChatComponentTranslation("demo.help.inventory", new Object[] {GameSettings.getKeyDisplayString(var6.keyBindInventory.getKeyCode())}));
             }
         }
         else if (var3 == 6)

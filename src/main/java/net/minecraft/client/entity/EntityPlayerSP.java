@@ -514,7 +514,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public void addChatComponentMessage(IChatComponent p_146105_1_)
     {
-        this.mc.ingameGUI.getChatGUI().func_146227_a(p_146105_1_);
+        this.mc.ingameGUI.getChatGUI().addChatMessage(p_146105_1_);
     }
 
     private boolean isBlockTranslucent(int par1, int par2, int par3)
@@ -616,7 +616,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void addChatMessage(IChatComponent p_145747_1_)
     {
-        this.mc.ingameGUI.getChatGUI().func_146227_a(p_145747_1_);
+        this.mc.ingameGUI.getChatGUI().addChatMessage(p_145747_1_);
     }
 
     /**

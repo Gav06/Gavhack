@@ -3,6 +3,7 @@ package me.gavin.gavhack.module
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.KeyPressEvent
+import me.gavin.gavhack.module.misc.TestModule
 import net.minecraft.client.Minecraft
 import org.lwjgl.input.Keyboard
 
@@ -15,9 +16,13 @@ import org.lwjgl.input.Keyboard
 object ModuleManager {
 
     /* In alphabetic order by default */
-    val mods = ArrayList<Module>()
+    val mods = arrayOf(
+            TestModule,
+
+    )
+
     /* Sorted by length of module name */
-    val modsSorted = ArrayList<Module>()
+    val modsSorted = mods
 
     private val keyListener = Listener<KeyPressEvent> { (it as KeyPressEvent)
         if (it.key == Keyboard.KEY_NONE)
@@ -28,21 +33,21 @@ object ModuleManager {
                 m.toggle()
         }
     }
-    
-    private fun addModule(mod: Module) {
-        mods.add(mod)
-        modsSorted.add(mod)
-    }
 
     init {
+        /*
+        Add Event Listener
+         */
         EventBus.addListener(keyListener, KeyPressEvent::class)
-        /* Register all modules here */
-
 
 
         /* Sort module lists for proper display */
         mods.sortBy { it.name }
+
         val font = Minecraft.getMinecraft().fontRenderer
         modsSorted.sortBy { font.getStringWidth(it.name) }
+
+        println(mods)
+        println(modsSorted)
     }
 }

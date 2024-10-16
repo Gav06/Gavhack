@@ -1,10 +1,8 @@
 package me.gavin.gavhack
 
-import me.gavin.gavhack.event.Listener
-import me.gavin.gavhack.event.events.TestEvent
+import me.gavin.gavhack.command.CommandManager
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.ui.OverlayUI
-import net.minecraft.util.EnumChatFormatting
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.awt.Color
@@ -30,6 +28,9 @@ object Gavhack {
 
         ModuleManager
         log.info("Modules initialized")
+
+        CommandManager
+        log.info("Commands initialized")
 
         OverlayUI
         log.info("UI renderer initialized")
