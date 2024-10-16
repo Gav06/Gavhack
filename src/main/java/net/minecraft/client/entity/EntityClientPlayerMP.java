@@ -1,5 +1,7 @@
 package net.minecraft.client.entity;
 
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.ChatMessageEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -214,7 +216,11 @@ public class EntityClientPlayerMP extends EntityPlayerSP
      */
     public void sendChatMessage(String par1Str)
     {
-        this.sendQueue.addToSendQueue(new C01PacketChatMessage(par1Str));
+        final ChatMessageEvent event = new ChatMessageEvent(par1Str);
+        EventBus.INSTANCE.post(event);
+        if (!event.getCancelled()) {
+            this.sendQueue.addToSendQueue(new C01PacketChatMessage(event.getMessage()));
+        }
     }
 
     /**
