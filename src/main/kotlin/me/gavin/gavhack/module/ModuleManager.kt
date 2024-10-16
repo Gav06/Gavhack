@@ -18,11 +18,10 @@ object ModuleManager {
     /* In alphabetic order by default */
     val mods = arrayOf(
             TestModule,
-
     )
 
     /* Sorted by length of module name */
-    val modsSorted = mods
+    val modsSorted = mods.copyOf()
 
     private val keyListener = Listener<KeyPressEvent> { (it as KeyPressEvent)
         if (it.key == Keyboard.KEY_NONE)
@@ -46,8 +45,6 @@ object ModuleManager {
 
         val font = Minecraft.getMinecraft().fontRenderer
         modsSorted.sortBy { font.getStringWidth(it.name) }
-
-        println(mods)
-        println(modsSorted)
+        
     }
 }
