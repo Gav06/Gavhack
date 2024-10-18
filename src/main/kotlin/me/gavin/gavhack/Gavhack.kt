@@ -9,7 +9,7 @@ import java.awt.Color
 
 object Gavhack {
 
-    const val NAME = "Gavhack"
+    const val NAME = "gavhack"
     const val VER_MAJOR = 2
     const val VER_MINOR = 0
     const val VER_STR = "$VER_MAJOR.$VER_MINOR"

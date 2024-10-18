@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.EnumChatFormatting
 import org.apache.commons.io.IOUtils
+import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 import java.nio.charset.StandardCharsets
@@ -21,7 +22,11 @@ object Utils {
             return "URL error"
         }
 
-        val jsonObj = JsonParser().parse(IOUtils.toString(url, StandardCharsets.UTF_8)).asJsonObject
+        val jsonObj = try {
+            JsonParser().parse(IOUtils.toString(url, StandardCharsets.UTF_8)).asJsonObject
+        } catch (e: IOException) {
+            return "IOException when fetching cape"
+        }
 
         // check if player even exists
         if (jsonObj.has("success")) {

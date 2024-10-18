@@ -45,6 +45,5 @@ object ModuleManager {
 
         val font = Minecraft.getMinecraft().fontRenderer
         modsSorted.sortBy { font.getStringWidth(it.name) }
-        
     }
 }
