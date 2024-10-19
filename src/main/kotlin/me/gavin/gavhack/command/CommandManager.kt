@@ -1,52 +1,53 @@
 package me.gavin.gavhack.command
 
-import com.google.common.collect.Lists
-import me.gavin.gavhack.command.commands.*
+import me.gavin.gavhack.command.commands.HelpCommand
+import me.gavin.gavhack.command.commands.InfoCommand
+import me.gavin.gavhack.command.commands.SyntaxCommand
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ChatMessageEvent
 import me.gavin.gavhack.misc.Utils
+import net.minecraft.util.EnumChatFormatting
 import java.util.*
-import kotlin.NoSuchElementException
 
 object CommandManager {
 
     const val CMD_PREFIX = '.'
 
     val commands : Array<Command> = arrayOf(
-        InfoCommand()
+        InfoCommand(),
+        HelpCommand(),
+        SyntaxCommand()
     )
 
     private val chatListener = Listener<ChatMessageEvent> {(it as ChatMessageEvent)
         if (it.message.startsWith(CMD_PREFIX)) {
             it.cancelled = true
-            runCommand(it.message)
+            parseCommand(it.message)
         }
     }
 
-    fun runCommand(text: String) {
-        val result = parseCommand(text)
-        // handle result
-
-    }
-
-    private fun parseCommand(text: String) : Boolean {
+    private fun parseCommand(text: String) {
         val split = text.trim().substring(1).split("\\s+".toRegex()).toTypedArray()
 
         if (split.isEmpty())
-            return false
+            return
 
         val cmdName = split[0]
         val cmdArgs = Arrays.copyOfRange(split,1, split.size)
 
-        Utils.gameMessage("name: $cmdName args: ${cmdArgs.contentToString()}")
-
-
         val cmd : Command = try {
             commands.first { it.name.equals(cmdName, true) }
-        } catch (e: NoSuchElementException) { return false }
+        } catch (e: NoSuchElementException) {
+            Utils.gameMessage(EnumChatFormatting.RED.toString() +
+                    "Unknown command, use ${CMD_PREFIX}help to see a list of commands.")
+            return
+        }
 
-        return cmd.execute(cmdName, cmdArgs)
+        if (!cmd.execute(cmdName, cmdArgs)) {
+            Utils.gameMessage(EnumChatFormatting.RED.toString() + "Command syntax invalid," +
+                    " use ${CMD_PREFIX}syntax <command> to see use.")
+        }
     }
 
     init {

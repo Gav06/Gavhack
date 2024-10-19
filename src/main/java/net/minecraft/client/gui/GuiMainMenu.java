@@ -594,6 +594,7 @@ public class GuiMainMenu extends GuiScreen
         this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
+
         if ((double)this.updateCounter < 1.0E-4D)
         {
             this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 99, 44);
@@ -607,6 +608,7 @@ public class GuiMainMenu extends GuiScreen
             this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 155, 44);
             this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
         }
+
 
         var4.setColorOpaque_I(-1);
         GL11.glPushMatrix();
@@ -628,7 +630,7 @@ public class GuiMainMenu extends GuiScreen
         String var10 = "Copyright Mojang AB. Do not distribute!";
         this.drawString(this.fontRendererObj, var10, this.width - this.fontRendererObj.getStringWidth(var10) - 2, this.height - 10, -1);
 
-        if (this.field_92025_p != null && this.field_92025_p.length() > 0)
+        if (this.field_92025_p != null && !this.field_92025_p.isEmpty())
         {
             drawRect(this.field_92022_t - 2, this.field_92021_u - 2, this.field_92020_v + 2, this.field_92019_w - 1, 1428160512);
             this.drawString(this.fontRendererObj, this.field_92025_p, this.field_92022_t, this.field_92021_u, -1);

@@ -54,7 +54,7 @@ object Utils {
             val gray = EnumChatFormatting.GRAY
             val green = EnumChatFormatting.GREEN;
             mc.ingameGUI.chatGUI.addChatMessage(ChatComponentText(
-                    "$gray[$green${Gavhack.NAME}$gray]${EnumChatFormatting.RESET} $msg"))
+                    "$gray[${green}gh$gray]${EnumChatFormatting.RESET} $msg"))
         }
     }
 
