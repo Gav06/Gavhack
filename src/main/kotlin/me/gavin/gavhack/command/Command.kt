@@ -1,6 +1,7 @@
 package me.gavin.gavhack.command
 
 import me.gavin.gavhack.misc.Utils
+import net.minecraft.client.Minecraft
 import net.minecraft.util.EnumChatFormatting
 
 abstract class Command(
@@ -9,6 +10,7 @@ abstract class Command(
     val syntax: String,
     private vararg val aliases: String) {
 
+    protected val mc = Minecraft.getMinecraft()
     protected val green = EnumChatFormatting.GREEN.toString()
 
     abstract fun execute(command: String, args: Array<String>) : Boolean

@@ -10,9 +10,9 @@ import java.awt.Color
 object Gavhack {
 
     const val NAME = "gavhack"
-    const val VER_MAJOR = 2
-    const val VER_MINOR = 0
-    const val VER_STR = "$VER_MAJOR.$VER_MINOR"
+    const val VERSION_MAJOR = 2
+    const val VERSION_MINOR = 0
+    const val VERSION_STRING = "$VERSION_MAJOR.$VERSION_MINOR"
 
     val log : Logger = LogManager.getFormatterLogger(NAME)
 
@@ -20,7 +20,7 @@ object Gavhack {
 
     fun init() {
         val startTime = System.currentTimeMillis()
-        log.info("Beginning $NAME v$VER_STR initialization")
+        log.info("Beginning $NAME v$VERSION_STRING initialization")
 
         // Disable JNDI lookups (no more Log4Shell)
         System.setProperty("log4j2.formatMsgNoLookups", "true")

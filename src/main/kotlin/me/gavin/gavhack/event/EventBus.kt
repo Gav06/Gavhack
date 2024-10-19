@@ -34,4 +34,26 @@ object EventBus {
                 listenerMap.remove(clazz)
         }
     }
+
+
+//    private fun getListenerFields(obj: Any): Set<Listener<Event>> {
+//        val listeners = HashSet<Listener<Event>>()
+//
+//        for (field in obj.javaClass.declaredFields) {
+//            if (!field.isAccessible)
+//                field.isAccessible = true
+//
+//            if (field.type == Listener::class.java && field.isAnnotationPresent(Register::class.java)) {
+//                try {
+//                    listeners.add(field.get(obj) as Listener<Event>)
+//                } catch (e: Exception) {
+//                    // IllegalAccessException or IllegalArgumentException (shouldn't ever happen in theory)
+//                    e.printStackTrace()
+//                    continue
+//                }
+//            }
+//        }
+//
+//        return listeners
+//    }
 }

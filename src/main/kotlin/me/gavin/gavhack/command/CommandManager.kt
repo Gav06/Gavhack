@@ -2,6 +2,7 @@ package me.gavin.gavhack.command
 
 import me.gavin.gavhack.command.commands.HelpCommand
 import me.gavin.gavhack.command.commands.InfoCommand
+import me.gavin.gavhack.command.commands.SpawnTPCommand
 import me.gavin.gavhack.command.commands.SyntaxCommand
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
@@ -17,7 +18,8 @@ object CommandManager {
     val commands : Array<Command> = arrayOf(
         InfoCommand(),
         HelpCommand(),
-        SyntaxCommand()
+        SyntaxCommand(),
+        SpawnTPCommand()
     )
 
     private val chatListener = Listener<ChatMessageEvent> {(it as ChatMessageEvent)

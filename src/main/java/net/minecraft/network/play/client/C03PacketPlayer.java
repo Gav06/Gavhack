@@ -8,63 +8,63 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C03PacketPlayer extends Packet
 {
-    protected double field_149479_a;
-    protected double field_149477_b;
-    protected double field_149478_c;
-    protected double field_149475_d;
+    protected double posX;
+    protected double posY;
+    protected double posZ;
+    protected double eyePos;
     protected float field_149476_e;
     protected float field_149473_f;
-    protected boolean field_149474_g;
+    protected boolean onGround;
     protected boolean field_149480_h;
     protected boolean field_149481_i;
     private static final String __OBFID = "CL_00001360";
 
     public C03PacketPlayer() {}
 
-    public C03PacketPlayer(boolean p_i45256_1_)
+    public C03PacketPlayer(boolean onGround)
     {
-        this.field_149474_g = p_i45256_1_;
+        this.onGround = onGround;
     }
 
-    public void processPacket(INetHandlerPlayServer p_149468_1_)
+    public void processPacket(INetHandlerPlayServer netHandler)
     {
-        p_149468_1_.processPlayer(this);
+        netHandler.processPlayer(this);
     }
 
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer p_148837_1_) throws IOException
+    public void readPacketData(PacketBuffer buffer) throws IOException
     {
-        this.field_149474_g = p_148837_1_.readUnsignedByte() != 0;
+        this.onGround = buffer.readUnsignedByte() != 0;
     }
 
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer p_148840_1_) throws IOException
+    public void writePacketData(PacketBuffer packetBuf) throws IOException
     {
-        p_148840_1_.writeByte(this.field_149474_g ? 1 : 0);
+        packetBuf.writeByte(this.onGround ? 1 : 0);
     }
 
     public double func_149464_c()
     {
-        return this.field_149479_a;
+        return this.posX;
     }
 
     public double func_149467_d()
     {
-        return this.field_149477_b;
+        return this.posY;
     }
 
     public double func_149472_e()
     {
-        return this.field_149478_c;
+        return this.posZ;
     }
 
     public double func_149471_f()
     {
-        return this.field_149475_d;
+        return this.eyePos;
     }
 
     public float func_149462_g()
@@ -79,7 +79,7 @@ public class C03PacketPlayer extends Packet
 
     public boolean func_149465_i()
     {
-        return this.field_149474_g;
+        return this.onGround;
     }
 
     public boolean func_149466_j()
@@ -111,32 +111,32 @@ public class C03PacketPlayer extends Packet
             this.field_149480_h = true;
         }
 
-        public C04PacketPlayerPosition(double p_i45253_1_, double p_i45253_3_, double p_i45253_5_, double p_i45253_7_, boolean p_i45253_9_)
+        public C04PacketPlayerPosition(double posX, double minY, double eyePos, double posZ, boolean onGround)
         {
-            this.field_149479_a = p_i45253_1_;
-            this.field_149477_b = p_i45253_3_;
-            this.field_149475_d = p_i45253_5_;
-            this.field_149478_c = p_i45253_7_;
-            this.field_149474_g = p_i45253_9_;
+            this.posX = posX;
+            this.posY = minY;
+            this.eyePos = eyePos;
+            this.posZ = posZ;
+            this.onGround = onGround;
             this.field_149480_h = true;
         }
 
-        public void readPacketData(PacketBuffer p_148837_1_) throws IOException
+        public void readPacketData(PacketBuffer buffer) throws IOException
         {
-            this.field_149479_a = p_148837_1_.readDouble();
-            this.field_149477_b = p_148837_1_.readDouble();
-            this.field_149475_d = p_148837_1_.readDouble();
-            this.field_149478_c = p_148837_1_.readDouble();
-            super.readPacketData(p_148837_1_);
+            this.posX = buffer.readDouble();
+            this.posY = buffer.readDouble();
+            this.eyePos = buffer.readDouble();
+            this.posZ = buffer.readDouble();
+            super.readPacketData(buffer);
         }
 
-        public void writePacketData(PacketBuffer p_148840_1_) throws IOException
+        public void writePacketData(PacketBuffer packetBuf) throws IOException
         {
-            p_148840_1_.writeDouble(this.field_149479_a);
-            p_148840_1_.writeDouble(this.field_149477_b);
-            p_148840_1_.writeDouble(this.field_149475_d);
-            p_148840_1_.writeDouble(this.field_149478_c);
-            super.writePacketData(p_148840_1_);
+            packetBuf.writeDouble(this.posX);
+            packetBuf.writeDouble(this.posY);
+            packetBuf.writeDouble(this.eyePos);
+            packetBuf.writeDouble(this.posZ);
+            super.writePacketData(packetBuf);
         }
 
         public void processPacket(INetHandler p_148833_1_)
@@ -157,37 +157,37 @@ public class C03PacketPlayer extends Packet
 
         public C06PacketPlayerPosLook(double p_i45254_1_, double p_i45254_3_, double p_i45254_5_, double p_i45254_7_, float p_i45254_9_, float p_i45254_10_, boolean p_i45254_11_)
         {
-            this.field_149479_a = p_i45254_1_;
-            this.field_149477_b = p_i45254_3_;
-            this.field_149475_d = p_i45254_5_;
-            this.field_149478_c = p_i45254_7_;
+            this.posX = p_i45254_1_;
+            this.posY = p_i45254_3_;
+            this.eyePos = p_i45254_5_;
+            this.posZ = p_i45254_7_;
             this.field_149476_e = p_i45254_9_;
             this.field_149473_f = p_i45254_10_;
-            this.field_149474_g = p_i45254_11_;
+            this.onGround = p_i45254_11_;
             this.field_149481_i = true;
             this.field_149480_h = true;
         }
 
-        public void readPacketData(PacketBuffer p_148837_1_) throws IOException
+        public void readPacketData(PacketBuffer buffer) throws IOException
         {
-            this.field_149479_a = p_148837_1_.readDouble();
-            this.field_149477_b = p_148837_1_.readDouble();
-            this.field_149475_d = p_148837_1_.readDouble();
-            this.field_149478_c = p_148837_1_.readDouble();
-            this.field_149476_e = p_148837_1_.readFloat();
-            this.field_149473_f = p_148837_1_.readFloat();
-            super.readPacketData(p_148837_1_);
+            this.posX = buffer.readDouble();
+            this.posY = buffer.readDouble();
+            this.eyePos = buffer.readDouble();
+            this.posZ = buffer.readDouble();
+            this.field_149476_e = buffer.readFloat();
+            this.field_149473_f = buffer.readFloat();
+            super.readPacketData(buffer);
         }
 
-        public void writePacketData(PacketBuffer p_148840_1_) throws IOException
+        public void writePacketData(PacketBuffer packetBuf) throws IOException
         {
-            p_148840_1_.writeDouble(this.field_149479_a);
-            p_148840_1_.writeDouble(this.field_149477_b);
-            p_148840_1_.writeDouble(this.field_149475_d);
-            p_148840_1_.writeDouble(this.field_149478_c);
-            p_148840_1_.writeFloat(this.field_149476_e);
-            p_148840_1_.writeFloat(this.field_149473_f);
-            super.writePacketData(p_148840_1_);
+            packetBuf.writeDouble(this.posX);
+            packetBuf.writeDouble(this.posY);
+            packetBuf.writeDouble(this.eyePos);
+            packetBuf.writeDouble(this.posZ);
+            packetBuf.writeFloat(this.field_149476_e);
+            packetBuf.writeFloat(this.field_149473_f);
+            super.writePacketData(packetBuf);
         }
 
         public void processPacket(INetHandler p_148833_1_)
@@ -209,22 +209,22 @@ public class C03PacketPlayer extends Packet
         {
             this.field_149476_e = p_i45255_1_;
             this.field_149473_f = p_i45255_2_;
-            this.field_149474_g = p_i45255_3_;
+            this.onGround = p_i45255_3_;
             this.field_149481_i = true;
         }
 
-        public void readPacketData(PacketBuffer p_148837_1_) throws IOException
+        public void readPacketData(PacketBuffer buffer) throws IOException
         {
-            this.field_149476_e = p_148837_1_.readFloat();
-            this.field_149473_f = p_148837_1_.readFloat();
-            super.readPacketData(p_148837_1_);
+            this.field_149476_e = buffer.readFloat();
+            this.field_149473_f = buffer.readFloat();
+            super.readPacketData(buffer);
         }
 
-        public void writePacketData(PacketBuffer p_148840_1_) throws IOException
+        public void writePacketData(PacketBuffer packetBuf) throws IOException
         {
-            p_148840_1_.writeFloat(this.field_149476_e);
-            p_148840_1_.writeFloat(this.field_149473_f);
-            super.writePacketData(p_148840_1_);
+            packetBuf.writeFloat(this.field_149476_e);
+            packetBuf.writeFloat(this.field_149473_f);
+            super.writePacketData(packetBuf);
         }
 
         public void processPacket(INetHandler p_148833_1_)
