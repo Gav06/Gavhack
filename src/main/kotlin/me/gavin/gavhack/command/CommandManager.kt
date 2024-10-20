@@ -4,7 +4,10 @@ import me.gavin.gavhack.command.impl.*
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ChatMessageEvent
+import me.gavin.gavhack.event.events.KeyPressEvent
 import me.gavin.gavhack.misc.Utils
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.GuiChat
 import net.minecraft.util.EnumChatFormatting
 import java.util.*
 
@@ -23,11 +26,17 @@ object CommandManager {
     private val chatListener = Listener<ChatMessageEvent> {(it as ChatMessageEvent)
         if (it.message.startsWith(CMD_PREFIX)) {
             it.cancelled = true
-            parseCommand(it.message)
+            executeCommand(it.message)
         }
     }
 
-    private fun parseCommand(text: String) {
+    private val keyListener = Listener<KeyPressEvent> { (it as KeyPressEvent)
+        if (it.keyChar == CMD_PREFIX) {
+            Minecraft.getMinecraft().displayGuiScreen(GuiChat("$CMD_PREFIX"))
+        }
+    }
+
+    fun executeCommand(text: String) {
         val split = text.trim().substring(1).split("\\s+".toRegex()).toTypedArray()
 
         if (split.isEmpty())
@@ -52,5 +61,6 @@ object CommandManager {
 
     init {
         EventBus.addListener(chatListener, ChatMessageEvent::class)
+        EventBus.addListener(keyListener, KeyPressEvent::class)
     }
 }

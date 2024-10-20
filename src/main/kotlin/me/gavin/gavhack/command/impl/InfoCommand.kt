@@ -10,7 +10,7 @@ class InfoCommand : Command("info", "Provides information about your game", "", 
         val numMods = ModuleManager.mods.size
         val numCmds = CommandManager.commands.size
 
-        message("${green}Gavhack stats:")
+        message("${green}Gavhack Stats:")
         message("Client version $green${Gavhack.VERSION_STRING}")
         message("Number of modules $green$numMods")
         message("Number of commands $green$numCmds")

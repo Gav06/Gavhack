@@ -2,7 +2,7 @@ package me.gavin.gavhack.module
 
 import net.minecraft.client.Minecraft
 
-abstract class Module(val name: String, val desc: String?, val category: ModCategory, var bind: Int = 0) {
+abstract class Module(val name: String, val desc: String?, val category: ModCategory) {
 
     protected val mc = Minecraft.getMinecraft()
 
