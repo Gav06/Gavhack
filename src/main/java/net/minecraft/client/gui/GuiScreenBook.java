@@ -457,7 +457,7 @@ public class GuiScreenBook extends GuiScreen
         {
             if (this.field_146125_m)
             {
-                boolean var4 = p_146112_2_ >= this.field_146128_h && p_146112_3_ >= this.field_146129_i && p_146112_2_ < this.field_146128_h + this.field_146120_f && p_146112_3_ < this.field_146129_i + this.field_146121_g;
+                boolean var4 = p_146112_2_ >= this.x && p_146112_3_ >= this.y && p_146112_2_ < this.x + this.width && p_146112_3_ < this.y + this.height;
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 p_146112_1_.getTextureManager().bindTexture(GuiScreenBook.field_146466_f);
                 int var5 = 0;
@@ -473,7 +473,7 @@ public class GuiScreenBook extends GuiScreen
                     var6 += 13;
                 }
 
-                this.drawTexturedModalRect(this.field_146128_h, this.field_146129_i, var5, var6, 23, 13);
+                this.drawTexturedModalRect(this.x, this.y, var5, var6, 23, 13);
             }
         }
     }

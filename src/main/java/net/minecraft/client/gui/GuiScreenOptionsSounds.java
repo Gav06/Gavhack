@@ -106,7 +106,7 @@ public class GuiScreenOptionsSounds extends GuiScreen
             {
                 if (this.field_146155_p)
                 {
-                    this.field_146156_o = (float)(p_146119_2_ - (this.field_146128_h + 4)) / (float)(this.field_146120_f - 8);
+                    this.field_146156_o = (float)(p_146119_2_ - (this.x + 4)) / (float)(this.width - 8);
 
                     if (this.field_146156_o < 0.0F)
                     {
@@ -124,8 +124,8 @@ public class GuiScreenOptionsSounds extends GuiScreen
                 }
 
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                this.drawTexturedModalRect(this.field_146128_h + (int)(this.field_146156_o * (float)(this.field_146120_f - 8)), this.field_146129_i, 0, 66, 4, 20);
-                this.drawTexturedModalRect(this.field_146128_h + (int)(this.field_146156_o * (float)(this.field_146120_f - 8)) + 4, this.field_146129_i, 196, 66, 4, 20);
+                this.drawTexturedModalRect(this.x + (int)(this.field_146156_o * (float)(this.width - 8)), this.y, 0, 66, 4, 20);
+                this.drawTexturedModalRect(this.x + (int)(this.field_146156_o * (float)(this.width - 8)) + 4, this.y, 196, 66, 4, 20);
             }
         }
 
@@ -133,7 +133,7 @@ public class GuiScreenOptionsSounds extends GuiScreen
         {
             if (super.mousePressed(p_146116_1_, p_146116_2_, p_146116_3_))
             {
-                this.field_146156_o = (float)(p_146116_2_ - (this.field_146128_h + 4)) / (float)(this.field_146120_f - 8);
+                this.field_146156_o = (float)(p_146116_2_ - (this.x + 4)) / (float)(this.width - 8);
 
                 if (this.field_146156_o < 0.0F)
                 {

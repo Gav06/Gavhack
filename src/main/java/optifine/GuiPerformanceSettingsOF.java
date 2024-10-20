@@ -161,7 +161,7 @@ public class GuiPerformanceSettingsOF extends GuiScreen
             GuiButton btn = (GuiButton)this.buttonList.get(k);
             int btnWidth = GuiVideoSettings.getButtonWidth(btn);
             int btnHeight = GuiVideoSettings.getButtonHeight(btn);
-            boolean flag = i >= btn.field_146128_h && j >= btn.field_146129_i && i < btn.field_146128_h + btnWidth && j < btn.field_146129_i + btnHeight;
+            boolean flag = i >= btn.x && j >= btn.y && i < btn.x + btnWidth && j < btn.y + btnHeight;
 
             if (flag)
             {

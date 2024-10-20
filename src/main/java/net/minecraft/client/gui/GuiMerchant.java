@@ -214,25 +214,25 @@ public class GuiMerchant extends GuiContainer
             {
                 p_146112_1_.getTextureManager().bindTexture(GuiMerchant.field_147038_v);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                boolean var4 = p_146112_2_ >= this.field_146128_h && p_146112_3_ >= this.field_146129_i && p_146112_2_ < this.field_146128_h + this.field_146120_f && p_146112_3_ < this.field_146129_i + this.field_146121_g;
+                boolean var4 = p_146112_2_ >= this.x && p_146112_3_ >= this.y && p_146112_2_ < this.x + this.width && p_146112_3_ < this.y + this.height;
                 int var5 = 0;
                 int var6 = 176;
 
                 if (!this.enabled)
                 {
-                    var6 += this.field_146120_f * 2;
+                    var6 += this.width * 2;
                 }
                 else if (var4)
                 {
-                    var6 += this.field_146120_f;
+                    var6 += this.width;
                 }
 
                 if (!this.field_146157_o)
                 {
-                    var5 += this.field_146121_g;
+                    var5 += this.height;
                 }
 
-                this.drawTexturedModalRect(this.field_146128_h, this.field_146129_i, var6, var5, this.field_146120_f, this.field_146121_g);
+                this.drawTexturedModalRect(this.x, this.y, var6, var5, this.width, this.height);
             }
         }
     }

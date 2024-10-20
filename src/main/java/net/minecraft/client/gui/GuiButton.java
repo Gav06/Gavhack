@@ -10,10 +10,10 @@ import org.lwjgl.opengl.GL11;
 public class GuiButton extends Gui
 {
     protected static final ResourceLocation field_146122_a = new ResourceLocation("textures/gui/widgets.png");
-    protected int field_146120_f;
-    protected int field_146121_g;
-    public int field_146128_h;
-    public int field_146129_i;
+    protected int width;
+    protected int height;
+    public int x;
+    public int y;
 
     /** The string displayed on this control. */
     public String displayString;
@@ -28,18 +28,18 @@ public class GuiButton extends Gui
         this(par1, par2, par3, 200, 20, par4Str);
     }
 
-    public GuiButton(int par1, int par2, int par3, int par4, int par5, String par6Str)
+    public GuiButton(int buttonId, int x, int y, int width, int height, String title)
     {
-        this.field_146120_f = 200;
-        this.field_146121_g = 20;
+        this.width = 200;
+        this.height = 20;
         this.enabled = true;
         this.field_146125_m = true;
-        this.id = par1;
-        this.field_146128_h = par2;
-        this.field_146129_i = par3;
-        this.field_146120_f = par4;
-        this.field_146121_g = par5;
-        this.displayString = par6Str;
+        this.id = buttonId;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.displayString = title;
     }
 
     protected int getHoverState(boolean p_146114_1_)
@@ -68,13 +68,13 @@ public class GuiButton extends Gui
             FontRenderer var4 = p_146112_1_.fontRenderer;
             p_146112_1_.getTextureManager().bindTexture(field_146122_a);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.field_146123_n = p_146112_2_ >= this.field_146128_h && p_146112_3_ >= this.field_146129_i && p_146112_2_ < this.field_146128_h + this.field_146120_f && p_146112_3_ < this.field_146129_i + this.field_146121_g;
+            this.field_146123_n = p_146112_2_ >= this.x && p_146112_3_ >= this.y && p_146112_2_ < this.x + this.width && p_146112_3_ < this.y + this.height;
             int var5 = this.getHoverState(this.field_146123_n);
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            this.drawTexturedModalRect(this.field_146128_h, this.field_146129_i, 0, 46 + var5 * 20, this.field_146120_f / 2, this.field_146121_g);
-            this.drawTexturedModalRect(this.field_146128_h + this.field_146120_f / 2, this.field_146129_i, 200 - this.field_146120_f / 2, 46 + var5 * 20, this.field_146120_f / 2, this.field_146121_g);
+            this.drawTexturedModalRect(this.x, this.y, 0, 46 + var5 * 20, this.width / 2, this.height);
+            this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + var5 * 20, this.width / 2, this.height);
             this.mouseDragged(p_146112_1_, p_146112_2_, p_146112_3_);
             int var6 = 14737632;
 
@@ -87,7 +87,7 @@ public class GuiButton extends Gui
                 var6 = 16777120;
             }
 
-            this.drawCenteredString(var4, this.displayString, this.field_146128_h + this.field_146120_f / 2, this.field_146129_i + (this.field_146121_g - 8) / 2, var6);
+            this.drawCenteredString(var4, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, var6);
         }
     }
 
@@ -107,7 +107,7 @@ public class GuiButton extends Gui
      */
     public boolean mousePressed(Minecraft p_146116_1_, int p_146116_2_, int p_146116_3_)
     {
-        return this.enabled && this.field_146125_m && p_146116_2_ >= this.field_146128_h && p_146116_3_ >= this.field_146129_i && p_146116_2_ < this.field_146128_h + this.field_146120_f && p_146116_3_ < this.field_146129_i + this.field_146121_g;
+        return this.enabled && this.field_146125_m && p_146116_2_ >= this.x && p_146116_3_ >= this.y && p_146116_2_ < this.x + this.width && p_146116_3_ < this.y + this.height;
     }
 
     public boolean func_146115_a()
@@ -124,6 +124,6 @@ public class GuiButton extends Gui
 
     public int func_146117_b()
     {
-        return this.field_146120_f;
+        return this.width;
     }
 }

@@ -1,8 +1,10 @@
 package me.gavin.gavhack.module
 
+import com.google.gson.JsonObject
+import me.gavin.gavhack.config.IConfigurable
 import net.minecraft.client.Minecraft
 
-abstract class Module(val name: String, val desc: String?, val category: ModCategory) {
+abstract class Module(val name: String, val desc: String?, val category: ModCategory): IConfigurable {
 
     protected val mc = Minecraft.getMinecraft()
 
@@ -28,5 +30,13 @@ abstract class Module(val name: String, val desc: String?, val category: ModCate
 
     fun isEnabled() : Boolean {
         return enabled
+    }
+
+    override fun toJsonObj(): JsonObject {
+        TODO("Not yet implemented")
+    }
+
+    override fun fromJsonObj(json: JsonObject) {
+        TODO("Not yet implemented")
     }
 }

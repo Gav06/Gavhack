@@ -263,7 +263,7 @@ public class GuiVideoSettings extends GuiScreen
         for (int k = 0; k < this.buttonList.size(); ++k)
         {
             GuiButton btn = (GuiButton)this.buttonList.get(k);
-            boolean flag = i >= btn.field_146128_h && j >= btn.field_146129_i && i < btn.field_146128_h + btn.field_146120_f && j < btn.field_146129_i + btn.field_146121_g;
+            boolean flag = i >= btn.x && j >= btn.y && i < btn.x + btn.width && j < btn.y + btn.height;
 
             if (flag)
             {
@@ -276,11 +276,11 @@ public class GuiVideoSettings extends GuiScreen
 
     public static int getButtonWidth(GuiButton btn)
     {
-        return btn.field_146120_f;
+        return btn.width;
     }
 
     public static int getButtonHeight(GuiButton btn)
     {
-        return btn.field_146121_g;
+        return btn.height;
     }
 }

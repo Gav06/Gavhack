@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import me.gavin.gavhack.ui.ClickGUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.mco.ExceptionMcoService;
 import net.minecraft.client.mco.ExceptionRetryCall;
@@ -213,10 +215,12 @@ public class GuiMainMenu extends GuiScreen
             this.field_92024_r = this.fontRendererObj.getStringWidth(this.field_146972_A);
             int var5 = Math.max(this.field_92023_s, this.field_92024_r);
             this.field_92022_t = (this.width - var5) / 2;
-            this.field_92021_u = ((GuiButton)this.buttonList.get(0)).field_146129_i - 24;
+            this.field_92021_u = ((GuiButton)this.buttonList.get(0)).y - 24;
             this.field_92020_v = this.field_92022_t + var5;
             this.field_92019_w = this.field_92021_u + 24;
         }
+
+        this.buttonList.add(new GuiButton(69, 20, 20, 200, 20, "Gavhack GUI"));
     }
 
     private void func_130020_g()
@@ -317,44 +321,44 @@ public class GuiMainMenu extends GuiScreen
         }
     }
 
-    protected void actionPerformed(GuiButton p_146284_1_)
+    protected void actionPerformed(GuiButton button)
     {
-        if (p_146284_1_.id == 0)
+        if (button.id == 0)
         {
             this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
         }
 
-        if (p_146284_1_.id == 5)
+        if (button.id == 5)
         {
             this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings, this.mc.getLanguageManager()));
         }
 
-        if (p_146284_1_.id == 1)
+        if (button.id == 1)
         {
             this.mc.displayGuiScreen(new GuiSelectWorld(this));
         }
 
-        if (p_146284_1_.id == 2)
+        if (button.id == 2)
         {
             this.mc.displayGuiScreen(new GuiMultiplayer(this));
         }
 
-        if (p_146284_1_.id == 14 && this.minecraftRealmsButton.field_146125_m)
+        if (button.id == 14 && this.minecraftRealmsButton.field_146125_m)
         {
             this.func_140005_i();
         }
 
-        if (p_146284_1_.id == 4)
+        if (button.id == 4)
         {
             this.mc.shutdown();
         }
 
-        if (p_146284_1_.id == 11)
+        if (button.id == 11)
         {
             this.mc.launchIntegratedServer("Demo_World", "Demo_World", DemoWorldServer.demoWorldSettings);
         }
 
-        if (p_146284_1_.id == 12)
+        if (button.id == 12)
         {
             ISaveFormat var2 = this.mc.getSaveLoader();
             WorldInfo var3 = var2.getWorldInfo("Demo_World");
@@ -364,6 +368,11 @@ public class GuiMainMenu extends GuiScreen
                 GuiYesNo var4 = GuiSelectWorld.func_146623_a(this, var3.getWorldName(), 12);
                 this.mc.displayGuiScreen(var4);
             }
+        }
+
+        if (button.id == 69) {
+            ClickGUI.INSTANCE.setPreviousGui(this);
+            mc.displayGuiScreen(ClickGUI.INSTANCE);
         }
     }
 
@@ -634,7 +643,7 @@ public class GuiMainMenu extends GuiScreen
         {
             drawRect(this.field_92022_t - 2, this.field_92021_u - 2, this.field_92020_v + 2, this.field_92019_w - 1, 1428160512);
             this.drawString(this.fontRendererObj, this.field_92025_p, this.field_92022_t, this.field_92021_u, -1);
-            this.drawString(this.fontRendererObj, this.field_146972_A, (this.width - this.field_92024_r) / 2, ((GuiButton)this.buttonList.get(0)).field_146129_i - 12, -1);
+            this.drawString(this.fontRendererObj, this.field_146972_A, (this.width - this.field_92024_r) / 2, ((GuiButton)this.buttonList.get(0)).y - 12, -1);
         }
 
         super.drawScreen(par1, par2, par3);
