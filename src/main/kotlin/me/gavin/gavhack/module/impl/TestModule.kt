@@ -1,4 +1,4 @@
-package me.gavin.gavhack.module.misc
+package me.gavin.gavhack.module.impl
 
 import me.gavin.gavhack.misc.Utils
 import me.gavin.gavhack.module.ModCategory

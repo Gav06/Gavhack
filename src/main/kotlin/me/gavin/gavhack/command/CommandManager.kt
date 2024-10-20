@@ -1,9 +1,6 @@
 package me.gavin.gavhack.command
 
-import me.gavin.gavhack.command.commands.HelpCommand
-import me.gavin.gavhack.command.commands.InfoCommand
-import me.gavin.gavhack.command.commands.SpawnTPCommand
-import me.gavin.gavhack.command.commands.SyntaxCommand
+import me.gavin.gavhack.command.impl.*
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ChatMessageEvent
@@ -19,7 +16,8 @@ object CommandManager {
         InfoCommand(),
         HelpCommand(),
         SyntaxCommand(),
-        SpawnTPCommand()
+        SpawnTPCommand(),
+        ToggleCommand()
     )
 
     private val chatListener = Listener<ChatMessageEvent> {(it as ChatMessageEvent)
@@ -39,7 +37,7 @@ object CommandManager {
         val cmdArgs = Arrays.copyOfRange(split,1, split.size)
 
         val cmd : Command = try {
-            commands.first { it.name.equals(cmdName, true) }
+            commands.first { it.matchesInput(cmdName) }
         } catch (e: NoSuchElementException) {
             Utils.gameMessage(EnumChatFormatting.RED.toString() +
                     "Unknown command, use ${CMD_PREFIX}help to see a list of commands.")

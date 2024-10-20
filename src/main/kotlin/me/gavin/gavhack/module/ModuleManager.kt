@@ -3,21 +3,16 @@ package me.gavin.gavhack.module
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.KeyPressEvent
-import me.gavin.gavhack.module.misc.TestModule
+import me.gavin.gavhack.module.impl.*
 import net.minecraft.client.Minecraft
 import org.lwjgl.input.Keyboard
-
-//import me.gavin.gavhack.module.combat.*
-//import me.gavin.gavhack.module.movement.*
-//import me.gavin.gavhack.module.render.*
-//import me.gavin.gavhack.module.world.*
-//import me.gavin.gavhack.module.misc.*
 
 object ModuleManager {
 
     /* In alphabetic order by default */
     val mods = arrayOf(
-            TestModule,
+        TestModule,
+        Fullbright
     )
 
     /* Sorted by length of module name */

@@ -20,7 +20,7 @@ abstract class Command(
     }
 
     protected fun error(msg: String) {
-        Utils.gameMessage("${EnumChatFormatting.RED}msg")
+        Utils.gameMessage("${EnumChatFormatting.RED}$msg")
     }
 
     fun matchesInput(input: String) : Boolean {

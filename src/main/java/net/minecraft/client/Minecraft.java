@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.KeyPressEvent;
+import me.gavin.gavhack.event.events.WorldLoadEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -2276,6 +2277,8 @@ public class Minecraft implements IPlayerUsage
             this.thePlayer.movementInput = new MovementInputFromOptions(this.gameSettings);
             this.playerController.setPlayerCapabilities(this.thePlayer);
             this.renderViewEntity = this.thePlayer;
+
+            EventBus.INSTANCE.post(new WorldLoadEvent(par1WorldClient));
         }
         else
         {

@@ -1,4 +1,4 @@
-package me.gavin.gavhack.command.commands
+package me.gavin.gavhack.command.impl
 
 import me.gavin.gavhack.command.Command
 import me.gavin.gavhack.command.CommandManager
