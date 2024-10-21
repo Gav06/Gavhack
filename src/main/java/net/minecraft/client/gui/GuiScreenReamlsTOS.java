@@ -124,7 +124,7 @@ public class GuiScreenReamlsTOS extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, I18n.format("mco.terms.title", new Object[0]), this.width / 2, 17, 16777215);
@@ -137,7 +137,7 @@ public class GuiScreenReamlsTOS extends GuiScreen
         int var9 = var7 + this.fontRendererObj.getStringWidth("mco.terms.sentence.2") + 1;
         int var10 = 87 + this.fontRendererObj.FONT_HEIGHT;
 
-        if (var7 <= par1 && par1 <= var9 && var8 <= par2 && par2 <= var10)
+        if (var7 <= mouseX && mouseX <= var9 && var8 <= mouseY && mouseY <= var10)
         {
             this.field_146775_i = true;
             this.drawString(this.fontRendererObj, " " + I18n.format("mco.terms.sentence.2", new Object[0]), this.width / 2 - 120 + var4, 87, var6);
@@ -148,6 +148,6 @@ public class GuiScreenReamlsTOS extends GuiScreen
             this.drawString(this.fontRendererObj, " " + I18n.format("mco.terms.sentence.2", new Object[0]), this.width / 2 - 120 + var4, 87, var5);
         }
 
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

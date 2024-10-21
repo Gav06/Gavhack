@@ -110,12 +110,12 @@ public class GuiScreenMcoWorldTemplate extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.field_146957_r.func_148350_a(par1, par2, par3);
+        this.field_146957_r.func_148350_a(mouseX, mouseY, partialTicks);
         this.drawCenteredString(this.fontRendererObj, I18n.format("mco.template.title", new Object[0]), this.width / 2, 20, 16777215);
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     class SelectionList extends GuiScreenSelectLocation

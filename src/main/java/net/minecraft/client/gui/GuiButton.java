@@ -23,9 +23,9 @@ public class GuiButton extends Gui
     protected boolean field_146123_n;
     private static final String __OBFID = "CL_00000668";
 
-    public GuiButton(int par1, int par2, int par3, String par4Str)
+    public GuiButton(int buttonId, int x, int y, String title)
     {
-        this(par1, par2, par3, 200, 20, par4Str);
+        this(buttonId, x, y, 200, 20, title);
     }
 
     public GuiButton(int buttonId, int x, int y, int width, int height, String title)

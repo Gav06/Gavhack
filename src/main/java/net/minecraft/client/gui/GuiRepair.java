@@ -152,9 +152,9 @@ public class GuiRepair extends GuiContainer implements ICrafting
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
         this.field_147091_w.drawTextBox();

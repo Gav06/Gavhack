@@ -399,7 +399,7 @@ public class GuiCreateWorld extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, I18n.format("selectWorld.create", new Object[0]), this.width / 2, 20, -1);
@@ -426,7 +426,7 @@ public class GuiCreateWorld extends GuiScreen
             this.drawString(this.fontRendererObj, this.field_146328_H, this.width / 2 - 100, 149, -6250336);
         }
 
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     public void func_146318_a(WorldInfo p_146318_1_)

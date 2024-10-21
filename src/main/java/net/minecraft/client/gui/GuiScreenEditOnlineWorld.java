@@ -157,7 +157,7 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, I18n.format("mco.configure.world.edit.title", new Object[0]), this.width / 2, 17, 16777215);
@@ -166,6 +166,6 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
         this.field_146864_i.drawTextBox();
         this.field_146863_h.drawTextBox();
         this.field_146854_w.func_148394_a(this, this.fontRendererObj);
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

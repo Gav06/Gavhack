@@ -128,19 +128,19 @@ public class GuiChat extends GuiScreen
         {
             String var3 = this.field_146415_a.getText().trim();
 
-            if (var3.length() > 0)
+            if (!var3.isEmpty())
             {
-                this.func_146403_a(var3);
+                this.sendMessage(var3);
             }
 
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
         }
     }
 
-    public void func_146403_a(String p_146403_1_)
+    public void sendMessage(String message)
     {
-        this.mc.ingameGUI.getChatGUI().func_146239_a(p_146403_1_);
-        this.mc.thePlayer.sendChatMessage(p_146403_1_);
+        this.mc.ingameGUI.getChatGUI().func_146239_a(message);
+        this.mc.thePlayer.sendChatMessage(message);
     }
 
     /**
@@ -227,7 +227,7 @@ public class GuiChat extends GuiScreen
                         }
                         else if (var5.getAction() == ClickEvent.Action.RUN_COMMAND)
                         {
-                            this.func_146403_a(var5.getValue());
+                            this.sendMessage(var5.getValue());
                         }
                         else
                         {
@@ -370,7 +370,7 @@ public class GuiChat extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
         this.field_146415_a.drawTextBox();
@@ -400,16 +400,16 @@ public class GuiChat extends GuiScreen
 
                 if (var6 != null)
                 {
-                    this.func_146285_a(var6, par1, par2);
+                    this.func_146285_a(var6, mouseX, mouseY);
                 }
                 else
                 {
-                    this.func_146279_a(EnumChatFormatting.RED + "Invalid Item!", par1, par2);
+                    this.func_146279_a(EnumChatFormatting.RED + "Invalid Item!", mouseX, mouseY);
                 }
             }
             else if (var5.getAction() == HoverEvent.Action.SHOW_TEXT)
             {
-                this.func_146279_a(var5.getValue().getFormattedText(), par1, par2);
+                this.func_146279_a(var5.getValue().getFormattedText(), mouseX, mouseY);
             }
             else if (var5.getAction() == HoverEvent.Action.SHOW_ACHIEVEMENT)
             {
@@ -428,18 +428,18 @@ public class GuiChat extends GuiScreen
                         var10.addAll(this.fontRendererObj.listFormattedStringToWidth(var9, 150));
                     }
 
-                    this.func_146283_a(var10, par1, par2);
+                    this.func_146283_a(var10, mouseX, mouseY);
                 }
                 else
                 {
-                    this.func_146279_a(EnumChatFormatting.RED + "Invalid statistic/achievement!", par1, par2);
+                    this.func_146279_a(EnumChatFormatting.RED + "Invalid statistic/achievement!", mouseX, mouseY);
                 }
             }
 
             GL11.glDisable(GL11.GL_LIGHTING);
         }
 
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     public void func_146406_a(String[] p_146406_1_)

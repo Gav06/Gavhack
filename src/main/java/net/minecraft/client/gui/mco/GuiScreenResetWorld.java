@@ -145,14 +145,14 @@ public class GuiScreenResetWorld extends ScreenWithCallback
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, I18n.format("mco.reset.world.title", new Object[0]), this.width / 2, 17, 16777215);
         this.drawCenteredString(this.fontRendererObj, I18n.format("mco.reset.world.warning", new Object[0]), this.width / 2, 56, 16711680);
         this.drawString(this.fontRendererObj, I18n.format("mco.reset.world.seed", new Object[0]), this.width / 2 - 100, 86, 10526880);
         this.field_146749_h.drawTextBox();
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     void func_146740_a(WorldTemplate p_146740_1_)

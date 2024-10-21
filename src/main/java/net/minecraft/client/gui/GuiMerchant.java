@@ -137,9 +137,9 @@ public class GuiMerchant extends GuiContainer
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
         MerchantRecipeList var4 = this.field_147037_w.getRecipes(this.mc.thePlayer);
 
         if (var4 != null && !var4.isEmpty())
@@ -172,17 +172,17 @@ public class GuiMerchant extends GuiContainer
             itemRender.zLevel = 0.0F;
             GL11.glDisable(GL11.GL_LIGHTING);
 
-            if (this.func_146978_c(36, 24, 16, 16, par1, par2))
+            if (this.func_146978_c(36, 24, 16, 16, mouseX, mouseY))
             {
-                this.func_146285_a(var9, par1, par2);
+                this.func_146285_a(var9, mouseX, mouseY);
             }
-            else if (var10 != null && this.func_146978_c(62, 24, 16, 16, par1, par2))
+            else if (var10 != null && this.func_146978_c(62, 24, 16, 16, mouseX, mouseY))
             {
-                this.func_146285_a(var10, par1, par2);
+                this.func_146285_a(var10, mouseX, mouseY);
             }
-            else if (this.func_146978_c(120, 24, 16, 16, par1, par2))
+            else if (this.func_146978_c(120, 24, 16, 16, mouseX, mouseY))
             {
-                this.func_146285_a(var11, par1, par2);
+                this.func_146285_a(var11, mouseX, mouseY);
             }
 
             GL11.glPopMatrix();

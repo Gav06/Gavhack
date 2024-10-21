@@ -220,7 +220,8 @@ public class GuiMainMenu extends GuiScreen
             this.field_92019_w = this.field_92021_u + 24;
         }
 
-        this.buttonList.add(new GuiButton(69, 20, 20, 200, 20, "Gavhack GUI"));
+        final int buttonHeight = (this.height / 4 + 96);
+        this.buttonList.add(new GuiButton(69, this.width / 2 - 100, buttonHeight, 200, 20, "Gavhack GUI"));
     }
 
     private void func_130020_g()
@@ -300,7 +301,7 @@ public class GuiMainMenu extends GuiScreen
     private void addSingleplayerMultiplayerButtons(int par1, int par2)
     {
         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, par1, I18n.format("menu.singleplayer", new Object[0])));
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, par1 + par2 * 1, I18n.format("menu.multiplayer", new Object[0])));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, par1 + par2, I18n.format("menu.multiplayer", new Object[0])));
         this.buttonList.add(this.minecraftRealmsButton = new GuiButton(14, this.width / 2 - 100, par1 + par2 * 2, I18n.format("menu.online", new Object[0])));
         this.minecraftRealmsButton.field_146125_m = false;
     }
@@ -589,10 +590,10 @@ public class GuiMainMenu extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        this.renderSkybox(par1, par2, par3);
+        this.renderSkybox(mouseX, mouseY, partialTicks);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         Tessellator var4 = Tessellator.instance;
         short var5 = 274;
@@ -646,7 +647,7 @@ public class GuiMainMenu extends GuiScreen
             this.drawString(this.fontRendererObj, this.field_146972_A, (this.width - this.field_92024_r) / 2, ((GuiButton)this.buttonList.get(0)).y - 12, -1);
         }
 
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     /**

@@ -107,15 +107,15 @@ public class GuiCreateFlatWorld extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.field_146390_s.func_148128_a(par1, par2, par3);
+        this.field_146390_s.func_148128_a(mouseX, mouseY, partialTicks);
         this.drawCenteredString(this.fontRendererObj, this.field_146393_h, this.width / 2, 8, 16777215);
         int var4 = this.width / 2 - 92 - 16;
         this.drawString(this.fontRendererObj, this.field_146394_i, var4, 32, 16777215);
         this.drawString(this.fontRendererObj, this.field_146391_r, var4 + 2 + 213 - this.fontRendererObj.getStringWidth(this.field_146391_r), 32, 16777215);
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     class Details extends GuiSlot

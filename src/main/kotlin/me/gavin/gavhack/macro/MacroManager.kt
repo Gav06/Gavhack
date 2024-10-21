@@ -23,6 +23,9 @@ object MacroManager: IConfigurable {
 
     init {
         EventBus.addListener(keyListener, KeyPressEvent::class)
+
+        // add default macros
+        macros.add(Macro(Keyboard.KEY_RSHIFT, "clickgui"))
     }
 
     override fun toJsonObj(): JsonObject {

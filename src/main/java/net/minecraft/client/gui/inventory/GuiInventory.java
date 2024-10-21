@@ -61,11 +61,11 @@ public class GuiInventory extends InventoryEffectRenderer
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        super.drawScreen(par1, par2, par3);
-        this.field_147048_u = (float)par1;
-        this.field_147047_v = (float)par2;
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.field_147048_u = (float) mouseX;
+        this.field_147047_v = (float) mouseY;
     }
 
     protected void func_146976_a(float p_146976_1_, int p_146976_2_, int p_146976_3_)

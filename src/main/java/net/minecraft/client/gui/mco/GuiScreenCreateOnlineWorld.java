@@ -149,7 +149,7 @@ public class GuiScreenCreateOnlineWorld extends ScreenWithCallback
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, I18n.format("mco.selectServer.create", new Object[0]), this.width / 2, 11, 16777215);
@@ -161,7 +161,7 @@ public class GuiScreenCreateOnlineWorld extends ScreenWithCallback
         }
 
         this.field_146760_g.drawTextBox();
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     public void func_146735_a(WorldTemplate p_146756_1_)

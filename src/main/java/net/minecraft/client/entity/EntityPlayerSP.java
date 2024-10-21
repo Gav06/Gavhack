@@ -1,5 +1,7 @@
 package net.minecraft.client.entity;
 
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.PlayerLivingTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiCommandBlock;
@@ -105,6 +107,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void onLivingUpdate()
     {
+        EventBus.INSTANCE.post(new PlayerLivingTickEvent());
+
         if (this.sprintingTicksLeft > 0)
         {
             --this.sprintingTicksLeft;

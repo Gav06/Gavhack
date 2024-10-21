@@ -20,13 +20,14 @@ object CommandManager {
         HelpCommand(),
         SyntaxCommand(),
         SpawnTPCommand(),
-        ToggleCommand()
+        ToggleCommand(),
+        GuiCommand()
     )
 
     private val chatListener = Listener<ChatMessageEvent> {(it as ChatMessageEvent)
         if (it.message.startsWith(CMD_PREFIX)) {
             it.cancelled = true
-            executeCommand(it.message)
+            executeCommand(it.message.substring(1))
         }
     }
 
@@ -37,7 +38,7 @@ object CommandManager {
     }
 
     fun executeCommand(text: String) {
-        val split = text.trim().substring(1).split("\\s+".toRegex()).toTypedArray()
+        val split = text.trim().split("\\s+".toRegex()).toTypedArray()
 
         if (split.isEmpty())
             return

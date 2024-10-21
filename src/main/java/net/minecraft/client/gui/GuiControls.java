@@ -130,10 +130,10 @@ public class GuiControls extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.field_146494_r.func_148128_a(par1, par2, par3);
+        this.field_146494_r.func_148128_a(mouseX, mouseY, partialTicks);
         this.drawCenteredString(this.fontRendererObj, this.field_146495_a, this.width / 2, 8, 16777215);
         boolean var4 = true;
         KeyBinding[] var5 = this.field_146497_i.keyBindings;
@@ -151,6 +151,6 @@ public class GuiControls extends GuiScreen
         }
 
         this.field_146493_s.enabled = !var4;
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

@@ -56,18 +56,18 @@ public class GuiScreen extends Gui
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         int var4;
 
         for (var4 = 0; var4 < this.buttonList.size(); ++var4)
         {
-            ((GuiButton)this.buttonList.get(var4)).drawButton(this.mc, par1, par2);
+            ((GuiButton)this.buttonList.get(var4)).drawButton(this.mc, mouseX, mouseY);
         }
 
         for (var4 = 0; var4 < this.labelList.size(); ++var4)
         {
-            ((GuiLabel)this.labelList.get(var4)).func_146159_a(this.mc, par1, par2);
+            ((GuiLabel)this.labelList.get(var4)).func_146159_a(this.mc, mouseX, mouseY);
         }
     }
 

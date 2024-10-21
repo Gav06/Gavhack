@@ -76,7 +76,7 @@ public class GuiScreenLongRunningTask extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, this.field_146913_s, this.width / 2, this.height / 2 - 50, 16777215);
@@ -92,7 +92,7 @@ public class GuiScreenLongRunningTask extends GuiScreen
             this.drawCenteredString(this.fontRendererObj, this.field_146911_u, this.width / 2, this.height / 2 + 15, 16711680);
         }
 
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     public void func_146905_a(String p_146905_1_)

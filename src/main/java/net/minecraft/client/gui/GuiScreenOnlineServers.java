@@ -355,20 +355,20 @@ public class GuiScreenOnlineServers extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.field_146698_A = null;
         this.drawDefaultBackground();
-        this.field_146706_u.func_148350_a(par1, par2, par3);
+        this.field_146706_u.func_148350_a(mouseX, mouseY, partialTicks);
         this.func_146665_b(this.width / 2 - 50, 7);
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (this.field_146698_A != null)
         {
-            this.func_146658_b(this.field_146698_A, par1, par2);
+            this.func_146658_b(this.field_146698_A, mouseX, mouseY);
         }
 
-        this.func_146659_c(par1, par2);
+        this.func_146659_c(mouseX, mouseY);
     }
 
     private void func_146665_b(int p_146665_1_, int p_146665_2_)

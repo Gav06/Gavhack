@@ -150,7 +150,7 @@ public class GuiScreenInvite extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.invite.profile.name", new Object[0]), this.width / 2 - 100, 53, 10526880);
@@ -161,6 +161,6 @@ public class GuiScreenInvite extends GuiScreen
         }
 
         this.field_146921_f.drawTextBox();
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

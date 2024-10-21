@@ -147,7 +147,7 @@ public class GuiScreenSubscription extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, I18n.format("mco.configure.world.subscription.title", new Object[0]), this.width / 2, 17, 16777215);
@@ -155,6 +155,6 @@ public class GuiScreenSubscription extends GuiScreen
         this.drawString(this.fontRendererObj, this.field_146784_s, this.width / 2 - 100, 66, 16777215);
         this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.subscription.daysleft", new Object[0]), this.width / 2 - 100, 85, 10526880);
         this.drawString(this.fontRendererObj, String.valueOf(this.field_146785_r), this.width / 2 - 100, 98, 16777215);
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

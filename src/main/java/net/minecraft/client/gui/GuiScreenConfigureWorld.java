@@ -265,10 +265,10 @@ public class GuiScreenConfigureWorld extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.field_146890_h.func_148446_a(par1, par2, par3);
+        this.field_146890_h.func_148446_a(mouseX, mouseY, partialTicks);
         this.drawCenteredString(this.fontRendererObj, I18n.format("mco.configure.world.title", new Object[0]), this.width / 2, 17, 16777215);
         this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.name", new Object[0]), this.field_146891_i, this.func_146873_a(1), 10526880);
         this.drawString(this.fontRendererObj, this.field_146885_g.func_148801_b(), this.field_146891_i, this.func_146873_a(2), 16777215);
@@ -277,7 +277,7 @@ public class GuiScreenConfigureWorld extends GuiScreen
         this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.status", new Object[0]), this.field_146891_i, this.func_146873_a(7), 10526880);
         this.drawString(this.fontRendererObj, this.func_146870_p(), this.field_146891_i, this.func_146873_a(8), 16777215);
         this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.invited", new Object[0]), this.field_146896_s, this.func_146873_a(1), 10526880);
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     private String func_146870_p()

@@ -772,10 +772,10 @@ public class Minecraft implements IPlayerUsage
         float var8 = 0.00390625F;
         Tessellator var9 = Tessellator.instance;
         var9.startDrawingQuads();
-        var9.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), 0.0D, (double)((float)(par3 + 0) * var7), (double)((float)(par4 + par6) * var8));
-        var9.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), 0.0D, (double)((float)(par3 + par5) * var7), (double)((float)(par4 + par6) * var8));
-        var9.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), 0.0D, (double)((float)(par3 + par5) * var7), (double)((float)(par4 + 0) * var8));
-        var9.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), 0.0D, (double)((float)(par3 + 0) * var7), (double)((float)(par4 + 0) * var8));
+        var9.addVertexWithUV((par1), (par2 + par6), 0.0D, ((float)(par3) * var7), (float)(par4 + par6) * var8);
+        var9.addVertexWithUV((par1 + par5), (par2 + par6), 0.0D, ((float)(par3 + par5) * var7), ((float)(par4 + par6) * var8));
+        var9.addVertexWithUV((par1 + par5), (par2), 0.0D, ((float)(par3 + par5) * var7), ((float)(par4) * var8));
+        var9.addVertexWithUV((par1), (par2), 0.0D, (float)(par3) * var7, ((float)(par4) * var8));
         var9.draw();
     }
 
@@ -790,37 +790,37 @@ public class Minecraft implements IPlayerUsage
     /**
      * Sets the argument GuiScreen as the main (topmost visible) screen.
      */
-    public void displayGuiScreen(GuiScreen p_147108_1_)
+    public void displayGuiScreen(GuiScreen screenIn)
     {
         if (this.currentScreen != null)
         {
             this.currentScreen.onGuiClosed();
         }
 
-        if (p_147108_1_ == null && this.theWorld == null)
+        if (screenIn == null && this.theWorld == null)
         {
-            p_147108_1_ = new GuiMainMenu();
+            screenIn = new GuiMainMenu();
         }
-        else if (p_147108_1_ == null && this.thePlayer.getHealth() <= 0.0F)
+        else if (screenIn == null && this.thePlayer.getHealth() <= 0.0F)
         {
-            p_147108_1_ = new GuiGameOver();
+            screenIn = new GuiGameOver();
         }
 
-        if (p_147108_1_ instanceof GuiMainMenu)
+        if (screenIn instanceof GuiMainMenu)
         {
             this.gameSettings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().func_146231_a();
         }
 
-        this.currentScreen = (GuiScreen)p_147108_1_;
+        this.currentScreen = screenIn;
 
-        if (p_147108_1_ != null)
+        if (screenIn != null)
         {
             this.setIngameNotInFocus();
             ScaledResolution var2 = new ScaledResolution(this.gameSettings, this.displayWidth, this.displayHeight);
             int var3 = var2.getScaledWidth();
             int var4 = var2.getScaledHeight();
-            ((GuiScreen)p_147108_1_).setWorldAndResolution(this, var3, var4);
+            ((GuiScreen)screenIn).setWorldAndResolution(this, var3, var4);
             this.skipRenderWorld = false;
         }
         else

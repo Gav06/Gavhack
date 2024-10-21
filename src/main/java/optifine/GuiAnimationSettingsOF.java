@@ -92,10 +92,10 @@ public class GuiAnimationSettingsOF extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int i, int j, float f)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 20, 16777215);
-        super.drawScreen(i, j, f);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

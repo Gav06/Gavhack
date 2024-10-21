@@ -84,13 +84,13 @@ public class GuiPerformanceSettingsOF extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int x, int y, float f)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 20, 16777215);
-        super.drawScreen(x, y, f);
+        super.drawScreen(mouseX, mouseY, partialTicks);
 
-        if (Math.abs(x - this.lastMouseX) <= 5 && Math.abs(y - this.lastMouseY) <= 5)
+        if (Math.abs(mouseX - this.lastMouseX) <= 5 && Math.abs(mouseY - this.lastMouseY) <= 5)
         {
             short activateDelay = 700;
 
@@ -99,14 +99,14 @@ public class GuiPerformanceSettingsOF extends GuiScreen
                 int x1 = this.width / 2 - 150;
                 int y1 = this.height / 6 - 5;
 
-                if (y <= y1 + 98)
+                if (mouseY <= y1 + 98)
                 {
                     y1 += 105;
                 }
 
                 int x2 = x1 + 150 + 150;
                 int y2 = y1 + 84 + 10;
-                GuiButton btn = this.getSelectedButton(x, y);
+                GuiButton btn = this.getSelectedButton(mouseX, mouseY);
 
                 if (btn != null)
                 {
@@ -137,8 +137,8 @@ public class GuiPerformanceSettingsOF extends GuiScreen
         }
         else
         {
-            this.lastMouseX = x;
-            this.lastMouseY = y;
+            this.lastMouseX = mouseX;
+            this.lastMouseY = mouseY;
             this.mouseStillTime = System.currentTimeMillis();
         }
     }

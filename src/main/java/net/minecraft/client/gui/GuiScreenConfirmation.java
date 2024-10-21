@@ -41,13 +41,13 @@ public class GuiScreenConfirmation extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, this.field_146937_i.field_148515_d, this.width / 2, 70, this.field_146937_i.field_148518_c);
         this.drawCenteredString(this.fontRendererObj, this.field_146934_r, this.width / 2, 90, 16777215);
         this.drawCenteredString(this.fontRendererObj, this.field_146933_s, this.width / 2, 110, 16777215);
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     public static enum ConfirmationType

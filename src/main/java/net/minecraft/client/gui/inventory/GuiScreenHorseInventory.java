@@ -56,10 +56,10 @@ public class GuiScreenHorseInventory extends GuiContainer
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        this.field_147033_y = (float)par1;
-        this.field_147032_z = (float)par2;
-        super.drawScreen(par1, par2, par3);
+        this.field_147033_y = (float) mouseX;
+        this.field_147032_z = (float) mouseY;
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }
