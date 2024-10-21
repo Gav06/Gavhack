@@ -2,8 +2,10 @@ package me.gavin.gavhack.ui
 
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
+import me.gavin.gavhack.event.events.ClientTickEvent
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.ui.api.IComponent
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiMainMenu
 import net.minecraft.client.gui.GuiScreen
 
@@ -15,10 +17,11 @@ object ClickGUI: GuiScreen() {
     private var shouldOpenGui = false
 
     /* Hacky way to get gui to open after typing the command in the chat box */
-    private val livingTick = Listener<PlayerLivingTickEvent> {
-        if (shouldOpenGui && mc.currentScreen == null) {
+    private val livingTick = Listener<ClientTickEvent> {
+        val minecraft = Minecraft.getMinecraft()
+        if (minecraft != null && shouldOpenGui && minecraft.currentScreen == null) {
             shouldOpenGui = false
-            mc.displayGuiScreen(this)
+            minecraft.displayGuiScreen(ClickGUI)
         }
     }
 

@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 
 import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.ClientTickEvent;
 import me.gavin.gavhack.event.events.KeyPressEvent;
 import me.gavin.gavhack.event.events.WorldLoadEvent;
 import net.minecraft.block.Block;
@@ -1631,6 +1632,8 @@ public class Minecraft implements IPlayerUsage
      */
     public void runTick()
     {
+        EventBus.INSTANCE.post(new ClientTickEvent());
+
         if (this.rightClickDelayTimer > 0)
         {
             --this.rightClickDelayTimer;
