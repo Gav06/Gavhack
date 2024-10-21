@@ -285,4 +285,9 @@ public class AnvilSaveConverter extends SaveFormatOld
             Collections.addAll(par2Collection, var4);
         }
     }
+
+    public int getAnvilSaveVersion()
+    {
+        return this.getSaveVersion();
+    }
 }

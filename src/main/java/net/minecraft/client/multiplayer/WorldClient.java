@@ -16,18 +16,22 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.item.*;
+import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.IAnimals;
+import net.minecraft.entity.projectile.EntityEgg;
+import net.minecraft.entity.projectile.EntityFishHook;
+import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IntHashMap;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldSettings;
+import net.minecraft.wdl.WDL;
+import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.storage.SaveHandlerMP;
@@ -99,6 +103,26 @@ public class WorldClient extends World
         this.theProfiler.endStartSection("blocks");
         this.func_147456_g();
         this.theProfiler.endSection();
+
+        if (WDL.guiToShowAsync != null)
+        {
+            WDL.mc.displayGuiScreen(WDL.guiToShowAsync);
+            WDL.guiToShowAsync = null;
+        }
+
+        if (WDL.downloading && WDL.entityClientPlayerMP.openContainer != WDL.windowContainer)
+        {
+            if (WDL.entityClientPlayerMP.openContainer == WDL.entityClientPlayerMP.inventoryContainer)
+            {
+                WDL.onItemGuiClosed();
+            }
+            else
+            {
+                WDL.onItemGuiOpened();
+            }
+
+            WDL.windowContainer = WDL.entityClientPlayerMP.openContainer;
+        }
     }
 
     /**
@@ -156,10 +180,20 @@ public class WorldClient extends World
     {
         if (par3)
         {
+            if (this != WDL.wc)
+            {
+                WDL.onWorldLoad();
+            }
+
             this.clientChunkProvider.loadChunk(par1, par2);
         }
         else
         {
+            if (WDL.downloading)
+            {
+                WDL.onChunkNoLongerNeeded(this.chunkProvider.provideChunk(par1, par2));
+            }
+
             this.clientChunkProvider.unloadChunk(par1, par2);
         }
 
@@ -270,8 +304,48 @@ public class WorldClient extends World
 
     public Entity removeEntityFromWorld(int par1)
     {
-        Entity var2 = (Entity)this.entityHashSet.removeObject(par1);
+        Entity var2;
 
+        if (WDL.downloading)
+        {
+            var2 = this.getEntityByID(par1);
+
+            if (var2 != null)
+            {
+                short threshold = 0;
+
+                if (!(var2 instanceof EntityFishHook) && !(var2 instanceof EntityEnderPearl) && !(var2 instanceof EntityEnderEye) && !(var2 instanceof EntityEgg) && !(var2 instanceof EntityPotion) && !(var2 instanceof EntityExpBottle) && !(var2 instanceof EntityItem) && !(var2 instanceof EntitySquid))
+                {
+                    if (!(var2 instanceof EntityMinecart) && !(var2 instanceof EntityBoat) && !(var2 instanceof IAnimals))
+                    {
+                        if (var2 instanceof EntityDragon || var2 instanceof EntityTNTPrimed || var2 instanceof EntityFallingBlock || var2 instanceof EntityPainting || var2 instanceof EntityXPOrb)
+                        {
+                            threshold = 160;
+                        }
+                    }
+                    else
+                    {
+                        threshold = 80;
+                    }
+                }
+                else
+                {
+                    threshold = 64;
+                }
+
+                double distance = var2.getDistance(WDL.entityClientPlayerMP.posX, var2.posY, WDL.entityClientPlayerMP.posZ);
+
+                if (distance > (double)threshold)
+                {
+                    WDL.chatDebug("removeEntityFromWorld: Refusing to remove " + EntityList.getEntityString(var2) + " at distance " + distance);
+                    return null;
+                }
+
+                WDL.chatDebug("removeEntityFromWorld: Removing " + EntityList.getEntityString(var2) + " at distance " + distance);
+            }
+        }
+
+        var2 = (Entity)this.entityHashSet.removeObject(par1);
         if (var2 != null)
         {
             this.entityList.remove(var2);
@@ -479,5 +553,23 @@ public class WorldClient extends World
         }
 
         super.setWorldTime(par1);
+    }
+
+    /**
+     * Removes a worldAccess from the worldAccesses object
+     */
+    public void removeWorldAccess(IWorldAccess par1iWorldAccess)
+    {
+        super.removeWorldAccess(par1iWorldAccess);
+    }
+
+    public void func_147452_c(int par1, int par2, int par3, Block par4, int par5, int par6)
+    {
+        super.func_147452_c(par1, par2, par3, par4, par5, par6);
+
+        if (WDL.downloading)
+        {
+            WDL.onBlockEvent(par1, par2, par3, par4, par5, par6);
+        }
     }
 }

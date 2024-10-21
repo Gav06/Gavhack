@@ -20,6 +20,7 @@ import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.C00PacketLoginStart;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.Session;
+import net.minecraft.wdl.WDL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,14 +29,14 @@ public class TaskOnlineConnect extends TaskLongRunning
     private static final AtomicInteger field_148439_a = new AtomicInteger(0);
     private static final Logger logger = LogManager.getLogger();
     private NetworkManager field_148436_d;
-    private final McoServer field_148437_e;
+    private final McoServer mcoServer;
     private final GuiScreen field_148435_f;
     private static final String __OBFID = "CL_00000790";
 
     public TaskOnlineConnect(GuiScreen par1GuiScreen, McoServer par2McoServer)
     {
         this.field_148435_f = par1GuiScreen;
-        this.field_148437_e = par2McoServer;
+        this.mcoServer = par2McoServer;
     }
 
     public void run()
@@ -53,7 +54,7 @@ public class TaskOnlineConnect extends TaskLongRunning
         {
             try
             {
-                var6 = var2.func_148688_b(this.field_148437_e.field_148812_a);
+                var6 = var2.func_148688_b(this.mcoServer.field_148812_a);
                 var3 = true;
             }
             catch (ExceptionRetryCall var10)
@@ -96,7 +97,7 @@ public class TaskOnlineConnect extends TaskLongRunning
 
         if (var7)
         {
-            this.func_148413_b().displayGuiScreen(new GuiScreenReamlsTOS(this.field_148435_f, this.field_148437_e));
+            this.func_148413_b().displayGuiScreen(new GuiScreenReamlsTOS(this.field_148435_f, this.mcoServer));
         }
         else if (!this.func_148418_c() && !var4)
         {
@@ -126,6 +127,7 @@ public class TaskOnlineConnect extends TaskLongRunning
 
     private void func_148432_a(final String p_148432_1_, final int p_148432_2_)
     {
+        WDL.mcos = this.mcoServer;
         (new Thread("MCO Connector #" + field_148439_a.incrementAndGet())
         {
             private static final String __OBFID = "CL_00000791";

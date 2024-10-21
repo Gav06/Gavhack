@@ -41,38 +41,38 @@ public class Gui
     /**
      * Draws a solid color rectangle with the specified coordinates and color. Args: x1, y1, x2, y2, color
      */
-    public static void drawRect(int par0, int par1, int par2, int par3, int par4)
+    public static void drawRect(int x1, int y1, int x2, int y2, int color)
     {
         int var5;
 
-        if (par0 < par2)
+        if (x1 < x2)
         {
-            var5 = par0;
-            par0 = par2;
-            par2 = var5;
+            var5 = x1;
+            x1 = x2;
+            x2 = var5;
         }
 
-        if (par1 < par3)
+        if (y1 < y2)
         {
-            var5 = par1;
-            par1 = par3;
-            par3 = var5;
+            var5 = y1;
+            y1 = y2;
+            y2 = var5;
         }
 
-        float var10 = (float)(par4 >> 24 & 255) / 255.0F;
-        float var6 = (float)(par4 >> 16 & 255) / 255.0F;
-        float var7 = (float)(par4 >> 8 & 255) / 255.0F;
-        float var8 = (float)(par4 & 255) / 255.0F;
+        float var10 = (float)(color >> 24 & 255) / 255.0F;
+        float var6 = (float)(color >> 16 & 255) / 255.0F;
+        float var7 = (float)(color >> 8 & 255) / 255.0F;
+        float var8 = (float)(color & 255) / 255.0F;
         Tessellator var9 = Tessellator.instance;
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glColor4f(var6, var7, var8, var10);
         var9.startDrawingQuads();
-        var9.addVertex((double)par0, (double)par3, 0.0D);
-        var9.addVertex((double)par2, (double)par3, 0.0D);
-        var9.addVertex((double)par2, (double)par1, 0.0D);
-        var9.addVertex((double)par0, (double)par1, 0.0D);
+        var9.addVertex((double)x1, (double)y2, 0.0D);
+        var9.addVertex((double)x2, (double)y2, 0.0D);
+        var9.addVertex((double)x2, (double)y1, 0.0D);
+        var9.addVertex((double)x1, (double)y1, 0.0D);
         var9.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
