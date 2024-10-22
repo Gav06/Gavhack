@@ -6,8 +6,10 @@ import me.gavin.gavhack.event.events.ClientTickEvent
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.ui.api.IComponent
 import net.minecraft.client.Minecraft
+import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.client.gui.GuiMainMenu
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.util.ResourceLocation
 
 object ClickGUI: GuiScreen() {
 
@@ -40,8 +42,10 @@ object ClickGUI: GuiScreen() {
     override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
         super.mouseClicked(mouseX, mouseY, button)
 
-        for (comp in components)
+        for (comp in components) {
             comp.onClick(mouseX, mouseY, button)
+            buttonClick()
+        }
     }
 
     override fun mouseMovedOrUp(mouseX: Int, mouseY: Int, button: Int) {
@@ -67,6 +71,12 @@ object ClickGUI: GuiScreen() {
     fun setGuiShouldOpen() {
         shouldOpenGui = true
     }
+
+    fun buttonClick() {
+        mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(ResourceLocation("gui.button.press"), 1.0f))
+    }
+
+
 
     init {
         EventBus.addListener(livingTick, PlayerLivingTickEvent::class)

@@ -146,7 +146,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
                 if (this.timeInPortal == 0.0F)
                 {
-                    this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("portal.trigger"), this.rand.nextFloat() * 0.4F + 0.8F));
+                    this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(new ResourceLocation("portal.trigger"), this.rand.nextFloat() * 0.4F + 0.8F));
                 }
 
                 this.timeInPortal += 0.0125F;

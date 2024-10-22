@@ -157,7 +157,7 @@ public class GuiScreenOptionsSounds extends GuiScreen
             }
         }
 
-        public void func_146113_a(SoundHandler p_146113_1_) {}
+        public void func_146113_a(SoundHandler soundHandler) {}
 
         public void mouseReleased(int p_146118_1_, int p_146118_2_)
         {
@@ -172,7 +172,7 @@ public class GuiScreenOptionsSounds extends GuiScreen
                     GuiScreenOptionsSounds.this.field_146506_g.getSoundLevel(this.field_146153_r);
                 }
 
-                GuiScreenOptionsSounds.this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                GuiScreenOptionsSounds.this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(new ResourceLocation("gui.button.press"), 1.0F));
             }
 
             this.field_146155_p = false;

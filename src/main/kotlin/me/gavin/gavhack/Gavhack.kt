@@ -9,6 +9,7 @@ import me.gavin.gavhack.ui.OverlayUI
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.awt.Color
+import kotlin.random.Random
 
 object Gavhack {
 
@@ -48,6 +49,19 @@ object Gavhack {
         log.info("Config initialized")
 
         log.info("Completed $NAME initialization in ${System.currentTimeMillis() - startTime}ms")
+
+        for (i in (1..10)) {
+            println(randomString())
+        }
     }
 
+    fun randomString(): String {
+        val len = (5..15).random()
+        val sb = StringBuilder()
+        for (i: Int in 0 until len) {
+            sb.append(i.toChar())
+        }
+
+        return sb.toString()
+    }
 }

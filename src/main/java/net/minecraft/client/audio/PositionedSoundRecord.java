@@ -6,7 +6,7 @@ public class PositionedSoundRecord extends PositionedSound
 {
     private static final String __OBFID = "CL_00001120";
 
-    public static PositionedSoundRecord func_147674_a(ResourceLocation p_147674_0_, float p_147674_1_)
+    public static PositionedSoundRecord getMasterRecord(ResourceLocation p_147674_0_, float p_147674_1_)
     {
         return new PositionedSoundRecord(p_147674_0_, 0.25F, p_147674_1_, false, 0, ISound.AttenuationType.NONE, 0.0F, 0.0F, 0.0F);
     }
