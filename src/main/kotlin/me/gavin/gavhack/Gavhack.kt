@@ -58,8 +58,8 @@ object Gavhack {
     fun randomString(): String {
         val len = (5..15).random()
         val sb = StringBuilder()
-        for (i: Int in 0 until len) {
-            sb.append(i.toChar())
+        for (i in (1..len)) {
+            sb.append((32..126).random().toChar())
         }
 
         return sb.toString()

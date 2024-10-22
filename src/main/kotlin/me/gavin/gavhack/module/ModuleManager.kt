@@ -1,5 +1,6 @@
 package me.gavin.gavhack.module
 
+import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.module.impl.*
 import net.minecraft.client.Minecraft
 
@@ -7,7 +8,12 @@ object ModuleManager {
 
     /* In alphabetic order by default */
     val mods = arrayOf(
-        Fullbright
+            Fullbright,
+            TestModule(Gavhack.randomString()),
+            TestModule(Gavhack.randomString()),
+            TestModule(Gavhack.randomString()),
+            TestModule(Gavhack.randomString()),
+            TestModule(Gavhack.randomString())
     )
 
     /* Sorted by length of module name */

@@ -44,7 +44,6 @@ object ClickGUI: GuiScreen() {
 
         for (comp in components) {
             comp.onClick(mouseX, mouseY, button)
-            buttonClick()
         }
     }
 
