@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation
 object ClickGUI: GuiScreen() {
 
     var previousGui: GuiScreen? = null
-    val components = ArrayList<IComponent>()
+    val windows = ArrayList<Window>()
 
     private var shouldOpenGui = false
 
@@ -35,14 +35,14 @@ object ClickGUI: GuiScreen() {
             fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, 2, -1)
         }
 
-        for (comp in components)
+        for (comp in windows)
             comp.onRender(mouseX, mouseY, partialTicks)
     }
 
     override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
         super.mouseClicked(mouseX, mouseY, button)
 
-        for (comp in components) {
+        for (comp in windows) {
             comp.onClick(mouseX, mouseY, button)
         }
     }
@@ -50,7 +50,7 @@ object ClickGUI: GuiScreen() {
     override fun mouseMovedOrUp(mouseX: Int, mouseY: Int, button: Int) {
         super.mouseMovedOrUp(mouseX, mouseY, button)
 
-        for (comp in components)
+        for (comp in windows)
             comp.onRelease(mouseX, mouseY, button)
     }
 
@@ -67,17 +67,16 @@ object ClickGUI: GuiScreen() {
     }
 
 
-
     init {
         EventBus.addListener(livingTick, PlayerLivingTickEvent::class)
 
-        var xOffset = 0
+        var yOffset = 0
         for (category in ModCategory.entries) {
             // We can pass 0 as height since it will automatically be resized anyway.
-            val window = Window(10 + xOffset, 10, 100, 0, category.title)
-            components.add(window)
-
-            xOffset += window.w + 10
+            val window = Window(5, 5 + yOffset, 100, 0, category.title)
+            window.open = false
+            windows.add(window)
+            yOffset += window.getTotalHeight() + 5
         }
     }
 }

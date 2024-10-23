@@ -6,7 +6,7 @@ abstract class Draggable(x: Int, y: Int, w: Int, h: Int) : Rect(x, y, w, h), ICo
     private var dragY: Int = 0
     private var dragging = false
     override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
-       if (isInside(mouseX, mouseY)) {
+       if (isInside(mouseX, mouseY) && button == 0) {
            dragging = true
            dragX = mouseX - x
            dragY = mouseY - y
