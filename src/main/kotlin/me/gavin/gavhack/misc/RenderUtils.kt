@@ -4,7 +4,7 @@ import net.minecraft.util.ResourceLocation
 
 object RenderUtils {
 
-    val TEX_ARROW = ResourceLocation("gavhack/arrow.png")
+    val TEX_TRIANGLE = ResourceLocation("gavhack/triangle.png")
 
 
 }
