@@ -153,7 +153,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.field_148300_d.getTextureManager().bindTexture(Gui.icons);
-        Gui.func_146110_a(p_148279_2_ + p_148279_4_ - 15, p_148279_3_, (float)(var16 * 10), (float)(176 + var17 * 8), 10, 8, 256.0F, 256.0F);
+        Gui.drawModalRectWithCustomSizedTexture(p_148279_2_ + p_148279_4_ - 15, p_148279_3_, (float)(var16 * 10), (float)(176 + var17 * 8), 10, 8, 256.0F, 256.0F);
 
         if (this.field_148301_e.func_147409_e() != null && !this.field_148301_e.func_147409_e().equals(this.field_148299_g))
         {
@@ -165,7 +165,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
         if (this.field_148305_h != null)
         {
             this.field_148300_d.getTextureManager().bindTexture(this.field_148306_i);
-            Gui.func_146110_a(p_148279_2_, p_148279_3_, 0.0F, 0.0F, 32, 32, 32.0F, 32.0F);
+            Gui.drawModalRectWithCustomSizedTexture(p_148279_2_, p_148279_3_, 0.0F, 0.0F, 32, 32, 32.0F, 32.0F);
         }
 
         int var20 = p_148279_7_ - p_148279_2_;

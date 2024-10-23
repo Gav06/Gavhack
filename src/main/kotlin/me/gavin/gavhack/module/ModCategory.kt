@@ -5,5 +5,6 @@ enum class ModCategory(val title: String) {
     MOVEMENT("Movement"),
     RENDER("Render"),
     WORLD("World"),
-    MISC("Misc.")
+    MISC("Misc."),
+    GUI("GUI")
 }

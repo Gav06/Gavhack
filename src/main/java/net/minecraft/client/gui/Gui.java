@@ -130,16 +130,16 @@ public class Gui
     /**
      * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
      */
-    public void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
+    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height)
     {
         float var7 = 0.00390625F;
         float var8 = 0.00390625F;
         Tessellator var9 = Tessellator.instance;
         var9.startDrawingQuads();
-        var9.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), (double)this.zLevel, (double)((float)(par3 + 0) * var7), (double)((float)(par4 + par6) * var8));
-        var9.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), (double)this.zLevel, (double)((float)(par3 + par5) * var7), (double)((float)(par4 + par6) * var8));
-        var9.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), (double)this.zLevel, (double)((float)(par3 + par5) * var7), (double)((float)(par4 + 0) * var8));
-        var9.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)((float)(par3 + 0) * var7), (double)((float)(par4 + 0) * var8));
+        var9.addVertexWithUV((double)(x), (double)(y + height), (double)this.zLevel, (double)((float)(u) * var7), (double)((float)(v + height) * var8));
+        var9.addVertexWithUV((double)(x + width), (double)(y + height), (double)this.zLevel, (double)((float)(u + width) * var7), (double)((float)(v + height) * var8));
+        var9.addVertexWithUV((double)(x + width), (double)(y), (double)this.zLevel, (double)((float)(u + width) * var7), (double)((float)(v + 0) * var8));
+        var9.addVertexWithUV((double)(x), (double)(y), (double)this.zLevel, (double)((float)(u) * var7), (double)((float)(v + 0) * var8));
         var9.draw();
     }
 
@@ -154,16 +154,16 @@ public class Gui
         var6.draw();
     }
 
-    public static void func_146110_a(int p_146110_0_, int p_146110_1_, float p_146110_2_, float p_146110_3_, int p_146110_4_, int p_146110_5_, float p_146110_6_, float p_146110_7_)
+    public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float texWidth, float texHeight)
     {
-        float var8 = 1.0F / p_146110_6_;
-        float var9 = 1.0F / p_146110_7_;
+        float var8 = 1.0F / texWidth;
+        float var9 = 1.0F / texHeight;
         Tessellator var10 = Tessellator.instance;
         var10.startDrawingQuads();
-        var10.addVertexWithUV((double)p_146110_0_, (double)(p_146110_1_ + p_146110_5_), 0.0D, (double)(p_146110_2_ * var8), (double)((p_146110_3_ + (float)p_146110_5_) * var9));
-        var10.addVertexWithUV((double)(p_146110_0_ + p_146110_4_), (double)(p_146110_1_ + p_146110_5_), 0.0D, (double)((p_146110_2_ + (float)p_146110_4_) * var8), (double)((p_146110_3_ + (float)p_146110_5_) * var9));
-        var10.addVertexWithUV((double)(p_146110_0_ + p_146110_4_), (double)p_146110_1_, 0.0D, (double)((p_146110_2_ + (float)p_146110_4_) * var8), (double)(p_146110_3_ * var9));
-        var10.addVertexWithUV((double)p_146110_0_, (double)p_146110_1_, 0.0D, (double)(p_146110_2_ * var8), (double)(p_146110_3_ * var9));
+        var10.addVertexWithUV((double)x, (double)(y + height), 0.0D, (double)(u * var8), (double)((v + (float)height) * var9));
+        var10.addVertexWithUV((double)(x + width), (double)(y + height), 0.0D, (double)((u + (float)width) * var8), (double)((v + (float)height) * var9));
+        var10.addVertexWithUV((double)(x + width), (double)y, 0.0D, (double)((u + (float)width) * var8), (double)(v * var9));
+        var10.addVertexWithUV((double)x, (double)y, 0.0D, (double)(u * var8), (double)(v * var9));
         var10.draw();
     }
 }

@@ -8,20 +8,20 @@ public class ResourceLocation
     private final String resourcePath;
     private static final String __OBFID = "CL_00001082";
 
-    public ResourceLocation(String par1Str, String par2Str)
+    public ResourceLocation(String domain, String path)
     {
-        Validate.notNull(par2Str);
+        Validate.notNull(path);
 
-        if (par1Str != null && par1Str.length() != 0)
+        if (domain != null && !domain.isEmpty())
         {
-            this.resourceDomain = par1Str;
+            this.resourceDomain = domain;
         }
         else
         {
             this.resourceDomain = "minecraft";
         }
 
-        this.resourcePath = par2Str;
+        this.resourcePath = path;
     }
 
     public ResourceLocation(String par1Str)

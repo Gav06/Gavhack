@@ -43,7 +43,7 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
             par1ResourceLocation = RandomMobs.getTextureLocation(par1ResourceLocation);
         }
 
-        Object var2 = (ITextureObject)this.mapTextureObjects.get(par1ResourceLocation);
+        Object var2 = this.mapTextureObjects.get(par1ResourceLocation);
 
         if (var2 == null)
         {

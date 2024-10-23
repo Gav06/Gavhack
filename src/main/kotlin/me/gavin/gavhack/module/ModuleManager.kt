@@ -7,16 +7,11 @@ import net.minecraft.client.Minecraft
 object ModuleManager {
 
     /* In alphabetic order by default */
-    val mods = arrayOf(
-            Fullbright,
-            TestModule(Gavhack.randomString()),
-            TestModule(Gavhack.randomString()),
-            TestModule(Gavhack.randomString()),
-            TestModule(Gavhack.randomString()),
-            TestModule(Gavhack.randomString()),
-            TestModule(Gavhack.randomString()),
-            TestModule(Gavhack.randomString()),
-            TestModule(Gavhack.randomString())
+    val mods : Array<Module> = arrayOf(
+        Fullbright,
+        GuiModule,
+        HudModule,
+        ConsoleModule
     )
 
     /* Sorted by length of module name */
