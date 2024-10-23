@@ -13,6 +13,9 @@ object ModuleManager {
             TestModule(Gavhack.randomString()),
             TestModule(Gavhack.randomString()),
             TestModule(Gavhack.randomString()),
+            TestModule(Gavhack.randomString()),
+            TestModule(Gavhack.randomString()),
+            TestModule(Gavhack.randomString()),
             TestModule(Gavhack.randomString())
     )
 
@@ -28,6 +31,7 @@ object ModuleManager {
         mods.sortBy { it.name }
 
         val font = Minecraft.getMinecraft().fontRenderer
-        modsSorted.sortBy { font.getStringWidth(it.name) }
+        // Using the negative value so that our array is from longest to shortest
+        modsSorted.sortBy { -font.getStringWidth(it.name) }
     }
 }

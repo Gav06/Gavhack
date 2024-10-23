@@ -1,6 +1,11 @@
-package me.gavin.gavhack.ui.api
+package me.gavin.gavhack.ui
 
-class Window(x: Int, y: Int, w: Int, h: Int, var title: String, val closeable: Boolean = false): Rect(x, y, w, h), IComponent {
+import me.gavin.gavhack.ui.api.IComponent
+import me.gavin.gavhack.ui.api.Rect
+import net.minecraft.client.gui.Gui
+
+class Window(x: Int, y: Int, w: Int, h: Int, var title: String, val closeable: Boolean = false): Rect(x, y, w, h),
+    IComponent {
 
     private val defaultHandleHeight = 12
     private val handle = WindowHandle(x, y, w, defaultHandleHeight, this)
@@ -14,8 +19,11 @@ class Window(x: Int, y: Int, w: Int, h: Int, var title: String, val closeable: B
     }
 
     override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        handle.onRender(mouseX, mouseY, partialTicks)
+        handle.updateDragPosition(mouseX, mouseY)
         this.setPos(handle.x, handle.y)
+
+        Gui.drawRect(left() - 1, top() - 1, right() + 1, bottom() + 1, 0xAA000000.toInt())
+        handle.onRender(mouseX, mouseY, partialTicks)
     }
 
     override fun keyTyped(keyChar: Char, keyCode: Int) {

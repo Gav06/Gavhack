@@ -19,16 +19,17 @@ abstract class Draggable(x: Int, y: Int, w: Int, h: Int) : Rect(x, y, w, h), ICo
         }
     }
 
-    override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        if (dragging) {
-            setPos(mouseX - dragX, mouseY - dragY)
-        }
-    }
-
     /* Empty declaration because this isn't necessary for all child classes to implement */
     override fun keyTyped(keyChar: Char, keyCode: Int) { }
 
     fun isDragging() : Boolean {
         return dragging
+    }
+
+    // Must be called each frame to keep things moving properly
+    fun updateDragPosition(mouseX: Int, mouseY: Int) {
+        if (dragging) {
+            setPos(mouseX - dragX, mouseY - dragY)
+        }
     }
 }

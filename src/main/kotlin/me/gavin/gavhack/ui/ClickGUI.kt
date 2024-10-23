@@ -4,10 +4,10 @@ import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ClientTickEvent
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
+import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.ui.api.IComponent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
-import net.minecraft.client.gui.GuiMainMenu
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.util.ResourceLocation
 
@@ -31,7 +31,7 @@ object ClickGUI: GuiScreen() {
         drawDefaultBackground()
         super.drawScreen(mouseX, mouseY, partialTicks)
 
-        if (previousGui != null) {
+        if (mc.theWorld == null) {
             fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, 2, -1)
         }
 
@@ -54,15 +54,6 @@ object ClickGUI: GuiScreen() {
             comp.onRelease(mouseX, mouseY, button)
     }
 
-    override fun keyTyped(par1: Char, par2: Int) {
-        if (previousGui != null && previousGui is GuiMainMenu) {
-            mc.displayGuiScreen(previousGui)
-            previousGui = null
-        } else {
-            super.keyTyped(par1, par2)
-        }
-    }
-
     override fun doesGuiPauseGame(): Boolean {
         return false
     }
@@ -80,6 +71,13 @@ object ClickGUI: GuiScreen() {
     init {
         EventBus.addListener(livingTick, PlayerLivingTickEvent::class)
 
-        components.add(TestComponent(10, 10, 100, 100))
+        var xOffset = 0
+        for (category in ModCategory.entries) {
+            // We can pass 0 as height since it will automatically be resized anyway.
+            val window = Window(10 + xOffset, 10, 100, 0, category.title)
+            components.add(window)
+
+            xOffset += window.w + 10
+        }
     }
 }

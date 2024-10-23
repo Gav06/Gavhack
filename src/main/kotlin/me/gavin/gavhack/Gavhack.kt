@@ -50,11 +50,9 @@ object Gavhack {
 
         log.info("Completed $NAME initialization in ${System.currentTimeMillis() - startTime}ms")
 
-        for (i in (1..10)) {
-            println(randomString())
-        }
     }
 
+    // function just for making test module names and stuff
     fun randomString(): String {
         val len = (5..15).random()
         val sb = StringBuilder()

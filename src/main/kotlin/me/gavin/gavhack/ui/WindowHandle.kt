@@ -1,7 +1,10 @@
-package me.gavin.gavhack.ui.api
+package me.gavin.gavhack.ui
 
+import me.gavin.gavhack.Gavhack
+import me.gavin.gavhack.ui.api.Draggable
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
+
 
 class WindowHandle(x: Int, y: Int, w: Int, h: Int, val parent: Window): Draggable(x, y, w, h) {
 
@@ -12,12 +15,11 @@ class WindowHandle(x: Int, y: Int, w: Int, h: Int, val parent: Window): Draggabl
     }
 
     override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        super.onRender(mouseX, mouseY, partialTicks)
-
-        Gui.drawRect(left(), top(), right(), bottom(), 0xAA000000.toInt())
+//        Gui.drawRect(left(), top(), right(), bottom(), )
         val font = Minecraft.getMinecraft().fontRenderer
         font.drawStringWithShadow(parent.title,
-            w /2 - font.getStringWidth(parent.title) / 2,
-            h / 2 - font.FONT_HEIGHT / 2, -1)
+            x + (w /2) - (font.getStringWidth(parent.title) / 2),
+            y + (h / 2) - (font.FONT_HEIGHT / 2), -1)
+
     }
 }
