@@ -1,13 +1,14 @@
 package me.gavin.gavhack.ui
 
+import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.ui.api.IComponent
 import me.gavin.gavhack.ui.api.Rect
 import net.minecraft.client.gui.Gui
 
-class Window(x: Int, y: Int, w: Int, h: Int, var title: String, val closeable: Boolean = false): Rect(x, y, w, h),
+class Window(x: Int, y: Int, w: Int, h: Int, var title: String, val category: ModCategory, val closeable: Boolean = false): Rect(x, y, w, h),
     IComponent {
 
-    private val defaultHandleHeight = 12
+    private val defaultHandleHeight = 20
 
     val handle = WindowHandle(x, y, w, defaultHandleHeight, this)
     var open = false

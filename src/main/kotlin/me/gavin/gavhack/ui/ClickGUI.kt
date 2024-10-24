@@ -70,13 +70,13 @@ object ClickGUI: GuiScreen() {
     init {
         EventBus.addListener(livingTick, PlayerLivingTickEvent::class)
 
-        var yOffset = 0
+        var xOffset = 0
         for (category in ModCategory.entries) {
             // We can pass 0 as height since it will automatically be resized anyway.
-            val window = Window(5, 5 + yOffset, 100, 0, category.title)
+            val window = Window(4 + xOffset, 4, 100, 0, category.title, category)
             window.open = false
             windows.add(window)
-            yOffset += window.getTotalHeight() + 5
+            xOffset += window.w + 4
         }
     }
 }

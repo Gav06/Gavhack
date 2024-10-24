@@ -14,7 +14,7 @@ abstract class Draggable(x: Int, y: Int, w: Int, h: Int) : Rect(x, y, w, h), ICo
     }
 
     override fun onRelease(mouseX: Int, mouseY: Int, button: Int) {
-        if (dragging) {
+        if (dragging && button == 0) {
             dragging = false
         }
     }
