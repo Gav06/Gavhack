@@ -41,18 +41,18 @@ class WindowHandle(x: Int, y: Int, w: Int, h: Int, val parent: Window): Draggabl
         val easeIn = 1 - cos((mutatedVal * Math.PI) / 2);
 
         Gui.drawRect(left(), bottom() - 1, (left() + (w * easeIn)).toInt(), bottom(), Gavhack.colorScheme.rgb)
-        val font = Minecraft.getMinecraft().fontRenderer
-        font.drawStringWithShadow(parent.title,
+        val font = getFont()
+        font.drawString(parent.title,
                 x + (w / 2) - (font.getStringWidth(parent.title) / 2),
                 y + (h / 2) - (font.FONT_HEIGHT / 2), -1)
 
-        GL11.glPushMatrix()
-        Minecraft.getMinecraft().textureManager.bindTexture(categoryIcon)
-        Gui.drawModalRectWithCustomSizedTexture(
-                x, y,
-                0.0f, 0.0f,
-                h, h,
-                h.toFloat(), h.toFloat())
-        GL11.glPopMatrix()
+//        GL11.glPushMatrix()
+//        Minecraft.getMinecraft().textureManager.bindTexture(categoryIcon)
+//        Gui.drawModalRectWithCustomSizedTexture(
+//                x, y,
+//                0.0f, 0.0f,
+//                h, h,
+//                h.toFloat(), h.toFloat())
+//        GL11.glPopMatrix()
     }
 }

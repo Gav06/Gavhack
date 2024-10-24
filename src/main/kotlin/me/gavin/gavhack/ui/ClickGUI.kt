@@ -5,6 +5,7 @@ import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ClientTickEvent
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.module.ModCategory
+import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.ui.api.IComponent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
@@ -74,7 +75,11 @@ object ClickGUI: GuiScreen() {
         for (category in ModCategory.entries) {
             // We can pass 0 as height since it will automatically be resized anyway.
             val window = Window(4 + xOffset, 4, 100, 0, category.title, category)
-            window.open = false
+            window.open = true
+            for (module in ModuleManager.getCategoryMods(category)) {
+                window.components.add(WindowButton(module, 0, 0, window.w, window.handle.h - 2))
+            }
+
             windows.add(window)
             xOffset += window.w + 4
         }

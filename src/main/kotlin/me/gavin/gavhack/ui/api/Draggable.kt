@@ -1,6 +1,6 @@
 package me.gavin.gavhack.ui.api
 
-abstract class Draggable(x: Int, y: Int, w: Int, h: Int) : Rect(x, y, w, h), IComponent {
+abstract class Draggable(x: Int, y: Int, w: Int, h: Int) : GuiComponent(x, y, w, h) {
 
     private var dragX: Int = 0
     private var dragY: Int = 0
