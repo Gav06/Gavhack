@@ -9,7 +9,7 @@ abstract class Module(val name: String, val desc: String?, val category: ModCate
 
     val settings = ArrayList<ModSetting>()
 
-    protected val mc = Minecraft.getMinecraft()
+    protected val mc: Minecraft = Minecraft.getMinecraft()
 
     private var enabled = false
 
