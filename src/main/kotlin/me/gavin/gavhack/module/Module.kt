@@ -2,9 +2,12 @@ package me.gavin.gavhack.module
 
 import com.google.gson.JsonObject
 import me.gavin.gavhack.config.IConfigurable
+import me.gavin.gavhack.module.setting.ModSetting
 import net.minecraft.client.Minecraft
 
 abstract class Module(val name: String, val desc: String?, val category: ModCategory): IConfigurable {
+
+    val settings = ArrayList<ModSetting>()
 
     protected val mc = Minecraft.getMinecraft()
 

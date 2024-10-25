@@ -3,9 +3,12 @@ package me.gavin.gavhack.ui
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
+import me.gavin.gavhack.event.events.KeyPressEvent
 import me.gavin.gavhack.event.events.RenderOverlayEvent
 import me.gavin.gavhack.module.ModuleManager
+import me.gavin.gavhack.module.setting.EnumSetting
 import net.minecraft.client.Minecraft
+import org.lwjgl.input.Keyboard
 
 object OverlayUI {
 
@@ -26,6 +29,7 @@ object OverlayUI {
             it.font.drawString(mod.name, 2, yOffset, -1)
             yOffset += it.font.FONT_HEIGHT + 1
         }
+
     }
 
     init {
