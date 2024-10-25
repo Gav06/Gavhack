@@ -29,7 +29,7 @@ object ClickGUI: GuiScreen() {
     }
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        drawDefaultBackground()
+//        drawDefaultBackground()
         super.drawScreen(mouseX, mouseY, partialTicks)
 
         if (mc.theWorld == null) {

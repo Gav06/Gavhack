@@ -1,10 +1,13 @@
 package me.gavin.gavhack.ui
 
+import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.ui.api.GuiComponent
-import me.gavin.gavhack.ui.api.IComponent
-import me.gavin.gavhack.ui.api.Rect
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
+import net.minecraft.client.gui.ScaledResolution
+import org.lwjgl.opengl.GL11
+import kotlin.math.roundToInt
 
 class Window(x: Int, y: Int, w: Int, h: Int,
              var title: String,
@@ -19,6 +22,12 @@ class Window(x: Int, y: Int, w: Int, h: Int,
 
     override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
         handle.onClick(mouseX, mouseY, button)
+
+        if (open) {
+            for (comp in components) {
+                comp.onClick(mouseX, mouseY, button)
+            }
+        }
     }
 
     override fun onRelease(mouseX: Int, mouseY: Int, button: Int) {
@@ -31,29 +40,45 @@ class Window(x: Int, y: Int, w: Int, h: Int,
         this.setSize(this.w, handle.h)
 
 
-        var fullHeight = h
-        if (open) {
-            components.forEach {
-                fullHeight += it.getRenderHeight() + 1
+        var additionalHeight = 0
+        components.forEach {
+            additionalHeight += it.getRenderHeight() + 1
+        }
+
+        val res = ScaledResolution(
+                Minecraft.getMinecraft().gameSettings,
+                Minecraft.getMinecraft().displayWidth,
+                Minecraft.getMinecraft().displayHeight
+
+        )
+
+        val easeValue = handle.getEasingValue()
+        val scissorY2 = bottom() + 1 + (additionalHeight * easeValue)
+
+        if (easeValue == 0f)
+            additionalHeight = 0
+
+        GL11.glPushMatrix()
+        GL11.glEnable(GL11.GL_SCISSOR_TEST)
+        RenderUtils.scissorBox(left() - 1, top() - 1, right() + 1, scissorY2.roundToInt(), res)
+        Gui.drawRect(left() - 1, top() - 1, right() + 1, bottom() + 1 + additionalHeight, 0x80000000.toInt())
+        handle.onRender(mouseX, mouseY, partialTicks)
+
+
+        if (open || easeValue != 0f) {
+            var yOffset = this.h + 1
+            for (comp in components) {
+                comp.setPos(this.x, this.y + yOffset)
+                comp.onRender(mouseX, mouseY, partialTicks)
+                yOffset += comp.getRenderHeight() + 1
             }
         }
 
-        Gui.drawRect(left() - 1, top() - 1, right() + 1, y + fullHeight + 1, 0x80000000.toInt())
-        handle.onRender(mouseX, mouseY, partialTicks)
-
-        if (!open)
-            return
-
-        var yOffset = this.h + 1
-        for (comp in components) {
-            comp.setPos(this.x, this.y + yOffset)
-            comp.onRender(mouseX, mouseY, partialTicks)
-            yOffset += comp.getRenderHeight() + 1
-        }
+        GL11.glDisable(GL11.GL_SCISSOR_TEST)
+        GL11.glPopMatrix()
     }
 
     override fun keyTyped(keyChar: Char, keyCode: Int) {
         handle.keyTyped(keyChar, keyCode)
     }
-
 }
