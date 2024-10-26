@@ -35,4 +35,16 @@ object MacroManager: IConfigurable {
     override fun fromJsonObj(json: JsonObject) {
         TODO("Not yet implemented")
     }
+
+    fun searchByCommand(command: String) : Macro? {
+        var macro: Macro? = null
+        for (m in macros) {
+            if (m.command.equals(command, true)) {
+                macro = m
+                break
+            }
+        }
+
+        return macro
+    }
 }
