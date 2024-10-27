@@ -16,7 +16,7 @@ object ModuleManager {
         HudModule,
         ConsoleModule,
 //        TestModule("Test Module")
-        
+
     )
 
     /* Sorted by length of module name */

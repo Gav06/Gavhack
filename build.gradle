@@ -40,6 +40,15 @@ tasks.withType(KotlinJvmCompile).configureEach {
 	it.compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+	setArchiveClassifier('sources')
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives sourcesJar
+}
+
 
 jar {
 	from {
