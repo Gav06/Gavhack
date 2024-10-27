@@ -2,6 +2,7 @@ package me.gavin.gavhack.ui
 
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.misc.MathUtils
+import me.gavin.gavhack.misc.Utils
 import me.gavin.gavhack.ui.api.Draggable
 import net.minecraft.client.gui.Gui
 import net.minecraft.util.ResourceLocation
@@ -10,13 +11,8 @@ import kotlin.math.cos
 
 class WindowHandle(x: Int, y: Int, w: Int, h: Int, val parent: Window): Draggable(x, y, w, h) {
 
+    // Maybe use this one day
     val categoryIcon = ResourceLocation(parent.category.iconPath)
-
-    init {
-        if (parent.closeable) {
-            TODO("Implement closable windows later lol")
-        }
-    }
 
     override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
         super.onClick(mouseX, mouseY, button)
@@ -30,7 +26,8 @@ class WindowHandle(x: Int, y: Int, w: Int, h: Int, val parent: Window): Draggabl
 
 
     // public because it needs to be set from our window handle
-    var openAnimTime = 0L
+    private var openAnimTime = 0L
+
     override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) {
 
         val easeIn = getEasingValue()
@@ -46,11 +43,13 @@ class WindowHandle(x: Int, y: Int, w: Int, h: Int, val parent: Window): Draggabl
                 y + (h / 2) - (font.FONT_HEIGHT / 2), -1)
     }
 
+    // This is the value used for animating the open/closing of the gui
     fun getEasingValue(): Float {
         val timeMs = (System.currentTimeMillis() - openAnimTime).toFloat()
         val animationProgress = MathUtils.clampf(MathUtils.normalizef(timeMs, 0f, 300f), 0f, 1f)
+        // We do this so it works when opening and closing
         val mutatedVal = if (parent.open) animationProgress else 1.0f - animationProgress
 
-        return 1f - cos((mutatedVal * Math.PI) / 2f).toFloat()
+        return Utils.easeInSine(mutatedVal)
     }
 }

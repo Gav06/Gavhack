@@ -56,6 +56,13 @@ object ClickGUI: GuiScreen() {
             comp.onRelease(mouseX, mouseY, button)
     }
 
+    override fun keyTyped(keyChar: Char, keyCode: Int) {
+        super.keyTyped(keyChar, keyCode)
+
+        for (comp in windows)
+            comp.keyTyped(keyChar, keyCode)
+    }
+
     override fun doesGuiPauseGame(): Boolean {
         return false
     }

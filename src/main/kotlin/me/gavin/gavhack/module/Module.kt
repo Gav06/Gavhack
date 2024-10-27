@@ -5,7 +5,12 @@ import me.gavin.gavhack.config.IConfigurable
 import me.gavin.gavhack.module.setting.ModSetting
 import net.minecraft.client.Minecraft
 
-abstract class Module(val name: String, val desc: String?, val category: ModCategory): IConfigurable {
+abstract class Module(
+    val name: String,
+    val desc: String?,
+    val category: ModCategory,
+    var bind: Int = 0
+): IConfigurable {
 
     val settings = ArrayList<ModSetting>()
 

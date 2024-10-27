@@ -80,5 +80,8 @@ class Window(x: Int, y: Int, w: Int, h: Int,
 
     override fun keyTyped(keyChar: Char, keyCode: Int) {
         handle.keyTyped(keyChar, keyCode)
+        if (open) {
+            components.forEach { it.keyTyped(keyChar, keyCode) }
+        }
     }
 }

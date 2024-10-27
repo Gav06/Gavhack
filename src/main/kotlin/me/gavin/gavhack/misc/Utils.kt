@@ -10,6 +10,7 @@ import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 import java.nio.charset.StandardCharsets
+import kotlin.math.cos
 
 object Utils {
 
@@ -58,4 +59,5 @@ object Utils {
         }
     }
 
+    fun easeInSine(x: Float) : Float = 1f - cos((x * Math.PI) / 2f).toFloat()
 }

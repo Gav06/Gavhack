@@ -18,7 +18,7 @@ object OverlayUI {
         if (mc.gameSettings.showDebugInfo)
             return@Listener
 
-        it.font.drawStringWithShadow("${Gavhack.NAME} ${Gavhack.VERSION_STRING}",
+        it.font.drawString("${Gavhack.NAME} ${Gavhack.VERSION_STRING}",
                 2, 2, Gavhack.colorScheme.rgb)
 
         var yOffset = 12
