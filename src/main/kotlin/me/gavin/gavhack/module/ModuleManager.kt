@@ -15,8 +15,7 @@ object ModuleManager {
         GuiModule,
         HudModule,
         ConsoleModule,
-//        TestModule("Test Module")
-
+        KillAura
     )
 
     /* Sorted by length of module name */
@@ -26,7 +25,7 @@ object ModuleManager {
         mods.forEach { mod -> if (mod.bind == it.key && it.key != 0) mod.toggle() }
     }
 
-    fun getCategoryMods(category: ModCategory) : List<Module> {
+    fun getCategoryMods(category: ModCategory): List<Module> {
         return mods.filter { it.category == category }.toList()
     }
 

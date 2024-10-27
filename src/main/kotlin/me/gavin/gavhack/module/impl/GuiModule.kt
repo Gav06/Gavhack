@@ -9,6 +9,7 @@ import org.lwjgl.input.Keyboard
 object GuiModule: Module("ClickGUI", "Configure the ClickGUI", ModCategory.GUI, Keyboard.KEY_RSHIFT) {
 
     val drawBackground = addSetting(ToggleSetting("Background", true))
+    val drawDesc = addSetting(ToggleSetting("Descriptions", true))
 
     override fun onEnable() {
         mc.displayGuiScreen(ClickGUI)

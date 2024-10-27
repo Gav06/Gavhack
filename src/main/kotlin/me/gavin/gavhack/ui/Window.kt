@@ -18,7 +18,7 @@ class Window(x: Int, y: Int, w: Int, h: Int,
 
     val handle = WindowHandle(x, y, w, defaultHandleHeight, this)
     val components = ArrayList<GuiComponent>()
-    var open = false
+    var open = true
 
     override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
         handle.onClick(mouseX, mouseY, button)
@@ -67,6 +67,8 @@ class Window(x: Int, y: Int, w: Int, h: Int,
         GL11.glPushMatrix()
         GL11.glEnable(GL11.GL_SCISSOR_TEST)
         RenderUtils.scissorBox(left() - 1, top() - 1, right() + 1, scissorY2.roundToInt(), res)
+
+
         Gui.drawRect(left() - 1, top() - 1, right() + 1, bottom() + 1 + additionalHeight, 0x80000000.toInt())
         handle.onRender(mouseX, mouseY, partialTicks)
 

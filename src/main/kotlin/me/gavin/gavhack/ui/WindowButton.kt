@@ -58,25 +58,25 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
 
         if (open && getEasingValue() == 1f) {
             /*
-            // save previous scissor box
-            val res = ScaledResolution(
-            Minecraft.getMinecraft().gameSettings,
-            Minecraft.getMinecraft().displayWidth,
-            Minecraft.getMinecraft().displayHeight
-            )
+                // save previous scissor box
+                val res = ScaledResolution(
+                Minecraft.getMinecraft().gameSettings,
+                Minecraft.getMinecraft().displayWidth,
+                Minecraft.getMinecraft().displayHeight
+                )
 
-            val intBuf = BufferUtils.createIntBuffer(16)
-            val on = GL11.glIsEnabled(GL11.GL_SCISSOR_TEST)
-            GL11.glGetInteger(GL11.GL_SCISSOR_BOX, intBuf)
+                val intBuf = BufferUtils.createIntBuffer(16)
+                val on = GL11.glIsEnabled(GL11.GL_SCISSOR_TEST)
+                GL11.glGetInteger(GL11.GL_SCISSOR_BOX, intBuf)
 
-            GL11.glEnable(GL11.GL_SCISSOR_TEST)
-            RenderUtils.scissorBox(
-                left(),
-                top(),
-                right(),
-                bottom() + (getComponentsHeight() * getEasingValue()).roundToInt(),
-                res
-            )
+                GL11.glEnable(GL11.GL_SCISSOR_TEST)
+                RenderUtils.scissorBox(
+                    left(),
+                    top(),
+                    right(),
+                    bottom() + (getComponentsHeight() * getEasingValue()).roundToInt(),
+                    res
+                )
              */
 
             var yOffset = 1
@@ -88,11 +88,11 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
             }
 
             /*
-            // restore our previous scissor box (openGL scissor boxes are a pain to do multiple)
-            GL11.glScissor(intBuf.get(), intBuf.get(), intBuf.get(), intBuf.get())
+                // restore our previous scissor box (openGL scissor boxes are a pain to do multiple)
+                GL11.glScissor(intBuf.get(), intBuf.get(), intBuf.get(), intBuf.get())
 
-            if (!on)
-                GL11.glDisable(GL11.GL_SCISSOR_TEST)
+                if (!on)
+                    GL11.glDisable(GL11.GL_SCISSOR_TEST)
              */
         }
     }
@@ -123,7 +123,7 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
         }
     }
 
-    private fun getComponentsHeight() : Int {
+    private fun getComponentsHeight(): Int {
         var h = 0
         for (comp in subComponents) {
             h += 1 + comp.getRenderHeight()

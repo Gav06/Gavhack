@@ -35,14 +35,12 @@ object ClickGUI: GuiScreen() {
         if (mc.theWorld == null)
             drawDefaultBackground()
         else if (GuiModule.drawBackground.value)
-            drawRect(0, 0, width, height, 0x40aaaaaa)
-
+            drawRect(0, 0, width, height, 0xa0686868.toInt())
 
         super.drawScreen(mouseX, mouseY, partialTicks)
 
-
         if (mc.theWorld == null) {
-            fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, 2, -1)
+            fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, height - 11, -1)
         }
 
         for (comp in windows)
@@ -91,18 +89,16 @@ object ClickGUI: GuiScreen() {
         for (category in ModCategory.entries) {
             // We can pass 0 as height since it will automatically be resized anyway.
             val window = Window(4 + xOffset, 4, 100, 0, category.title, category)
-            window.open = true
+
             for (module in ModuleManager.getCategoryMods(category)) {
                 val button = WindowButton(module, 0, 0, window.w, window.handle.h - 2)
 
                 for (setting in module.settings) {
                     // add setting components
-                    if (setting is ToggleSetting) {
-                        button.subComponents.add(BooleanComponent(setting, button.w, button.h))
-                    } else if (setting is FloatSetting) {
-                        button.subComponents.add(FloatComponent(setting, button.w, button.h))
-                    } else if (setting is EnumSetting<*>) {
-                        button.subComponents.add(EnumComponent(setting, button.w, button.h))
+                    when (setting) {
+                        is ToggleSetting -> button.subComponents.add(BooleanComponent(setting, button.w, button.h))
+                        is FloatSetting -> button.subComponents.add(FloatComponent(setting, button.w, button.h))
+                        is EnumSetting<*> -> button.subComponents.add(EnumComponent(setting, button.w, button.h))
                     }
                 }
 
