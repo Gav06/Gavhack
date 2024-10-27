@@ -2,14 +2,10 @@ package me.gavin.gavhack
 
 import me.gavin.gavhack.command.CommandManager
 import me.gavin.gavhack.config.ConfigManager
-import me.gavin.gavhack.event.EventBus
-import me.gavin.gavhack.event.Listener
-import me.gavin.gavhack.event.events.PacketReadEvent
 import me.gavin.gavhack.macro.MacroManager
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.ui.ClickGUI
 import me.gavin.gavhack.ui.OverlayUI
-import net.minecraft.network.play.server.S29PacketSoundEffect
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.awt.Color

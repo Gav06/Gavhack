@@ -14,7 +14,9 @@ object ModuleManager {
         Fullbright,
         GuiModule,
         HudModule,
-        ConsoleModule
+        ConsoleModule,
+//        TestModule("Test Module")
+        
     )
 
     /* Sorted by length of module name */

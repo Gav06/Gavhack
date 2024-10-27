@@ -1,0 +1,58 @@
+package me.gavin.gavhack.ui
+
+import me.gavin.gavhack.Gavhack
+import me.gavin.gavhack.misc.MathUtils
+import me.gavin.gavhack.module.setting.FloatSetting
+import me.gavin.gavhack.ui.api.GuiComponent
+import net.minecraft.client.gui.Gui
+
+// Slider!!!
+class FloatComponent(val setting: FloatSetting, w: Int, h: Int) : GuiComponent(0, 0, w, h){
+
+    private var draggingSlider = false
+    private var sliderWidth = 0
+
+    override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
+        if (isInside(mouseX, mouseY) && button == 0) {
+            draggingSlider = true
+            ClickGUI.buttonClick()
+        }
+    }
+
+    override fun onRelease(mouseX: Int, mouseY: Int, button: Int) {
+        if (draggingSlider && button == 0) {
+            draggingSlider = false
+        }
+    }
+
+    override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) {
+        updateSlider(mouseX)
+
+        if (isInside(mouseX, mouseY)) {
+            Gui.drawRect(left(), top(), right(), bottom(), 0x20ffffff)
+        }
+
+        Gui.drawRect(left(), bottom() - 1, left() + sliderWidth, bottom(), Gavhack.colorScheme.rgb)
+        getFont().drawString("${setting.name}: ${setting.getValue()}",
+            x + 2, y + (h / 2) - (getFont().FONT_HEIGHT / 2), -1)
+    }
+
+    override fun keyTyped(keyChar: Char, keyCode: Int) { }
+
+    private fun updateSlider(mouseX: Int) {
+        val diff = MathUtils.clampi(mouseX - x, 0, w)
+        val min = setting.minValue
+        val max = setting.maxValue
+        val normal = MathUtils.normalizef(diff.toFloat(), 0f, w.toFloat())
+        sliderWidth = (w * (setting.getValue() - min) / (max - min)).toInt()
+        if (draggingSlider) {
+            if (diff == 0) {
+                setting.setValue(setting.minValue)
+            } else {
+                val value = ((max - min) * normal) + min
+                val round = MathUtils.roundToPlacef(value, 1)
+                setting.setValue(round)
+            }
+        }
+    }
+}

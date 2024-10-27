@@ -42,7 +42,7 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
     }
 
     override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) {
-        Gui.drawRect(left(), top(), right(), bottom(), 0x60000000)
+        Gui.drawRect(left(), top(), right(), bottom(), 0x50000000)
 
         if (isInside(mouseX, mouseY)) {
             Gui.drawRect(left(), top(), right(), bottom(), 0x20ffffff)

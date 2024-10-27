@@ -47,4 +47,9 @@ abstract class Module(
     override fun fromJsonObj(json: JsonObject) {
         TODO("Not yet implemented")
     }
+
+    protected fun <T : ModSetting> addSetting(setting: T) : T{
+        this.settings.add(setting)
+        return setting
+    }
 }

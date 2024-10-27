@@ -6,7 +6,8 @@ class FloatSetting(
     name: String,
     val defaultValue: Float,
     val minValue: Float,
-    val maxValue: Float
+    val maxValue: Float,
+    val decimalPlaces: Int = 1
 ): ModSetting(name)  {
 
     /* Variable stays private so there is no chance of it accidentally going out of specified bounds */

@@ -6,7 +6,7 @@ import net.minecraft.client.gui.Gui
 import org.lwjgl.input.Keyboard
 
 /* Used for creating macros to bind modules to key presses */
-class BindComponent(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiComponent(x, y, w, h) {
+class BindComponent(val module: Module, w: Int, h: Int): GuiComponent(0, 0, w, h) {
 
     private var binding = false
 

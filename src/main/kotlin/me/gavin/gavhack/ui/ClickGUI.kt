@@ -6,6 +6,10 @@ import me.gavin.gavhack.event.events.ClientTickEvent
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.ModuleManager
+import me.gavin.gavhack.module.impl.GuiModule
+import me.gavin.gavhack.module.setting.EnumSetting
+import me.gavin.gavhack.module.setting.FloatSetting
+import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.client.gui.GuiScreen
@@ -30,8 +34,12 @@ object ClickGUI: GuiScreen() {
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         if (mc.theWorld == null)
             drawDefaultBackground()
+        else if (GuiModule.drawBackground.value)
+            drawRect(0, 0, width, height, 0x40aaaaaa)
+
 
         super.drawScreen(mouseX, mouseY, partialTicks)
+
 
         if (mc.theWorld == null) {
             fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, 2, -1)
@@ -85,14 +93,21 @@ object ClickGUI: GuiScreen() {
             val window = Window(4 + xOffset, 4, 100, 0, category.title, category)
             window.open = true
             for (module in ModuleManager.getCategoryMods(category)) {
-                val windowButton = WindowButton(module, 0, 0, window.w, window.handle.h - 2)
+                val button = WindowButton(module, 0, 0, window.w, window.handle.h - 2)
 
                 for (setting in module.settings) {
                     // add setting components
+                    if (setting is ToggleSetting) {
+                        button.subComponents.add(BooleanComponent(setting, button.w, button.h))
+                    } else if (setting is FloatSetting) {
+                        button.subComponents.add(FloatComponent(setting, button.w, button.h))
+                    } else if (setting is EnumSetting<*>) {
+                        button.subComponents.add(EnumComponent(setting, button.w, button.h))
+                    }
                 }
 
-                windowButton.subComponents.add(BindComponent(module, 0, 0, windowButton.w, windowButton.h))
-                window.components.add(windowButton)
+                button.subComponents.add(BindComponent(module, button.w, button.h))
+                window.components.add(button)
             }
 
             windows.add(window)

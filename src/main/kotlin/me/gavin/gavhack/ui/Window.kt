@@ -32,6 +32,12 @@ class Window(x: Int, y: Int, w: Int, h: Int,
 
     override fun onRelease(mouseX: Int, mouseY: Int, button: Int) {
         handle.onRelease(mouseX, mouseY, button)
+
+        if (open) {
+            for (comp in components) {
+                comp.onRelease(mouseX, mouseY, button)
+            }
+        }
     }
 
     override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) {
