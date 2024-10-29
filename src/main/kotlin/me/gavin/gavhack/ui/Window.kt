@@ -12,7 +12,8 @@ import kotlin.math.roundToInt
 class Window(x: Int, y: Int, w: Int, h: Int,
              var title: String,
              val category: ModCategory,
-             val closeable: Boolean = false): GuiComponent(x, y, w, h) {
+             val closeable: Boolean = false
+): GuiComponent(x, y, w, h) {
 
     private val defaultHandleHeight = 16
 

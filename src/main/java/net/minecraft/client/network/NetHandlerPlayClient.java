@@ -1240,9 +1240,9 @@
             {
                 var2 = new TileEntitySign();
                 ((TileEntity)var2).setWorldObj(this.clientWorldController);
-                ((TileEntity)var2).field_145851_c = p_147268_1_.func_149129_c();
-                ((TileEntity)var2).field_145848_d = p_147268_1_.func_149128_d();
-                ((TileEntity)var2).field_145849_e = p_147268_1_.func_149127_e();
+                ((TileEntity)var2).x = p_147268_1_.func_149129_c();
+                ((TileEntity)var2).y = p_147268_1_.func_149128_d();
+                ((TileEntity)var2).z = p_147268_1_.func_149127_e();
             }
 
             this.gameController.thePlayer.func_146100_a((TileEntity)var2);

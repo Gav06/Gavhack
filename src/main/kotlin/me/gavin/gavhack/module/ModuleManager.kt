@@ -1,6 +1,5 @@
 package me.gavin.gavhack.module
 
-import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.KeyPressEvent
@@ -15,7 +14,9 @@ object ModuleManager {
         GuiModule,
         HudModule,
         ConsoleModule,
-        KillAura
+        KillAura,
+        StorageESP,
+        TestModule("Test Module")
     )
 
     /* Sorted by length of module name */

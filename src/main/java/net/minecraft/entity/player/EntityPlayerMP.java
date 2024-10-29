@@ -675,7 +675,7 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         if (p_146100_1_ instanceof TileEntitySign)
         {
             ((TileEntitySign)p_146100_1_).func_145912_a(this);
-            this.playerNetServerHandler.sendPacket(new S36PacketSignEditorOpen(p_146100_1_.field_145851_c, p_146100_1_.field_145848_d, p_146100_1_.field_145849_e));
+            this.playerNetServerHandler.sendPacket(new S36PacketSignEditorOpen(p_146100_1_.x, p_146100_1_.y, p_146100_1_.z));
         }
     }
 

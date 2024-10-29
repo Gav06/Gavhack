@@ -2,7 +2,7 @@ package net.minecraft.client.renderer.culling;
 
 import net.minecraft.util.AxisAlignedBB;
 
-public class Frustrum implements ICamera
+public class Frustum implements ICamera
 {
     private ClippingHelper clippingHelper = ClippingHelperImpl.getInstance();
     private double xPosition;

@@ -417,19 +417,19 @@ public class WDL
 
                     if ((entityType = isImportableTileEntity(te)) != null)
                     {
-                        if (!newTileEntities.contains(new ChunkPosition(te.field_145851_c, te.field_145848_d, te.field_145849_e)))
+                        if (!newTileEntities.contains(new ChunkPosition(te.x, te.y, te.z)))
                         {
-                            wc.setTileEntity(te.field_145851_c, te.field_145848_d, te.field_145849_e, te);
-                            chatDebug("Loaded TE: " + entityType + " at " + te.field_145851_c + " " + te.field_145848_d + " " + te.field_145849_e);
+                            wc.setTileEntity(te.x, te.y, te.z, te);
+                            chatDebug("Loaded TE: " + entityType + " at " + te.x + " " + te.y + " " + te.z);
                         }
                         else
                         {
-                            chatDebug("Dropping old TE: " + entityType + " at " + te.field_145851_c + " " + te.field_145848_d + " " + te.field_145849_e);
+                            chatDebug("Dropping old TE: " + entityType + " at " + te.x + " " + te.y + " " + te.z);
                         }
                     }
                     else
                     {
-                        chatDebug("Old TE is not importable: " + entityType + " at " + te.field_145851_c + " " + te.field_145848_d + " " + te.field_145849_e);
+                        chatDebug("Old TE is not importable: " + entityType + " at " + te.x + " " + te.y + " " + te.z);
                     }
                 }
             }
@@ -442,7 +442,7 @@ public class WDL
 
     public static String isImportableTileEntity(TileEntity te)
     {
-        Block block = wc.getBlock(te.field_145851_c, te.field_145848_d, te.field_145849_e);
+        Block block = wc.getBlock(te.x, te.y, te.z);
         return block instanceof BlockChest && te instanceof TileEntityChest ? "TileEntityChest" : (block instanceof BlockDispenser && te instanceof TileEntityDispenser ? "TileEntityDispenser" : (block instanceof BlockFurnace && te instanceof TileEntityFurnace ? "TileEntityFurnace" : (block instanceof BlockNote && te instanceof TileEntityNote ? "TileEntityNote" : (block instanceof BlockBrewingStand && te instanceof TileEntityBrewingStand ? "TileEntityBrewingStand" : null))));
     }
 

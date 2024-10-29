@@ -1,7 +1,9 @@
 package me.gavin.gavhack.misc
 
+import net.minecraft.entity.Entity
 import java.math.BigDecimal
 import java.math.RoundingMode
+import javax.vecmath.Vector3d
 
 object MathUtils {
 
@@ -15,11 +17,19 @@ object MathUtils {
     }
 
     fun lerpf(then: Float, now: Float, delta: Float): Float {
-        return (then * (1.0f - delta)) + (now * then)
+        return then + (now - then) * delta
     }
 
     fun lerpd(then: Double, now: Double, delta: Double): Double {
-        return (then * (1.0f - delta)) + (now * then)
+        return then + (now - then) * delta
+    }
+
+    fun lerpEntity(e: Entity, d: Float): Vector3d {
+        return Vector3d(
+                lerpd(e.lastTickPosX, e.posX, d.toDouble()),
+                lerpd(e.lastTickPosY, e.posY, d.toDouble()),
+                lerpd(e.lastTickPosZ, e.posZ, d.toDouble())
+        )
     }
 
     fun clampf(x: Float, min: Float, max: Float): Float {

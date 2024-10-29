@@ -7,16 +7,16 @@ public class TileEntityComparator extends TileEntity
     private int field_145997_a;
     private static final String __OBFID = "CL_00000349";
 
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    public void writeToNBT(NBTTagCompound tag)
     {
-        super.writeToNBT(p_145841_1_);
-        p_145841_1_.setInteger("OutputSignal", this.field_145997_a);
+        super.writeToNBT(tag);
+        tag.setInteger("OutputSignal", this.field_145997_a);
     }
 
-    public void readFromNBT(NBTTagCompound p_145839_1_)
+    public void readFromNBT(NBTTagCompound tag)
     {
-        super.readFromNBT(p_145839_1_);
-        this.field_145997_a = p_145839_1_.getInteger("OutputSignal");
+        super.readFromNBT(tag);
+        this.field_145997_a = tag.getInteger("OutputSignal");
     }
 
     public int func_145996_a()

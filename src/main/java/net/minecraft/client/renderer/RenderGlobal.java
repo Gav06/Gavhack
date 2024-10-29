@@ -104,7 +104,7 @@ public class RenderGlobal implements IWorldAccess
     private static final ResourceLocation locationSunPng = new ResourceLocation("textures/environment/sun.png");
     private static final ResourceLocation locationCloudsPng = new ResourceLocation("textures/environment/clouds.png");
     private static final ResourceLocation locationEndSkyPng = new ResourceLocation("textures/environment/end_sky.png");
-    public List tileEntities = new ArrayList();
+    public List<TileEntity> tileEntities = new ArrayList<>();
     public WorldClient theWorld;
 
     /** The RenderEngine instance used by RenderGlobal */
@@ -720,7 +720,7 @@ public class RenderGlobal implements IWorldAccess
 
                         if (var30 == TileEntityChest.class)
                         {
-                            Block var31 = this.theWorld.getBlock(var27.field_145851_c, var27.field_145848_d, var27.field_145849_e);
+                            Block var31 = this.theWorld.getBlock(var27.x, var27.y, var27.z);
 
                             if (!(var31 instanceof BlockChest))
                             {
@@ -2282,50 +2282,50 @@ public class RenderGlobal implements IWorldAccess
     /**
      * Draws lines for the edges of the bounding box.
      */
-    public static void drawOutlinedBoundingBox(AxisAlignedBB p_147590_0_, int p_147590_1_)
+    public static void drawOutlinedBoundingBox(AxisAlignedBB aabb, int colorIn)
     {
         Tessellator var2 = Tessellator.instance;
         var2.startDrawing(3);
 
-        if (p_147590_1_ != -1)
+        if (colorIn != -1)
         {
-            var2.setColorOpaque_I(p_147590_1_);
+            var2.setColorOpaque_I(colorIn);
         }
 
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.minY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.minZ);
+        var2.addVertex(aabb.minX, aabb.minY, aabb.minZ);
+        var2.addVertex(aabb.maxX, aabb.minY, aabb.minZ);
+        var2.addVertex(aabb.maxX, aabb.minY, aabb.maxZ);
+        var2.addVertex(aabb.minX, aabb.minY, aabb.maxZ);
+        var2.addVertex(aabb.minX, aabb.minY, aabb.minZ);
         var2.draw();
         var2.startDrawing(3);
 
-        if (p_147590_1_ != -1)
+        if (colorIn != -1)
         {
-            var2.setColorOpaque_I(p_147590_1_);
+            var2.setColorOpaque_I(colorIn);
         }
 
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.maxY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.minZ);
+        var2.addVertex(aabb.minX, aabb.maxY, aabb.minZ);
+        var2.addVertex(aabb.maxX, aabb.maxY, aabb.minZ);
+        var2.addVertex(aabb.maxX, aabb.maxY, aabb.maxZ);
+        var2.addVertex(aabb.minX, aabb.maxY, aabb.maxZ);
+        var2.addVertex(aabb.minX, aabb.maxY, aabb.minZ);
         var2.draw();
         var2.startDrawing(1);
 
-        if (p_147590_1_ != -1)
+        if (colorIn != -1)
         {
-            var2.setColorOpaque_I(p_147590_1_);
+            var2.setColorOpaque_I(colorIn);
         }
 
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.minY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.maxY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.maxZ);
+        var2.addVertex(aabb.minX, aabb.minY, aabb.minZ);
+        var2.addVertex(aabb.minX, aabb.maxY, aabb.minZ);
+        var2.addVertex(aabb.maxX, aabb.minY, aabb.minZ);
+        var2.addVertex(aabb.maxX, aabb.maxY, aabb.minZ);
+        var2.addVertex(aabb.maxX, aabb.minY, aabb.maxZ);
+        var2.addVertex(aabb.maxX, aabb.maxY, aabb.maxZ);
+        var2.addVertex(aabb.minX, aabb.minY, aabb.maxZ);
+        var2.addVertex(aabb.minX, aabb.maxY, aabb.maxZ);
         var2.draw();
     }
 
@@ -3261,7 +3261,7 @@ public class RenderGlobal implements IWorldAccess
 
             if (blockType == Blocks.enchanting_table)
             {
-                return AxisAlignedBB.getAABBPool().getAABB((double)te.field_145851_c, (double)te.field_145848_d, (double)te.field_145849_e, (double)(te.field_145851_c + 1), (double)(te.field_145848_d + 1), (double)(te.field_145849_e + 1));
+                return AxisAlignedBB.getAABBPool().getAABB((double)te.x, (double)te.y, (double)te.z, (double)(te.x + 1), (double)(te.y + 1), (double)(te.z + 1));
             }
             else if (blockType != Blocks.chest && blockType != Blocks.trapped_chest)
             {
@@ -3279,7 +3279,7 @@ public class RenderGlobal implements IWorldAccess
 
                 if (blockType != null && blockType != Blocks.beacon)
                 {
-                    blockAabb = blockType.getCollisionBoundingBoxFromPool(te.getWorldObj(), te.field_145851_c, te.field_145848_d, te.field_145849_e);
+                    blockAabb = blockType.getCollisionBoundingBoxFromPool(te.getWorldObj(), te.x, te.y, te.z);
 
                     if (blockAabb != null)
                     {
@@ -3291,7 +3291,7 @@ public class RenderGlobal implements IWorldAccess
             }
             else
             {
-                return AxisAlignedBB.getAABBPool().getAABB((double)(te.field_145851_c - 1), (double)te.field_145848_d, (double)(te.field_145849_e - 1), (double)(te.field_145851_c + 2), (double)(te.field_145848_d + 2), (double)(te.field_145849_e + 2));
+                return AxisAlignedBB.getAABBPool().getAABB((double)(te.x - 1), (double)te.y, (double)(te.z - 1), (double)(te.x + 2), (double)(te.y + 2), (double)(te.z + 2));
             }
         }
     }

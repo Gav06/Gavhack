@@ -50,7 +50,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
                 var3 = 1;
             }
 
-            AxisAlignedBB var4 = AxisAlignedBB.getAABBPool().getAABB((double)this.field_145851_c, (double)this.field_145848_d, (double)this.field_145849_e, (double)(this.field_145851_c + 1), (double)(this.field_145848_d + 1), (double)(this.field_145849_e + 1)).expand(var1, var1, var1);
+            AxisAlignedBB var4 = AxisAlignedBB.getAABBPool().getAABB((double)this.x, (double)this.y, (double)this.z, (double)(this.x + 1), (double)(this.y + 1), (double)(this.z + 1)).expand(var1, var1, var1);
             var4.maxY = (double)this.worldObj.getHeight();
             List var5 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, var4);
             Iterator var6 = var5.iterator();
@@ -79,7 +79,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
     {
         int var1 = this.field_146012_l;
 
-        if (!this.worldObj.canBlockSeeTheSky(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e))
+        if (!this.worldObj.canBlockSeeTheSky(this.x, this.y + 1, this.z))
         {
             this.field_146015_k = false;
             this.field_146012_l = 0;
@@ -91,7 +91,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
             for (int var2 = 1; var2 <= 4; this.field_146012_l = var2++)
             {
-                int var3 = this.field_145848_d - var2;
+                int var3 = this.y - var2;
 
                 if (var3 < 0)
                 {
@@ -100,9 +100,9 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
                 boolean var4 = true;
 
-                for (int var5 = this.field_145851_c - var2; var5 <= this.field_145851_c + var2 && var4; ++var5)
+                for (int var5 = this.x - var2; var5 <= this.x + var2 && var4; ++var5)
                 {
-                    for (int var6 = this.field_145849_e - var2; var6 <= this.field_145849_e + var2; ++var6)
+                    for (int var6 = this.z - var2; var6 <= this.z + var2; ++var6)
                     {
                         Block var7 = this.worldObj.getBlock(var5, var3, var6);
 
@@ -128,7 +128,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
 
         if (!this.worldObj.isClient && this.field_146012_l == 4 && var1 < this.field_146012_l)
         {
-            Iterator var8 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double)this.field_145851_c, (double)this.field_145848_d, (double)this.field_145849_e, (double)this.field_145851_c, (double)(this.field_145848_d - 4), (double)this.field_145849_e).expand(10.0D, 5.0D, 10.0D)).iterator();
+            Iterator var8 = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double)this.x, (double)this.y, (double)this.z, (double)this.x, (double)(this.y - 4), (double)this.z).expand(10.0D, 5.0D, 10.0D)).iterator();
 
             while (var8.hasNext())
             {
@@ -244,7 +244,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
     {
         NBTTagCompound var1 = new NBTTagCompound();
         this.writeToNBT(var1);
-        return new S35PacketUpdateTileEntity(this.field_145851_c, this.field_145848_d, this.field_145849_e, 3, var1);
+        return new S35PacketUpdateTileEntity(this.x, this.y, this.z, 3, var1);
     }
 
     public double getMaxRenderDistanceSquared()
@@ -252,20 +252,20 @@ public class TileEntityBeacon extends TileEntity implements IInventory
         return 65536.0D;
     }
 
-    public void readFromNBT(NBTTagCompound p_145839_1_)
+    public void readFromNBT(NBTTagCompound tag)
     {
-        super.readFromNBT(p_145839_1_);
-        this.field_146013_m = p_145839_1_.getInteger("Primary");
-        this.field_146010_n = p_145839_1_.getInteger("Secondary");
-        this.field_146012_l = p_145839_1_.getInteger("Levels");
+        super.readFromNBT(tag);
+        this.field_146013_m = tag.getInteger("Primary");
+        this.field_146010_n = tag.getInteger("Secondary");
+        this.field_146012_l = tag.getInteger("Levels");
     }
 
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    public void writeToNBT(NBTTagCompound tag)
     {
-        super.writeToNBT(p_145841_1_);
-        p_145841_1_.setInteger("Primary", this.field_146013_m);
-        p_145841_1_.setInteger("Secondary", this.field_146010_n);
-        p_145841_1_.setInteger("Levels", this.field_146012_l);
+        super.writeToNBT(tag);
+        tag.setInteger("Primary", this.field_146013_m);
+        tag.setInteger("Secondary", this.field_146010_n);
+        tag.setInteger("Levels", this.field_146012_l);
     }
 
     /**
@@ -373,7 +373,7 @@ public class TileEntityBeacon extends TileEntity implements IInventory
      */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.field_145851_c, this.field_145848_d, this.field_145849_e) != this ? false : par1EntityPlayer.getDistanceSq((double)this.field_145851_c + 0.5D, (double)this.field_145848_d + 0.5D, (double)this.field_145849_e + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.x, this.y, this.z) != this ? false : par1EntityPlayer.getDistanceSq((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D) <= 64.0D;
     }
 
     public void openInventory() {}

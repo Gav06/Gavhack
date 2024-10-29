@@ -13,23 +13,23 @@ public class TileEntitySign extends TileEntity
     private EntityPlayer field_145917_k;
     private static final String __OBFID = "CL_00000363";
 
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    public void writeToNBT(NBTTagCompound tag)
     {
-        super.writeToNBT(p_145841_1_);
-        p_145841_1_.setString("Text1", this.field_145915_a[0]);
-        p_145841_1_.setString("Text2", this.field_145915_a[1]);
-        p_145841_1_.setString("Text3", this.field_145915_a[2]);
-        p_145841_1_.setString("Text4", this.field_145915_a[3]);
+        super.writeToNBT(tag);
+        tag.setString("Text1", this.field_145915_a[0]);
+        tag.setString("Text2", this.field_145915_a[1]);
+        tag.setString("Text3", this.field_145915_a[2]);
+        tag.setString("Text4", this.field_145915_a[3]);
     }
 
-    public void readFromNBT(NBTTagCompound p_145839_1_)
+    public void readFromNBT(NBTTagCompound tag)
     {
         this.field_145916_j = false;
-        super.readFromNBT(p_145839_1_);
+        super.readFromNBT(tag);
 
         for (int var2 = 0; var2 < 4; ++var2)
         {
-            this.field_145915_a[var2] = p_145839_1_.getString("Text" + (var2 + 1));
+            this.field_145915_a[var2] = tag.getString("Text" + (var2 + 1));
 
             if (this.field_145915_a[var2].length() > 15)
             {
@@ -45,7 +45,7 @@ public class TileEntitySign extends TileEntity
     {
         String[] var1 = new String[4];
         System.arraycopy(this.field_145915_a, 0, var1, 0, 4);
-        return new S33PacketUpdateSign(this.field_145851_c, this.field_145848_d, this.field_145849_e, var1);
+        return new S33PacketUpdateSign(this.x, this.y, this.z, var1);
     }
 
     public boolean func_145914_a()

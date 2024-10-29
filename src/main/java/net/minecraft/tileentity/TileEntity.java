@@ -29,9 +29,9 @@ public class TileEntity
 
     /** the instance of the world the tile entity is in. */
     protected World worldObj;
-    public int field_145851_c;
-    public int field_145848_d;
-    public int field_145849_e;
+    public int x;
+    public int y;
+    public int z;
     protected boolean tileEntityInvalid;
     public int blockMetadata = -1;
 
@@ -76,14 +76,14 @@ public class TileEntity
         return this.worldObj != null;
     }
 
-    public void readFromNBT(NBTTagCompound p_145839_1_)
+    public void readFromNBT(NBTTagCompound tag)
     {
-        this.field_145851_c = p_145839_1_.getInteger("x");
-        this.field_145848_d = p_145839_1_.getInteger("y");
-        this.field_145849_e = p_145839_1_.getInteger("z");
+        this.x = tag.getInteger("x");
+        this.y = tag.getInteger("y");
+        this.z = tag.getInteger("z");
     }
 
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    public void writeToNBT(NBTTagCompound tag)
     {
         String var2 = (String)classToNameMap.get(this.getClass());
 
@@ -93,10 +93,10 @@ public class TileEntity
         }
         else
         {
-            p_145841_1_.setString("id", var2);
-            p_145841_1_.setInteger("x", this.field_145851_c);
-            p_145841_1_.setInteger("y", this.field_145848_d);
-            p_145841_1_.setInteger("z", this.field_145849_e);
+            tag.setString("id", var2);
+            tag.setInteger("x", this.x);
+            tag.setInteger("y", this.y);
+            tag.setInteger("z", this.z);
         }
     }
 
@@ -139,7 +139,7 @@ public class TileEntity
     {
         if (this.blockMetadata == -1)
         {
-            this.blockMetadata = this.worldObj.getBlockMetadata(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+            this.blockMetadata = this.worldObj.getBlockMetadata(this.x, this.y, this.z);
         }
 
         return this.blockMetadata;
@@ -152,12 +152,12 @@ public class TileEntity
     {
         if (this.worldObj != null)
         {
-            this.blockMetadata = this.worldObj.getBlockMetadata(this.field_145851_c, this.field_145848_d, this.field_145849_e);
-            this.worldObj.func_147476_b(this.field_145851_c, this.field_145848_d, this.field_145849_e, this);
+            this.blockMetadata = this.worldObj.getBlockMetadata(this.x, this.y, this.z);
+            this.worldObj.func_147476_b(this.x, this.y, this.z, this);
 
             if (this.getBlockType() != Blocks.air)
             {
-                this.worldObj.func_147453_f(this.field_145851_c, this.field_145848_d, this.field_145849_e, this.getBlockType());
+                this.worldObj.func_147453_f(this.x, this.y, this.z, this.getBlockType());
             }
         }
     }
@@ -167,9 +167,9 @@ public class TileEntity
      */
     public double getDistanceFrom(double p_145835_1_, double p_145835_3_, double p_145835_5_)
     {
-        double var7 = (double)this.field_145851_c + 0.5D - p_145835_1_;
-        double var9 = (double)this.field_145848_d + 0.5D - p_145835_3_;
-        double var11 = (double)this.field_145849_e + 0.5D - p_145835_5_;
+        double var7 = (double)this.x + 0.5D - p_145835_1_;
+        double var9 = (double)this.y + 0.5D - p_145835_3_;
+        double var11 = (double)this.z + 0.5D - p_145835_5_;
         return var7 * var7 + var9 * var9 + var11 * var11;
     }
 
@@ -185,7 +185,7 @@ public class TileEntity
     {
         if (this.blockType == null)
         {
-            this.blockType = this.worldObj.getBlock(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+            this.blockType = this.worldObj.getBlock(this.x, this.y, this.z);
         }
 
         return this.blockType;
@@ -241,13 +241,13 @@ public class TileEntity
                 return (String)TileEntity.classToNameMap.get(TileEntity.this.getClass()) + " // " + TileEntity.this.getClass().getCanonicalName();
             }
         });
-        CrashReportCategory.func_147153_a(p_145828_1_, this.field_145851_c, this.field_145848_d, this.field_145849_e, this.getBlockType(), this.getBlockMetadata());
+        CrashReportCategory.func_147153_a(p_145828_1_, this.x, this.y, this.z, this.getBlockType(), this.getBlockMetadata());
         p_145828_1_.addCrashSectionCallable("Actual block type", new Callable()
         {
             private static final String __OBFID = "CL_00000343";
             public String call()
             {
-                int var1 = Block.getIdFromBlock(TileEntity.this.worldObj.getBlock(TileEntity.this.field_145851_c, TileEntity.this.field_145848_d, TileEntity.this.field_145849_e));
+                int var1 = Block.getIdFromBlock(TileEntity.this.worldObj.getBlock(TileEntity.this.x, TileEntity.this.y, TileEntity.this.z));
 
                 try
                 {
@@ -264,7 +264,7 @@ public class TileEntity
             private static final String __OBFID = "CL_00000344";
             public String call()
             {
-                int var1 = TileEntity.this.worldObj.getBlockMetadata(TileEntity.this.field_145851_c, TileEntity.this.field_145848_d, TileEntity.this.field_145849_e);
+                int var1 = TileEntity.this.worldObj.getBlockMetadata(TileEntity.this.x, TileEntity.this.y, TileEntity.this.z);
 
                 if (var1 < 0)
                 {

@@ -1994,7 +1994,7 @@ public abstract class World implements IBlockAccess
         {
             TileEntity var9 = (TileEntity)var14.next();
 
-            if (!var9.isInvalid() && var9.hasWorldObj() && this.blockExists(var9.field_145851_c, var9.field_145848_d, var9.field_145849_e))
+            if (!var9.isInvalid() && var9.hasWorldObj() && this.blockExists(var9.x, var9.y, var9.z))
             {
                 try
                 {
@@ -2013,13 +2013,13 @@ public abstract class World implements IBlockAccess
             {
                 var14.remove();
 
-                if (this.chunkExists(var9.field_145851_c >> 4, var9.field_145849_e >> 4))
+                if (this.chunkExists(var9.x >> 4, var9.z >> 4))
                 {
-                    Chunk var11 = this.getChunkFromChunkCoords(var9.field_145851_c >> 4, var9.field_145849_e >> 4);
+                    Chunk var11 = this.getChunkFromChunkCoords(var9.x >> 4, var9.z >> 4);
 
                     if (var11 != null)
                     {
-                        var11.removeTileEntity(var9.field_145851_c & 15, var9.field_145848_d, var9.field_145849_e & 15);
+                        var11.removeTileEntity(var9.x & 15, var9.y, var9.z & 15);
                     }
                 }
             }
@@ -2048,17 +2048,17 @@ public abstract class World implements IBlockAccess
                         this.field_147482_g.add(var12);
                     }
 
-                    if (this.chunkExists(var12.field_145851_c >> 4, var12.field_145849_e >> 4))
+                    if (this.chunkExists(var12.x >> 4, var12.z >> 4))
                     {
-                        Chunk var15 = this.getChunkFromChunkCoords(var12.field_145851_c >> 4, var12.field_145849_e >> 4);
+                        Chunk var15 = this.getChunkFromChunkCoords(var12.x >> 4, var12.z >> 4);
 
                         if (var15 != null)
                         {
-                            var15.func_150812_a(var12.field_145851_c & 15, var12.field_145848_d, var12.field_145849_e & 15, var12);
+                            var15.func_150812_a(var12.x & 15, var12.y, var12.z & 15, var12);
                         }
                     }
 
-                    this.func_147471_g(var12.field_145851_c, var12.field_145848_d, var12.field_145849_e);
+                    this.func_147471_g(var12.x, var12.y, var12.z);
                 }
             }
 
@@ -2598,7 +2598,7 @@ public abstract class World implements IBlockAccess
                 {
                     var6 = (TileEntity)this.field_147484_a.get(var5);
 
-                    if (!var6.isInvalid() && var6.field_145851_c == p_147438_1_ && var6.field_145848_d == p_147438_2_ && var6.field_145849_e == p_147438_3_)
+                    if (!var6.isInvalid() && var6.x == p_147438_1_ && var6.y == p_147438_2_ && var6.z == p_147438_3_)
                     {
                         var4 = var6;
                         break;
@@ -2622,7 +2622,7 @@ public abstract class World implements IBlockAccess
                 {
                     var6 = (TileEntity)this.field_147484_a.get(var5);
 
-                    if (!var6.isInvalid() && var6.field_145851_c == p_147438_1_ && var6.field_145848_d == p_147438_2_ && var6.field_145849_e == p_147438_3_)
+                    if (!var6.isInvalid() && var6.x == p_147438_1_ && var6.y == p_147438_2_ && var6.z == p_147438_3_)
                     {
                         var4 = var6;
                         break;
@@ -2644,16 +2644,16 @@ public abstract class World implements IBlockAccess
         {
             if (this.field_147481_N)
             {
-                p_147455_4_.field_145851_c = p_147455_1_;
-                p_147455_4_.field_145848_d = p_147455_2_;
-                p_147455_4_.field_145849_e = p_147455_3_;
+                p_147455_4_.x = p_147455_1_;
+                p_147455_4_.y = p_147455_2_;
+                p_147455_4_.z = p_147455_3_;
                 Iterator var5 = this.field_147484_a.iterator();
 
                 while (var5.hasNext())
                 {
                     TileEntity var6 = (TileEntity)var5.next();
 
-                    if (var6.field_145851_c == p_147455_1_ && var6.field_145848_d == p_147455_2_ && var6.field_145849_e == p_147455_3_)
+                    if (var6.x == p_147455_1_ && var6.y == p_147455_2_ && var6.z == p_147455_3_)
                     {
                         var6.invalidate();
                         var5.remove();

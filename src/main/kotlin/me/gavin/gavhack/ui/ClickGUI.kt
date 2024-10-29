@@ -34,9 +34,12 @@ object ClickGUI: GuiScreen() {
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         if (mc.theWorld == null)
             drawDefaultBackground()
-        else if (GuiModule.drawBackground.value)
-            drawRect(0, 0, width, height, 0xa0686868.toInt())
-
+        else if (GuiModule.drawBackground.value) {
+            // set alpha bits to 0x30
+//            val rgba = (Gavhack.colorScheme.rgb) xor (0x30.inv() shl 24)
+            val rgba = 0x30ffffff
+            drawRect(0, 0, width, height, rgba)
+        }
         super.drawScreen(mouseX, mouseY, partialTicks)
 
         if (mc.theWorld == null) {

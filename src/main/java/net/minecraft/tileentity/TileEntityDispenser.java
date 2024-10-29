@@ -150,10 +150,10 @@ public class TileEntityDispenser extends TileEntity implements IInventory
         return this.field_146020_a != null;
     }
 
-    public void readFromNBT(NBTTagCompound p_145839_1_)
+    public void readFromNBT(NBTTagCompound tag)
     {
-        super.readFromNBT(p_145839_1_);
-        NBTTagList var2 = p_145839_1_.getTagList("Items", 10);
+        super.readFromNBT(tag);
+        NBTTagList var2 = tag.getTagList("Items", 10);
         this.field_146022_i = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -167,15 +167,15 @@ public class TileEntityDispenser extends TileEntity implements IInventory
             }
         }
 
-        if (p_145839_1_.func_150297_b("CustomName", 8))
+        if (tag.func_150297_b("CustomName", 8))
         {
-            this.field_146020_a = p_145839_1_.getString("CustomName");
+            this.field_146020_a = tag.getString("CustomName");
         }
     }
 
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    public void writeToNBT(NBTTagCompound tag)
     {
-        super.writeToNBT(p_145841_1_);
+        super.writeToNBT(tag);
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.field_146022_i.length; ++var3)
@@ -189,11 +189,11 @@ public class TileEntityDispenser extends TileEntity implements IInventory
             }
         }
 
-        p_145841_1_.setTag("Items", var2);
+        tag.setTag("Items", var2);
 
         if (this.isInventoryNameLocalized())
         {
-            p_145841_1_.setString("CustomName", this.field_146020_a);
+            tag.setString("CustomName", this.field_146020_a);
         }
     }
 
@@ -210,7 +210,7 @@ public class TileEntityDispenser extends TileEntity implements IInventory
      */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.field_145851_c, this.field_145848_d, this.field_145849_e) != this ? false : par1EntityPlayer.getDistanceSq((double)this.field_145851_c + 0.5D, (double)this.field_145848_d + 0.5D, (double)this.field_145849_e + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.x, this.y, this.z) != this ? false : par1EntityPlayer.getDistanceSq((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D) <= 64.0D;
     }
 
     public void openInventory() {}

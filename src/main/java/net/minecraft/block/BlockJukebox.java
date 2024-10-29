@@ -138,28 +138,28 @@ public class BlockJukebox extends BlockContainer
         private ItemStack field_145858_a;
         private static final String __OBFID = "CL_00000261";
 
-        public void readFromNBT(NBTTagCompound p_145839_1_)
+        public void readFromNBT(NBTTagCompound tag)
         {
-            super.readFromNBT(p_145839_1_);
+            super.readFromNBT(tag);
 
-            if (p_145839_1_.func_150297_b("RecordItem", 10))
+            if (tag.func_150297_b("RecordItem", 10))
             {
-                this.func_145857_a(ItemStack.loadItemStackFromNBT(p_145839_1_.getCompoundTag("RecordItem")));
+                this.func_145857_a(ItemStack.loadItemStackFromNBT(tag.getCompoundTag("RecordItem")));
             }
-            else if (p_145839_1_.getInteger("Record") > 0)
+            else if (tag.getInteger("Record") > 0)
             {
-                this.func_145857_a(new ItemStack(Item.getItemById(p_145839_1_.getInteger("Record")), 1, 0));
+                this.func_145857_a(new ItemStack(Item.getItemById(tag.getInteger("Record")), 1, 0));
             }
         }
 
-        public void writeToNBT(NBTTagCompound p_145841_1_)
+        public void writeToNBT(NBTTagCompound tag)
         {
-            super.writeToNBT(p_145841_1_);
+            super.writeToNBT(tag);
 
             if (this.func_145856_a() != null)
             {
-                p_145841_1_.setTag("RecordItem", this.func_145856_a().writeToNBT(new NBTTagCompound()));
-                p_145841_1_.setInteger("Record", Item.getIdFromItem(this.func_145856_a().getItem()));
+                tag.setTag("RecordItem", this.func_145856_a().writeToNBT(new NBTTagCompound()));
+                tag.setInteger("Record", Item.getIdFromItem(this.func_145856_a().getItem()));
             }
         }
 

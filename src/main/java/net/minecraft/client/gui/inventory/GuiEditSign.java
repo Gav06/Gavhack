@@ -47,7 +47,7 @@ public class GuiEditSign extends GuiScreen
 
         if (var1 != null)
         {
-            var1.addToSendQueue(new C12PacketUpdateSign(this.field_146848_f.field_145851_c, this.field_146848_f.field_145848_d, this.field_146848_f.field_145849_e, this.field_146848_f.field_145915_a));
+            var1.addToSendQueue(new C12PacketUpdateSign(this.field_146848_f.x, this.field_146848_f.y, this.field_146848_f.z, this.field_146848_f.field_145915_a));
         }
 
         this.field_146848_f.func_145913_a(true);

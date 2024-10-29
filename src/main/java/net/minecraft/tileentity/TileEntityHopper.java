@@ -25,18 +25,18 @@ public class TileEntityHopper extends TileEntity implements IHopper
     private int field_145901_j = -1;
     private static final String __OBFID = "CL_00000359";
 
-    public void readFromNBT(NBTTagCompound p_145839_1_)
+    public void readFromNBT(NBTTagCompound tag)
     {
-        super.readFromNBT(p_145839_1_);
-        NBTTagList var2 = p_145839_1_.getTagList("Items", 10);
+        super.readFromNBT(tag);
+        NBTTagList var2 = tag.getTagList("Items", 10);
         this.field_145900_a = new ItemStack[this.getSizeInventory()];
 
-        if (p_145839_1_.func_150297_b("CustomName", 8))
+        if (tag.func_150297_b("CustomName", 8))
         {
-            this.field_145902_i = p_145839_1_.getString("CustomName");
+            this.field_145902_i = tag.getString("CustomName");
         }
 
-        this.field_145901_j = p_145839_1_.getInteger("TransferCooldown");
+        this.field_145901_j = tag.getInteger("TransferCooldown");
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
         {
@@ -50,9 +50,9 @@ public class TileEntityHopper extends TileEntity implements IHopper
         }
     }
 
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    public void writeToNBT(NBTTagCompound tag)
     {
-        super.writeToNBT(p_145841_1_);
+        super.writeToNBT(tag);
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.field_145900_a.length; ++var3)
@@ -66,12 +66,12 @@ public class TileEntityHopper extends TileEntity implements IHopper
             }
         }
 
-        p_145841_1_.setTag("Items", var2);
-        p_145841_1_.setInteger("TransferCooldown", this.field_145901_j);
+        tag.setTag("Items", var2);
+        tag.setInteger("TransferCooldown", this.field_145901_j);
 
         if (this.isInventoryNameLocalized())
         {
-            p_145841_1_.setString("CustomName", this.field_145902_i);
+            tag.setString("CustomName", this.field_145902_i);
         }
     }
 
@@ -198,7 +198,7 @@ public class TileEntityHopper extends TileEntity implements IHopper
      */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.field_145851_c, this.field_145848_d, this.field_145849_e) != this ? false : par1EntityPlayer.getDistanceSq((double)this.field_145851_c + 0.5D, (double)this.field_145848_d + 0.5D, (double)this.field_145849_e + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.x, this.y, this.z) != this ? false : par1EntityPlayer.getDistanceSq((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D) <= 64.0D;
     }
 
     public void openInventory() {}
@@ -459,7 +459,7 @@ public class TileEntityHopper extends TileEntity implements IHopper
     private IInventory func_145895_l()
     {
         int var1 = BlockHopper.func_149918_b(this.getBlockMetadata());
-        return func_145893_b(this.getWorldObj(), (double)(this.field_145851_c + Facing.offsetsXForSide[var1]), (double)(this.field_145848_d + Facing.offsetsYForSide[var1]), (double)(this.field_145849_e + Facing.offsetsZForSide[var1]));
+        return func_145893_b(this.getWorldObj(), (double)(this.x + Facing.offsetsXForSide[var1]), (double)(this.y + Facing.offsetsYForSide[var1]), (double)(this.z + Facing.offsetsZForSide[var1]));
     }
 
     public static IInventory func_145884_b(IHopper p_145884_0_)
@@ -519,7 +519,7 @@ public class TileEntityHopper extends TileEntity implements IHopper
      */
     public double getXPos()
     {
-        return (double)this.field_145851_c;
+        return (double)this.x;
     }
 
     /**
@@ -527,7 +527,7 @@ public class TileEntityHopper extends TileEntity implements IHopper
      */
     public double getYPos()
     {
-        return (double)this.field_145848_d;
+        return (double)this.y;
     }
 
     /**
@@ -535,7 +535,7 @@ public class TileEntityHopper extends TileEntity implements IHopper
      */
     public double getZPos()
     {
-        return (double)this.field_145849_e;
+        return (double)this.z;
     }
 
     public void func_145896_c(int p_145896_1_)

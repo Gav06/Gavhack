@@ -11,16 +11,16 @@ public class TileEntityNote extends TileEntity
     public boolean field_145880_i;
     private static final String __OBFID = "CL_00000362";
 
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    public void writeToNBT(NBTTagCompound tag)
     {
-        super.writeToNBT(p_145841_1_);
-        p_145841_1_.setByte("note", this.field_145879_a);
+        super.writeToNBT(tag);
+        tag.setByte("note", this.field_145879_a);
     }
 
-    public void readFromNBT(NBTTagCompound p_145839_1_)
+    public void readFromNBT(NBTTagCompound tag)
     {
-        super.readFromNBT(p_145839_1_);
-        this.field_145879_a = p_145839_1_.getByte("note");
+        super.readFromNBT(tag);
+        this.field_145879_a = tag.getByte("note");
 
         if (this.field_145879_a < 0)
         {

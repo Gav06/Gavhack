@@ -59,15 +59,15 @@ public class Gui
             y2 = var5;
         }
 
-        float var10 = (float)(color >> 24 & 255) / 255.0F;
-        float var6 = (float)(color >> 16 & 255) / 255.0F;
-        float var7 = (float)(color >> 8 & 255) / 255.0F;
-        float var8 = (float)(color & 255) / 255.0F;
+        float a = (float)(color >> 24 & 255) / 255.0F;
+        float r = (float)(color >> 16 & 255) / 255.0F;
+        float g = (float)(color >> 8 & 255) / 255.0F;
+        float b = (float)(color & 255) / 255.0F;
         Tessellator var9 = Tessellator.instance;
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glColor4f(var6, var7, var8, var10);
+        GL11.glColor4f(r, g, b, a);
         var9.startDrawingQuads();
         var9.addVertex((double)x1, (double)y2, 0.0D);
         var9.addVertex((double)x2, (double)y2, 0.0D);

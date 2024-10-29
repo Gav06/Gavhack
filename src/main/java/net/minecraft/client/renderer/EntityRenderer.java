@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.RenderWorldLastEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -22,7 +25,7 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityRainFX;
 import net.minecraft.client.particle.EntitySmokeFX;
 import net.minecraft.client.renderer.culling.ClippingHelperImpl;
-import net.minecraft.client.renderer.culling.Frustrum;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -1470,12 +1473,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         this.mc.mcProfiler.endStartSection("pick");
         this.getMouseOver(par1);
-        EntityLivingBase var4 = this.mc.renderViewEntity;
+        EntityLivingBase viewEntity = this.mc.renderViewEntity;
         RenderGlobal var5 = this.mc.renderGlobal;
         EffectRenderer var6 = this.mc.effectRenderer;
-        double var7 = var4.lastTickPosX + (var4.posX - var4.lastTickPosX) * (double)par1;
-        double var9 = var4.lastTickPosY + (var4.posY - var4.lastTickPosY) * (double)par1;
-        double var11 = var4.lastTickPosZ + (var4.posZ - var4.lastTickPosZ) * (double)par1;
+        double var7 = viewEntity.lastTickPosX + (viewEntity.posX - viewEntity.lastTickPosX) * (double)par1;
+        double var9 = viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * (double)par1;
+        double var11 = viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * (double)par1;
         this.mc.mcProfiler.endStartSection("center");
 
         for (int var13 = 0; var13 < 2; ++var13)
@@ -1525,7 +1528,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             }
 
             this.mc.mcProfiler.endStartSection("culling");
-            Frustrum var14 = new Frustrum();
+            Frustum var14 = new Frustum();
             var14.setPosition(var7, var9, var11);
             this.mc.renderGlobal.clipRenderersByFrustum(var14, par1);
 
@@ -1533,7 +1536,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 this.mc.mcProfiler.endStartSection("updatechunks");
 
-                while (!this.mc.renderGlobal.updateRenderers(var4, false) && par2 != 0L)
+                while (!this.mc.renderGlobal.updateRenderers(viewEntity, false) && par2 != 0L)
                 {
                     long var17 = par2 - System.nanoTime();
 
@@ -1544,7 +1547,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
             }
 
-            if (var4.posY < 128.0D)
+            if (viewEntity.posY < 128.0D)
             {
                 this.renderCloudsCheck(var5, par1);
             }
@@ -1557,7 +1560,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("terrain");
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glPushMatrix();
-            var5.sortAndRender(var4, 0, (double)par1);
+            var5.sortAndRender(viewEntity, 0, (double)par1);
             GL11.glShadeModel(GL11.GL_FLAT);
             boolean hasForge = Reflector.ForgeHooksClient.exists();
             EntityPlayer var18;
@@ -1575,7 +1578,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(0)});
                 }
 
-                var5.renderEntities(var4, var14, par1);
+                var5.renderEntities(viewEntity, var14, par1);
 
                 if (hasForge)
                 {
@@ -1588,9 +1591,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 GL11.glPopMatrix();
                 GL11.glPushMatrix();
 
-                if (this.mc.objectMouseOver != null && var4.isInsideOfMaterial(Material.water) && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI)
+                if (this.mc.objectMouseOver != null && viewEntity.isInsideOfMaterial(Material.water) && viewEntity instanceof EntityPlayer && !this.mc.gameSettings.hideGUI)
                 {
-                    var18 = (EntityPlayer)var4;
+                    var18 = (EntityPlayer)viewEntity;
                     GL11.glDisable(GL11.GL_ALPHA_TEST);
                     this.mc.mcProfiler.endStartSection("outline");
 
@@ -1605,9 +1608,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glPopMatrix();
 
-            if (this.cameraZoom == 1.0D && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !var4.isInsideOfMaterial(Material.water))
+            if (this.cameraZoom == 1.0D && viewEntity instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !viewEntity.isInsideOfMaterial(Material.water))
             {
-                var18 = (EntityPlayer)var4;
+                var18 = (EntityPlayer)viewEntity;
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 this.mc.mcProfiler.endStartSection("outline");
 
@@ -1621,7 +1624,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("destroyProgress");
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(770, 1, 1, 0);
-            var5.drawBlockDamageTexture(Tessellator.instance, var4, par1);
+            var5.drawBlockDamageTexture(Tessellator.instance, viewEntity, par1);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glDepthMask(false);
             GL11.glEnable(GL11.GL_CULL_FACE);
@@ -1684,7 +1687,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 RenderHelper.enableStandardItemLighting();
                 this.mc.mcProfiler.endStartSection("entities");
                 Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(1)});
-                this.mc.renderGlobal.renderEntities(var4, var14, par1);
+                this.mc.renderGlobal.renderEntities(viewEntity, var14, par1);
                 Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(-1)});
                 RenderHelper.disableStandardItemLighting();
             }
@@ -1694,7 +1697,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_FOG);
 
-            if (var4.posY >= 128.0D + (double)(this.mc.gameSettings.ofCloudsHeight * 128.0F))
+            if (viewEntity.posY >= 128.0D + (double)(this.mc.gameSettings.ofCloudsHeight * 128.0F))
             {
                 this.mc.mcProfiler.endStartSection("aboveClouds");
                 this.renderCloudsCheck(var5, par1);
@@ -1703,11 +1706,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.enableLightmap((double)par1);
             this.mc.mcProfiler.endStartSection("litParticles");
             RenderHelper.enableStandardItemLighting();
-            var6.renderLitParticles(var4, par1);
+            var6.renderLitParticles(viewEntity, par1);
             RenderHelper.disableStandardItemLighting();
             this.setupFog(0, par1);
             this.mc.mcProfiler.endStartSection("particles");
-            var6.renderParticles(var4, par1);
+            var6.renderParticles(viewEntity, par1);
             this.disableLightmap((double)par1);
 
             if (hasForge)
@@ -1715,6 +1718,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.mc.mcProfiler.endStartSection("FRenderLast");
                 Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {var5, Float.valueOf(par1)});
             }
+
+            this.mc.mcProfiler.endStartSection("gavhack");
+
+            EventBus.INSTANCE.post(new RenderWorldLastEvent(par1));
+
 
             this.mc.mcProfiler.endStartSection("hand");
             boolean renderFirstPersonHand = Reflector.callBoolean(Reflector.ForgeHooksClient_renderFirstPersonHand, new Object[] {this.mc.renderGlobal, Float.valueOf(par1), Integer.valueOf(var13)});
@@ -1730,8 +1738,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.mc.mcProfiler.endSection();
                 return;
             }
-        }
 
+        }
         GL11.glColorMask(true, true, true, false);
         this.mc.mcProfiler.endSection();
     }
