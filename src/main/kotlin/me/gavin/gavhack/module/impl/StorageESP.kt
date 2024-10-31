@@ -9,6 +9,7 @@ import me.gavin.gavhack.module.Module
 import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.entity.RenderManager
+import net.minecraft.tileentity.TileEntityChest
 import net.minecraft.util.AxisAlignedBB
 import org.lwjgl.opengl.GL11
 
@@ -26,8 +27,13 @@ object StorageESP: Module("StorageESP", "See chests through walls", ModCategory.
         )
 
         for (tile in mc.renderGlobal.tileEntities) {
-            val aabb = mc.theWorld.getBlock(tile.x, tile.y, tile.z)
-                    .getSelectedBoundingBoxFromPool(mc.theWorld, tile.x, tile.y, tile.z)
+            if (tile !is TileEntityChest)
+                continue
+
+            val aabb = AxisAlignedBB.getBoundingBox(
+                    tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble(),
+                    tile.x + 1.0, tile.y + 1.0, tile.z + 1.0
+            )
 
 
             if (camera.isBoundingBoxInFrustum(aabb)) {
@@ -40,6 +46,12 @@ object StorageESP: Module("StorageESP", "See chests through walls", ModCategory.
                 GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
                 GL11.glLineWidth(1.0f)
                 GL11.glTranslated(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ)
+
+                // field_145990_j double chest on the east / west axis
+                // field_145992_i double chest on the north / south axis
+
+                // field l
+                // field k
 
                 RenderGlobal.drawOutlinedBoundingBox(aabb, 0xaaf99c04.toInt())
 
