@@ -12,6 +12,7 @@ import java.util.concurrent.Callable;
 
 import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.RenderWorldLastEvent;
+import me.gavin.gavhack.module.impl.NoRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -862,7 +863,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         var4 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * par1;
 
-        if (var4 > 0.0F)
+        boolean cancelNausea = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getNausea().getValue();
+
+        if (var4 > 0.0F && !cancelNausea)
         {
             byte var7 = 20;
 

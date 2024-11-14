@@ -16,7 +16,7 @@ object ModuleManager {
         ConsoleModule,
         KillAura,
         StorageESP,
-        TestModule("Test Module")
+        NoRender
     )
 
     /* Sorted by length of module name */

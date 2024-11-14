@@ -8,6 +8,7 @@ import java.util.Random;
 
 import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.RenderOverlayEvent;
+import me.gavin.gavhack.module.impl.NoRender;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -914,6 +915,9 @@ public class GuiIngame extends Gui
 
     private void func_130015_b(float par1, int par2, int par3)
     {
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getPortal().getValue())
+            return;
+
         if (par1 < 1.0F)
         {
             par1 *= par1;

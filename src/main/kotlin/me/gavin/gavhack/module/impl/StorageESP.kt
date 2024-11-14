@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.tileentity.TileEntityChest
+import net.minecraft.tileentity.TileEntityEnderChest
 import net.minecraft.util.AxisAlignedBB
 import org.lwjgl.opengl.GL11
 
@@ -26,6 +27,16 @@ object StorageESP: Module("StorageESP", "See chests through walls", ModCategory.
                 viewPos.x, viewPos.y, viewPos.z
         )
 
+        GL11.glPushMatrix()
+        GL11.glDisable(GL11.GL_DEPTH_TEST)
+        GL11.glDisable(GL11.GL_TEXTURE_2D)
+        GL11.glEnable(GL11.GL_BLEND)
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+        GL11.glEnable(GL11.GL_LINE_SMOOTH)
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
+        GL11.glLineWidth(1.0f)
+        GL11.glTranslated(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ)
+
         for (tile in mc.renderGlobal.tileEntities) {
             if (tile !is TileEntityChest)
                 continue
@@ -36,33 +47,18 @@ object StorageESP: Module("StorageESP", "See chests through walls", ModCategory.
             )
 
 
-            if (camera.isBoundingBoxInFrustum(aabb)) {
-                GL11.glPushMatrix()
-                GL11.glDisable(GL11.GL_DEPTH_TEST)
-                GL11.glDisable(GL11.GL_TEXTURE_2D)
-                GL11.glEnable(GL11.GL_BLEND)
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-                GL11.glEnable(GL11.GL_LINE_SMOOTH)
-                GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
-                GL11.glLineWidth(1.0f)
-                GL11.glTranslated(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ)
+            if (!camera.isBoundingBoxInFrustum(aabb))
+                continue
 
-                // field_145990_j double chest on the east / west axis
-                // field_145992_i double chest on the north / south axis
-
-                // field l
-                // field k
-
-                RenderGlobal.drawOutlinedBoundingBox(aabb, 0xaaf99c04.toInt())
-
-                GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_DONT_CARE)
-                GL11.glDisable(GL11.GL_LINE_SMOOTH)
-                GL11.glDisable(GL11.GL_BLEND)
-                GL11.glEnable(GL11.GL_TEXTURE_2D)
-                GL11.glEnable(GL11.GL_DEPTH_TEST)
-                GL11.glPopMatrix()
-            }
+            RenderGlobal.drawOutlinedBoundingBox(aabb, 0xaaf99c04.toInt())
         }
+
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_DONT_CARE)
+        GL11.glDisable(GL11.GL_LINE_SMOOTH)
+        GL11.glDisable(GL11.GL_BLEND)
+        GL11.glEnable(GL11.GL_TEXTURE_2D)
+        GL11.glEnable(GL11.GL_DEPTH_TEST)
+        GL11.glPopMatrix()
     }
 
     init {
