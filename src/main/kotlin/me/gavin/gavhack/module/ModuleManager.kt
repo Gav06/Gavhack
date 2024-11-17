@@ -8,15 +8,16 @@ import net.minecraft.client.Minecraft
 
 object ModuleManager {
 
-    /* In alphabetic order by default */
+    /* Gets sorted to alphabetic order by default */
     val mods : Array<Module> = arrayOf(
-        Fullbright,
-        GuiModule,
-        HudModule,
-        ConsoleModule,
-        KillAura,
-        StorageESP,
-        NoRender
+            Fullbright,
+            GuiModule,
+            HudModule,
+            ConsoleModule,
+            KillAura,
+            StorageESP,
+            NoRender,
+            ESP
     )
 
     /* Sorted by length of module name */

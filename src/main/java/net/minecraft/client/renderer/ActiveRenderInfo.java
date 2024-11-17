@@ -85,13 +85,13 @@ public class ActiveRenderInfo
      */
     public static Vec3 projectViewFromEntity(EntityLivingBase par0EntityLivingBase, double par1)
     {
-        double var3 = par0EntityLivingBase.prevPosX + (par0EntityLivingBase.posX - par0EntityLivingBase.prevPosX) * par1;
-        double var5 = par0EntityLivingBase.prevPosY + (par0EntityLivingBase.posY - par0EntityLivingBase.prevPosY) * par1 + (double)par0EntityLivingBase.getEyeHeight();
-        double var7 = par0EntityLivingBase.prevPosZ + (par0EntityLivingBase.posZ - par0EntityLivingBase.prevPosZ) * par1;
-        double var9 = var3 + (double)(objectX * 1.0F);
-        double var11 = var5 + (double)(objectY * 1.0F);
-        double var13 = var7 + (double)(objectZ * 1.0F);
-        return par0EntityLivingBase.worldObj.getWorldVec3Pool().getVecFromPool(var9, var11, var13);
+        double lerpX = par0EntityLivingBase.prevPosX + (par0EntityLivingBase.posX - par0EntityLivingBase.prevPosX) * par1;
+        double lerpY = par0EntityLivingBase.prevPosY + (par0EntityLivingBase.posY - par0EntityLivingBase.prevPosY) * par1 + (double)par0EntityLivingBase.getEyeHeight();
+        double lerpZ = par0EntityLivingBase.prevPosZ + (par0EntityLivingBase.posZ - par0EntityLivingBase.prevPosZ) * par1;
+        double dX = lerpX + (double)(objectX);
+        double dY = lerpY + (double)(objectY);
+        double dZ = lerpZ + (double)(objectZ);
+        return Vec3.createVectorHelper(dX, dY, dZ);
     }
 
     public static Block getBlockAtEntityViewpoint(World p_151460_0_, EntityLivingBase p_151460_1_, float p_151460_2_)

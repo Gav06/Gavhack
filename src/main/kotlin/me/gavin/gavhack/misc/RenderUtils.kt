@@ -2,7 +2,9 @@ package me.gavin.gavhack.misc
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.Vec3
 import org.lwjgl.opengl.GL11
 
 object RenderUtils {
@@ -23,5 +25,9 @@ object RenderUtils {
         val scissorHeight = (displayH - (y2 - y1)) * scaleFactor
 
         GL11.glScissor(scissorX, scissorY, scissorWidth, scissorHeight)
+    }
+
+    fun getRenderPos(): Vec3 {
+        return Vec3.createVectorHelper(RenderManager.renderPosX, RenderManager.renderPosY, RenderManager.renderPosZ)
     }
 }

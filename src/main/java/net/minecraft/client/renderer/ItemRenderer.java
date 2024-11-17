@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import me.gavin.gavhack.module.impl.NoRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -605,6 +606,9 @@ public class ItemRenderer
      */
     private void renderWarpedTextureOverlay(float par1)
     {
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getWater().getValue())
+            return;
+
         this.mc.getTextureManager().bindTexture(RES_UNDERWATER_OVERLAY);
         Tessellator var2 = Tessellator.instance;
         float var3 = this.mc.thePlayer.getBrightness(par1);
