@@ -25,16 +25,16 @@ public class ActiveRenderInfo
     public static float objectZ;
 
     /** The current GL viewport */
-    private static IntBuffer viewport = GLAllocation.createDirectIntBuffer(16);
+    public static IntBuffer viewport = GLAllocation.createDirectIntBuffer(16);
 
     /** The current GL modelview matrix */
-    private static FloatBuffer modelview = GLAllocation.createDirectFloatBuffer(16);
+    public static FloatBuffer modelview = GLAllocation.createDirectFloatBuffer(16);
 
     /** The current GL projection matrix */
-    private static FloatBuffer projection = GLAllocation.createDirectFloatBuffer(16);
+    public static FloatBuffer projection = GLAllocation.createDirectFloatBuffer(16);
 
     /** The computed view object coordinates */
-    private static FloatBuffer objectCoords = GLAllocation.createDirectFloatBuffer(3);
+    public static FloatBuffer objectCoords = GLAllocation.createDirectFloatBuffer(3);
 
     /** The X component of the entity's yaw rotation */
     public static float rotationX;
