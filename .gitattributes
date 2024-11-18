@@ -7,3 +7,6 @@
 # These are Windows script files and should use crlf
 *.bat           text eol=crlf
 
+# Ignore the java code because it all belongs to Mojang and I didn't write it.
+# so I don't want it counted.
+src/main/java/* linguist-vendored
