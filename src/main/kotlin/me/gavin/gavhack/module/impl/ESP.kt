@@ -39,7 +39,8 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         val y = (mc.displayHeight - screenPos.get(1)) / it.res.scaleFactor
         val z = screenPos.get(2)
         if (x < mc.displayWidth && x > 0 && y < mc.displayHeight && y > 0 && z < 1) {
-            it.font.drawStringWithShadow("${x.toInt()} ${y.toInt()} ${z.toInt()}", x.toInt(), y.toInt(), -1)
+            val str = "${x.toInt()} ${y.toInt()} ${z.toInt()}"
+            it.font.drawStringWithShadow(str, x.toInt() - (it.font.getStringWidth(str) / 2), y.toInt() - (it.font.FONT_HEIGHT / 2), -1)
         }
     }
 
