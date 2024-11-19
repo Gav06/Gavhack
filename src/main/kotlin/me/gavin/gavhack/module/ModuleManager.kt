@@ -17,7 +17,9 @@ object ModuleManager {
             KillAura,
             StorageESP,
             NoRender,
-            ESP
+            ESP,
+            FastPlace,
+            StrongholdFinder
     )
 
     /* Sorted by length of module name */

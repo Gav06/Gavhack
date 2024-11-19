@@ -19,8 +19,6 @@ object StorageESP: Module("StorageESP", "See chests through walls", ModCategory.
     val camera = Frustum()
 
     private val renderListener = Listener<RenderWorldLastEvent> { (it as RenderWorldLastEvent)
-        if (!isEnabled())
-            return@Listener
 
         val viewPos = MathUtils.lerpEntity(mc.renderViewEntity, it.partialTicks)
         camera.setPosition(
@@ -62,6 +60,6 @@ object StorageESP: Module("StorageESP", "See chests through walls", ModCategory.
     }
 
     init {
-        EventBus.addListener(renderListener, RenderWorldLastEvent::class)
+        addEventListener(renderListener, RenderWorldLastEvent::class)
     }
 }

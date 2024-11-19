@@ -2,8 +2,12 @@ package me.gavin.gavhack.module
 
 import com.google.gson.JsonObject
 import me.gavin.gavhack.config.IConfigurable
+import me.gavin.gavhack.event.Event
+import me.gavin.gavhack.event.EventBus
+import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.module.setting.ModSetting
 import net.minecraft.client.Minecraft
+import kotlin.reflect.KClass
 
 abstract class Module(
     val name: String,
@@ -16,6 +20,7 @@ abstract class Module(
 
     protected val mc: Minecraft = Minecraft.getMinecraft()
 
+    private val listeners = HashMap<Listener<Event>, KClass<out Event>>()
     private var enabled = false
 
     protected open fun onEnable() { }
@@ -24,11 +29,19 @@ abstract class Module(
 
     fun enable() {
         enabled = true
+        for ((listener, clazz) in listeners) {
+            EventBus.addListener(listener, clazz)
+        }
+
         onEnable()
     }
 
     fun disable() {
         enabled = false
+        for ((listener, clazz) in listeners) {
+            EventBus.removeListener(listener, clazz)
+        }
+
         onDisable()
     }
 
@@ -51,5 +64,9 @@ abstract class Module(
     protected fun <T : ModSetting> addSetting(setting: T) : T{
         this.settings.add(setting)
         return setting
+    }
+
+    protected fun <T : Event> addEventListener(listener: Listener<T>, clazz: KClass<out T>) {
+        this.listeners[listener] = clazz
     }
 }

@@ -15,9 +15,6 @@ object KillAura: Module("KillAura", "Attack entities automatically", ModCategory
     private var lastAttack = 0L
 
     private val tickListener = Listener<PlayerLivingTickEvent> {
-        if (!isEnabled())
-            return@Listener
-
         if (target == null) {
             target = findTargetEntity()
         } else {
@@ -48,6 +45,6 @@ object KillAura: Module("KillAura", "Attack entities automatically", ModCategory
     }
 
     init {
-        EventBus.addListener(tickListener, PlayerLivingTickEvent::class)
+        addEventListener(tickListener, PlayerLivingTickEvent::class)
     }
 }

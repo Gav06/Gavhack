@@ -11,9 +11,6 @@ object Fullbright: Module("Fullbright", "Max brightness", ModCategory.RENDER) {
     private val lightmapCache = FloatArray(16)
 
     private val worldLoad = Listener<WorldLoadEvent> { (it as WorldLoadEvent)
-        if (!isEnabled())
-            return@Listener
-
         fillLightmap(it.worldClient.provider.lightBrightnessTable)
     }
 
@@ -43,6 +40,6 @@ object Fullbright: Module("Fullbright", "Max brightness", ModCategory.RENDER) {
     }
 
     init {
-        EventBus.addListener(worldLoad, WorldLoadEvent::class)
+        addEventListener(worldLoad, WorldLoadEvent::class)
     }
 }

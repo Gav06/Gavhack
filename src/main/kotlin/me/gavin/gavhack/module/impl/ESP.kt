@@ -1,6 +1,5 @@
 package me.gavin.gavhack.module.impl
 
-import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
 import me.gavin.gavhack.misc.MathUtils
@@ -9,17 +8,14 @@ import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.ToggleSetting
-import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.item.EntityEnderCrystal
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.monster.EntityMob
 import net.minecraft.entity.passive.EntityAnimal
-import net.minecraft.entity.passive.EntityPig
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
@@ -36,13 +32,12 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     private val frustum = Frustum()
 
     private val renderOverlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
-        if (!isEnabled())
-            return@Listener
 
         frustum.setPosition(mc.renderViewEntity.posX, mc.renderViewEntity.posY, mc.renderViewEntity.posZ)
 
         for (entity in mc.theWorld.loadedEntityList) {
             if (entity == mc.renderViewEntity
+                    || entity !is EntityLiving
                     || !frustum.isBoundingBoxInFrustum(entity.boundingBox)
                     || !entityCheck(entity))
                 continue
@@ -65,14 +60,14 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     }
 
     private fun entityCheck(entity: Entity): Boolean {
-        if (entity is EntityPlayer)
-            return players.value
+        return if (entity is EntityPlayer)
+            players.value
         else if (entity is EntityAnimal)
-            return passive.value
+            passive.value
         else if (entity is EntityMob)
-            return hostiles.value
+            hostiles.value
         else
-            return other.value
+            other.value
     }
     private fun getCornerPositions(e: Entity, partialTicks: Float, res: ScaledResolution): FloatArray? {
         // Start with +- 1.0f out of bounds
@@ -94,7 +89,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
             bb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY + 0.7f, bb.minZ, bb.maxX, bb.maxY, bb.maxZ)
         }
         // Expand more anyways
-        bb = bb.expand(0.15, 0.1, 0.15)
+        bb = bb.expand(0.05, 0.10, 0.05)
 
         // Every corner
         val corners = arrayOf(
@@ -129,7 +124,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     }
 
     init {
-        EventBus.addListener(renderOverlayEvent, RenderOverlayEvent::class)
+        addEventListener(renderOverlayEvent, RenderOverlayEvent::class)
     }
 
 }
