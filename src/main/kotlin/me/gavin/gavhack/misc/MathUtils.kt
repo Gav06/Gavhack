@@ -1,6 +1,7 @@
 package me.gavin.gavhack.misc
 
 import net.minecraft.entity.Entity
+import net.minecraft.util.Vec3
 import java.math.BigDecimal
 import java.math.RoundingMode
 import javax.vecmath.Vector3d
@@ -24,8 +25,8 @@ object MathUtils {
         return then + (now - then) * delta
     }
 
-    fun lerpEntity(e: Entity, d: Float): Vector3d {
-        return Vector3d(
+    fun lerpEntity(e: Entity, d: Float): Vec3 {
+        return Vec3.createVectorHelper(
                 lerpd(e.lastTickPosX, e.posX, d.toDouble()),
                 lerpd(e.lastTickPosY, e.posY, d.toDouble()),
                 lerpd(e.lastTickPosZ, e.posZ, d.toDouble())

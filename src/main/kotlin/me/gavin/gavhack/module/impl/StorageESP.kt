@@ -24,7 +24,7 @@ object StorageESP: Module("StorageESP", "See chests through walls", ModCategory.
 
         val viewPos = MathUtils.lerpEntity(mc.renderViewEntity, it.partialTicks)
         camera.setPosition(
-                viewPos.x, viewPos.y, viewPos.z
+                viewPos.xCoord, viewPos.yCoord, viewPos.zCoord
         )
 
         GL11.glPushMatrix()
