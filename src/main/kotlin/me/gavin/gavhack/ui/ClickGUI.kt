@@ -12,13 +12,16 @@ import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
+import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.ResourceLocation
+import java.util.concurrent.CopyOnWriteArrayList
 
 object ClickGUI: GuiScreen() {
 
     var previousGui: GuiScreen? = null
-    val windows = ArrayList<Window>()
+    val windows = CopyOnWriteArrayList<Window>()
 
     private var shouldOpenGui = false
 
@@ -35,8 +38,6 @@ object ClickGUI: GuiScreen() {
         if (mc.theWorld == null)
             drawDefaultBackground()
         else if (GuiModule.drawBackground.value) {
-            // set alpha bits to 0x30
-//            val rgba = (Gavhack.colorScheme.rgb) xor (0x30.inv() shl 24)
             val rgba = 0x30ffffff
             drawRect(0, 0, width, height, rgba)
         }
@@ -46,15 +47,39 @@ object ClickGUI: GuiScreen() {
             fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, height - 11, -1)
         }
 
-        for (comp in windows)
+        for (comp in windows.reversed())
             comp.onRender(mouseX, mouseY, partialTicks)
+
+        val res = ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight)
+
+        for (comp in windows) {
+            for (button in comp.components) {
+                if (!button.isInside(mouseX, mouseY))
+                    continue
+
+                val desc = button.module.desc
+                val width = mc.fontRenderer.getStringWidth(desc)
+                val textX = if (mouseX + width + 4 < res.scaledWidth) mouseX + 5 else mouseX - width - 4
+                drawRect(textX - 1, mouseY, textX + width + 1, mouseY + 10, 0x80000000.toInt())
+                mc.fontRenderer.drawString(desc, textX, mouseY + 1, -1)
+                return
+            }
+        }
     }
 
     override fun mouseClicked(mouseX: Int, mouseY: Int, button: Int) {
         super.mouseClicked(mouseX, mouseY, button)
 
         for (comp in windows) {
-            comp.onClick(mouseX, mouseY, button)
+            val fullRect = Rect(comp.x, comp.y, comp.w, comp.getRenderHeight())
+            if (fullRect.isInside(mouseX, mouseY)) {
+                comp.onClick(mouseX, mouseY, button)
+                // move it to front
+                // only possible because of CopyOnWriteArrayList
+                windows.remove(comp)
+                windows.add(0, comp)
+                break
+            }
         }
     }
 
@@ -74,10 +99,6 @@ object ClickGUI: GuiScreen() {
 
     override fun doesGuiPauseGame(): Boolean {
         return false
-    }
-
-    fun setGuiShouldOpen() {
-        shouldOpenGui = true
     }
 
     fun buttonClick() {

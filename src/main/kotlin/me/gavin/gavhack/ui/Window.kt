@@ -18,7 +18,7 @@ class Window(x: Int, y: Int, w: Int, h: Int,
     private val defaultHandleHeight = 16
 
     val handle = WindowHandle(x, y, w, defaultHandleHeight, this)
-    val components = ArrayList<GuiComponent>()
+    val components = ArrayList<WindowButton>()
     var open = true
 
     override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
@@ -41,13 +41,15 @@ class Window(x: Int, y: Int, w: Int, h: Int,
         }
     }
 
+    private var additionalHeight = 0
+
     override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) {
         handle.updateDragPosition(mouseX, mouseY)
         this.setPos(handle.x, handle.y)
         this.setSize(this.w, handle.h)
 
 
-        var additionalHeight = 0
+        additionalHeight = 0
         components.forEach {
             additionalHeight += it.getRenderHeight() + 1
         }
@@ -70,7 +72,7 @@ class Window(x: Int, y: Int, w: Int, h: Int,
         RenderUtils.scissorBox(left() - 1, top() - 1, right() + 1, scissorY2.roundToInt(), res)
 
 
-        Gui.drawRect(left() - 1, top() - 1, right() + 1, bottom() + 1 + additionalHeight, 0x80000000.toInt())
+        Gui.drawRect(left() - 1, top() - 1, right() + 1, bottom() + 1 + additionalHeight, 0xAA000000.toInt())
         handle.onRender(mouseX, mouseY, partialTicks)
 
 
@@ -85,6 +87,10 @@ class Window(x: Int, y: Int, w: Int, h: Int,
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST)
         GL11.glPopMatrix()
+    }
+
+    override fun getRenderHeight(): Int {
+        return additionalHeight + this.h
     }
 
     override fun keyTyped(keyChar: Char, keyCode: Int) {
