@@ -2,10 +2,11 @@ package me.gavin.gavhack.misc
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Vec3
-import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL11.*
 
 object RenderUtils {
 
@@ -24,7 +25,31 @@ object RenderUtils {
         val scissorWidth = (x2 - x1) * scaleFactor
         val scissorHeight = (displayH - (y2 - y1)) * scaleFactor
 
-        GL11.glScissor(scissorX, scissorY, scissorWidth, scissorHeight)
+        glScissor(scissorX, scissorY, scissorWidth, scissorHeight)
+    }
+
+    fun outlineRect(x1: Float, y1: Float, x2: Float, y2: Float, color: Int) {
+        val r = (color shr 16 and 255).toFloat() / 255.0f
+        val g = (color shr 8 and 255).toFloat() / 255.0f
+        val b = (color and 255).toFloat() / 255.0f
+        val a = (color shr 24 and 255).toFloat() / 255.0f
+
+
+        glDisable(GL_TEXTURE_2D)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glColor4f(r, g, b, a)
+        val t = Tessellator.instance
+
+        t.startDrawing(GL_LINE_LOOP)
+        t.addVertex(x1.toDouble(), y2.toDouble(), 0.0)
+        t.addVertex(x1.toDouble(), y1.toDouble(), 0.0)
+        t.addVertex(x2.toDouble(), y1.toDouble(), 0.0)
+        t.addVertex(x2.toDouble(), y2.toDouble(), 0.0)
+        t.draw()
+
+        glDisable(GL_BLEND)
+        glEnable(GL_TEXTURE_2D)
     }
 
     fun getRenderPos(): Vec3 {
