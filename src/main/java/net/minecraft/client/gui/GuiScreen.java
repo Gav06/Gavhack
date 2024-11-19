@@ -145,25 +145,21 @@ public class GuiScreen extends Gui
         this.func_146283_a(Arrays.asList(new String[] {p_146279_1_}), p_146279_2_, p_146279_3_);
     }
 
-    protected void func_146283_a(List p_146283_1_, int p_146283_2_, int p_146283_3_)
+    protected void func_146283_a(List<String> list, int p_146283_2_, int p_146283_3_)
     {
-        if (!p_146283_1_.isEmpty())
+        if (!list.isEmpty())
         {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             RenderHelper.disableStandardItemLighting();
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            int var4 = 0;
-            Iterator var5 = p_146283_1_.iterator();
+            int n = 0;
 
-            while (var5.hasNext())
-            {
-                String var6 = (String)var5.next();
-                int var7 = this.fontRendererObj.getStringWidth(var6);
+            for (String str : list) {
+                int w = this.fontRendererObj.getStringWidth(str);
 
-                if (var7 > var4)
-                {
-                    var4 = var7;
+                if (w > n) {
+                    n = w;
                 }
             }
 
@@ -171,14 +167,14 @@ public class GuiScreen extends Gui
             int var15 = p_146283_3_ - 12;
             int var8 = 8;
 
-            if (p_146283_1_.size() > 1)
+            if (list.size() > 1)
             {
-                var8 += 2 + (p_146283_1_.size() - 1) * 10;
+                var8 += 2 + (list.size() - 1) * 10;
             }
 
-            if (var14 + var4 > this.width)
+            if (var14 + n > this.width)
             {
-                var14 -= 28 + var4;
+                var14 -= 28 + n;
             }
 
             if (var15 + var8 + 6 > this.height)
@@ -189,21 +185,21 @@ public class GuiScreen extends Gui
             this.zLevel = 300.0F;
             itemRender.zLevel = 300.0F;
             int var9 = -267386864;
-            this.drawGradientRect(var14 - 3, var15 - 4, var14 + var4 + 3, var15 - 3, var9, var9);
-            this.drawGradientRect(var14 - 3, var15 + var8 + 3, var14 + var4 + 3, var15 + var8 + 4, var9, var9);
-            this.drawGradientRect(var14 - 3, var15 - 3, var14 + var4 + 3, var15 + var8 + 3, var9, var9);
+            this.drawGradientRect(var14 - 3, var15 - 4, var14 + n + 3, var15 - 3, var9, var9);
+            this.drawGradientRect(var14 - 3, var15 + var8 + 3, var14 + n + 3, var15 + var8 + 4, var9, var9);
+            this.drawGradientRect(var14 - 3, var15 - 3, var14 + n + 3, var15 + var8 + 3, var9, var9);
             this.drawGradientRect(var14 - 4, var15 - 3, var14 - 3, var15 + var8 + 3, var9, var9);
-            this.drawGradientRect(var14 + var4 + 3, var15 - 3, var14 + var4 + 4, var15 + var8 + 3, var9, var9);
+            this.drawGradientRect(var14 + n + 3, var15 - 3, var14 + n + 4, var15 + var8 + 3, var9, var9);
             int var10 = 1347420415;
             int var11 = (var10 & 16711422) >> 1 | var10 & -16777216;
             this.drawGradientRect(var14 - 3, var15 - 3 + 1, var14 - 3 + 1, var15 + var8 + 3 - 1, var10, var11);
-            this.drawGradientRect(var14 + var4 + 2, var15 - 3 + 1, var14 + var4 + 3, var15 + var8 + 3 - 1, var10, var11);
-            this.drawGradientRect(var14 - 3, var15 - 3, var14 + var4 + 3, var15 - 3 + 1, var10, var10);
-            this.drawGradientRect(var14 - 3, var15 + var8 + 2, var14 + var4 + 3, var15 + var8 + 3, var11, var11);
+            this.drawGradientRect(var14 + n + 2, var15 - 3 + 1, var14 + n + 3, var15 + var8 + 3 - 1, var10, var11);
+            this.drawGradientRect(var14 - 3, var15 - 3, var14 + n + 3, var15 - 3 + 1, var10, var10);
+            this.drawGradientRect(var14 - 3, var15 + var8 + 2, var14 + n + 3, var15 + var8 + 3, var11, var11);
 
-            for (int var12 = 0; var12 < p_146283_1_.size(); ++var12)
+            for (int var12 = 0; var12 < list.size(); ++var12)
             {
-                String var13 = (String)p_146283_1_.get(var12);
+                String var13 = (String)list.get(var12);
                 this.fontRendererObj.drawStringWithShadow(var13, var14, var15, -1);
 
                 if (var12 == 0)

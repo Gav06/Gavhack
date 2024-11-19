@@ -27,7 +27,7 @@ object Gavhack {
 
         // Disable JNDI lookups (no more Log4Shell)
         System.setProperty("log4j2.formatMsgNoLookups", "true")
-        log.info("JNDI lookups disabled")
+        log.info("Log4J JNDI lookups disabled")
 
         ModuleManager
         log.info("Modules initialized")

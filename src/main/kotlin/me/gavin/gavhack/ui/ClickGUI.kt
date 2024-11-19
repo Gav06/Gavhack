@@ -50,18 +50,24 @@ object ClickGUI: GuiScreen() {
         for (comp in windows.reversed())
             comp.onRender(mouseX, mouseY, partialTicks)
 
+
+        // Draw le epic descriptions
+        
         val res = ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight)
 
         for (comp in windows) {
+            if (comp.isInside(mouseX, mouseY))
+                return
+
             for (button in comp.components) {
                 if (!button.isInside(mouseX, mouseY))
                     continue
 
                 val desc = button.module.desc
                 val width = mc.fontRenderer.getStringWidth(desc)
-                val textX = if (mouseX + width + 4 < res.scaledWidth) mouseX + 5 else mouseX - width - 4
-                drawRect(textX - 1, mouseY, textX + width + 1, mouseY + 10, 0x80000000.toInt())
-                mc.fontRenderer.drawString(desc, textX, mouseY + 1, -1)
+                val textX = if (mouseX + width + 8 < res.scaledWidth) (mouseX + 4) else (mouseX - width - 10)
+
+                this.func_146283_a(listOf(desc), textX, mouseY + 5)
                 return
             }
         }
