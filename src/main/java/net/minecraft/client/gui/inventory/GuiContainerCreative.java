@@ -740,7 +740,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
         if (var4 == CreativeTabs.tabInventory)
         {
-            GuiInventory.func_147046_a(this.field_147003_i + 43, this.field_147009_r + 45, 20, (float)(this.field_147003_i + 43 - p_146976_2_), (float)(this.field_147009_r + 45 - 30 - p_146976_3_), this.mc.thePlayer);
+            GuiInventory.drawEntityInGui(this.field_147003_i + 43, this.field_147009_r + 45, 20, (float)(this.field_147003_i + 43 - p_146976_2_), (float)(this.field_147009_r + 45 - 30 - p_146976_3_), this.mc.thePlayer);
         }
     }
 

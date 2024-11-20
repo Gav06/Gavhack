@@ -30,29 +30,32 @@ object StorageESP: Module("StorageESP", "See chests through walls", ModCategory.
         GL11.glDisable(GL11.GL_TEXTURE_2D)
         GL11.glEnable(GL11.GL_BLEND)
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-        GL11.glEnable(GL11.GL_LINE_SMOOTH)
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
+//        GL11.glEnable(GL11.GL_LINE_SMOOTH)
+//        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST)
         GL11.glLineWidth(1.0f)
         GL11.glTranslated(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ)
 
         for (tile in mc.renderGlobal.tileEntities) {
-            if (tile !is TileEntityChest)
-                continue
+            if (tile is TileEntityEnderChest || tile is TileEntityChest) {
 
-            val aabb = AxisAlignedBB.getBoundingBox(
-                    tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble(),
-                    tile.x + 1.0, tile.y + 1.0, tile.z + 1.0
-            )
+                val color = if (tile is TileEntityChest) 0xaaf99c04.toInt() else 0xaa7443f9.toInt()
 
 
-            if (!camera.isBoundingBoxInFrustum(aabb))
-                continue
+                val aabb = AxisAlignedBB.getBoundingBox(
+                        tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble(),
+                        tile.x + 1.0, tile.y + 1.0, tile.z + 1.0
+                )
 
-            RenderGlobal.drawOutlinedBoundingBox(aabb, 0xaaf99c04.toInt())
+
+                if (!camera.isBoundingBoxInFrustum(aabb))
+                    continue
+
+                RenderGlobal.drawOutlinedBoundingBox(aabb, color)
+            }
         }
 
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_DONT_CARE)
-        GL11.glDisable(GL11.GL_LINE_SMOOTH)
+//        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_DONT_CARE)
+//        GL11.glDisable(GL11.GL_LINE_SMOOTH)
         GL11.glDisable(GL11.GL_BLEND)
         GL11.glEnable(GL11.GL_TEXTURE_2D)
         GL11.glEnable(GL11.GL_DEPTH_TEST)

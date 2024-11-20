@@ -52,22 +52,17 @@ object ClickGUI: GuiScreen() {
 
 
         // Draw le epic descriptions
-        
-        val res = ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight)
 
         for (comp in windows) {
             if (comp.isInside(mouseX, mouseY))
-                return
+                break
 
             for (button in comp.components) {
                 if (!button.isInside(mouseX, mouseY))
                     continue
 
                 val desc = button.module.desc
-                val width = mc.fontRenderer.getStringWidth(desc)
-                val textX = if (mouseX + width + 8 < res.scaledWidth) (mouseX + 4) else (mouseX - width - 10)
-
-                this.func_146283_a(listOf(desc), textX, mouseY + 5)
+                this.func_146283_a(listOf(desc), mouseX + 5, mouseY + 5)
                 return
             }
         }

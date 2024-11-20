@@ -60,4 +60,8 @@ object Utils {
     }
 
     fun easeInSine(x: Float) : Float = 1f - cos((x * Math.PI) / 2f).toFloat()
+
+    fun getRainbow(ms: Int, brightness: Float, saturation: Float, offset: Int = 0) : Int {
+        return 0
+    }
 }

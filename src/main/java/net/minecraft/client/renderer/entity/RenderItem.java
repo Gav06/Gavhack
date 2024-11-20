@@ -18,10 +18,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemCloth;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -454,6 +451,7 @@ public class RenderItem extends Render
                 this.renderIcon(par4, par5, var10, 16, 16);
             }
 
+            GL11.glDisable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_LIGHTING);
         }
@@ -540,6 +538,7 @@ public class RenderItem extends Render
             if (par3ItemStack.hasEffect())
             {
                 GL11.glDepthFunc(GL11.GL_EQUAL);
+
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDepthMask(false);
                 par2TextureManager.bindTexture(RES_ITEM_GLINT);
@@ -547,10 +546,14 @@ public class RenderItem extends Render
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);
                 this.renderGlint(par4 * 431278612 + par5 * 32178161, par4 - 2, par5 - 2, 20, 20);
+                GL11.glColor4f(1f, 1f, 1f, 1f);
                 GL11.glDepthMask(true);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
+                GL11.glDisable(GL11.GL_BLEND);
                 GL11.glEnable(GL11.GL_LIGHTING);
+
                 GL11.glDepthFunc(GL11.GL_LEQUAL);
+
             }
 
             this.zLevel -= 50.0F;
@@ -596,9 +599,11 @@ public class RenderItem extends Render
     {
         if (par3ItemStack != null)
         {
-            if (par3ItemStack.stackSize > 1 || par6Str != null)
+            if (par3ItemStack.stackSize != 1 || par6Str != null)
             {
-                String var7 = par6Str == null ? String.valueOf(par3ItemStack.stackSize) : par6Str;
+                String color = par3ItemStack.stackSize < 1 ? EnumChatFormatting.RED.toString() : "";
+
+                String var7 = (par6Str == null) ? (color + par3ItemStack.stackSize) : par6Str;
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_BLEND);
@@ -625,6 +630,8 @@ public class RenderItem extends Render
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
+                GL11.glEnable(GL11.GL_ALPHA_TEST);
+                GL11.glEnable(GL11.GL_BLEND);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             }
         }
