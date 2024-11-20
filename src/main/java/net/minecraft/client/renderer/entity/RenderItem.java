@@ -451,7 +451,7 @@ public class RenderItem extends Render
                 this.renderIcon(par4, par5, var10, 16, 16);
             }
 
-            GL11.glDisable(GL11.GL_BLEND);
+//            GL11.glDisable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_LIGHTING);
         }
