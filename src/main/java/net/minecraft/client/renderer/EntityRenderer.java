@@ -1523,6 +1523,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             }
 
             GL11.glEnable(GL11.GL_FOG);
+
             this.setupFog(1, par1);
 
             if (this.mc.gameSettings.ambientOcclusion != 0)
@@ -1558,6 +1559,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("prepareterrain");
             this.setupFog(0, par1);
             GL11.glEnable(GL11.GL_FOG);
+
             this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
             RenderHelper.disableStandardItemLighting();
             this.mc.mcProfiler.endStartSection("terrain");
@@ -1585,7 +1587,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                 if (hasForge)
                 {
-                    Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(-1)});
+                    Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, -1);
                 }
 
                 RenderHelper.disableStandardItemLighting();
@@ -2291,7 +2293,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GL11.glNormal3f(0.0F, -1.0F, 0.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             Block var5 = ActiveRenderInfo.getBlockAtEntityViewpoint(this.mc.theWorld, var3, par2);
-            Object event = Reflector.newInstance(Reflector.EntityViewRenderEvent_FogDensity_Constructor, new Object[] {this, var3, var5, Float.valueOf(par2), Float.valueOf(0.1F)});
+            Object event = Reflector.newInstance(Reflector.EntityViewRenderEvent_FogDensity_Constructor, this, var3, var5, Float.valueOf(par2), Float.valueOf(0.1F));
 
             if (Reflector.postForgeBusEvent(event))
             {
@@ -2302,7 +2304,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 float var6;
 
-                if (var3.isPotionActive(Potion.blindness))
+                boolean blindnessFlag = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getBlindness().getValue();
+                boolean liquidFlag = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getLiquidFog().getValue();
+
+                if (var3.isPotionActive(Potion.blindness) && !blindnessFlag)
                 {
                     var6 = 5.0F;
                     int var101 = var3.getActivePotionEffect(Potion.blindness).getDuration();
@@ -2335,7 +2340,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
                     GL11.glFogf(GL11.GL_FOG_DENSITY, 0.1F);
                 }
-                else if (var5.getMaterial() == Material.water)
+                else if (var5.getMaterial() == Material.water && !liquidFlag)
                 {
                     GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
 
@@ -2353,7 +2358,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                         GL11.glFogf(GL11.GL_FOG_DENSITY, 0.02F);
                     }
                 }
-                else if (var5.getMaterial() == Material.lava)
+                else if (var5.getMaterial() == Material.lava && !liquidFlag)
                 {
                     GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
                     GL11.glFogf(GL11.GL_FOG_DENSITY, 2.0F);

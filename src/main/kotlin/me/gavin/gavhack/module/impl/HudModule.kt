@@ -8,11 +8,12 @@ import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.gui.Gui
+import org.lwjgl.opengl.GL11
 
 object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
 
-    private val watermark = addSetting(ToggleSetting("Watermark", true))
-    private val modList = addSetting(ToggleSetting("ModList", true))
+    private val watermark = this.addSetting(ToggleSetting("Watermark", true))
+    private val modList = this.addSetting(ToggleSetting("ModList", true))
 
     private val overlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
         if (mc.gameSettings.showDebugInfo)
@@ -43,8 +44,8 @@ object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
     }
 
     init {
-        addEventListener(overlayEvent, RenderOverlayEvent::class)
+        this.addEventListener(overlayEvent, RenderOverlayEvent::class)
 
-        enable()
+        this.enable()
     }
 }

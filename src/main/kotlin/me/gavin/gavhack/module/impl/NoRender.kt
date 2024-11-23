@@ -6,8 +6,10 @@ import me.gavin.gavhack.module.setting.ToggleSetting
 
 object NoRender: Module("NoRender", "Prevent rendering certain annoyances", ModCategory.RENDER) {
 
-    val fog = addSetting(ToggleSetting("Fire", true))
     val portal = addSetting(ToggleSetting("Portal", true))
     val nausea = addSetting(ToggleSetting("Nausea", true))
-    val water = addSetting(ToggleSetting("WaterOverlay", true))
+    val blindness = addSetting(ToggleSetting("Blindness", true))
+    val water = addSetting(ToggleSetting("Water", true))
+    val fire = addSetting(ToggleSetting("Fire", true))
+    val liquidFog = addSetting(ToggleSetting("LiquidFog", true))
 }

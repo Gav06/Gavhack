@@ -52,6 +52,8 @@ object ClickGUI: GuiScreen() {
 
 
         // Draw le epic descriptions
+        if (!GuiModule.drawDesc.value)
+            return
 
         for (comp in windows) {
             if (comp.isInside(mouseX, mouseY))
