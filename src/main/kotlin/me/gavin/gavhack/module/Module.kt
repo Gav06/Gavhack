@@ -5,7 +5,10 @@ import me.gavin.gavhack.config.IConfigurable
 import me.gavin.gavhack.event.Event
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
-import me.gavin.gavhack.module.setting.ModSetting
+import me.gavin.gavhack.module.setting.EnumSetting
+import me.gavin.gavhack.module.setting.FloatSetting
+import me.gavin.gavhack.module.setting.Setting
+import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.Minecraft
 import kotlin.reflect.KClass
 
@@ -16,7 +19,7 @@ abstract class Module(
     var bind: Int = 0
 ): IConfigurable {
 
-    val settings = ArrayList<ModSetting>()
+    val settings = ArrayList<Setting>()
 
     protected val mc: Minecraft = Minecraft.getMinecraft()
 
@@ -26,6 +29,8 @@ abstract class Module(
     protected open fun onEnable() { }
 
     protected open fun onDisable() { }
+
+    open fun firstTimeSetup() { }
 
     fun enable() {
         enabled = true
@@ -54,14 +59,31 @@ abstract class Module(
     }
 
     override fun toJsonObj(): JsonObject {
-        TODO("Not yet implemented")
+        val jsonObj = JsonObject()
+        jsonObj.addProperty("name", this.name)
+        jsonObj.addProperty("enabled", this.isEnabled())
+        jsonObj.addProperty("bind", this.bind)
+
+        for (setting in settings) {
+            when (setting) {
+                is ToggleSetting -> jsonObj.addProperty(setting.name, setting.value)
+                is FloatSetting ->  jsonObj.addProperty(setting.name, setting.getValue())
+                is EnumSetting<*> -> jsonObj.addProperty(setting.name, setting.value.ordinal)
+            }
+        }
+
+        return jsonObj
     }
 
-    override fun fromJsonObj(json: JsonObject) {
-        TODO("Not yet implemented")
+    override fun fromJsonObj(jsonObj: JsonObject) {
+        if
     }
 
-    protected fun <T : ModSetting> addSetting(setting: T) : T{
+    override fun getConfigFileName(): String {
+        return this.name
+    }
+
+    protected fun <T : Setting> addSetting(setting: T) : T{
         this.settings.add(setting)
         return setting
     }

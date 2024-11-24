@@ -1,5 +1,6 @@
 package me.gavin.gavhack.module
 
+import me.gavin.gavhack.config.ConfigManager
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.KeyPressEvent
@@ -42,5 +43,8 @@ object ModuleManager {
         val font = Minecraft.getMinecraft().fontRenderer
         // Using the negative value so that our array is from longest to shortest
         modsSorted.sortBy { -font.getStringWidth(it.name) }
+
+        // Add modules to save/load configs
+        mods.forEach { ConfigManager.addConfig(it) }
     }
 }

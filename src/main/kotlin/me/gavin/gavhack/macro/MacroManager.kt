@@ -25,11 +25,15 @@ object MacroManager: IConfigurable {
         EventBus.addListener(keyListener, KeyPressEvent::class)
     }
 
+    override fun getConfigFileName(): String {
+        return "Macros"
+    }
+
     override fun toJsonObj(): JsonObject {
         TODO("Not yet implemented")
     }
 
-    override fun fromJsonObj(json: JsonObject) {
+    override fun fromJsonObj(jsonObj: JsonObject) {
         TODO("Not yet implemented")
     }
 

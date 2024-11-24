@@ -8,7 +8,7 @@ class FloatSetting(
     val minValue: Float,
     val maxValue: Float,
     val decimalPlaces: Int = 1
-): ModSetting(name)  {
+): Setting(name)  {
 
     /* Variable stays private so there is no chance of it accidentally going out of specified bounds */
     private var value = this.defaultValue

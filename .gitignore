@@ -34,6 +34,7 @@ run/saves
 run/logs
 run/resourcepacks
 
+
 # java
 
 hs_err_*.log
@@ -42,8 +43,9 @@ replay_*.log
 *.jfr
 run/logs/latest.log
 run/options.txt
-/run/screenshots
+run/screenshots
 run/optionsof.txt
-/run/crash-reports
+run/crash-reports
 /.kotlin
 run/servers.dat
+run/gavhack/*

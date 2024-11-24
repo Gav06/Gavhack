@@ -43,6 +43,9 @@ object Gavhack {
         ConfigManager
         log.info("Config initialized")
 
+        ConfigManager.loadConfigs()
+        log.info("Attempted to load configs")
+
         log.info("Completed $NAME initialization in ${System.currentTimeMillis() - startTime}ms")
     }
 }

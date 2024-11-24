@@ -3,7 +3,7 @@ package me.gavin.gavhack.module.setting
 class EnumSetting<T : Enum<T>>(
     name: String,
     private val defaultValue: T
-): ModSetting(name) {
+): Setting(name) {
     val values: Array<T> = defaultValue.javaClass.getEnumConstants()
 
     var value: T = defaultValue

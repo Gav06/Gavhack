@@ -2304,8 +2304,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 float var6;
 
-                boolean blindnessFlag = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getBlindness().getValue();
-                boolean liquidFlag = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getLiquidFog().getValue();
+                final boolean blindnessFlag = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getBlindness().getValue();
+                final boolean liquidFlag = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getLiquidFog().getValue();
 
                 if (var3.isPotionActive(Potion.blindness) && !blindnessFlag)
                 {

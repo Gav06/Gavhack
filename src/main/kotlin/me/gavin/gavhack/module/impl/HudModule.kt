@@ -8,7 +8,6 @@ import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.gui.Gui
-import org.lwjgl.opengl.GL11
 
 object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
 
@@ -45,7 +44,9 @@ object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
 
     init {
         this.addEventListener(overlayEvent, RenderOverlayEvent::class)
+    }
 
+    override fun firstTimeSetup() {
         this.enable()
     }
 }
