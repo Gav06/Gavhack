@@ -16,7 +16,7 @@ object Gavhack {
     const val VERSION_MINOR = 0
     const val VERSION_STRING = "$VERSION_MAJOR.$VERSION_MINOR"
 
-    val log : Logger = LogManager.getFormatterLogger(NAME)
+    val log : Logger = LogManager.getLogger(NAME)
 
     var colorScheme : Color = Color(0x55FF55, false)
 

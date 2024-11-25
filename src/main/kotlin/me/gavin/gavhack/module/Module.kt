@@ -76,7 +76,7 @@ abstract class Module(
     }
 
     override fun fromJsonObj(jsonObj: JsonObject) {
-        if
+//        if
     }
 
     override fun getConfigFileName(): String {

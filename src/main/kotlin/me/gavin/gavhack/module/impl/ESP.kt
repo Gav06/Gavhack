@@ -36,39 +36,38 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         frustum.setPosition(mc.renderViewEntity.posX, mc.renderViewEntity.posY, mc.renderViewEntity.posZ)
 
         for (entity in mc.theWorld.loadedEntityList) {
-            if (entity == mc.renderViewEntity
-                    || entity !is EntityLiving
-                    || !frustum.isBoundingBoxInFrustum(entity.boundingBox)
-                    || !entityCheck(entity))
+            if (entity == mc.renderViewEntity || entity == null)
                 continue
 
+            if (!frustum.isBoundingBoxInFrustum(entity.boundingBox))
+                continue
 
+            if (!entityCheck(entity))
+                continue
 
             val corners = getCornerPositions(entity, it.partialTicks, it.res) ?: continue
             GL11.glLineWidth(2.0f)
             RenderUtils.outlineRect(corners[0], corners[1], corners[2], corners[3], 0xff000000.toInt())
             GL11.glLineWidth(1.0f)
             RenderUtils.outlineRect(corners[0], corners[1], corners[2], corners[3], 0xffff0000.toInt())
+
             GL11.glPushMatrix()
             GL11.glTranslatef(corners[2], corners[3] - 5f, 0.0f)
             GL11.glScalef(0.5f, 0.5f, 1.0f)
             it.font.drawStringWithShadow(entity.commandSenderName, 0, 0, -1)
-
             GL11.glPopMatrix()
         }
-
     }
 
     private fun entityCheck(entity: Entity): Boolean {
-        return if (entity is EntityPlayer)
-            players.value
-        else if (entity is EntityAnimal)
-            passive.value
-        else if (entity is EntityMob)
-            hostiles.value
-        else
-            other.value
+        return when (entity) {
+            is EntityPlayer -> players.value
+            is EntityAnimal -> passive.value
+            is EntityMob -> hostiles.value
+            else -> other.value
+        }
     }
+
     private fun getCornerPositions(e: Entity, partialTicks: Float, res: ScaledResolution): FloatArray? {
         // Start with +- 1.0f out of bounds
         var x = -1f
