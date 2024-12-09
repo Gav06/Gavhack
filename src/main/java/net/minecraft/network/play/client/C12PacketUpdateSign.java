@@ -75,7 +75,7 @@ public class C12PacketUpdateSign extends Packet
         return this.field_149592_c;
     }
 
-    public String[] func_149589_f()
+    public String[] text()
     {
         return this.field_149590_d;
     }

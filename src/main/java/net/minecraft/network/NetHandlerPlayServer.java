@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import me.gavin.gavhack.module.impl.SignColors;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.crash.CrashReport;
@@ -998,14 +1000,14 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer
         }
     }
 
-    public void processUpdateSign(C12PacketUpdateSign p_147343_1_)
+    public void processUpdateSign(C12PacketUpdateSign packetUpdateSign)
     {
         this.playerEntity.func_143004_u();
         WorldServer var2 = this.serverController.worldServerForDimension(this.playerEntity.dimension);
 
-        if (var2.blockExists(p_147343_1_.func_149588_c(), p_147343_1_.func_149586_d(), p_147343_1_.func_149585_e()))
+        if (var2.blockExists(packetUpdateSign.func_149588_c(), packetUpdateSign.func_149586_d(), packetUpdateSign.func_149585_e()))
         {
-            TileEntity var3 = var2.getTileEntity(p_147343_1_.func_149588_c(), p_147343_1_.func_149586_d(), p_147343_1_.func_149585_e());
+            TileEntity var3 = var2.getTileEntity(packetUpdateSign.func_149588_c(), packetUpdateSign.func_149586_d(), packetUpdateSign.func_149585_e());
 
             if (var3 instanceof TileEntitySign)
             {
@@ -1018,43 +1020,44 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer
                 }
             }
 
-            int var6;
-            int var8;
+            int charIndex;
+            int line;
 
-            for (var8 = 0; var8 < 4; ++var8)
+            for (line = 0; line < 4; ++line)
             {
-                boolean var5 = true;
+                boolean valid = true;
 
-                if (p_147343_1_.func_149589_f()[var8].length() > 15)
+                if (packetUpdateSign.text()[line].length() > 15)
                 {
-                    var5 = false;
+                    valid = false;
                 }
                 else
                 {
-                    for (var6 = 0; var6 < p_147343_1_.func_149589_f()[var8].length(); ++var6)
+                    for (charIndex = 0; charIndex < packetUpdateSign.text()[line].length(); ++charIndex)
                     {
-                        if (!ChatAllowedCharacters.isAllowedCharacter(p_147343_1_.func_149589_f()[var8].charAt(var6)))
+                        if (!ChatAllowedCharacters.isAllowedCharacter(packetUpdateSign.text()[line].charAt(charIndex)))
                         {
-                            var5 = false;
+                            if (!(packetUpdateSign.text()[line].charAt(charIndex) == '\u00a7' && SignColors.INSTANCE.isEnabled()))
+                                valid = false;
                         }
                     }
                 }
 
-                if (!var5)
+                if (!valid)
                 {
-                    p_147343_1_.func_149589_f()[var8] = "!?";
+                    packetUpdateSign.text()[line] = "!?";
                 }
             }
 
             if (var3 instanceof TileEntitySign)
             {
-                var8 = p_147343_1_.func_149588_c();
-                int var9 = p_147343_1_.func_149586_d();
-                var6 = p_147343_1_.func_149585_e();
+                line = packetUpdateSign.func_149588_c();
+                int var9 = packetUpdateSign.func_149586_d();
+                charIndex = packetUpdateSign.func_149585_e();
                 TileEntitySign var7 = (TileEntitySign)var3;
-                System.arraycopy(p_147343_1_.func_149589_f(), 0, var7.field_145915_a, 0, 4);
+                System.arraycopy(packetUpdateSign.text(), 0, var7.text, 0, 4);
                 var7.onInventoryChanged();
-                var2.func_147471_g(var8, var9, var6);
+                var2.func_147471_g(line, var9, charIndex);
             }
         }
     }

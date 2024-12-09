@@ -20,7 +20,8 @@ object ModuleManager {
             NoRender,
             ESP,
             FastPlace,
-            StrongholdFinder
+            StrongholdFinder,
+            SignColors
     )
 
     /* Sorted by length of module name */

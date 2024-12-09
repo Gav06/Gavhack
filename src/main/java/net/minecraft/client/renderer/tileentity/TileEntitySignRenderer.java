@@ -68,18 +68,18 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer
         GL11.glDepthMask(false);
         byte var13 = 0;
 
-        for (int var14 = 0; var14 < p_147512_1_.field_145915_a.length; ++var14)
+        for (int var14 = 0; var14 < p_147512_1_.text.length; ++var14)
         {
-            String var15 = p_147512_1_.field_145915_a[var14];
+            String var15 = p_147512_1_.text[var14];
 
             if (var14 == p_147512_1_.field_145918_i)
             {
                 var15 = "> " + var15 + " <";
-                var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - p_147512_1_.field_145915_a.length * 5, var13);
+                var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - p_147512_1_.text.length * 5, var13);
             }
             else
             {
-                var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - p_147512_1_.field_145915_a.length * 5, var13);
+                var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - p_147512_1_.text.length * 5, var13);
             }
         }
 
