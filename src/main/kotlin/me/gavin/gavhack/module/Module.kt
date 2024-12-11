@@ -1,6 +1,7 @@
 package me.gavin.gavhack.module
 
 import com.google.gson.JsonObject
+import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.config.IConfigurable
 import me.gavin.gavhack.event.Event
 import me.gavin.gavhack.event.EventBus
@@ -68,7 +69,7 @@ abstract class Module(
             when (setting) {
                 is ToggleSetting -> jsonObj.addProperty(setting.name, setting.value)
                 is FloatSetting ->  jsonObj.addProperty(setting.name, setting.getValue())
-                is EnumSetting<*> -> jsonObj.addProperty(setting.name, setting.value.ordinal)
+                is EnumSetting<*> -> jsonObj.addProperty(setting.name, setting.value)
             }
         }
 
@@ -76,7 +77,32 @@ abstract class Module(
     }
 
     override fun fromJsonObj(jsonObj: JsonObject) {
-//        if
+        if (!(jsonObj.has("name") && this.name == jsonObj["name"].asString))
+            return
+
+        if (jsonObj.has("enabled") && jsonObj["enabled"].asBoolean)
+            this.enable()
+
+        if (jsonObj.has("bind"))
+            this.bind = jsonObj["bind"].asInt
+
+        for (setting in settings) {
+            when (setting) {
+                is ToggleSetting ->
+                    if (jsonObj.has(setting.name)) {
+                        setting.value = jsonObj[setting.name].asBoolean
+                    }
+                is FloatSetting ->
+                    if (jsonObj.has(setting.name)) {
+                        setting.setValue(jsonObj[setting.name].asFloat)
+                    }
+                is EnumSetting<*> ->
+                    if (jsonObj.has(setting.name)) {
+                        val index = setting.indexOf(jsonObj[setting.name].asString)
+                        setting.value = index
+                    }
+            }
+        }
     }
 
     override fun getConfigFileName(): String {

@@ -42,7 +42,7 @@ object ConfigManager {
         val writer = FileWriter(configFile)
         gson.toJson(jsonObj, writer)
         writer.close()
-        println("Saved config for ${config.getConfigFileName()}")
+        println("Saved ${Gavhack.NAME} config for ${config.getConfigFileName()}")
     }
 
     private fun loadConfig(config: IConfigurable) {
@@ -57,8 +57,9 @@ object ConfigManager {
         try {
             val jsonObj = jsonElement.asJsonObject
             config.fromJsonObj(jsonObj)
-        } catch (e: IllegalStateException) {
+        } catch (e: Exception) {
             Gavhack.log.error("Unable to load config for: ${config.getConfigFileName()}")
+            e.printStackTrace()
         }
     }
 

@@ -6,34 +6,42 @@ class EnumSetting<T : Enum<T>>(
 ): Setting(name) {
     val values: Array<T> = defaultValue.javaClass.getEnumConstants()
 
-    var value: T = defaultValue
+    var value = indexOf(defaultValue)
 
     fun increment(): T {
-        value = if (value.ordinal == values.size - 1) {
+        value = indexOf( if (value == values.size - 1) {
             values[0]
         } else {
-            values[value.ordinal + 1]
-        }
+            values[value + 1]
+        })
 
-        return value
+        return values[value]
     }
 
     fun decrement(): T {
-        value = if (value.ordinal == 0) {
+        value = indexOf(if (value == 0) {
             values[values.size - 1]
         } else {
-            values[value.ordinal - 1]
-        }
-        return value
+            values[value - 1]
+        })
+
+        return values[value]
     }
 
     override fun reset() {
-        this.value = this.defaultValue
+        this.value = indexOf(this.defaultValue)
     }
 
     fun indexOf(t: T): Int {
         for (i in values.indices) {
-            if (values[i] === t) return i
+            if (values[i] == t) return i
+        }
+        return -1
+    }
+
+    fun indexOf(s: String): Int {
+        for (i in values.indices) {
+            if (values[i].name == s) return i
         }
         return -1
     }
