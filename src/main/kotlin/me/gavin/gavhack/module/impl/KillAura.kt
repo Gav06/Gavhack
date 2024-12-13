@@ -40,7 +40,7 @@ object KillAura: Module("KillAura", "Attack entities automatically", ModCategory
             .getOrNull()
     }
 
-    fun entityCheck(e: EntityLiving): Boolean {
+    private fun entityCheck(e: EntityLiving): Boolean {
         return e.isEntityAlive && e.getDistanceToEntity(mc.thePlayer) < 5f && !e.isDead && e.health > 0
     }
 
