@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
+import me.gavin.gavhack.module.impl.AntiWeather;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.BlockLiquid;
@@ -3843,6 +3845,9 @@ public abstract class World implements IBlockAccess
      */
     public float getRainStrength(float par1)
     {
+        if (AntiWeather.INSTANCE.isEnabled())
+            return 0f;
+
         return this.prevRainingStrength + (this.rainingStrength - this.prevRainingStrength) * par1;
     }
 
