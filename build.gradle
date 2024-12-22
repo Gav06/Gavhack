@@ -21,6 +21,10 @@ configurations {
 dependencies {
 	implementation(fileTree('libs'))
 
+	// Use newer Log4J because of the RCE (requires java 8 however)
+	shadow 'org.apache.logging.log4j:log4j-api:2.17.1'
+	shadow 'org.apache.logging.log4j:log4j-core:2.17.1'
+
 	shadow('com.google.code.gson:gson:2.11.0')
 
 	// thanks kami blue :-)
