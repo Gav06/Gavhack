@@ -1,4 +1,4 @@
-package me.gavin.gavhack.ui.api
+package me.gavin.gavhack.gui.api
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.FontRenderer

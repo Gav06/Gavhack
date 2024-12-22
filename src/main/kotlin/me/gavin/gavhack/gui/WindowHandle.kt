@@ -1,12 +1,11 @@
-package me.gavin.gavhack.ui
+package me.gavin.gavhack.gui
 
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.misc.MathUtils
 import me.gavin.gavhack.misc.Utils
-import me.gavin.gavhack.ui.api.Draggable
+import me.gavin.gavhack.gui.api.Draggable
 import net.minecraft.client.gui.Gui
 import net.minecraft.util.ResourceLocation
-import kotlin.math.cos
 
 
 class WindowHandle(x: Int, y: Int, w: Int, h: Int, val parent: Window): Draggable(x, y, w, h) {

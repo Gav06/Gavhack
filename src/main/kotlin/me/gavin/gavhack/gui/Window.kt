@@ -1,8 +1,10 @@
-package me.gavin.gavhack.ui
+package me.gavin.gavhack.gui
 
+import com.google.gson.JsonObject
+import me.gavin.gavhack.config.IConfigurable
 import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
-import me.gavin.gavhack.ui.api.GuiComponent
+import me.gavin.gavhack.gui.api.GuiComponent
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.ScaledResolution
@@ -13,7 +15,7 @@ class Window(x: Int, y: Int, w: Int, h: Int,
              var title: String,
              val category: ModCategory,
              val closeable: Boolean = false
-): GuiComponent(x, y, w, h) {
+): GuiComponent(x, y, w, h), IConfigurable {
 
     private val defaultHandleHeight = 16
 
@@ -97,6 +99,27 @@ class Window(x: Int, y: Int, w: Int, h: Int,
         handle.keyTyped(keyChar, keyCode)
         if (open) {
             components.forEach { it.keyTyped(keyChar, keyCode) }
+        }
+    }
+
+    override fun getConfigFileName(): String {
+        return "Gui$title"
+    }
+
+    override fun toJsonObj(): JsonObject {
+        val jsonObj = JsonObject()
+        jsonObj.addProperty("x", this.x)
+        jsonObj.addProperty("y", this.y)
+        jsonObj.addProperty("open", this.open)
+
+        return jsonObj
+    }
+
+    override fun fromJsonObj(jsonObj: JsonObject) {
+        if (jsonObj.has("x")) {
+            this.handle.x = jsonObj.get("x").asInt
+            this.handle.y = jsonObj.get("y").asInt
+            this.open = jsonObj.get("open").asBoolean
         }
     }
 }

@@ -4,6 +4,7 @@ class EnumSetting<T : Enum<T>>(
     name: String,
     private val defaultValue: T
 ): Setting(name) {
+
     val values: Array<T> = defaultValue.javaClass.getEnumConstants()
 
     var value = indexOf(defaultValue)

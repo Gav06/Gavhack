@@ -1,4 +1,4 @@
-package me.gavin.gavhack.ui.api
+package me.gavin.gavhack.gui.api
 
 abstract class Draggable(x: Int, y: Int, w: Int, h: Int) : GuiComponent(x, y, w, h) {
 

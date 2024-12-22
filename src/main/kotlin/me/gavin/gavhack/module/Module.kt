@@ -1,13 +1,12 @@
 package me.gavin.gavhack.module
 
 import com.google.gson.JsonObject
-import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.config.IConfigurable
 import me.gavin.gavhack.event.Event
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.module.setting.EnumSetting
-import me.gavin.gavhack.module.setting.FloatSetting
+import me.gavin.gavhack.module.setting.NumberSetting
 import me.gavin.gavhack.module.setting.Setting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.Minecraft
@@ -68,7 +67,7 @@ abstract class Module(
         for (setting in settings) {
             when (setting) {
                 is ToggleSetting -> jsonObj.addProperty(setting.name, setting.value)
-                is FloatSetting ->  jsonObj.addProperty(setting.name, setting.getValue())
+                is NumberSetting ->  jsonObj.addProperty(setting.name, setting.getValue())
                 is EnumSetting<*> -> jsonObj.addProperty(setting.name, setting.value)
             }
         }
@@ -89,13 +88,9 @@ abstract class Module(
         for (setting in settings) {
             when (setting) {
                 is ToggleSetting ->
-                    if (jsonObj.has(setting.name)) {
-                        setting.value = jsonObj[setting.name].asBoolean
-                    }
-                is FloatSetting ->
-                    if (jsonObj.has(setting.name)) {
-                        setting.setValue(jsonObj[setting.name].asFloat)
-                    }
+                    if (jsonObj.has(setting.name)) setting.value = jsonObj[setting.name].asBoolean
+                is NumberSetting ->
+                    if (jsonObj.has(setting.name)) setting.setValue(jsonObj[setting.name].asFloat)
                 is EnumSetting<*> ->
                     if (jsonObj.has(setting.name)) {
                         val index = setting.indexOf(jsonObj[setting.name].asString)

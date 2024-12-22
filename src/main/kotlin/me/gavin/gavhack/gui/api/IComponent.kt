@@ -1,4 +1,4 @@
-package me.gavin.gavhack.ui.api
+package me.gavin.gavhack.gui.api
 
 interface IComponent {
 

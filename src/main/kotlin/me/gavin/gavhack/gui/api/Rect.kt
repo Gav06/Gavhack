@@ -1,4 +1,4 @@
-package me.gavin.gavhack.ui.api
+package me.gavin.gavhack.gui.api
 
 /* Rect positions and sizes are immutable */
 open class Rect(var x: Int, var y: Int, var w: Int, var h: Int) {

@@ -1,7 +1,7 @@
-package me.gavin.gavhack.ui
+package me.gavin.gavhack.gui
 
 import me.gavin.gavhack.module.setting.EnumSetting
-import me.gavin.gavhack.ui.api.GuiComponent
+import me.gavin.gavhack.gui.api.GuiComponent
 import net.minecraft.client.gui.Gui
 
 class EnumComponent(val setting: EnumSetting<*>, w: Int, h: Int) : GuiComponent(0, 0, w, h) {

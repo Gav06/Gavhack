@@ -1,4 +1,4 @@
-package me.gavin.gavhack.ui
+package me.gavin.gavhack.gui
 
 open class Rect(var x: Int, var y: Int, var w: Int, var h: Int) {
 

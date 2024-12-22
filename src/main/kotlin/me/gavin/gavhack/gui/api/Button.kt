@@ -1,4 +1,4 @@
-package me.gavin.gavhack.ui.api
+package me.gavin.gavhack.gui.api
 
 /* Basic button class */
 class Button(x: Int, y: Int, w: Int, h: Int): Rect(x, y, w, h), IComponent {

@@ -17,7 +17,7 @@ object ConfigManager {
 
     private val configs = HashSet<IConfigurable>()
     /* Detected to be true if the gavhack data folder doesn't already exist, used for default settings */
-    var firstTimeRunningGavhack = false
+    private var firstTimeRunningGavhack = false
 
     private fun setupConfigFolder() {
         if (!folder.exists()) {
@@ -61,6 +61,10 @@ object ConfigManager {
             Gavhack.log.error("Unable to load config for: ${config.getConfigFileName()}")
             e.printStackTrace()
         }
+    }
+
+    fun isFirstTimeRunningGavhack(): Boolean {
+        return this.firstTimeRunningGavhack
     }
 
     fun loadConfigs() {

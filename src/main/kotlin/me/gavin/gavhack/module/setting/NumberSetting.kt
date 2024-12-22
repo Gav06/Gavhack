@@ -2,12 +2,12 @@ package me.gavin.gavhack.module.setting
 
 import me.gavin.gavhack.misc.MathUtils
 
-class FloatSetting(
-    name: String,
-    val defaultValue: Float,
-    val minValue: Float,
-    val maxValue: Float,
-    val decimalPlaces: Int = 1
+class NumberSetting(
+        name: String,
+        private val defaultValue: Float,
+        val minValue: Float,
+        val maxValue: Float,
+        val decimalPlaces: Int = 1
 ): Setting(name)  {
 
     /* Variable stays private so there is no chance of it accidentally going out of specified bounds */

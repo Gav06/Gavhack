@@ -1,5 +1,6 @@
-package me.gavin.gavhack.ui
+package me.gavin.gavhack.gui
 
+import me.gavin.gavhack.config.ConfigManager
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ClientTickEvent
@@ -8,13 +9,11 @@ import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.module.impl.GuiModule
 import me.gavin.gavhack.module.setting.EnumSetting
-import me.gavin.gavhack.module.setting.FloatSetting
+import me.gavin.gavhack.module.setting.NumberSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
-import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiScreen
-import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.ResourceLocation
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -124,7 +123,7 @@ object ClickGUI: GuiScreen() {
                     // add setting components
                     when (setting) {
                         is ToggleSetting -> button.subComponents.add(BooleanComponent(setting, button.w, button.h))
-                        is FloatSetting -> button.subComponents.add(FloatComponent(setting, button.w, button.h))
+                        is NumberSetting -> button.subComponents.add(FloatComponent(setting, button.w, button.h))
                         is EnumSetting<*> -> button.subComponents.add(EnumComponent(setting, button.w, button.h))
                     }
                 }
@@ -133,7 +132,9 @@ object ClickGUI: GuiScreen() {
                 window.components.add(button)
             }
 
+            ConfigManager.addConfig(window)
             windows.add(window)
+
             xOffset += window.w + 4
         }
     }
