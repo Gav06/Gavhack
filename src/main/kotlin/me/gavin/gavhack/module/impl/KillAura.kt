@@ -7,6 +7,10 @@ import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.NumberSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.monster.EntityMob
+import net.minecraft.entity.passive.EntityAnimal
+import net.minecraft.entity.player.EntityPlayer
 import kotlin.jvm.optionals.getOrNull
 
 object KillAura: Module("KillAura", "Attack entities automatically", ModCategory.COMBAT) {
@@ -16,7 +20,12 @@ object KillAura: Module("KillAura", "Attack entities automatically", ModCategory
     private val rangeSetting = NumberSetting("Range", 5.0f, 0.0f, 8.0f)
     private val wallRangeSetting = NumberSetting("WallRange", 3.0f, 0.0f, 5.0f)
 
-    private var target: EntityLiving? = null
+    private val players = addSetting(ToggleSetting("Players", true))
+    private val hostiles = addSetting(ToggleSetting("Hostiles", true))
+    private val passive = addSetting(ToggleSetting("Animals", true))
+    private val other = addSetting(ToggleSetting("Others", false))
+
+    private var target: EntityLivingBase? = null
     private var lastAttack = 0L
 
     private val tickListener = Listener<PlayerLivingTickEvent> {
@@ -38,22 +47,34 @@ object KillAura: Module("KillAura", "Attack entities automatically", ModCategory
         }
     }
 
-    private fun findTargetEntity(): EntityLiving? {
+    private fun findTargetEntity(): EntityLivingBase? {
         return mc.theWorld.loadedEntityList.stream()
-            .filter { it is EntityLiving }
-            .map { it as EntityLiving }
+            .filter { it != mc.thePlayer }
+            .filter { it is EntityLivingBase }
+            .map { it as EntityLivingBase }
+            .filter { typeCheck(it) }
             .filter { entityCheck(it) }
             .findFirst()
             .getOrNull()
     }
 
-    private fun entityCheck(e: EntityLiving): Boolean {
+    private fun entityCheck(e: EntityLivingBase): Boolean {
         return e.isEntityAlive &&
                 if (mc.thePlayer.canEntityBeSeen(e))
                     e.getDistanceToEntity(mc.thePlayer) <= rangeSetting.getValue()
                 else
                     e.getDistanceToEntity(mc.thePlayer) <= wallRangeSetting.getValue() && walls.value
-                && !e.isDead && e.health > 0
+                && !e.isDead
+                && e.health > 0
+    }
+
+    private fun typeCheck(e: EntityLivingBase): Boolean {
+        return when (e) {
+            is EntityPlayer -> players.value
+            is EntityAnimal -> passive.value
+            is EntityMob -> hostiles.value
+            else -> other.value
+        }
     }
 
     init {
