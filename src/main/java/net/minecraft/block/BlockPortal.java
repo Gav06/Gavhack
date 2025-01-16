@@ -143,37 +143,37 @@ public class BlockPortal extends BlockBreakable
         }
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
     {
         int var6 = 0;
 
-        if (p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_) == this)
+        if (blockAccess.getBlock(x, y, z) == this)
         {
-            var6 = func_149999_b(p_149646_1_.getBlockMetadata(p_149646_2_, p_149646_3_, p_149646_4_));
+            var6 = func_149999_b(blockAccess.getBlockMetadata(x, y, z));
 
             if (var6 == 0)
             {
                 return false;
             }
 
-            if (var6 == 2 && p_149646_5_ != 5 && p_149646_5_ != 4)
+            if (var6 == 2 && side != 5 && side != 4)
             {
                 return false;
             }
 
-            if (var6 == 1 && p_149646_5_ != 3 && p_149646_5_ != 2)
+            if (var6 == 1 && side != 3 && side != 2)
             {
                 return false;
             }
         }
 
-        boolean var7 = p_149646_1_.getBlock(p_149646_2_ - 1, p_149646_3_, p_149646_4_) == this && p_149646_1_.getBlock(p_149646_2_ - 2, p_149646_3_, p_149646_4_) != this;
-        boolean var8 = p_149646_1_.getBlock(p_149646_2_ + 1, p_149646_3_, p_149646_4_) == this && p_149646_1_.getBlock(p_149646_2_ + 2, p_149646_3_, p_149646_4_) != this;
-        boolean var9 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ - 1) == this && p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ - 2) != this;
-        boolean var10 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ + 1) == this && p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ + 2) != this;
+        boolean var7 = blockAccess.getBlock(x - 1, y, z) == this && blockAccess.getBlock(x - 2, y, z) != this;
+        boolean var8 = blockAccess.getBlock(x + 1, y, z) == this && blockAccess.getBlock(x + 2, y, z) != this;
+        boolean var9 = blockAccess.getBlock(x, y, z - 1) == this && blockAccess.getBlock(x, y, z - 2) != this;
+        boolean var10 = blockAccess.getBlock(x, y, z + 1) == this && blockAccess.getBlock(x, y, z + 2) != this;
         boolean var11 = var7 || var8 || var6 == 1;
         boolean var12 = var9 || var10 || var6 == 2;
-        return var11 && p_149646_5_ == 4 ? true : (var11 && p_149646_5_ == 5 ? true : (var12 && p_149646_5_ == 2 ? true : var12 && p_149646_5_ == 3));
+        return var11 && side == 4 ? true : (var11 && side == 5 ? true : (var12 && side == 2 ? true : var12 && side == 3));
     }
 
     /**

@@ -3,6 +3,8 @@ package net.minecraft.block;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import me.gavin.gavhack.module.impl.Xray;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -185,6 +187,9 @@ public class Block
 
     public int getLightValue()
     {
+        if (Xray.INSTANCE.isEnabled())
+            return 15;
+
         return this.lightValue;
     }
 
@@ -571,9 +576,19 @@ public class Block
         }
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
     {
-        return p_149646_5_ == 0 && this.field_149760_C > 0.0D ? true : (p_149646_5_ == 1 && this.field_149756_F < 1.0D ? true : (p_149646_5_ == 2 && this.field_149754_D > 0.0D ? true : (p_149646_5_ == 3 && this.field_149757_G < 1.0D ? true : (p_149646_5_ == 4 && this.field_149759_B > 0.0D ? true : (p_149646_5_ == 5 && this.field_149755_E < 1.0D ? true : !p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_).isOpaqueCube())))));
+        if (Xray.INSTANCE.isEnabled()) {
+            return Xray.INSTANCE.getBlockIds().contains(getIdFromBlock(this));
+        }
+
+        return side == 0 && this.field_149760_C > 0.0D
+                || (side == 1 && this.field_149756_F < 1.0D
+                || (side == 2 && this.field_149754_D > 0.0D
+                || (side == 3 && this.field_149757_G < 1.0D
+                || (side == 4 && this.field_149759_B > 0.0D
+                || (side == 5 && this.field_149755_E < 1.0D
+                || !blockAccess.getBlock(x, y, z).isOpaqueCube())))));
     }
 
     public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_)

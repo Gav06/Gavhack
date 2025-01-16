@@ -24,13 +24,13 @@ public class BlockBreakable extends Block
         return false;
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
     {
-        Block var6 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_);
+        Block var6 = blockAccess.getBlock(x, y, z);
 
         if (this == Blocks.glass || this == Blocks.stained_glass)
         {
-            if (p_149646_1_.getBlockMetadata(p_149646_2_, p_149646_3_, p_149646_4_) != p_149646_1_.getBlockMetadata(p_149646_2_ - Facing.offsetsXForSide[p_149646_5_], p_149646_3_ - Facing.offsetsYForSide[p_149646_5_], p_149646_4_ - Facing.offsetsZForSide[p_149646_5_]))
+            if (blockAccess.getBlockMetadata(x, y, z) != blockAccess.getBlockMetadata(x - Facing.offsetsXForSide[side], y - Facing.offsetsYForSide[side], z - Facing.offsetsZForSide[side]))
             {
                 return true;
             }
@@ -41,7 +41,7 @@ public class BlockBreakable extends Block
             }
         }
 
-        return !this.field_149996_a && var6 == this ? false : super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_);
+        return !this.field_149996_a && var6 == this ? false : super.shouldSideBeRendered(blockAccess, x, y, z, side);
     }
 
     public void registerBlockIcons(IIconRegister p_149651_1_)

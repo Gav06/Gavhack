@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import me.gavin.gavhack.module.impl.Xray;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockBeacon;
@@ -273,9 +274,13 @@ public class RenderBlocks
         this.renderAllFaces = false;
     }
 
-    public boolean renderBlockByRenderType(Block par1Block, int par2, int par3, int par4)
+    public boolean renderBlockByRenderType(Block block, int x, int y, int z)
     {
-        int i = par1Block.getRenderType();
+        if (Xray.INSTANCE.isEnabled() && !Xray.INSTANCE.getBlockIds().contains(Block.getIdFromBlock(block))) {
+            return false;
+        }
+
+        int i = block.getRenderType();
 
         if (i == -1)
         {
@@ -283,155 +288,155 @@ public class RenderBlocks
         }
         else
         {
-            par1Block.setBlockBoundsBasedOnState(this.blockAccess, par2, par3, par4);
+            block.setBlockBoundsBasedOnState(this.blockAccess, x, y, z);
 
-            if (Config.isBetterSnow() && par1Block == Blocks.standing_sign && this.hasSnowNeighbours(par2, par3, par4))
+            if (Config.isBetterSnow() && block == Blocks.standing_sign && this.hasSnowNeighbours(x, y, z))
             {
-                this.renderSnow(par2, par3, par4, Blocks.snow_layer.getBlockBoundsMaxY());
+                this.renderSnow(x, y, z, Blocks.snow_layer.getBlockBoundsMaxY());
             }
 
-            this.setRenderBoundsFromBlock(par1Block);
+            this.setRenderBoundsFromBlock(block);
 
             switch (i)
             {
                 case 0:
-                    return this.renderStandardBlock(par1Block, par2, par3, par4);
+                    return this.renderStandardBlock(block, x, y, z);
 
                 case 1:
-                    return this.renderCrossedSquares(par1Block, par2, par3, par4);
+                    return this.renderCrossedSquares(block, x, y, z);
 
                 case 2:
-                    return this.renderBlockTorch(par1Block, par2, par3, par4);
+                    return this.renderBlockTorch(block, x, y, z);
 
                 case 3:
-                    return this.renderBlockFire((BlockFire)par1Block, par2, par3, par4);
+                    return this.renderBlockFire((BlockFire)block, x, y, z);
 
                 case 4:
-                    return this.renderBlockFluids(par1Block, par2, par3, par4);
+                    return this.renderBlockFluids(block, x, y, z);
 
                 case 5:
-                    return this.renderBlockRedstoneWire(par1Block, par2, par3, par4);
+                    return this.renderBlockRedstoneWire(block, x, y, z);
 
                 case 6:
-                    return this.renderBlockCrops(par1Block, par2, par3, par4);
+                    return this.renderBlockCrops(block, x, y, z);
 
                 case 7:
-                    return this.renderBlockDoor(par1Block, par2, par3, par4);
+                    return this.renderBlockDoor(block, x, y, z);
 
                 case 8:
-                    return this.renderBlockLadder(par1Block, par2, par3, par4);
+                    return this.renderBlockLadder(block, x, y, z);
 
                 case 9:
-                    return this.renderBlockMinecartTrack((BlockRailBase)par1Block, par2, par3, par4);
+                    return this.renderBlockMinecartTrack((BlockRailBase)block, x, y, z);
 
                 case 10:
-                    return this.renderBlockStairs((BlockStairs)par1Block, par2, par3, par4);
+                    return this.renderBlockStairs((BlockStairs)block, x, y, z);
 
                 case 11:
-                    return this.renderBlockFence((BlockFence)par1Block, par2, par3, par4);
+                    return this.renderBlockFence((BlockFence)block, x, y, z);
 
                 case 12:
-                    return this.renderBlockLever(par1Block, par2, par3, par4);
+                    return this.renderBlockLever(block, x, y, z);
 
                 case 13:
-                    return this.renderBlockCactus(par1Block, par2, par3, par4);
+                    return this.renderBlockCactus(block, x, y, z);
 
                 case 14:
-                    return this.renderBlockBed(par1Block, par2, par3, par4);
+                    return this.renderBlockBed(block, x, y, z);
 
                 case 15:
-                    return this.renderBlockRepeater((BlockRedstoneRepeater)par1Block, par2, par3, par4);
+                    return this.renderBlockRepeater((BlockRedstoneRepeater)block, x, y, z);
 
                 case 16:
-                    return this.renderPistonBase(par1Block, par2, par3, par4, false);
+                    return this.renderPistonBase(block, x, y, z, false);
 
                 case 17:
-                    return this.renderPistonExtension(par1Block, par2, par3, par4, true);
+                    return this.renderPistonExtension(block, x, y, z, true);
 
                 case 18:
-                    return this.renderBlockPane((BlockPane)par1Block, par2, par3, par4);
+                    return this.renderBlockPane((BlockPane)block, x, y, z);
 
                 case 19:
-                    return this.renderBlockStem(par1Block, par2, par3, par4);
+                    return this.renderBlockStem(block, x, y, z);
 
                 case 20:
-                    return this.renderBlockVine(par1Block, par2, par3, par4);
+                    return this.renderBlockVine(block, x, y, z);
 
                 case 21:
-                    return this.renderBlockFenceGate((BlockFenceGate)par1Block, par2, par3, par4);
+                    return this.renderBlockFenceGate((BlockFenceGate)block, x, y, z);
 
                 case 22:
                 default:
                     if (Reflector.ModLoader.exists())
                     {
-                        return Reflector.callBoolean(Reflector.ModLoader_renderWorldBlock, new Object[] {this, this.blockAccess, Integer.valueOf(par2), Integer.valueOf(par3), Integer.valueOf(par4), par1Block, Integer.valueOf(i)});
+                        return Reflector.callBoolean(Reflector.ModLoader_renderWorldBlock, new Object[] {this, this.blockAccess, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z), block, Integer.valueOf(i)});
                     }
                     else
                     {
                         if (Reflector.FMLRenderAccessLibrary.exists())
                         {
-                            return Reflector.callBoolean(Reflector.FMLRenderAccessLibrary_renderWorldBlock, new Object[] {this, this.blockAccess, Integer.valueOf(par2), Integer.valueOf(par3), Integer.valueOf(par4), par1Block, Integer.valueOf(i)});
+                            return Reflector.callBoolean(Reflector.FMLRenderAccessLibrary_renderWorldBlock, new Object[] {this, this.blockAccess, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z), block, Integer.valueOf(i)});
                         }
 
                         return false;
                     }
 
                 case 23:
-                    return this.renderBlockLilyPad(par1Block, par2, par3, par4);
+                    return this.renderBlockLilyPad(block, x, y, z);
 
                 case 24:
-                    return this.renderBlockCauldron((BlockCauldron)par1Block, par2, par3, par4);
+                    return this.renderBlockCauldron((BlockCauldron)block, x, y, z);
 
                 case 25:
-                    return this.renderBlockBrewingStand((BlockBrewingStand)par1Block, par2, par3, par4);
+                    return this.renderBlockBrewingStand((BlockBrewingStand)block, x, y, z);
 
                 case 26:
-                    return this.renderBlockEndPortalFrame((BlockEndPortalFrame)par1Block, par2, par3, par4);
+                    return this.renderBlockEndPortalFrame((BlockEndPortalFrame)block, x, y, z);
 
                 case 27:
-                    return this.renderBlockDragonEgg((BlockDragonEgg)par1Block, par2, par3, par4);
+                    return this.renderBlockDragonEgg((BlockDragonEgg)block, x, y, z);
 
                 case 28:
-                    return this.renderBlockCocoa((BlockCocoa)par1Block, par2, par3, par4);
+                    return this.renderBlockCocoa((BlockCocoa)block, x, y, z);
 
                 case 29:
-                    return this.renderBlockTripWireSource(par1Block, par2, par3, par4);
+                    return this.renderBlockTripWireSource(block, x, y, z);
 
                 case 30:
-                    return this.renderBlockTripWire(par1Block, par2, par3, par4);
+                    return this.renderBlockTripWire(block, x, y, z);
 
                 case 31:
-                    return this.renderBlockLog(par1Block, par2, par3, par4);
+                    return this.renderBlockLog(block, x, y, z);
 
                 case 32:
-                    return this.renderBlockWall((BlockWall)par1Block, par2, par3, par4);
+                    return this.renderBlockWall((BlockWall)block, x, y, z);
 
                 case 33:
-                    return this.renderBlockFlowerpot((BlockFlowerPot)par1Block, par2, par3, par4);
+                    return this.renderBlockFlowerpot((BlockFlowerPot)block, x, y, z);
 
                 case 34:
-                    return this.renderBlockBeacon((BlockBeacon)par1Block, par2, par3, par4);
+                    return this.renderBlockBeacon((BlockBeacon)block, x, y, z);
 
                 case 35:
-                    return this.renderBlockAnvil((BlockAnvil)par1Block, par2, par3, par4);
+                    return this.renderBlockAnvil((BlockAnvil)block, x, y, z);
 
                 case 36:
-                    return this.renderBlockRedstoneDiode((BlockRedstoneDiode)par1Block, par2, par3, par4);
+                    return this.renderBlockRedstoneDiode((BlockRedstoneDiode)block, x, y, z);
 
                 case 37:
-                    return this.renderBlockRedstoneComparator((BlockRedstoneComparator)par1Block, par2, par3, par4);
+                    return this.renderBlockRedstoneComparator((BlockRedstoneComparator)block, x, y, z);
 
                 case 38:
-                    return this.renderBlockHopper((BlockHopper)par1Block, par2, par3, par4);
+                    return this.renderBlockHopper((BlockHopper)block, x, y, z);
 
                 case 39:
-                    return this.renderBlockQuartz(par1Block, par2, par3, par4);
+                    return this.renderBlockQuartz(block, x, y, z);
 
                 case 40:
-                    return this.renderBlockDoublePlant((BlockDoublePlant)par1Block, par2, par3, par4);
+                    return this.renderBlockDoublePlant((BlockDoublePlant)block, x, y, z);
 
                 case 41:
-                    return this.renderBlockStainedGlassPane(par1Block, par2, par3, par4);
+                    return this.renderBlockStainedGlassPane(block, x, y, z);
             }
         }
     }

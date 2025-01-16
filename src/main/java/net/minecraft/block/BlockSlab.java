@@ -106,23 +106,23 @@ public abstract class BlockSlab extends Block
         return this.field_150004_a;
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
     {
         if (this.field_150004_a)
         {
-            return super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_);
+            return super.shouldSideBeRendered(blockAccess, x, y, z, side);
         }
-        else if (p_149646_5_ != 1 && p_149646_5_ != 0 && !super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_))
+        else if (side != 1 && side != 0 && !super.shouldSideBeRendered(blockAccess, x, y, z, side))
         {
             return false;
         }
         else
         {
-            int var6 = p_149646_2_ + Facing.offsetsXForSide[Facing.oppositeSide[p_149646_5_]];
-            int var7 = p_149646_3_ + Facing.offsetsYForSide[Facing.oppositeSide[p_149646_5_]];
-            int var8 = p_149646_4_ + Facing.offsetsZForSide[Facing.oppositeSide[p_149646_5_]];
-            boolean var9 = (p_149646_1_.getBlockMetadata(var6, var7, var8) & 8) != 0;
-            return var9 ? (p_149646_5_ == 0 ? true : (p_149646_5_ == 1 && super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_) ? true : !func_150003_a(p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_)) || (p_149646_1_.getBlockMetadata(p_149646_2_, p_149646_3_, p_149646_4_) & 8) == 0)) : (p_149646_5_ == 1 ? true : (p_149646_5_ == 0 && super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_) ? true : !func_150003_a(p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_)) || (p_149646_1_.getBlockMetadata(p_149646_2_, p_149646_3_, p_149646_4_) & 8) != 0));
+            int var6 = x + Facing.offsetsXForSide[Facing.oppositeSide[side]];
+            int var7 = y + Facing.offsetsYForSide[Facing.oppositeSide[side]];
+            int var8 = z + Facing.offsetsZForSide[Facing.oppositeSide[side]];
+            boolean var9 = (blockAccess.getBlockMetadata(var6, var7, var8) & 8) != 0;
+            return var9 ? (side == 0 ? true : (side == 1 && super.shouldSideBeRendered(blockAccess, x, y, z, side) ? true : !func_150003_a(blockAccess.getBlock(x, y, z)) || (blockAccess.getBlockMetadata(x, y, z) & 8) == 0)) : (side == 1 ? true : (side == 0 && super.shouldSideBeRendered(blockAccess, x, y, z, side) ? true : !func_150003_a(blockAccess.getBlock(x, y, z)) || (blockAccess.getBlockMetadata(x, y, z) & 8) != 0));
         }
     }
 
