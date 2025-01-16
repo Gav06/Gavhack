@@ -151,7 +151,7 @@ public class BlockFenceGate extends BlockDirectional
         return (p_149896_0_ & 4) != 0;
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
     {
         return true;
     }

@@ -76,9 +76,9 @@ public abstract class BlockRedstoneDiode extends BlockDirectional
         return p_149691_1_ == 0 ? (this.field_149914_a ? Blocks.redstone_torch.getBlockTextureFromSide(p_149691_1_) : Blocks.unlit_redstone_torch.getBlockTextureFromSide(p_149691_1_)) : (p_149691_1_ == 1 ? this.blockIcon : Blocks.double_stone_slab.getBlockTextureFromSide(1));
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
     {
-        return p_149646_5_ != 0 && p_149646_5_ != 1;
+        return side != 0 && side != 1;
     }
 
     /**

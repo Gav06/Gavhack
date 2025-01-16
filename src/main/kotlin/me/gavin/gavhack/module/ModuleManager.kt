@@ -16,13 +16,14 @@ object ModuleManager {
             HudModule,
             ConsoleModule,
             KillAura,
-            StorageESP,
+            ChestESP,
             NoRender,
             ESP,
             FastPlace,
 //            StrongholdFinder,
             SignColors,
-            AntiWeather
+            AntiWeather,
+            Xray
     )
 
     /* Sorted by length of module name */
