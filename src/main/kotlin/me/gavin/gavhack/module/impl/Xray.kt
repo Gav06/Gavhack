@@ -31,5 +31,11 @@ object Xray: Module("Xray", "See ores and blocks through walls", ModCategory.REN
         blockIds.add(Block.getIdFromBlock(Blocks.coal_ore))
         blockIds.add(Block.getIdFromBlock(Blocks.quartz_ore))
 
+        blockIds.add(Block.getIdFromBlock(Blocks.water))
+        blockIds.add(Block.getIdFromBlock(Blocks.flowing_water))
+        
+        blockIds.add(Block.getIdFromBlock(Blocks.lava))
+        blockIds.add(Block.getIdFromBlock(Blocks.flowing_lava))
+
     }
 }

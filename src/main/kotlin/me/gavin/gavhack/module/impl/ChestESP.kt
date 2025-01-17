@@ -53,7 +53,7 @@ object ChestESP: Module("ChestESP", "See chests through walls", ModCategory.REND
 
                 val aabb = AxisAlignedBB.getBoundingBox(
                         tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble(),
-                        tile.x + 1.0, tile.y + 1.0, tile.z + 1.0
+                        tile.x.toDouble() + 1.0, tile.y.toDouble() + 1.0, tile.z.toDouble() + 1.0
                 )
 
 

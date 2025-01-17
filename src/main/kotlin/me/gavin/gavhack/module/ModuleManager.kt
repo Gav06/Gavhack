@@ -23,7 +23,10 @@ object ModuleManager {
 //            StrongholdFinder,
             SignColors,
             AntiWeather,
-            Xray
+            Xray,
+            OppDetector,
+            AutoMine,
+            SafeWalk
     )
 
     /* Sorted by length of module name */

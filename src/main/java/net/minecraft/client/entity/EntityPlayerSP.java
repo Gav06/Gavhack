@@ -306,6 +306,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 this.sendPlayerAbilities();
             }
         }
+
+        EventBus.INSTANCE.post(new PlayerLivingTickEvent.Post());
     }
 
     /**

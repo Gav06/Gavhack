@@ -5,13 +5,17 @@ import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
 import me.gavin.gavhack.misc.MathUtils
+import me.gavin.gavhack.misc.ProjectionHelper
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import net.minecraft.client.gui.Gui
+import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.texture.DynamicTexture
 import net.minecraft.util.MathHelper
 import net.minecraft.util.ResourceLocation
+import net.minecraft.util.Vec3
 import net.minecraft.wdl.WDL
+import org.lwjgl.opengl.GL11
 import java.awt.image.BufferedImage
 import java.io.InputStream
 import javax.imageio.ImageIO
@@ -24,6 +28,8 @@ object OppDetector: Module("OppDetector", "schitzo esp", ModCategory.RENDER) {
     private val BOTTLE_PATH = "/assets/minecraft/gavhack/bottle.png"
     private val ARAB_PATH = "/assets/minecraft/gavhack/arab.png"
 
+    private val camera = Frustum()
+
     private val renderListener = Listener<RenderOverlayEvent> { (it as RenderOverlayEvent)
         if (arabTex != null) {
             val playerX: Double =
@@ -35,26 +41,31 @@ object OppDetector: Module("OppDetector", "schitzo esp", ModCategory.RENDER) {
 
 
             camera.setPosition(playerX, playerY, playerZ)
-            for (player in WDL.mc.world.playerEntities) {
-                if (player == WDL.mc.getRenderViewEntity()) continue
+            for (player in mc.theWorld.playerEntities) {
+                if (player == mc.renderViewEntity) continue
 
-                if (!camera.isBoundingBoxInFrustum(player.getEntityBoundingBox())) continue
+                if (!camera.isBoundingBoxInFrustum(player.boundingBox)) continue
 
-                val bottomVec: Vec3d = MathUtil.getLerpPos(player, event.getPartialTicks())
-                val topVec: Vec3d = bottomVec.add(Vec3d(0.0, player.getRenderBoundingBox().maxY - player.posY, 0.0))
+                val bottomVec: Vec3 = MathUtils.lerpEntity(player, it.partialTicks)
+                val topVec: Vec3 = bottomVec.addVector(0.0, player.boundingBox.maxY - player.posY, 0.0)
 
-                val top: Vec3d = ProjectionUtil.toScaledScreenPos(topVec)
-                val bottom: Vec3d = ProjectionUtil.toScaledScreenPos(bottomVec)
-                val height = bottom.y.toInt() - top.y.toInt()
+                val top: Vec3? = ProjectionHelper.worldToScreen(topVec, it.res)
+                val bottom: Vec3? = ProjectionHelper.worldToScreen(bottomVec, it.res)
+
+                if (top == null || bottom == null)
+                    continue
+
+                val height = bottom.yCoord.toInt() - top.yCoord.toInt()
                 val width = height
-                val x = (top.x - width / 1.8).toInt()
-                val y = top.y.toInt()
-                WDL.mc.renderEngine.bindTexture(squid)
-                GlStateManager.color(1f, 1f, 1f)
-                Gui.drawScaledCustomSizeModalRect(x, y, 0f, 0f, width, height, width, height, width, height)
+                val x = (top.xCoord - width / 1.8).toInt()
+                val y = top.yCoord.toInt()
+                mc.textureManager.bindTexture(arabTex)
+                GL11.glColor3f(1f, 1f, 1f)
+                Gui.drawModalRectWithCustomSizedTexture(x, y, 0f, 0f, width, height,
+                    width.toFloat(), height.toFloat())
             }
         } else {
-            FMLLog.log.error("Pewb")
+            Gavhack.log.error("OppDetector image is null")
         }
     }
 

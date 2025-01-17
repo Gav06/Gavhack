@@ -2129,6 +2129,9 @@ public class Minecraft implements IPlayerUsage
 
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
+
+
+        EventBus.INSTANCE.post(new ClientTickEvent.Post());
     }
 
     /**
