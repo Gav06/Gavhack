@@ -5,25 +5,40 @@ import me.gavin.gavhack.event.events.ClientTickEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.NumberSetting
+import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.util.MovingObjectPosition
 
 object AutoMine: Module("AutoMine", "Mine automatically", ModCategory.WORLD) {
 
-    val minItemHealth = addSetting(NumberSetting("MinItemHealth", 1f, 1f, 20f, decimalPlaces = 0))
-
+    private val noBreak = addSetting(ToggleSetting("NoBreak", true))
 
     private var shouldMine = false
 
     private val tickPre = Listener<ClientTickEvent> {
         if (mc.currentScreen == null && mc.theWorld != null) {
             val result = mc.objectMouseOver
-            shouldMine = result != null && result.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
-                    && (mc.thePlayer.currentEquippedItem != null && (mc.thePlayer.currentEquippedItem.maxDamage - mc.thePlayer.currentEquippedItem.itemDamage > 1))
+
+            shouldMine = if (result != null && result.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                if (toolCheck()) {
+                    if (noBreak.value)
+                        mc.thePlayer.currentEquippedItem.maxDamage - mc.thePlayer.currentEquippedItem.itemDamage >= 1
+                    else
+                        true
+                } else {
+                    true
+                }
+            } else {
+                false
+            }
 
             if (shouldMine) {
                 mc.gameSettings.keyBindAttack.pressed = true
             }
         }
+    }
+
+    private fun toolCheck(): Boolean {
+        return (mc.thePlayer.currentEquippedItem != null && mc.thePlayer.currentEquippedItem.isItemStackDamageable)
     }
 
     private val tickPost = Listener<ClientTickEvent.Post> {

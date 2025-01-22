@@ -13,7 +13,7 @@ object AutoTool: Module("AutoTool", "Selects tool automatically based on what yo
     private val noBreak = addSetting(ToggleSetting("NoBreak", true))
 
     private val playerTickListener = Listener<PlayerLivingTickEvent> {
-        if (mc.gameSettings.keyBindAttack.isKeyPressed) {
+        if (mc.gameSettings.keyBindAttack.pressed) {
             val result = mc.objectMouseOver
 
             if (result != null && result.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
@@ -39,6 +39,9 @@ object AutoTool: Module("AutoTool", "Selects tool automatically based on what yo
 
         for (i in (0..8)) {
             val item = mc.thePlayer.inventory.getStackInSlot(i) ?: continue
+
+            if (noBreak.value && item.maxDamage - item.itemDamage <= 1)
+                continue
 
             if (item.getDiggingSpeed(block) > bestSpeed) {
                 bestSpeed = item.getDiggingSpeed(block)
