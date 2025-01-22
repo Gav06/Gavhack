@@ -15,38 +15,39 @@ import kotlin.math.cos
 object Utils {
 
     fun resolveCape(player: String): String {
-        // fetch json file from cape api
-        val url = try {
-            URL("https://api.capes.dev/load/$player/minecraft")
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
-            return "URL error"
-        }
-
-        val jsonObj = try {
-            JsonParser().parse(IOUtils.toString(url, StandardCharsets.UTF_8)).asJsonObject
-        } catch (e: IOException) {
-            return "IOException when fetching cape"
-        }
-
-        // check if player even exists
-        if (jsonObj.has("success")) {
-            return "Player invalid in Cape API (offline account?)"
-        }
-        // pull message from json
-        if (!jsonObj.has("msg") or !jsonObj.has("imageUrl"))
-            return "Cape API JSON missing fields"
-
-        val msg = jsonObj["msg"].asString
-        val errMsg = "($player) $msg"
-
-        if (msg == "Cape not found")
-            return errMsg
-
-        if (jsonObj["msg"].asString == "Cape found")
-            return jsonObj["imageUrl"].asString
-
-        return errMsg
+//        // fetch json file from cape api
+//        val url = try {
+//            URL("https://api.capes.dev/load/$player/minecraft")
+//        } catch (e: MalformedURLException) {
+//            e.printStackTrace()
+//            return "URL error"
+//        }
+//
+//        val jsonObj = try {
+//            JsonParser().parse(IOUtils.toString(url, StandardCharsets.UTF_8)).asJsonObject
+//        } catch (e: IOException) {
+//            return "IOException when fetching cape"
+//        }
+//
+//        // check if player even exists
+//        if (jsonObj.has("success")) {
+//            return "Player invalid in Cape API (offline account?)"
+//        }
+//        // pull message from json
+//        if (!jsonObj.has("msg") or !jsonObj.has("imageUrl"))
+//            return "Cape API JSON missing fields"
+//
+//        val msg = jsonObj["msg"].asString
+//        val errMsg = "($player) $msg"
+//
+//        if (msg == "Cape not found")
+//            return errMsg
+//
+//        if (jsonObj["msg"].asString == "Cape found")
+//            return jsonObj["imageUrl"].asString
+//
+//        return errMsg
+        return ""
     }
 
     fun gameMessage(msg: String) {

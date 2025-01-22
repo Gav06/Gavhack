@@ -2086,7 +2086,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
                 {
                     ItemStack var5 = this.getCurrentEquippedItem();
 
-                    if (var5.func_150998_b(var4) || var5.func_150997_a(var4) > 1.0F)
+                    if (var5.func_150998_b(var4) || var5.getDiggingSpeed(var4) > 1.0F)
                     {
                         return true;
                     }

@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.entity.RenderManager
+import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Vec3
 import org.lwjgl.opengl.GL11.*
@@ -54,5 +55,54 @@ object RenderUtils {
 
     fun getRenderPos(): Vec3 {
         return Vec3.createVectorHelper(RenderManager.renderPosX, RenderManager.renderPosY, RenderManager.renderPosZ)
+    }
+
+    // just minecraft's render method modified to accept alpha color values too
+    fun drawOutlinedBoundingBox(aabb: AxisAlignedBB, colorIn: Int) {
+        val tes = Tessellator.instance
+        tes.startDrawing(3)
+
+        val a = ((colorIn shr 24) and 0xff) / 255.0f
+        val r = ((colorIn shr 16) and 0xff) / 255.0f
+        val g = ((colorIn shr 8) and 0xff) / 255.0f
+        val b = (colorIn and 0xff) / 255.0f
+
+        if (colorIn != -1) {
+            tes.setColorRGBA_F(r, g, b, a)
+        }
+
+        tes.addVertex(aabb.minX, aabb.minY, aabb.minZ)
+        tes.addVertex(aabb.maxX, aabb.minY, aabb.minZ)
+        tes.addVertex(aabb.maxX, aabb.minY, aabb.maxZ)
+        tes.addVertex(aabb.minX, aabb.minY, aabb.maxZ)
+        tes.addVertex(aabb.minX, aabb.minY, aabb.minZ)
+        tes.draw()
+        tes.startDrawing(3)
+
+        if (colorIn != -1) {
+            tes.setColorRGBA_F(r, g, b, a)
+        }
+
+        tes.addVertex(aabb.minX, aabb.maxY, aabb.minZ)
+        tes.addVertex(aabb.maxX, aabb.maxY, aabb.minZ)
+        tes.addVertex(aabb.maxX, aabb.maxY, aabb.maxZ)
+        tes.addVertex(aabb.minX, aabb.maxY, aabb.maxZ)
+        tes.addVertex(aabb.minX, aabb.maxY, aabb.minZ)
+        tes.draw()
+        tes.startDrawing(1)
+
+        if (colorIn != -1) {
+            tes.setColorRGBA_F(r, g, b, a)
+        }
+
+        tes.addVertex(aabb.minX, aabb.minY, aabb.minZ)
+        tes.addVertex(aabb.minX, aabb.maxY, aabb.minZ)
+        tes.addVertex(aabb.maxX, aabb.minY, aabb.minZ)
+        tes.addVertex(aabb.maxX, aabb.maxY, aabb.minZ)
+        tes.addVertex(aabb.maxX, aabb.minY, aabb.maxZ)
+        tes.addVertex(aabb.maxX, aabb.maxY, aabb.maxZ)
+        tes.addVertex(aabb.minX, aabb.minY, aabb.maxZ)
+        tes.addVertex(aabb.minX, aabb.maxY, aabb.maxZ)
+        tes.draw()
     }
 }

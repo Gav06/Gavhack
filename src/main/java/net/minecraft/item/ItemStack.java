@@ -151,7 +151,8 @@ public final class ItemStack
         return var10;
     }
 
-    public float func_150997_a(Block p_150997_1_)
+    // possibly the function we need?
+    public float getDiggingSpeed(Block p_150997_1_)
     {
         return this.getItem().func_150893_a(this, p_150997_1_);
     }

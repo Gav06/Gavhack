@@ -26,7 +26,8 @@ object ModuleManager {
             Xray,
             OppDetector,
             AutoMine,
-            SafeWalk
+            SafeWalk,
+            AutoTool
     )
 
     /* Sorted by length of module name */

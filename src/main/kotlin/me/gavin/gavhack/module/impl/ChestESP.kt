@@ -3,10 +3,9 @@ package me.gavin.gavhack.module.impl
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderWorldLastEvent
 import me.gavin.gavhack.misc.MathUtils
+import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
-import me.gavin.gavhack.module.setting.ToggleSetting
-import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.tileentity.TileEntityChest
@@ -16,7 +15,7 @@ import org.lwjgl.opengl.GL11
 
 object ChestESP: Module("ChestESP", "See chests through walls", ModCategory.RENDER) {
 
-    private val fadeSetting = addSetting(ToggleSetting("Fade", true))
+//    private val fadeSetting = addSetting(ToggleSetting("Fade", true))
 
     val camera = Frustum()
 
@@ -38,29 +37,30 @@ object ChestESP: Module("ChestESP", "See chests through walls", ModCategory.REND
         for (tile in mc.renderGlobal.tileEntities) {
             if (tile is TileEntityEnderChest || tile is TileEntityChest) {
 
-                var color = if (tile is TileEntityChest) 0xaaf99c04.toInt() else 0xaa7443f9.toInt()
 
-                if (fadeSetting.value) {
-                    val mask = 0xff
-                    val n = MathUtils.clampd(MathUtils.normalized(
-                        mc.thePlayer.getDistance(
-                            tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble()),
-                        5.0, 15.0), 0.0, 1.0)
-                    val a = (n * 255).toInt()
-                    color = color or (a shr 24)
-                }
+                var color = if (tile is TileEntityChest) 0xaaf99c04.toInt() else 0xaa7443f9.toInt()
+//
+//                if (fadeSetting.value) {
+//                    val n = MathUtils.clampd(mc.thePlayer.getDistance(tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble()),5.0, 15.0)
+//                    val a = (MathUtils.normalized(n, 5.0, 15.0) * 255).toInt()
+//                }
+
 
 
                 val aabb = AxisAlignedBB.getBoundingBox(
-                        tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble(),
-                        tile.x.toDouble() + 1.0, tile.y.toDouble() + 1.0, tile.z.toDouble() + 1.0
+                    tile.x.toDouble(),
+                    tile.y.toDouble(),
+                    tile.z.toDouble(),
+                    tile.x.toDouble() + 1.0,
+                    tile.y.toDouble() + 1.0,
+                    tile.z.toDouble() + 1.0
                 )
 
 
                 if (!camera.isBoundingBoxInFrustum(aabb))
                     continue
 
-                RenderGlobal.drawOutlinedBoundingBox(aabb, color)
+                RenderUtils.drawOutlinedBoundingBox(aabb, color)
             }
         }
 

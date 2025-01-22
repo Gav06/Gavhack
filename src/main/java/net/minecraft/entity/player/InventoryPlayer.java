@@ -538,7 +538,7 @@ public class InventoryPlayer implements IInventory
 
         if (this.mainInventory[this.currentItem] != null)
         {
-            var2 *= this.mainInventory[this.currentItem].func_150997_a(p_146023_1_);
+            var2 *= this.mainInventory[this.currentItem].getDiggingSpeed(p_146023_1_);
         }
 
         return var2;
