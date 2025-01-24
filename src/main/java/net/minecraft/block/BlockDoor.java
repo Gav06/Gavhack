@@ -113,9 +113,9 @@ public class BlockDoor extends Block
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
+    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
     {
-        int var5 = this.func_150012_g(p_149655_1_, p_149655_2_, p_149655_3_, p_149655_4_);
+        int var5 = this.func_150012_g(access, x, y, z);
         return (var5 & 4) != 0;
     }
 

@@ -33,9 +33,9 @@ public class BlockTrapDoor extends Block
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
+    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
     {
-        return !func_150118_d(p_149655_1_.getBlockMetadata(p_149655_2_, p_149655_3_, p_149655_4_));
+        return !func_150118_d(access.getBlockMetadata(x, y, z));
     }
 
     /**

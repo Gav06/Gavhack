@@ -357,7 +357,7 @@ public class GuiMultiplayer extends GuiScreen
 
         if (this.field_146812_y != null)
         {
-            this.func_146283_a(Lists.newArrayList(Splitter.on("\n").split(this.field_146812_y)), mouseX, mouseY);
+            this.drawToolTipBox(Lists.newArrayList(Splitter.on("\n").split(this.field_146812_y)), mouseX, mouseY);
         }
     }
 

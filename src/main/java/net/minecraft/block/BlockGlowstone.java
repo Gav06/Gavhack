@@ -39,8 +39,8 @@ public class BlockGlowstone extends Block
         return Items.glowstone_dust;
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
-        return MapColor.field_151658_d;
+        return MapColor.yellow;
     }
 }

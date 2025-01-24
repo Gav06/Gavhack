@@ -8,12 +8,12 @@ public class MapColor
      * Holds all the 16 colors used on maps, very similar of a pallete system.
      */
     public static final MapColor[] mapColorArray = new MapColor[64];
-    public static final MapColor field_151660_b = new MapColor(0, 0);
-    public static final MapColor field_151661_c = new MapColor(1, 8368696);
-    public static final MapColor field_151658_d = new MapColor(2, 16247203);
-    public static final MapColor field_151659_e = new MapColor(3, 10987431);
-    public static final MapColor field_151656_f = new MapColor(4, 16711680);
-    public static final MapColor field_151657_g = new MapColor(5, 10526975);
+    public static final MapColor black = new MapColor(0, 0);
+    public static final MapColor green = new MapColor(1, 8368696);
+    public static final MapColor yellow = new MapColor(2, 16247203);
+    public static final MapColor gray = new MapColor(3, 10987431);
+    public static final MapColor red = new MapColor(4, 16711680);
+    public static final MapColor blue = new MapColor(5, 10526975);
     public static final MapColor field_151668_h = new MapColor(6, 10987431);
     public static final MapColor field_151669_i = new MapColor(7, 31744);
     public static final MapColor field_151666_j = new MapColor(8, 16777215);
@@ -50,15 +50,14 @@ public class MapColor
 
     /** Holds the index of the color used on map. */
     public final int colorIndex;
-    private static final String __OBFID = "CL_00000544";
 
-    private MapColor(int par1, int par2)
+    private MapColor(int colorIndex, int colorValue)
     {
-        if (par1 >= 0 && par1 <= 63)
+        if (colorIndex >= 0 && colorIndex <= 63)
         {
-            this.colorIndex = par1;
-            this.colorValue = par2;
-            mapColorArray[par1] = this;
+            this.colorIndex = colorIndex;
+            this.colorValue = colorValue;
+            mapColorArray[colorIndex] = this;
         }
         else
         {
@@ -119,7 +118,7 @@ public class MapColor
                 return field_151666_j;
 
             default:
-                return field_151660_b;
+                return black;
         }
     }
 

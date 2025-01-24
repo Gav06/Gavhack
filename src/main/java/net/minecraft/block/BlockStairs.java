@@ -477,7 +477,7 @@ public class BlockStairs extends Block
         this.field_150149_b.onBlockDestroyedByExplosion(p_149723_1_, p_149723_2_, p_149723_3_, p_149723_4_, p_149723_5_);
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
         return this.field_150149_b.getMapColor(this.field_150151_M);
     }

@@ -3,21 +3,14 @@ package net.minecraft.util;
 public class AxisAlignedBB
 {
     /** ThreadLocal AABBPool */
-    private static final ThreadLocal theAABBLocalPool = new ThreadLocal()
-    {
-        private static final String __OBFID = "CL_00000608";
-        protected AABBPool initialValue()
-        {
-            return new AABBPool(300, 2000);
-        }
-    };
+    private static final ThreadLocal<AABBPool> theAABBLocalPool = ThreadLocal.withInitial(() -> new AABBPool(300, 2000));
+
     public double minX;
     public double minY;
     public double minZ;
     public double maxX;
     public double maxY;
     public double maxZ;
-    private static final String __OBFID = "CL_00000607";
 
     /**
      * Returns a bounding box with the specified bounds. Args: minX, minY, minZ, maxX, maxY, maxZ
@@ -32,7 +25,7 @@ public class AxisAlignedBB
      */
     public static AABBPool getAABBPool()
     {
-        return (AABBPool)theAABBLocalPool.get();
+        return theAABBLocalPool.get();
     }
 
     protected AxisAlignedBB(double par1, double par3, double par5, double par7, double par9, double par11)

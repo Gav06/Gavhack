@@ -357,15 +357,15 @@ public class PlayerControllerMP
     /**
      * Handles a players right click. Args: player, world, x, y, z, side, hitVec
      */
-    public boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 par8Vec3)
+    public boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int x, int y, int z, int side, Vec3 hitVec)
     {
         this.syncCurrentPlayItem();
-        float var9 = (float)par8Vec3.xCoord - (float)par4;
-        float var10 = (float)par8Vec3.yCoord - (float)par5;
-        float var11 = (float)par8Vec3.zCoord - (float)par6;
+        float dx = (float)hitVec.xCoord - (float)x;
+        float dy = (float)hitVec.yCoord - (float)y;
+        float dz = (float)hitVec.zCoord - (float)z;
         boolean var12 = false;
 
-        if ((!par1EntityPlayer.isSneaking() || par1EntityPlayer.getHeldItem() == null) && par2World.getBlock(par4, par5, par6).onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, var9, var10, var11))
+        if ((!par1EntityPlayer.isSneaking() || par1EntityPlayer.getHeldItem() == null) && par2World.getBlock(x, y, z).onBlockActivated(par2World, x, y, z, par1EntityPlayer, side, dx, dy, dz))
         {
             var12 = true;
         }
@@ -374,13 +374,13 @@ public class PlayerControllerMP
         {
             ItemBlock var13 = (ItemBlock)par3ItemStack.getItem();
 
-            if (!var13.func_150936_a(par2World, par4, par5, par6, par7, par1EntityPlayer, par3ItemStack))
+            if (!var13.func_150936_a(par2World, x, y, z, side, par1EntityPlayer, par3ItemStack))
             {
                 return false;
             }
         }
 
-        this.netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(par4, par5, par6, par7, par1EntityPlayer.inventory.getCurrentItem(), var9, var10, var11));
+        this.netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(x, y, z, side, par1EntityPlayer.inventory.getCurrentItem(), dx, dy, dz));
 
         if (var12)
         {
@@ -394,14 +394,14 @@ public class PlayerControllerMP
         {
             int var16 = par3ItemStack.getItemDamage();
             int var14 = par3ItemStack.stackSize;
-            boolean var15 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
+            boolean var15 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, x, y, z, side, dx, dy, dz);
             par3ItemStack.setItemDamage(var16);
             par3ItemStack.stackSize = var14;
             return var15;
         }
         else
         {
-            return par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
+            return par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, x, y, z, side, dx, dy, dz);
         }
     }
 

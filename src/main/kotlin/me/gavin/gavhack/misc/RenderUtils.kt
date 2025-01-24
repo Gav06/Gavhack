@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Vec3
+import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.*
 
 object RenderUtils {
@@ -60,7 +61,6 @@ object RenderUtils {
     // just minecraft's render method modified to accept alpha color values too
     fun drawOutlinedBoundingBox(aabb: AxisAlignedBB, colorIn: Int) {
         val tes = Tessellator.instance
-        tes.startDrawing(3)
 
         val a = ((colorIn shr 24) and 0xff) / 255.0f
         val r = ((colorIn shr 16) and 0xff) / 255.0f
@@ -71,13 +71,14 @@ object RenderUtils {
             tes.setColorRGBA_F(r, g, b, a)
         }
 
+        tes.startDrawing(GL_LINE_STRIP)
         tes.addVertex(aabb.minX, aabb.minY, aabb.minZ)
         tes.addVertex(aabb.maxX, aabb.minY, aabb.minZ)
         tes.addVertex(aabb.maxX, aabb.minY, aabb.maxZ)
         tes.addVertex(aabb.minX, aabb.minY, aabb.maxZ)
         tes.addVertex(aabb.minX, aabb.minY, aabb.minZ)
         tes.draw()
-        tes.startDrawing(3)
+        tes.startDrawing(GL_LINE_STRIP)
 
         if (colorIn != -1) {
             tes.setColorRGBA_F(r, g, b, a)
@@ -89,7 +90,7 @@ object RenderUtils {
         tes.addVertex(aabb.minX, aabb.maxY, aabb.maxZ)
         tes.addVertex(aabb.minX, aabb.maxY, aabb.minZ)
         tes.draw()
-        tes.startDrawing(1)
+        tes.startDrawing(GL_LINES)
 
         if (colorIn != -1) {
             tes.setColorRGBA_F(r, g, b, a)
@@ -104,5 +105,27 @@ object RenderUtils {
         tes.addVertex(aabb.minX, aabb.minY, aabb.maxZ)
         tes.addVertex(aabb.minX, aabb.maxY, aabb.maxZ)
         tes.draw()
+    }
+
+    fun drawBlockSide(x: Int, y: Int, z: Int, face: Int, color: Int) {
+
+    }
+
+    fun prepare3d() {
+        glPushMatrix()
+//        glDisable(GL_LIGHTING)
+        glDisable(GL_DEPTH_TEST)
+        glDisable(GL_TEXTURE_2D)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glLineWidth(1.0f)
+    }
+
+    fun release3d() {
+        glDisable(GL_BLEND)
+//        glEnable(GL_LIGHTING)
+        glEnable(GL_TEXTURE_2D)
+        glEnable(GL_DEPTH_TEST)
+        glPopMatrix()
     }
 }

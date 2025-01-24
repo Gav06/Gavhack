@@ -14,7 +14,7 @@ public class BlockHardenedClay extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
         return MapColor.field_151676_q;
     }

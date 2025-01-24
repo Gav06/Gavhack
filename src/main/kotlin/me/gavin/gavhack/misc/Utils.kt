@@ -1,15 +1,11 @@
 package me.gavin.gavhack.misc
 
-import com.google.gson.JsonParser
-import me.gavin.gavhack.Gavhack
 import net.minecraft.client.Minecraft
+import net.minecraft.item.ItemStack
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.EnumChatFormatting
-import org.apache.commons.io.IOUtils
-import java.io.IOException
-import java.net.MalformedURLException
-import java.net.URL
-import java.nio.charset.StandardCharsets
+import optifine.BlockPos
 import kotlin.math.cos
 
 object Utils {
@@ -64,5 +60,13 @@ object Utils {
 
     fun getRainbow(ms: Int, brightness: Float, saturation: Float, offset: Int = 0) : Int {
         return 0
+    }
+
+    fun blockPlacePacket(pos: BlockPos, side: Int, stack: ItemStack) {
+        this.blockPlacePacket(pos.x, pos.y, pos.z, side, stack)
+    }
+
+    fun blockPlacePacket(x: Int, y: Int, z: Int, side: Int, stack: ItemStack) {
+        Minecraft.getMinecraft().netHandler.addToSendQueue(C08PacketPlayerBlockPlacement(x, y, z, side, stack, 0f, 0f, 0f))
     }
 }

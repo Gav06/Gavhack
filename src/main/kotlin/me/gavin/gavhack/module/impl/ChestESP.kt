@@ -6,6 +6,7 @@ import me.gavin.gavhack.misc.MathUtils
 import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
+import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.tileentity.TileEntityChest
@@ -26,26 +27,13 @@ object ChestESP: Module("ChestESP", "See chests through walls", ModCategory.REND
                 viewPos.xCoord, viewPos.yCoord, viewPos.zCoord
         )
 
-        GL11.glPushMatrix()
-        GL11.glDisable(GL11.GL_DEPTH_TEST)
-        GL11.glDisable(GL11.GL_TEXTURE_2D)
-        GL11.glEnable(GL11.GL_BLEND)
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-        GL11.glLineWidth(1.0f)
-        GL11.glTranslated(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ)
+        RenderUtils.prepare3d()
 
         for (tile in mc.renderGlobal.tileEntities) {
             if (tile is TileEntityEnderChest || tile is TileEntityChest) {
 
 
-                var color = if (tile is TileEntityChest) 0xaaf99c04.toInt() else 0xaa7443f9.toInt()
-//
-//                if (fadeSetting.value) {
-//                    val n = MathUtils.clampd(mc.thePlayer.getDistance(tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble()),5.0, 15.0)
-//                    val a = (MathUtils.normalized(n, 5.0, 15.0) * 255).toInt()
-//                }
-
-
+                val color = if (tile is TileEntityChest) 0xf99c04 else 0x7443f9
 
                 val aabb = AxisAlignedBB.getBoundingBox(
                     tile.x.toDouble(),
@@ -60,14 +48,14 @@ object ChestESP: Module("ChestESP", "See chests through walls", ModCategory.REND
                 if (!camera.isBoundingBoxInFrustum(aabb))
                     continue
 
-                RenderUtils.drawOutlinedBoundingBox(aabb, color)
+                RenderGlobal.drawOutlinedBoundingBox(
+                    aabb.offset(-RenderManager.instance.viewerPosX, -RenderManager.instance.viewerPosY, -RenderManager.instance.viewerPosZ),
+                    color
+                )
             }
         }
 
-        GL11.glDisable(GL11.GL_BLEND)
-        GL11.glEnable(GL11.GL_TEXTURE_2D)
-        GL11.glEnable(GL11.GL_DEPTH_TEST)
-        GL11.glPopMatrix()
+        RenderUtils.release3d()
     }
 
     init {

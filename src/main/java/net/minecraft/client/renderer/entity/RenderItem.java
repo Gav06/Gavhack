@@ -500,38 +500,10 @@ public class RenderItem extends Render
             {
                 CrashReport var7 = CrashReport.makeCrashReport(var9, "Rendering item");
                 CrashReportCategory var8 = var7.makeCategory("Item being rendered");
-                var8.addCrashSectionCallable("Item Type", new Callable()
-                {
-                    private static final String __OBFID = "CL_00001004";
-                    public String call()
-                    {
-                        return String.valueOf(par3ItemStack.getItem());
-                    }
-                });
-                var8.addCrashSectionCallable("Item Aux", new Callable()
-                {
-                    private static final String __OBFID = "CL_00001005";
-                    public String call()
-                    {
-                        return String.valueOf(par3ItemStack.getItemDamage());
-                    }
-                });
-                var8.addCrashSectionCallable("Item NBT", new Callable()
-                {
-                    private static final String __OBFID = "CL_00001006";
-                    public String call()
-                    {
-                        return String.valueOf(par3ItemStack.getTagCompound());
-                    }
-                });
-                var8.addCrashSectionCallable("Item Foil", new Callable()
-                {
-                    private static final String __OBFID = "CL_00001007";
-                    public String call()
-                    {
-                        return String.valueOf(par3ItemStack.hasEffect());
-                    }
-                });
+                var8.addCrashSectionCallable("Item Type", () -> String.valueOf(par3ItemStack.getItem()));
+                var8.addCrashSectionCallable("Item Aux", () -> String.valueOf(par3ItemStack.getItemDamage()));
+                var8.addCrashSectionCallable("Item NBT", () -> String.valueOf(par3ItemStack.getTagCompound()));
+                var8.addCrashSectionCallable("Item Foil", () -> String.valueOf(par3ItemStack.hasEffect()));
                 throw new ReportedException(var7);
             }
 
@@ -553,6 +525,7 @@ public class RenderItem extends Render
                 GL11.glEnable(GL11.GL_LIGHTING);
 
                 GL11.glDepthFunc(GL11.GL_LEQUAL);
+                par2TextureManager.bindTexture(TextureMap.locationBlocksTexture);
 
             }
 

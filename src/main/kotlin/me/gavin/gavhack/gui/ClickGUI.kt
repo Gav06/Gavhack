@@ -63,7 +63,7 @@ object ClickGUI: GuiScreen() {
                     continue
 
                 val desc = button.module.desc
-                this.func_146283_a(listOf(desc), mouseX + 5, mouseY + 5)
+                this.drawToolTipBox(listOf(desc), mouseX + 5, mouseY + 5)
                 return
             }
         }

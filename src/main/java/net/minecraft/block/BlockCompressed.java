@@ -16,7 +16,7 @@ public class BlockCompressed extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
         return this.field_150202_a;
     }

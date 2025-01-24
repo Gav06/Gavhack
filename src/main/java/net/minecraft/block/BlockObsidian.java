@@ -22,7 +22,7 @@ public class BlockObsidian extends BlockStone
         return Item.getItemFromBlock(Blocks.obsidian);
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
         return MapColor.field_151654_J;
     }

@@ -413,8 +413,8 @@ public class BlockFire extends Block
         return this.field_149850_M[0];
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
-        return MapColor.field_151656_f;
+        return MapColor.red;
     }
 }

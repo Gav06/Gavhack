@@ -70,9 +70,9 @@ public class BlockFenceGate extends BlockDirectional
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
+    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
     {
-        return isFenceGateOpen(p_149655_1_.getBlockMetadata(p_149655_2_, p_149655_3_, p_149655_4_));
+        return isFenceGateOpen(access.getBlockMetadata(x, y, z));
     }
 
     /**

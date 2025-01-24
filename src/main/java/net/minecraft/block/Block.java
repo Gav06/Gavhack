@@ -203,7 +203,7 @@ public class Block
         return this.blockMaterial;
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
         return this.getMaterial().getMaterialMapColor();
     }
@@ -371,7 +371,7 @@ public class Block
         blockRegistry.addObject(149, "unpowered_comparator", (new BlockRedstoneComparator(false)).setHardness(0.0F).setStepSound(soundTypeWood).setBlockName("comparator").disableStats().setBlockTextureName("comparator_off"));
         blockRegistry.addObject(150, "powered_comparator", (new BlockRedstoneComparator(true)).setHardness(0.0F).setLightLevel(0.625F).setStepSound(soundTypeWood).setBlockName("comparator").disableStats().setBlockTextureName("comparator_on"));
         blockRegistry.addObject(151, "daylight_detector", (new BlockDaylightDetector()).setHardness(0.2F).setStepSound(soundTypeWood).setBlockName("daylightDetector").setBlockTextureName("daylight_detector"));
-        blockRegistry.addObject(152, "redstone_block", (new BlockCompressedPowered(MapColor.field_151656_f)).setHardness(5.0F).setResistance(10.0F).setStepSound(soundTypeMetal).setBlockName("blockRedstone").setBlockTextureName("redstone_block"));
+        blockRegistry.addObject(152, "redstone_block", (new BlockCompressedPowered(MapColor.red)).setHardness(5.0F).setResistance(10.0F).setStepSound(soundTypeMetal).setBlockName("blockRedstone").setBlockTextureName("redstone_block"));
         blockRegistry.addObject(153, "quartz_ore", (new BlockOre()).setHardness(3.0F).setResistance(5.0F).setStepSound(soundTypePiston).setBlockName("netherquartz").setBlockTextureName("quartz_ore"));
         blockRegistry.addObject(154, "hopper", (new BlockHopper()).setHardness(3.0F).setResistance(8.0F).setStepSound(soundTypeWood).setBlockName("hopper").setBlockTextureName("hopper"));
         Block var9 = (new BlockQuartz()).setStepSound(soundTypePiston).setHardness(0.8F).setBlockName("quartzBlock").setBlockTextureName("quartz_block");
@@ -420,33 +420,33 @@ public class Block
         }
     }
 
-    protected Block(Material p_i45394_1_)
+    protected Block(Material material)
     {
         this.stepSound = soundTypeStone;
         this.blockParticleGravity = 1.0F;
         this.slipperiness = 0.6F;
-        this.blockMaterial = p_i45394_1_;
+        this.blockMaterial = material;
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         this.opaque = this.isOpaqueCube();
         this.lightOpacity = this.isOpaqueCube() ? 255 : 0;
-        this.canBlockGrass = !p_i45394_1_.getCanBlockGrass();
+        this.canBlockGrass = !material.getCanBlockGrass();
     }
 
     /**
      * Sets the footstep sound for the block. Returns the object for convenience in constructing.
      */
-    protected Block setStepSound(Block.SoundType p_149672_1_)
+    protected Block setStepSound(Block.SoundType soundType)
     {
-        this.stepSound = p_149672_1_;
+        this.stepSound = soundType;
         return this;
     }
 
     /**
      * Sets how much light is blocked going through this block. Returns the object for convenience in constructing.
      */
-    public Block setLightOpacity(int p_149713_1_)
+    public Block setLightOpacity(int lightOpacity)
     {
-        this.lightOpacity = p_149713_1_;
+        this.lightOpacity = lightOpacity;
         return this;
     }
 
@@ -454,18 +454,18 @@ public class Block
      * Sets the light value that the block emits. Returns resulting block instance for constructing convenience. Args:
      * level
      */
-    protected Block setLightLevel(float p_149715_1_)
+    protected Block setLightLevel(float lightlevel)
     {
-        this.lightValue = (int)(15.0F * p_149715_1_);
+        this.lightValue = (int)(15.0F * lightlevel);
         return this;
     }
 
     /**
      * Sets the the blocks resistance to explosions. Returns the object for convenience in constructing.
      */
-    protected Block setResistance(float p_149752_1_)
+    protected Block setResistance(float resistance)
     {
-        this.blockResistance = p_149752_1_ * 3.0F;
+        this.blockResistance = resistance * 3.0F;
         return this;
     }
 
@@ -487,7 +487,7 @@ public class Block
         return true;
     }
 
-    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
+    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
     {
         return !this.blockMaterial.blocksMovement();
     }
@@ -503,13 +503,13 @@ public class Block
     /**
      * Sets how many hits it takes to break a block.
      */
-    protected Block setHardness(float p_149711_1_)
+    protected Block setHardness(float hardness)
     {
-        this.blockHardness = p_149711_1_;
+        this.blockHardness = hardness;
 
-        if (this.blockResistance < p_149711_1_ * 5.0F)
+        if (this.blockResistance < hardness * 5.0F)
         {
-            this.blockResistance = p_149711_1_ * 5.0F;
+            this.blockResistance = hardness * 5.0F;
         }
 
         return this;
@@ -521,7 +521,7 @@ public class Block
         return this;
     }
 
-    public float getBlockHardness(World p_149712_1_, int p_149712_2_, int p_149712_3_, int p_149712_4_)
+    public float getBlockHardness(World world, int x, int y, int z)
     {
         return this.blockHardness;
     }

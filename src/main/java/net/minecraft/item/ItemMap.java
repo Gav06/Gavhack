@@ -143,7 +143,7 @@ public class ItemMap extends ItemMapBase
                                                     var32 = var23.func_150810_a(var29 + var24, var31, var30 + var25);
                                                     var33 = var23.getBlockMetadata(var29 + var24, var31, var30 + var25);
                                                 }
-                                                while (var32.getMapColor(var33) == MapColor.field_151660_b && var31 > 0);
+                                                while (var32.getMapColor(var33) == MapColor.black && var31 > 0);
 
                                                 if (var31 > 0 && var32.getMaterial().isLiquid())
                                                 {
@@ -179,7 +179,7 @@ public class ItemMap extends ItemMapBase
                                     var37 = 0;
                                 }
 
-                                MapColor var38 = (MapColor)Iterables.getFirst(Multisets.copyHighestCountFirst(var22), MapColor.field_151660_b);
+                                MapColor var38 = (MapColor)Iterables.getFirst(Multisets.copyHighestCountFirst(var22), MapColor.black);
 
                                 if (var38 == MapColor.field_151662_n)
                                 {

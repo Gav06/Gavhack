@@ -181,11 +181,9 @@ public class RenderManager
         this.entityRenderMap.put(EntityFishHook.class, new RenderFish());
         this.entityRenderMap.put(EntityHorse.class, new RenderHorse(new ModelHorse(), 0.75F));
         this.entityRenderMap.put(EntityLightningBolt.class, new RenderLightningBolt());
-        Iterator var1 = this.entityRenderMap.values().iterator();
 
-        while (var1.hasNext())
-        {
-            Render var2 = (Render)var1.next();
+        for (Object o : this.entityRenderMap.values()) {
+            Render var2 = (Render) o;
             var2.setRenderManager(this);
         }
     }
@@ -208,22 +206,22 @@ public class RenderManager
         return this.getEntityClassRenderObject(par1Entity.getClass());
     }
 
-    public void func_147938_a(World p_147938_1_, TextureManager p_147938_2_, FontRenderer p_147938_3_, EntityLivingBase p_147938_4_, Entity p_147938_5_, GameSettings p_147938_6_, float p_147938_7_)
+    public void func_147938_a(World p_147938_1_, TextureManager p_147938_2_, FontRenderer p_147938_3_, EntityLivingBase livingBase, Entity p_147938_5_, GameSettings p_147938_6_, float partialTicks)
     {
         this.worldObj = p_147938_1_;
         this.renderEngine = p_147938_2_;
         this.options = p_147938_6_;
-        this.livingPlayer = p_147938_4_;
+        this.livingPlayer = livingBase;
         this.field_147941_i = p_147938_5_;
         this.fontRenderer = p_147938_3_;
 
-        if (p_147938_4_.isPlayerSleeping())
+        if (livingBase.isPlayerSleeping())
         {
-            Block var8 = p_147938_1_.getBlock(MathHelper.floor_double(p_147938_4_.posX), MathHelper.floor_double(p_147938_4_.posY), MathHelper.floor_double(p_147938_4_.posZ));
+            Block var8 = p_147938_1_.getBlock(MathHelper.floor_double(livingBase.posX), MathHelper.floor_double(livingBase.posY), MathHelper.floor_double(livingBase.posZ));
 
             if (var8 == Blocks.bed)
             {
-                int var9 = p_147938_1_.getBlockMetadata(MathHelper.floor_double(p_147938_4_.posX), MathHelper.floor_double(p_147938_4_.posY), MathHelper.floor_double(p_147938_4_.posZ));
+                int var9 = p_147938_1_.getBlockMetadata(MathHelper.floor_double(livingBase.posX), MathHelper.floor_double(livingBase.posY), MathHelper.floor_double(livingBase.posZ));
                 int var10 = var9 & 3;
                 this.playerViewY = (float)(var10 * 90 + 180);
                 this.playerViewX = 0.0F;
@@ -231,8 +229,8 @@ public class RenderManager
         }
         else
         {
-            this.playerViewY = p_147938_4_.prevRotationYaw + (p_147938_4_.rotationYaw - p_147938_4_.prevRotationYaw) * p_147938_7_;
-            this.playerViewX = p_147938_4_.prevRotationPitch + (p_147938_4_.rotationPitch - p_147938_4_.prevRotationPitch) * p_147938_7_;
+            this.playerViewY = livingBase.prevRotationYaw + (livingBase.rotationYaw - livingBase.prevRotationYaw) * partialTicks;
+            this.playerViewX = livingBase.prevRotationPitch + (livingBase.rotationPitch - livingBase.prevRotationPitch) * partialTicks;
         }
 
         if (p_147938_6_.thirdPersonView == 2)
@@ -240,9 +238,9 @@ public class RenderManager
             this.playerViewY += 180.0F;
         }
 
-        this.viewerPosX = p_147938_4_.lastTickPosX + (p_147938_4_.posX - p_147938_4_.lastTickPosX) * (double)p_147938_7_;
-        this.viewerPosY = p_147938_4_.lastTickPosY + (p_147938_4_.posY - p_147938_4_.lastTickPosY) * (double)p_147938_7_;
-        this.viewerPosZ = p_147938_4_.lastTickPosZ + (p_147938_4_.posZ - p_147938_4_.lastTickPosZ) * (double)p_147938_7_;
+        this.viewerPosX = livingBase.lastTickPosX + (livingBase.posX - livingBase.lastTickPosX) * (double)partialTicks;
+        this.viewerPosY = livingBase.lastTickPosY + (livingBase.posY - livingBase.lastTickPosY) * (double)partialTicks;
+        this.viewerPosZ = livingBase.lastTickPosZ + (livingBase.posZ - livingBase.lastTickPosZ) * (double)partialTicks;
     }
 
     public boolean func_147937_a(Entity p_147937_1_, float p_147937_2_)
@@ -250,31 +248,31 @@ public class RenderManager
         return this.func_147936_a(p_147937_1_, p_147937_2_, false);
     }
 
-    public boolean func_147936_a(Entity p_147936_1_, float p_147936_2_, boolean p_147936_3_)
+    public boolean func_147936_a(Entity entity, float partialTicks, boolean p_147936_3_)
     {
-        if (p_147936_1_.ticksExisted == 0)
+        if (entity.ticksExisted == 0)
         {
-            p_147936_1_.lastTickPosX = p_147936_1_.posX;
-            p_147936_1_.lastTickPosY = p_147936_1_.posY;
-            p_147936_1_.lastTickPosZ = p_147936_1_.posZ;
+            entity.lastTickPosX = entity.posX;
+            entity.lastTickPosY = entity.posY;
+            entity.lastTickPosZ = entity.posZ;
         }
 
-        double var4 = p_147936_1_.lastTickPosX + (p_147936_1_.posX - p_147936_1_.lastTickPosX) * (double)p_147936_2_;
-        double var6 = p_147936_1_.lastTickPosY + (p_147936_1_.posY - p_147936_1_.lastTickPosY) * (double)p_147936_2_;
-        double var8 = p_147936_1_.lastTickPosZ + (p_147936_1_.posZ - p_147936_1_.lastTickPosZ) * (double)p_147936_2_;
-        float var10 = p_147936_1_.prevRotationYaw + (p_147936_1_.rotationYaw - p_147936_1_.prevRotationYaw) * p_147936_2_;
-        int var11 = p_147936_1_.getBrightnessForRender(p_147936_2_);
+        double var4 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)partialTicks;
+        double var6 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks;
+        double var8 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)partialTicks;
+        float var10 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
+        int var11 = entity.getBrightnessForRender(partialTicks);
 
-        if (p_147936_1_.isBurning())
+        if (entity.isBurning())
         {
             var11 = 15728880;
         }
 
         int var12 = var11 % 65536;
         int var13 = var11 / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var12 / 1.0F, (float)var13 / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var12, (float) var13);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        return this.func_147939_a(p_147936_1_, var4 - renderPosX, var6 - renderPosY, var8 - renderPosZ, var10, p_147936_2_, p_147936_3_);
+        return this.func_147939_a(entity, var4 - renderPosX, var6 - renderPosY, var8 - renderPosZ, var10, partialTicks, p_147936_3_);
     }
 
     public boolean func_147940_a(Entity p_147940_1_, double p_147940_2_, double p_147940_4_, double p_147940_6_, float p_147940_8_, float p_147940_9_)

@@ -1,5 +1,7 @@
 package me.gavin.gavhack.module
 
+import com.google.gson.JsonArray
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import me.gavin.gavhack.config.IConfigurable
 import me.gavin.gavhack.event.Event
@@ -64,14 +66,17 @@ abstract class Module(
         jsonObj.addProperty("enabled", this.isEnabled())
         jsonObj.addProperty("bind", this.bind)
 
+        val settingObj = JsonObject()
+
         for (setting in settings) {
             when (setting) {
-                is ToggleSetting -> jsonObj.addProperty(setting.name, setting.value)
-                is NumberSetting ->  jsonObj.addProperty(setting.name, setting.getValue())
-                is EnumSetting<*> -> jsonObj.addProperty(setting.name, setting.value)
+                is ToggleSetting -> settingObj.addProperty(setting.name, setting.value)
+                is NumberSetting ->  settingObj.addProperty(setting.name, setting.getValue())
+                is EnumSetting<*> -> settingObj.addProperty(setting.name, setting.value)
             }
         }
 
+        jsonObj.add("settings", settingObj)
         return jsonObj
     }
 
@@ -85,15 +90,20 @@ abstract class Module(
         if (jsonObj.has("bind"))
             this.bind = jsonObj["bind"].asInt
 
+        if (!jsonObj.has("settings"))
+            return
+
+        val settingsObj = jsonObj.get("settings").asJsonObject
+
         for (setting in settings) {
             when (setting) {
                 is ToggleSetting ->
-                    if (jsonObj.has(setting.name)) setting.value = jsonObj[setting.name].asBoolean
+                    if (settingsObj.has(setting.name)) setting.value = settingsObj[setting.name].asBoolean
                 is NumberSetting ->
-                    if (jsonObj.has(setting.name)) setting.setValue(jsonObj[setting.name].asFloat)
+                    if (settingsObj.has(setting.name)) setting.setValue(settingsObj[setting.name].asFloat)
                 is EnumSetting<*> ->
-                    if (jsonObj.has(setting.name)) {
-                        val index = setting.indexOf(jsonObj[setting.name].asString)
+                    if (settingsObj.has(setting.name)) {
+                        val index = setting.indexOf(settingsObj[setting.name].asString)
                         setting.value = index
                     }
             }

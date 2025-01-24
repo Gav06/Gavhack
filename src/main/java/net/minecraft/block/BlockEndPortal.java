@@ -117,7 +117,7 @@ public class BlockEndPortal extends BlockContainer
         this.blockIcon = p_149651_1_.registerIcon("portal");
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
         return MapColor.field_151654_J;
     }

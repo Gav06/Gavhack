@@ -1602,7 +1602,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     GL11.glDisable(GL11.GL_ALPHA_TEST);
                     this.mc.mcProfiler.endStartSection("outline");
 
-                    if ((!hasForge || !Reflector.callBoolean(Reflector.ForgeHooksClient_onDrawBlockHighlight, new Object[] {var5, var18, this.mc.objectMouseOver, Integer.valueOf(0), var18.inventory.getCurrentItem(), Float.valueOf(par1)})) && !this.mc.gameSettings.hideGUI)
+                    if ((!hasForge || !Reflector.callBoolean(Reflector.ForgeHooksClient_onDrawBlockHighlight, var5, var18, this.mc.objectMouseOver, 0, var18.inventory.getCurrentItem(), par1)) && !this.mc.gameSettings.hideGUI)
                     {
                         var5.drawSelectionBox(var18, this.mc.objectMouseOver, 0, par1);
                     }
@@ -1619,7 +1619,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
                 this.mc.mcProfiler.endStartSection("outline");
 
-                if ((!hasForge || !Reflector.callBoolean(Reflector.ForgeHooksClient_onDrawBlockHighlight, new Object[] {var5, var18, this.mc.objectMouseOver, Integer.valueOf(0), var18.inventory.getCurrentItem(), Float.valueOf(par1)})) && !this.mc.gameSettings.hideGUI)
+                if ((!hasForge || !Reflector.callBoolean(Reflector.ForgeHooksClient_onDrawBlockHighlight, var5, var18, this.mc.objectMouseOver, 0, var18.inventory.getCurrentItem(), par1)) && !this.mc.gameSettings.hideGUI)
                 {
                     var5.drawSelectionBox(var18, this.mc.objectMouseOver, 0, par1);
                 }
@@ -1669,11 +1669,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
                         GL11.glColorMask(true, false, false, true);
                     }
 
-                    var5.renderAllSortedRenderers(1, (double)par1);
+                    var5.renderAllSortedRenderers(1, par1);
                 }
                 else
                 {
-                    var5.renderAllSortedRenderers(1, (double)par1);
+                    var5.renderAllSortedRenderers(1, par1);
                 }
 
                 GL11.glDisable(GL11.GL_BLEND);
@@ -1682,7 +1682,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             else
             {
                 this.mc.mcProfiler.endStartSection("water");
-                var5.renderAllSortedRenderers(1, (double)par1);
+                var5.renderAllSortedRenderers(1, par1);
             }
 
             WrUpdates.pauseBackgroundUpdates();
@@ -1691,9 +1691,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 RenderHelper.enableStandardItemLighting();
                 this.mc.mcProfiler.endStartSection("entities");
-                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(1)});
+                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, 1);
                 this.mc.renderGlobal.renderEntities(viewEntity, var14, par1);
-                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(-1)});
+                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, -1);
                 RenderHelper.disableStandardItemLighting();
             }
 
@@ -1708,7 +1708,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.renderCloudsCheck(var5, par1);
             }
 
-            this.enableLightmap((double)par1);
+            this.enableLightmap(par1);
             this.mc.mcProfiler.endStartSection("litParticles");
             RenderHelper.enableStandardItemLighting();
             var6.renderLitParticles(viewEntity, par1);
@@ -1716,21 +1716,19 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.setupFog(0, par1);
             this.mc.mcProfiler.endStartSection("particles");
             var6.renderParticles(viewEntity, par1);
-            this.disableLightmap((double)par1);
+            this.disableLightmap(par1);
 
             if (hasForge)
             {
                 this.mc.mcProfiler.endStartSection("FRenderLast");
-                Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {var5, Float.valueOf(par1)});
+                Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, var5, par1);
             }
-
-            this.mc.mcProfiler.endStartSection("gavhack");
 
             EventBus.INSTANCE.post(new RenderWorldLastEvent(par1));
 
 
             this.mc.mcProfiler.endStartSection("hand");
-            boolean renderFirstPersonHand = Reflector.callBoolean(Reflector.ForgeHooksClient_renderFirstPersonHand, new Object[] {this.mc.renderGlobal, Float.valueOf(par1), Integer.valueOf(var13)});
+            boolean renderFirstPersonHand = Reflector.callBoolean(Reflector.ForgeHooksClient_renderFirstPersonHand, this.mc.renderGlobal, par1, var13);
 
             if (!renderFirstPersonHand && this.cameraZoom == 1.0D)
             {

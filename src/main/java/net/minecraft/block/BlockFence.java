@@ -127,7 +127,7 @@ public class BlockFence extends Block
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
+    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
     {
         return false;
     }

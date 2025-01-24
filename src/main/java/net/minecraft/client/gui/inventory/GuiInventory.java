@@ -55,7 +55,7 @@ public class GuiInventory extends InventoryEffectRenderer
 
     protected void func_146979_b(int p_146979_1_, int p_146979_2_)
     {
-        this.fontRendererObj.drawString(I18n.format("container.crafting", new Object[0]), 86, 16, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.crafting"), 86, 16, 4210752);
     }
 
     /**

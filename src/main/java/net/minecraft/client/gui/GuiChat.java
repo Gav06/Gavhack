@@ -428,7 +428,7 @@ public class GuiChat extends GuiScreen
                         var10.addAll(this.fontRendererObj.listFormattedStringToWidth(var9, 150));
                     }
 
-                    this.func_146283_a(var10, mouseX, mouseY);
+                    this.drawToolTipBox(var10, mouseX, mouseY);
                 }
                 else
                 {

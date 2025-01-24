@@ -65,8 +65,8 @@ public class BlockColored extends Block
         }
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
-        return MapColor.func_151644_a(p_149728_1_);
+        return MapColor.func_151644_a(color);
     }
 }

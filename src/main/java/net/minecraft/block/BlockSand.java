@@ -43,8 +43,8 @@ public class BlockSand extends BlockFalling
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 1));
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
-        return p_149728_1_ == 1 ? MapColor.field_151664_l : MapColor.field_151658_d;
+        return color == 1 ? MapColor.field_151664_l : MapColor.yellow;
     }
 }

@@ -140,7 +140,7 @@ public class BlockQuartz extends Block
         this.field_150188_Q = p_149651_1_.registerIcon(this.getTextureName() + "_" + "bottom");
     }
 
-    public MapColor getMapColor(int p_149728_1_)
+    public MapColor getMapColor(int color)
     {
         return MapColor.field_151677_p;
     }

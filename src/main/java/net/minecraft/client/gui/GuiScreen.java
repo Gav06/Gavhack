@@ -7,7 +7,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
@@ -137,15 +136,15 @@ public class GuiScreen extends Gui
             }
         }
 
-        this.func_146283_a(var4, p_146285_2_, p_146285_3_);
+        this.drawToolTipBox(var4, p_146285_2_, p_146285_3_);
     }
 
     protected void func_146279_a(String p_146279_1_, int p_146279_2_, int p_146279_3_)
     {
-        this.func_146283_a(Arrays.asList(new String[] {p_146279_1_}), p_146279_2_, p_146279_3_);
+        this.drawToolTipBox(Arrays.asList(new String[] {p_146279_1_}), p_146279_2_, p_146279_3_);
     }
 
-    protected void func_146283_a(List<String> list, int p_146283_2_, int p_146283_3_)
+    protected void drawToolTipBox(List<String> list, int p_146283_2_, int p_146283_3_)
     {
         if (!list.isEmpty())
         {

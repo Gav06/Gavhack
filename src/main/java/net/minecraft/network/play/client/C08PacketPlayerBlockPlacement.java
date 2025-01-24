@@ -9,58 +9,57 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C08PacketPlayerBlockPlacement extends Packet
 {
-    private int field_149583_a;
-    private int field_149581_b;
-    private int field_149582_c;
-    private int field_149579_d;
-    private ItemStack field_149580_e;
-    private float field_149577_f;
-    private float field_149578_g;
-    private float field_149584_h;
-    private static final String __OBFID = "CL_00001371";
+    private int x;
+    private int y;
+    private int z;
+    private int side;
+    private ItemStack itemStack;
+    private float facingX;
+    private float facingY;
+    private float facingZ;
 
     public C08PacketPlayerBlockPlacement() {}
 
-    public C08PacketPlayerBlockPlacement(int p_i45265_1_, int p_i45265_2_, int p_i45265_3_, int p_i45265_4_, ItemStack p_i45265_5_, float p_i45265_6_, float p_i45265_7_, float p_i45265_8_)
+    public C08PacketPlayerBlockPlacement(int x, int y, int z, int side, ItemStack itemStack, float facingX, float facingY, float facingZ)
     {
-        this.field_149583_a = p_i45265_1_;
-        this.field_149581_b = p_i45265_2_;
-        this.field_149582_c = p_i45265_3_;
-        this.field_149579_d = p_i45265_4_;
-        this.field_149580_e = p_i45265_5_ != null ? p_i45265_5_.copy() : null;
-        this.field_149577_f = p_i45265_6_;
-        this.field_149578_g = p_i45265_7_;
-        this.field_149584_h = p_i45265_8_;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.side = side;
+        this.itemStack = itemStack != null ? itemStack.copy() : null;
+        this.facingX = facingX;
+        this.facingY = facingY;
+        this.facingZ = facingZ;
     }
 
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer p_148837_1_) throws IOException
+    public void readPacketData(PacketBuffer packetBuffer) throws IOException
     {
-        this.field_149583_a = p_148837_1_.readInt();
-        this.field_149581_b = p_148837_1_.readUnsignedByte();
-        this.field_149582_c = p_148837_1_.readInt();
-        this.field_149579_d = p_148837_1_.readUnsignedByte();
-        this.field_149580_e = p_148837_1_.readItemStackFromBuffer();
-        this.field_149577_f = (float)p_148837_1_.readUnsignedByte() / 16.0F;
-        this.field_149578_g = (float)p_148837_1_.readUnsignedByte() / 16.0F;
-        this.field_149584_h = (float)p_148837_1_.readUnsignedByte() / 16.0F;
+        this.x = packetBuffer.readInt();
+        this.y = packetBuffer.readUnsignedByte();
+        this.z = packetBuffer.readInt();
+        this.side = packetBuffer.readUnsignedByte();
+        this.itemStack = packetBuffer.readItemStackFromBuffer();
+        this.facingX = (float)packetBuffer.readUnsignedByte() / 16.0F;
+        this.facingY = (float)packetBuffer.readUnsignedByte() / 16.0F;
+        this.facingZ = (float)packetBuffer.readUnsignedByte() / 16.0F;
     }
 
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer p_148840_1_) throws IOException
+    public void writePacketData(PacketBuffer packetBuffer) throws IOException
     {
-        p_148840_1_.writeInt(this.field_149583_a);
-        p_148840_1_.writeByte(this.field_149581_b);
-        p_148840_1_.writeInt(this.field_149582_c);
-        p_148840_1_.writeByte(this.field_149579_d);
-        p_148840_1_.writeItemStackToBuffer(this.field_149580_e);
-        p_148840_1_.writeByte((int)(this.field_149577_f * 16.0F));
-        p_148840_1_.writeByte((int)(this.field_149578_g * 16.0F));
-        p_148840_1_.writeByte((int)(this.field_149584_h * 16.0F));
+        packetBuffer.writeInt(this.x);
+        packetBuffer.writeByte(this.y);
+        packetBuffer.writeInt(this.z);
+        packetBuffer.writeByte(this.side);
+        packetBuffer.writeItemStackToBuffer(this.itemStack);
+        packetBuffer.writeByte((int)(this.facingX * 16.0F));
+        packetBuffer.writeByte((int)(this.facingY * 16.0F));
+        packetBuffer.writeByte((int)(this.facingZ * 16.0F));
     }
 
     public void processPacket(INetHandlerPlayServer p_149572_1_)
@@ -70,42 +69,42 @@ public class C08PacketPlayerBlockPlacement extends Packet
 
     public int func_149576_c()
     {
-        return this.field_149583_a;
+        return this.x;
     }
 
     public int func_149571_d()
     {
-        return this.field_149581_b;
+        return this.y;
     }
 
     public int func_149570_e()
     {
-        return this.field_149582_c;
+        return this.z;
     }
 
     public int func_149568_f()
     {
-        return this.field_149579_d;
+        return this.side;
     }
 
     public ItemStack func_149574_g()
     {
-        return this.field_149580_e;
+        return this.itemStack;
     }
 
     public float func_149573_h()
     {
-        return this.field_149577_f;
+        return this.facingX;
     }
 
     public float func_149569_i()
     {
-        return this.field_149578_g;
+        return this.facingY;
     }
 
     public float func_149575_j()
     {
-        return this.field_149584_h;
+        return this.facingZ;
     }
 
     public void processPacket(INetHandler p_148833_1_)

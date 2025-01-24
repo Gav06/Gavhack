@@ -694,7 +694,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
                 }
             }
 
-            this.func_146283_a(var4, p_146285_2_, p_146285_3_);
+            this.drawToolTipBox(var4, p_146285_2_, p_146285_3_);
         }
         else
         {
