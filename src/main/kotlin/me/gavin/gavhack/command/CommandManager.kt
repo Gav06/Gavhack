@@ -20,7 +20,8 @@ object CommandManager {
         HelpCommand(),
         SyntaxCommand(),
         SpawnTPCommand(),
-        ToggleCommand()
+        ToggleCommand(),
+        FakePlayerCommand()
     )
 
     private val chatListener = Listener<ChatMessageEvent> {(it as ChatMessageEvent)
