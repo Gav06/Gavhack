@@ -2293,6 +2293,11 @@ public abstract class Entity
         this.setLocationAndAngles(par1Entity.posX, par1Entity.posY, par1Entity.posZ, par1Entity.rotationYaw, par1Entity.rotationPitch);
     }
 
+    public void copyLocationAndAnglesFrom(Entity par1Entity, double customY)
+    {
+        this.setLocationAndAngles(par1Entity.posX, customY, par1Entity.posZ, par1Entity.rotationYaw, par1Entity.rotationPitch);
+    }
+
     /**
      * Copies important data from another entity to this entity. Used when teleporting entities between worlds, as this
      * actually deletes the teleporting entity and re-creates it on the other side. Params: Entity to copy from, unused

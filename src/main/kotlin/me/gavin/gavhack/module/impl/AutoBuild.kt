@@ -33,7 +33,7 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
 
         val below = BlockPos(
             mc.thePlayer.posX.toInt() + if (mc.thePlayer.posX < 0.0) -1 else 0,
-            mc.thePlayer.posY.toInt() - 2,
+            mc.thePlayer.boundingBox.minY.toInt() - 1,
             mc.thePlayer.posZ.toInt() + if (mc.thePlayer.posZ < 0.0) -1 else 0
         )
 

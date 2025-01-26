@@ -86,12 +86,12 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer)
     {
         TextureManager var4 = Minecraft.getMinecraft().getTextureManager();
-        Object var5 = var4.getTexture(par0ResourceLocation);
+        ITextureObject var5 = var4.getTexture(par0ResourceLocation);
 
         if (var5 == null)
         {
             var5 = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
-            var4.loadTexture(par0ResourceLocation, (ITextureObject)var5);
+            var4.loadTexture(par0ResourceLocation, var5);
         }
 
         return (ThreadDownloadImageData)var5;
@@ -104,7 +104,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
     public static String getCapeUrl(String par0Str)
     {
-        return Utils.INSTANCE.resolveCape(par0Str);
+        return "https://optifine.net/capes/" + par0Str + ".png";
     }
 
     public static ResourceLocation getLocationSkin(String par0Str)

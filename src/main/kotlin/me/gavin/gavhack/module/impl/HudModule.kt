@@ -53,20 +53,19 @@ object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
 
             // Shorten our nums into 1 decimal place
             val x = "%.1f".format(mc.thePlayer.posX)
-            val y = "%.1f".format(mc.thePlayer.posY)
+            val y = "%.1f".format(mc.thePlayer.boundingBox.minY)
             val z = "%.1f".format(mc.thePlayer.posZ)
 
-            var str = "$x $y $z"
+            var str = "XYZ $x $y $z"
             val dim = mc.thePlayer.dimension
 
             // If we aren't in the end dimension
             if (dim != 1) {
 
                 val altX = "%.1f".format(if (dim == 0) mc.thePlayer.posX / 8 else mc.thePlayer.posX * 8)
-                val altY = "%.1f".format(if (dim == 0) mc.thePlayer.posY / 8 else mc.thePlayer.posY * 8)
                 val altZ = "%.1f".format(if (dim == 0) mc.thePlayer.posZ / 8 else mc.thePlayer.posZ * 8)
 
-                str += "${EnumChatFormatting.GRAY} $altX $altY $altZ"
+                str += "${EnumChatFormatting.GRAY} $altX $altZ"
             }
 
             it.font.drawStringWithShadow(str, 2, textY, -1)
