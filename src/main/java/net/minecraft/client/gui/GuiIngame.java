@@ -331,11 +331,11 @@ public class GuiIngame extends Gui
             var22 = MathHelper.floor_double(this.mc.thePlayer.posX);
             var23 = MathHelper.floor_double(this.mc.thePlayer.posY);
             int var24 = MathHelper.floor_double(this.mc.thePlayer.posZ);
-            this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var22), Integer.valueOf(var22 >> 4), Integer.valueOf(var22 & 15)}), 2, 64, 14737632);
-            this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {this.mc.thePlayer.boundingBox.minY, this.mc.thePlayer.posY}), 2, 72, 14737632);
-            this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var24), Integer.valueOf(var24 >> 4), Integer.valueOf(var24 & 15)}), 2, 80, 14737632);
-            int var25 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-            this.drawString(var8, "f: " + var25 + " (" + Direction.directions[var25] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
+            this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", this.mc.thePlayer.posX, var22, var22 >> 4, var22 & 15), 2, 64, 14737632);
+            this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", this.mc.thePlayer.boundingBox.minY, this.mc.thePlayer.posY), 2, 72, 14737632);
+            this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", this.mc.thePlayer.posZ, var24, var24 >> 4, var24 & 15), 2, 80, 14737632);
+            int directionInt = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+            this.drawString(var8, "f: " + directionInt + " (" + Direction.directions[directionInt] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
 
             if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var22, var23, var24))
             {

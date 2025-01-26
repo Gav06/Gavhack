@@ -128,10 +128,10 @@ public abstract class BlockLiquid extends Block
         return p_149678_2_ && p_149678_1_ == 0;
     }
 
-    public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_)
+    public boolean isBlockSolid(IBlockAccess access, int x, int y, int z, int side)
     {
-        Material var6 = p_149747_1_.getBlock(p_149747_2_, p_149747_3_, p_149747_4_).getMaterial();
-        return var6 == this.blockMaterial ? false : (p_149747_5_ == 1 ? true : (var6 == Material.ice ? false : super.isBlockSolid(p_149747_1_, p_149747_2_, p_149747_3_, p_149747_4_, p_149747_5_)));
+        Material var6 = access.getBlock(x, y, z).getMaterial();
+        return var6 == this.blockMaterial ? false : (side == 1 ? true : (var6 == Material.ice ? false : super.isBlockSolid(access, x, y, z, side)));
     }
 
     public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)

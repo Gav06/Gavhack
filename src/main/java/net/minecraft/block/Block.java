@@ -591,9 +591,9 @@ public class Block
                 || !blockAccess.getBlock(x, y, z).isOpaqueCube())))));
     }
 
-    public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_)
+    public boolean isBlockSolid(IBlockAccess access, int x, int y, int z, int side)
     {
-        return p_149747_1_.getBlock(p_149747_2_, p_149747_3_, p_149747_4_).getMaterial().isSolid();
+        return access.getBlock(x, y, z).getMaterial().isSolid();
     }
 
     public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
