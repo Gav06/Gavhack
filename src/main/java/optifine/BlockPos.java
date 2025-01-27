@@ -27,4 +27,8 @@ public class BlockPos
     {
         return this.z;
     }
+
+    public boolean equals(BlockPos pos) {
+        return (pos.x == x) && (pos.y == y) && (pos.z == z);
+    }
 }

@@ -8,141 +8,160 @@ import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.NumberSetting
+import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.block.Block
-import net.minecraft.client.renderer.RenderGlobal
-import net.minecraft.client.renderer.entity.RenderManager
-import net.minecraft.init.Blocks
+import net.minecraft.entity.Entity
 import net.minecraft.item.ItemBlock
-import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
 import optifine.BlockPos
-import java.util.concurrent.CopyOnWriteArrayList
 
 object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.WORLD) {
 
-    private val width = addSetting(NumberSetting("Width", 5f, 3f, 6f, decimalPlaces = 0))
+    private val switch = addSetting(ToggleSetting("Switch", true))
+
+    private val horizonalRadius = addSetting(NumberSetting("H. Radius", 2f, 1f, 4f, decimalPlaces = 0))
     private val depth = addSetting(NumberSetting("Depth", 4f, 2f, 6f, decimalPlaces = 0))
 
-    private val blockPositions = CopyOnWriteArrayList<BlockPos>()
+    private val blockPositions = ArrayList<BlockPos>()
+    private val placeQueue = ArrayList<BlockUtil.Placement>()
+
+    private fun getStartingPosition(entity: Entity): BlockPos {
+        return BlockPos(
+            entity.posX.toInt() + if (entity.posX < 0.0) -1 else 0,
+            entity.boundingBox.minY.toInt() - 1,
+            entity.posZ.toInt() + if (entity.posZ < 0.0) -1 else 0
+        )
+    }
+
+    private fun genHorizontalPositions(startPos: BlockPos, radius: Int) {
+        var leftPos = startPos
+        var rightPos = startPos
+        repeat(radius) {
+            leftPos = BlockUtil.left(leftPos, mc.thePlayer)
+            rightPos = BlockUtil.right(rightPos, mc.thePlayer)
+            blockPositions.add(leftPos)
+            blockPositions.add(rightPos)
+        }
+    }
+
+    private fun genDepthPositions(startPos: BlockPos, depth: Int, radius: Int) {
+        var forwardPos = startPos
+        repeat(depth - 1) {
+            forwardPos = BlockUtil.forward(forwardPos, mc.thePlayer)
+            blockPositions.add(forwardPos)
+
+            var leftPos = forwardPos
+            var rightPos = forwardPos
+            repeat(radius) {
+                leftPos = BlockUtil.left(leftPos, mc.thePlayer)
+                rightPos = BlockUtil.right(rightPos, mc.thePlayer)
+                blockPositions.add(leftPos)
+                blockPositions.add(rightPos)
+            }
+        }
+    }
+    private fun genBlockPositions() {
+        blockPositions.clear()
+
+        val start = getStartingPosition(mc.thePlayer)
+
+        blockPositions.add(start)
+
+        val radius = horizonalRadius.getValue().toInt()
+        genHorizontalPositions(start, radius)
+
+        val depthVal = depth.getValue().toInt()
+        genDepthPositions(start, depthVal, radius)
+    }
+
+
+    private fun findBuildingBlock(): Boolean {
+        if (isHoldingValidBlock()) return true
+        if (!switch.value) return false
+
+        return switchToValidBlock()
+    }
+
+    private fun switchToValidBlock(): Boolean {
+        // attempt to find block in hot bar
+        for (i in 0..8) {
+            val stack = mc.thePlayer.inventory.getStackInSlot(i) ?: continue
+
+            if (stack.item !is ItemBlock || !Block.getBlockFromItem(stack.item).isNormalCube) continue
+
+            mc.thePlayer.inventory.currentItem = i
+            return true
+        }
+
+        return false
+    }
+
+
+    private fun isHoldingValidBlock(): Boolean {
+        return mc.thePlayer.currentEquippedItem?.let {
+            it.item is ItemBlock && Block.getBlockFromItem(it.item).isNormalCube
+        } ?: false
+    }
+
+    private fun buildPlaceQueue() {
+        for (pos in blockPositions) {
+            val block = mc.theWorld.getBlock(pos.x, pos.y, pos.z)
+
+            if (!block.material.isReplaceable) continue
+
+            val placement = BlockUtil.findValidBlockPlace(pos, mc.theWorld) ?: continue
+
+            if (!placeQueue.contains(placement))
+                placeQueue.add(placement)
+        }
+    }
+
+    private fun attemptBlockPlacement() {
+        while (placeQueue.isNotEmpty()) {
+            if (placeQueue.isEmpty())
+                break
+
+            val placement = placeQueue.first()
+            placeQueue.removeFirst()
+            val pos = placement.pos
+
+            if (pos in blockPositions)
+                continue
+
+            if (BlockUtil.entityBlockDistance(pos, mc.thePlayer) > mc.playerController.blockReachDistance) continue
+
+            mc.playerController.onPlayerRightClick(
+                mc.thePlayer, mc.theWorld, mc.thePlayer.currentEquippedItem,
+                pos.x, pos.y, pos.z, placement.side, Vec3.createVectorHelper(0.0, 0.0, 0.0)
+            )
+            mc.thePlayer.swingItem()
+            break
+        }
+    }
+
 
     private val tickListener = Listener<PlayerLivingTickEvent> {
         // build up our blockPos list
+        genBlockPositions()
 
-        blockPositions.clear()
-
-        val below = BlockPos(
-            mc.thePlayer.posX.toInt() + if (mc.thePlayer.posX < 0.0) -1 else 0,
-            mc.thePlayer.boundingBox.minY.toInt() - 1,
-            mc.thePlayer.posZ.toInt() + if (mc.thePlayer.posZ < 0.0) -1 else 0
-        )
-
-        blockPositions.add(below)
-
-        var prevForward: BlockPos = below
-        for (i in 1..<depth.getValue().toInt()) {
-            val newForward = BlockUtil.forward(prevForward, mc.thePlayer)
-            // fill in left and right
-            var sideLeft = newForward
-            var sideRight = newForward
-            repeat(width.getValue().toInt() - 2) {
-                val newLeft = BlockUtil.left(sideLeft, mc.thePlayer)
-                val newRight = BlockUtil.right(sideRight, mc.thePlayer)
-                blockPositions.add(newLeft)
-                blockPositions.add(newRight)
-                sideLeft = newLeft
-                sideRight= newRight
-            }
-
-            blockPositions.add(newForward)
-            prevForward = newForward
+        if (!findBuildingBlock()) {
+            placeQueue.clear()
+            return@Listener
         }
 
-        var prevLeft: BlockPos = below
-        for (i in 1..<width.getValue().toInt() - 1) {
-            val newLeft = BlockUtil.left(prevLeft, mc.thePlayer)
-            blockPositions.add(newLeft)
-            prevLeft = newLeft
-        }
-
-        var prevRight: BlockPos = below
-        for (i in 1..<width.getValue().toInt() - 1) {
-            val newRight = BlockUtil.right(prevRight, mc.thePlayer)
-            blockPositions.add(newRight)
-            prevRight = newRight
-        }
-
-        /**/
-
-        if (mc.thePlayer.currentEquippedItem == null
-            || mc.thePlayer.currentEquippedItem.item !is ItemBlock
-            || !Block.getBlockFromItem(mc.thePlayer.currentEquippedItem.item).isNormalCube) {
-            // attempt to find block in hotbar
-            var foundItem = false
-            for (i in 0..8) {
-                val stack = mc.thePlayer.inventory.getStackInSlot(i)
-
-                if (stack != null && stack.item is ItemBlock && Block.getBlockFromItem(stack.item).isNormalCube) {
-                    mc.thePlayer.inventory.currentItem = i
-                    foundItem = true
-                    break
-                }
-            }
-
-            if (!foundItem)
-                return@Listener
-        }
-
-        for (pos in blockPositions) {
-            val block = mc.theWorld.getBlock(pos.x, pos.y, pos.z)
-
-            if (!block.material.isReplaceable)
-                continue
-
-            val placement = BlockUtil.findValidBlockPlace(pos, mc.theWorld)
-
-            if (placement != null) {
-                val placePos = placement.first
-                mc.playerController.onPlayerRightClick(
-                    mc.thePlayer,
-                    mc.theWorld,
-                    mc.thePlayer.currentEquippedItem,
-                    placePos.x, placePos.y, placePos.z, placement.second,
-                    Vec3.createVectorHelper(0.0, 0.0, 0.0)
-                )
-                mc.thePlayer.swingItem()
-                return@Listener
-            }
-        }
+        buildPlaceQueue()
+        attemptBlockPlacement()
     }
 
     private val renderListener = Listener<RenderWorldLastEvent> { (it as RenderWorldLastEvent)
-
         RenderUtils.prepare3d()
 
-        for (pos in blockPositions) {
-            val x = pos.x.toDouble()
-            val y = pos.y.toDouble()
-            val z = pos.z.toDouble()
-
-            val block = mc.theWorld.getBlock(pos.x, pos.y, pos.z)
-
-            if (block.material.isReplaceable || block.material == Blocks.air.material) {
-
-                RenderGlobal.drawOutlinedBoundingBox(
-                    AxisAlignedBB.getBoundingBox(x, y, z, x + 1.0, y + 1.0, z + 1.0)
-                        .offset(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ),
-                    0x00ff00
-                )
-            }
-
-
+        for (placement in placeQueue) {
+            val pos = placement.pos
+            RenderUtils.renderBlockSideOffset(pos.x, pos.y, pos.z, placement.side, 0x8055ff55.toInt())
         }
 
         RenderUtils.release3d()
-    }
-
-    fun shouldPlaceBlockAtPos(pos: BlockPos): Boolean {
-        return mc.theWorld.getBlock(pos.x, pos.y, pos.z).isCollidable
     }
 
     init {

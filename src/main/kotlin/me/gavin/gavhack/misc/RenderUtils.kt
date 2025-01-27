@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Vec3
-import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL11.*
 
 object RenderUtils {
@@ -107,15 +106,154 @@ object RenderUtils {
         tes.draw()
     }
 
-    fun drawBlockSide(x: Int, y: Int, z: Int, face: Int, color: Int) {
+    // The renderManager offset is already baked into this method
+    fun renderBlockSideOffset(x: Int, y: Int, z: Int, face: Int, color: Int) {
+        var x1: Double
+        var y1: Double
+        var z1: Double
 
+        var x2: Double
+        var y2: Double
+        var z2: Double
+
+        when (face) {
+            // bottom
+            0 -> {
+                x1 = x.toDouble()
+                y1 = y.toDouble()
+                z1 = z.toDouble()
+                x2 = x1 + 1.0
+                y2 = y1
+                z2 = z1 + 1.0
+            }
+            // top
+            1 -> {
+                x1 = x.toDouble()
+                y1 = y.toDouble() + 1.0
+                z1 = z.toDouble()
+                x2 = x1 + 1.0
+                y2 = y1
+                z2 = z1 + 1.0
+            }
+            // north (z-)
+            2 -> {
+                x1 = x.toDouble()
+                y1 = y.toDouble()
+                z1 = z.toDouble()
+                x2 = x1 + 1.0
+                y2 = y1 + 1.0
+                z2 = z1
+            }
+            // south (z+)
+            3 -> {
+                x1 = x.toDouble()
+                y1 = y.toDouble()
+                z1 = z.toDouble() + 1.0
+                x2 = x1 + 1.0
+                y2 = y1 + 1.0
+                z2 = z1
+            }
+            // west (x-)
+            4 -> {
+                x1 = x.toDouble()
+                y1 = y.toDouble()
+                z1 = z.toDouble()
+                x2 = x1
+                y2 = y1 + 1.0
+                z2 = z1 + 1.0
+            }
+            // east (x+)
+            5 -> {
+                x1 = x.toDouble() + 1.0
+                y1 = y.toDouble()
+                z1 = z.toDouble()
+                x2 = x1
+                y2 = y1 + 1.0
+                z2 = z1 + 1.0
+            }
+            else -> {
+                x1 = x.toDouble()
+                y1 = y.toDouble()
+                z1 = z.toDouble()
+                x2 = x1 + 1.0
+                y2 = y1
+                z2 = z1 + 1.0
+            }
+        }
+
+        x1 -= RenderManager.renderPosX
+        y1 -= RenderManager.renderPosY
+        z1 -= RenderManager.renderPosZ
+
+        x2 -= RenderManager.renderPosX
+        y2 -= RenderManager.renderPosY
+        z2 -= RenderManager.renderPosZ
+
+        val a = (color shr 24 and 255)
+        val r = (color shr 16 and 255)
+        val g = (color shr 8 and 255)
+        val b = (color and 255)
+
+        glDisable(GL_CULL_FACE)
+        val tes = Tessellator.instance
+        tes.startDrawing(GL_QUADS)
+        tes.setColorRGBA(r, g, b, a)
+
+        when (face) {
+            // bottom (-Y)
+            0 -> {
+                tes.addVertex(x1, y1, z1)        // Bottom-Left
+                tes.addVertex(x1, y1, z2)        // Top-Left
+                tes.addVertex(x2, y1, z2)        // Top-Right
+                tes.addVertex(x2, y1, z1)        // Bottom-Right
+            }
+            // top (+Y)
+            1 -> {
+                tes.addVertex(x1, y1, z1)        // Bottom-Left
+                tes.addVertex(x2, y1, z1)        // Bottom-Right
+                tes.addVertex(x2, y1, z2)        // Top-Right
+                tes.addVertex(x1, y1, z2)        // Top-Left
+            }
+            // north (-Z)
+            2 -> {
+                tes.addVertex(x1, y1, z1)        // Top-Left
+                tes.addVertex(x2, y1, z1)        // Top-Right
+                tes.addVertex(x2, y2, z1)        // Bottom-Right
+                tes.addVertex(x1, y2, z1)        // Bottom-Left
+            }
+            // south (+Z)
+            3 -> {
+                tes.addVertex(x2, y1, z2)        // Top-Right
+                tes.addVertex(x1, y1, z2)        // Top-Left
+                tes.addVertex(x1, y2, z2)        // Bottom-Left
+                tes.addVertex(x2, y2, z2)        // Bottom-Right
+            }
+            // west (-X)
+            4 -> {
+                tes.addVertex(x1, y1, z2)        // Top-Right
+                tes.addVertex(x1, y1, z1)        // Top-Left
+                tes.addVertex(x1, y2, z1)        // Bottom-Left
+                tes.addVertex(x1, y2, z2)        // Bottom-Right
+            }
+            // east (+X)
+            5 -> {
+                tes.addVertex(x2, y1, z1)        // Top-Left
+                tes.addVertex(x2, y1, z2)        // Top-Right
+                tes.addVertex(x2, y2, z2)        // Bottom-Right
+                tes.addVertex(x2, y2, z1)        // Bottom-Left
+            }
+        }
+
+        tes.draw()
+
+        glEnable(GL_CULL_FACE)
     }
 
     fun prepare3d() {
         glPushMatrix()
-//        glDisable(GL_LIGHTING)
         glDisable(GL_DEPTH_TEST)
         glDisable(GL_TEXTURE_2D)
+        glDepthMask(false)
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glLineWidth(1.0f)
@@ -123,9 +261,9 @@ object RenderUtils {
 
     fun release3d() {
         glDisable(GL_BLEND)
-//        glEnable(GL_LIGHTING)
         glEnable(GL_TEXTURE_2D)
         glEnable(GL_DEPTH_TEST)
+        glDepthMask(true)
         glPopMatrix()
     }
 }
