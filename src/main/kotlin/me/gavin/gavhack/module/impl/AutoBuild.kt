@@ -10,8 +10,10 @@ import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.NumberSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.block.Block
+import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.entity.Entity
 import net.minecraft.item.ItemBlock
+import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
 import optifine.BlockPos
 
