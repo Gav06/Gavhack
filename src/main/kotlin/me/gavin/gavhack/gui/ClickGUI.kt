@@ -10,6 +10,7 @@ import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.module.impl.GuiModule
 import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.FloatSetting
+import me.gavin.gavhack.module.setting.IntSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
@@ -125,6 +126,7 @@ object ClickGUI: GuiScreen() {
                         is ToggleSetting -> button.subComponents.add(BooleanComponent(setting, button.w, button.h))
                         is FloatSetting -> button.subComponents.add(FloatComponent(setting, button.w, button.h))
                         is EnumSetting<*> -> button.subComponents.add(EnumComponent(setting, button.w, button.h))
+                        is IntSetting -> button.subComponents.add(IntComponent(setting, button.w, button.h))
                     }
                 }
 

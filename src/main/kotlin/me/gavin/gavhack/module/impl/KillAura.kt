@@ -5,6 +5,7 @@ import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.FloatSetting
+import me.gavin.gavhack.module.setting.IntSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.monster.EntityMob
@@ -15,7 +16,7 @@ import kotlin.jvm.optionals.getOrNull
 object KillAura: Module("KillAura", "Attack entities automatically", ModCategory.COMBAT) {
 
     private val walls = ToggleSetting("ThruWalls", true)
-    private val cpsSetting = FloatSetting("CPS", 10f, 1f, 20f, decimalPlaces = 0)
+    private val cpsSetting = IntSetting("CPS", 10, 1, 20)
     private val rangeSetting = FloatSetting("Range", 5.0f, 0.0f, 8.0f)
     private val wallRangeSetting = FloatSetting("WallRange", 3.0f, 0.0f, 5.0f)
 

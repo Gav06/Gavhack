@@ -58,9 +58,10 @@ object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
             val y = "%.1f".format(mc.thePlayer.boundingBox.minY)
             val z = "%.1f".format(mc.thePlayer.posZ)
 
-            val dir = Direction.directions[BlockUtil.direction(mc.thePlayer.rotationYaw)]
+            val direction = BlockUtil.direction(mc.renderViewEntity.rotationYaw)
+            val dirString = (if (direction == 2) EnumChatFormatting.RED.toString() else EnumChatFormatting.GRAY.toString()) + Direction.directions[direction][0]
 
-            var str = "$dir $x $y $z"
+            var str = "$dirString${EnumChatFormatting.RESET } $x $y $z"
             val dim = mc.thePlayer.dimension
 
             // If we aren't in the end dimension

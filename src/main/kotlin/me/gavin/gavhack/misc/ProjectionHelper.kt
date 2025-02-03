@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.ActiveRenderInfo
 import net.minecraft.client.renderer.GLAllocation
+import net.minecraft.client.renderer.entity.RenderManager
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.glu.GLU
 
@@ -73,7 +74,8 @@ object ProjectionHelper {
     }
 
     private fun updateMatrices() {
-        camPos = ActiveRenderInfo.projectViewFromEntity(mc.renderViewEntity, mc.timer.renderPartialTicks.toDouble())
+//        camPos = ActiveRenderInfo.projectViewFromEntity(mc.renderViewEntity, mc.timer.renderPartialTicks.toDouble())
+        camPos = Vec3.createVectorHelper(RenderManager.renderPosX, RenderManager.renderPosY, RenderManager.renderPosZ)
         GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelView)
         GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection)
         GL11.glGetFloat(GL11.GL_VIEWPORT, viewport)

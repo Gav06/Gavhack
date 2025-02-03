@@ -5,10 +5,7 @@ import me.gavin.gavhack.config.IConfigurable
 import me.gavin.gavhack.event.Event
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
-import me.gavin.gavhack.module.setting.EnumSetting
-import me.gavin.gavhack.module.setting.FloatSetting
-import me.gavin.gavhack.module.setting.Setting
-import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.module.setting.*
 import net.minecraft.client.Minecraft
 import kotlin.reflect.KClass
 
@@ -71,6 +68,7 @@ abstract class Module(
                 is ToggleSetting -> settingObj.addProperty(setting.name, setting.value)
                 is FloatSetting ->  settingObj.addProperty(setting.name, setting.getValue())
                 is EnumSetting<*> -> settingObj.addProperty(setting.name, setting.value)
+                is IntSetting -> settingObj.addProperty(setting.name, setting.getValue())
             }
         }
 
@@ -99,6 +97,8 @@ abstract class Module(
                     if (settingsObj.has(setting.name)) setting.value = settingsObj[setting.name].asBoolean
                 is FloatSetting ->
                     if (settingsObj.has(setting.name)) setting.setValue(settingsObj[setting.name].asFloat)
+                is IntSetting ->
+                    if (settingsObj.has(setting.name)) setting.setValue(settingsObj[setting.name].asInt)
                 is EnumSetting<*> ->
                     if (settingsObj.has(setting.name)) {
                         setting.value = settingsObj[setting.name].asInt

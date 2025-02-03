@@ -2,12 +2,16 @@ package me.gavin.gavhack.module.impl
 
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
+import me.gavin.gavhack.event.events.RenderOverlayEvent
 import me.gavin.gavhack.event.events.RenderWorldLastEvent
+import me.gavin.gavhack.misc.BPos
 import me.gavin.gavhack.misc.BlockUtil
+import me.gavin.gavhack.misc.ProjectionHelper
 import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.FloatSetting
+import me.gavin.gavhack.module.setting.IntSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.RenderGlobal
@@ -15,70 +19,52 @@ import net.minecraft.entity.Entity
 import net.minecraft.item.ItemBlock
 import net.minecraft.util.Vec3
 import optifine.BlockPos
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
 
 object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.WORLD) {
 
     private val switch = addSetting(ToggleSetting("Switch", true))
 
-    private val horizontalRadius = addSetting(
-        FloatSetting("H. Radius", 2f, 1f, 4f, decimalPlaces = 0)
+    private val blocksPerTick = addSetting(IntSetting("BlocksPerTick", 1, 1, 10))
+
+    private val blockList = ArrayList<BlockPos>()
+
+    val arr = arrayOf(
+        intArrayOf(0, 0, 0),
+        intArrayOf(0, 0, -1),
+        intArrayOf(1, 0, -1),
+        intArrayOf(1, 0, 0),
+        intArrayOf(1, 0, 1),
+        intArrayOf(0, 0, 1),
+        intArrayOf(-1, 0, 1),
+        intArrayOf(-1, 0, 0),
+        intArrayOf(-1, 0, -1),
+        intArrayOf(-1, 0, -2),
+        intArrayOf(0, 0, -2),
+        intArrayOf(1, 0, -2),
+        intArrayOf(2, 0, -2),
+        intArrayOf(2, 0, -1),
+        intArrayOf(2, 0, 0),
+        intArrayOf(2, 0, 1),
+        intArrayOf(2, 0, 2),
+        intArrayOf(1, 0, 2),
+        intArrayOf(0, 0, 2),
+        intArrayOf(-1, 0, 2),
+        intArrayOf(-2, 0, 2),
+        intArrayOf(-2, 0, 1),
+        intArrayOf(-2, 0, 0),
+        intArrayOf(-2, 0, -1),
+        intArrayOf(-2, 0, -2),
     )
-    private val depth = addSetting(
-        FloatSetting("Depth", 4f, 2f, 6f, decimalPlaces = 0)
-    )
 
-    private val blockPositions = ArrayList<BlockPos>()
-    private val placeQueue = ArrayList<BlockUtil.Placement>()
-
-    private val renderList = ArrayList<Pair<BlockPos, Long>>()
-
-    private fun getStartingPosition(entity: Entity): BlockPos {
-        return BlockPos(
+    private fun getStartingPosition(entity: Entity): BPos {
+        return BPos(
             entity.posX.toInt() + if (entity.posX < 0.0) -1 else 0,
             entity.boundingBox.minY.toInt() - 1,
             entity.posZ.toInt() + if (entity.posZ < 0.0) -1 else 0
         )
-    }
-
-    private fun genHorizontalPositions(startPos: BlockPos, radius: Int) {
-        var leftPos = startPos
-        var rightPos = startPos
-        repeat(radius) {
-            leftPos = BlockUtil.left(leftPos, mc.thePlayer)
-            rightPos = BlockUtil.right(rightPos, mc.thePlayer)
-            blockPositions.add(leftPos)
-            blockPositions.add(rightPos)
-        }
-    }
-
-    private fun genDepthPositions(startPos: BlockPos, depth: Int, radius: Int) {
-        var forwardPos = startPos
-        repeat(depth - 1) {
-            forwardPos = BlockUtil.forward(forwardPos, mc.thePlayer)
-            blockPositions.add(forwardPos)
-
-            var leftPos = forwardPos
-            var rightPos = forwardPos
-            repeat(radius) {
-                leftPos = BlockUtil.left(leftPos, mc.thePlayer)
-                rightPos = BlockUtil.right(rightPos, mc.thePlayer)
-                blockPositions.add(leftPos)
-                blockPositions.add(rightPos)
-            }
-        }
-    }
-    private fun genBlockPositions() {
-        blockPositions.clear()
-
-        val start = getStartingPosition(mc.thePlayer)
-
-        blockPositions.add(start)
-
-        val radius = horizontalRadius.getValue().toInt()
-        genHorizontalPositions(start, radius)
-
-        val depthVal = depth.getValue().toInt()
-        genDepthPositions(start, depthVal, radius)
     }
 
 
@@ -110,73 +96,47 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
         } ?: false
     }
 
-    private fun buildPlaceQueue() {
-        for (pos in blockPositions) {
-            val block = mc.theWorld.getBlock(pos.x, pos.y, pos.z)
-
-            if (!block.material.isReplaceable) continue
-
-            val placement = BlockUtil.findValidBlockPlace(pos, mc.theWorld) ?: continue
-
-            if (!placeQueue.contains(placement))
-                placeQueue.add(placement)
-        }
-    }
-
-    private fun attemptBlockPlacement() {
-        while (placeQueue.isNotEmpty()) {
-            if (placeQueue.isEmpty())
-                break
-
-            val placement = placeQueue.first()
-            placeQueue.removeFirst()
-            val pos = placement.pos
-
-            if (pos in blockPositions)
-                continue
-
-            if (BlockUtil.entityBlockDistance(pos, mc.thePlayer) > mc.playerController.blockReachDistance) continue
-
-            mc.playerController.onPlayerRightClick(
-                mc.thePlayer, mc.theWorld, mc.thePlayer.currentEquippedItem,
-                pos.x, pos.y, pos.z, placement.side, Vec3.createVectorHelper(0.0, 0.0, 0.0)
-            )
-            mc.thePlayer.swingItem()
-
-            renderList.add(Pair(pos, System.currentTimeMillis()))
-
-            break
-        }
-    }
-
     // function called every game tick
     private val tickListener = Listener<PlayerLivingTickEvent> {
         // build up our blockPos list
-        genBlockPositions()
 
-        if (!findBuildingBlock()) {
-            placeQueue.clear()
+        if (!findBuildingBlock())
             return@Listener
-        }
 
-        buildPlaceQueue()
-        attemptBlockPlacement()
+        val start = getStartingPosition(mc.thePlayer)
+
+        var blocksPlaced = 0
+        for (coord in arr) {
+            val pos = BPos(coord[0] + start.x, coord[1] + start.y, coord[2] + start.z)
+
+            val block = mc.theWorld.getBlock(pos.x, pos.y, pos.z)
+
+            if (!block.material.isReplaceable)
+                continue
+
+            if (BlockUtil.entityBlockDistance(pos, mc.thePlayer) > mc.playerController.blockReachDistance)
+                continue
+
+            val placement = BlockUtil.findValidBlockPlace(pos, mc.theWorld) ?: continue
+            val placePos = placement.pos
+
+            if (blocksPlaced >= blocksPerTick.getValue())
+                break
+
+            mc.playerController.onPlayerRightClick(
+                mc.thePlayer, mc.theWorld, mc.thePlayer.currentEquippedItem,
+                placePos.x, placePos.y, placePos.z, placement.side, Vec3.createVectorHelper(0.0, 0.0, 0.0)
+            )
+            mc.thePlayer.swingItem()
+            blocksPlaced++
+        }
     }
 
     private val renderListener = Listener<RenderWorldLastEvent> { (it as RenderWorldLastEvent)
         RenderUtils.prepare3d()
-//
-//        for (placement in placeQueue) {
-//            val pos = placement.pos
-//            RenderUtils.renderBlockSideOffset(pos.x, pos.y, pos.z, placement.side, 0x8055ff55.toInt())
-//        }
 
-        renderList.removeIf {
-            (System.currentTimeMillis() - it.second) > 100L
-        }
-
-        for (pair in renderList) {
-            RenderGlobal.drawOutlinedBoundingBox(RenderUtils.getBoxFromBlockPos(pair.first), 0x80ff55ff.toInt())
+        for (pos in blockList) {
+            RenderGlobal.drawOutlinedBoundingBox(RenderUtils.getBoxFromBlockPos(pos), 0xff55ff)
         }
 
         RenderUtils.release3d()
@@ -185,5 +145,53 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
     init {
         addEventListener(tickListener, PlayerLivingTickEvent::class)
         addEventListener(renderListener, RenderWorldLastEvent::class)
+
+
+
+//        val p = BPos(0, 0, 0)
+//        blockList.add(p)
+//        blockList.add(p.north())
+//        blockList.add(p.north().east())
+//        blockList.add(p.east())
+//        blockList.add(p.south().east())
+//        blockList.add(p.south())
+//        blockList.add(p.south().west())
+//        blockList.add(p.west())
+//        blockList.add(p.west().north())
+//
+//        blockList.add(p.west().north().north())
+//        blockList.add(p.north().north())
+//        blockList.add(p.north().north().east())
+//        blockList.add(p.east().east().north().north())
+//        blockList.add(p.east().east().north())
+//        blockList.add(p.east().east())
+//        blockList.add(p.east().east().south())
+//        blockList.add(p.east().east().south().south())
+//        blockList.add(p.south().south().east())
+//        blockList.add(p.south().south())
+//        blockList.add(p.south().south().west())
+//        blockList.add(p.south().south().west().west())
+//        blockList.add(p.west().west().south())
+//        blockList.add(p.west().west())
+//        blockList.add(p.west().west().north())
+//        blockList.add(p.west().west().north().north())
+//
+//
+//        val file = File("C:/Users/Gavin/Desktop/file.txt")
+//        if (!file.exists())
+//            file.createNewFile()
+//
+//        val buf = BufferedWriter(FileWriter(file))
+//
+//        val arr = intArrayOf()
+//
+//        buf.write("val arr = intArrayOf(")
+//        for (pos in blockList) {
+//            buf.write("intArrayOf(${pos.x}, ${pos.y}, ${pos.z}),\n")
+//        }
+//
+//        buf.write(")")
+//
+//        buf.close()
     }
 }

@@ -135,7 +135,7 @@ object BlockUtil {
     fun findValidBlockPlace(posIn: BlockPos, world: World): Placement? {
         for (side in 0..5) {
             val sideOffset = blockFacingOffsets[side]
-            val newPos = BlockPos(posIn.x + sideOffset[0], posIn.y + sideOffset[1], posIn.z + sideOffset[2])
+            val newPos = BPos(posIn.x + sideOffset[0], posIn.y + sideOffset[1], posIn.z + sideOffset[2])
             val block = world.getBlock(newPos.x, newPos.y, newPos.z)
 
             if (!block.material.isReplaceable) {
@@ -163,7 +163,7 @@ object BlockUtil {
         return entity.getDistance(block.x + 0.5, block.y + 0.5, block.z + 0.5)
     }
 
-    data class Placement(val pos: BlockPos, val side: Int) {
+    data class Placement(val pos: BPos, val side: Int) {
         override fun equals(other: Any?): Boolean {
             return if (other is Placement) {
                 pos.equals(other.pos) && side == other.side
