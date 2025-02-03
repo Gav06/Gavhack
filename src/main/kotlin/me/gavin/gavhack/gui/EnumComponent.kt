@@ -23,7 +23,7 @@ class EnumComponent(val setting: EnumSetting<*>, w: Int, h: Int) : GuiComponent(
             Gui.drawRect(left(), top(), right(), bottom(), 0x20ffffff)
         }
 
-        getFont().drawString("${setting.name}: ${setting.value}",
+        getFont().drawString("${setting.name}: ${setting.enumValue()}",
             x + 2, y + (h / 2) - (getFont().FONT_HEIGHT / 2), -1)
     }
 

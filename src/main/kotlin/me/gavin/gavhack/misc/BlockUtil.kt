@@ -9,6 +9,11 @@ import optifine.BlockPos
 
 object BlockUtil {
 
+    const val SOUTH = 0
+    const val WEST = 1
+    const val NORTH = 2
+    const val EAST = 3
+
     const val BOTTOM_FACE = 0
     const val TOP_FACE = 1
     const val NORTH_FACE = 2
@@ -49,8 +54,8 @@ object BlockUtil {
     fun left(pos: BlockPos, player: EntityPlayerSP): BlockPos {
         val dir = direction(player.rotationYaw)
 
-        var xOffset: Int = 0
-        var zOffset: Int = 0
+        var xOffset = 0
+        var zOffset = 0
 
         when (dir) {
             // south
@@ -70,8 +75,8 @@ object BlockUtil {
     fun right(pos: BlockPos, player: EntityPlayerSP): BlockPos {
         val dir = direction(player.rotationYaw)
 
-        var xOffset: Int = 0
-        var zOffset: Int = 0
+        var xOffset = 0
+        var zOffset = 0
 
         when (dir) {
             // south
@@ -92,8 +97,8 @@ object BlockUtil {
     fun backwards(pos: BlockPos, player: EntityPlayerSP): BlockPos {
         val dir = direction(player.rotationYaw)
 
-        var xOffset: Int = 0
-        var zOffset: Int = 0
+        var xOffset = 0
+        var zOffset = 0
 
         when (dir) {
             // south
@@ -142,7 +147,7 @@ object BlockUtil {
         return null
     }
 
-    fun getConnectingSide(posA: BlockPos, posB: BlockPos): Int {
+    private fun getConnectingSide(posA: BlockPos, posB: BlockPos): Int {
         // 0 - Bottom, 1 - Top, 2 - North, 3 - South, 4 - West, 5 - East
         return when {
             posB.y < posA.y -> 0  // B is below A

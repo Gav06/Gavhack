@@ -21,9 +21,9 @@ public class Framebuffer
     public int framebufferFilter;
     private static final String __OBFID = "CL_00000959";
 
-    public Framebuffer(int p_i45078_1_, int p_i45078_2_, boolean p_i45078_3_)
+    public Framebuffer(int width, int height, boolean useDepth)
     {
-        this.useDepth = p_i45078_3_;
+        this.useDepth = useDepth;
         this.framebufferObject = -1;
         this.framebufferTexture = -1;
         this.depthBuffer = -1;
@@ -32,15 +32,15 @@ public class Framebuffer
         this.framebufferColor[1] = 1.0F;
         this.framebufferColor[2] = 1.0F;
         this.framebufferColor[3] = 0.0F;
-        this.createBindFramebuffer(p_i45078_1_, p_i45078_2_);
+        this.createBindFramebuffer(width, height);
     }
 
-    public void createBindFramebuffer(int p_147613_1_, int p_147613_2_)
+    public void createBindFramebuffer(int width, int height)
     {
         if (!OpenGlHelper.isFramebufferEnabled())
         {
-            this.framebufferWidth = p_147613_1_;
-            this.framebufferHeight = p_147613_2_;
+            this.framebufferWidth = width;
+            this.framebufferHeight = height;
         }
         else
         {
@@ -51,7 +51,7 @@ public class Framebuffer
                 this.deleteFramebuffer();
             }
 
-            this.createFramebuffer(p_147613_1_, p_147613_2_);
+            this.createFramebuffer(width, height);
             this.checkFramebufferComplete();
             EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
         }

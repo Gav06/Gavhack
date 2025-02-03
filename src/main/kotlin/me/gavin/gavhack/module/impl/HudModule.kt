@@ -3,12 +3,14 @@ package me.gavin.gavhack.module.impl
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
+import me.gavin.gavhack.misc.BlockUtil
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiChat
+import net.minecraft.util.Direction
 import net.minecraft.util.EnumChatFormatting
 
 object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
@@ -56,7 +58,9 @@ object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
             val y = "%.1f".format(mc.thePlayer.boundingBox.minY)
             val z = "%.1f".format(mc.thePlayer.posZ)
 
-            var str = "XYZ $x $y $z"
+            val dir = Direction.directions[BlockUtil.direction(mc.thePlayer.rotationYaw)]
+
+            var str = "$dir $x $y $z"
             val dim = mc.thePlayer.dimension
 
             // If we aren't in the end dimension

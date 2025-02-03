@@ -25,7 +25,8 @@ class BooleanComponent(val setting: ToggleSetting, w: Int, h: Int) : GuiComponen
 
         // makes text green/red if true/false
         val text = "${setting.name}: " +
-                "${if (setting.value) EnumChatFormatting.GREEN else EnumChatFormatting.RED}${setting.value}"
+                "${if (setting.value) EnumChatFormatting.GREEN else EnumChatFormatting.RED}" +
+                if (setting.value) "on" else "off"
 
         getFont().drawString(text, x + 2, y + (h / 2) - (getFont().FONT_HEIGHT / 2), -1)
     }

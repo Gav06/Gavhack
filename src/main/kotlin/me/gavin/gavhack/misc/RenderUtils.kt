@@ -7,16 +7,16 @@ import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Vec3
+import optifine.BlockPos
 import org.lwjgl.opengl.GL11.*
 
 object RenderUtils {
 
     val TEX_TRIANGLE = ResourceLocation("gavhack/triangle.png")
 
-
+    // Converts GL scissor to gui overlay coordinates
     fun scissorBox(x1: Int, y1: Int, x2: Int, y2: Int, res: ScaledResolution) {
         val scaleFactor = res.scaleFactor
-        val displayW = Minecraft.getMinecraft().displayWidth
         val displayH = Minecraft.getMinecraft().displayHeight
 
         // scissor x and y are the lower left corner
@@ -107,7 +107,7 @@ object RenderUtils {
     }
 
     // The renderManager offset is already baked into this method
-    fun renderBlockSideOffset(x: Int, y: Int, z: Int, face: Int, color: Int) {
+    fun renderBlockSideOffset(x: Int, y: Int, z: Int, face: Int, color: Int, renderOffset: Boolean = true) {
         var x1: Double
         var y1: Double
         var z1: Double
@@ -181,13 +181,15 @@ object RenderUtils {
             }
         }
 
-        x1 -= RenderManager.renderPosX
-        y1 -= RenderManager.renderPosY
-        z1 -= RenderManager.renderPosZ
+        if (renderOffset) {
+            x1 -= RenderManager.renderPosX
+            y1 -= RenderManager.renderPosY
+            z1 -= RenderManager.renderPosZ
 
-        x2 -= RenderManager.renderPosX
-        y2 -= RenderManager.renderPosY
-        z2 -= RenderManager.renderPosZ
+            x2 -= RenderManager.renderPosX
+            y2 -= RenderManager.renderPosY
+            z2 -= RenderManager.renderPosZ
+        }
 
         val a = (color shr 24 and 255)
         val r = (color shr 16 and 255)
@@ -265,5 +267,20 @@ object RenderUtils {
         glEnable(GL_DEPTH_TEST)
         glDepthMask(true)
         glPopMatrix()
+    }
+
+    fun getBoxFromBlockPos(pos: BlockPos, renderOffset: Boolean = true): AxisAlignedBB {
+        val aabb = AxisAlignedBB.getBoundingBox(
+            pos.x.toDouble(),
+            pos.y.toDouble(),
+            pos.z.toDouble(),
+            pos.x + 1.0,
+            pos.y + 1.0,
+            pos.z + 1.0
+        )
+
+        return if (renderOffset)
+            aabb.offset(-RenderManager.renderPosX, -RenderManager.renderPosY, -RenderManager.renderPosZ)
+        else aabb
     }
 }

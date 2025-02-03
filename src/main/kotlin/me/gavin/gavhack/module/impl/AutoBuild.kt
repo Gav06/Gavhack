@@ -7,13 +7,12 @@ import me.gavin.gavhack.misc.BlockUtil
 import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
-import me.gavin.gavhack.module.setting.NumberSetting
+import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.block.Block
-import net.minecraft.client.renderer.entity.RenderManager
+import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.entity.Entity
 import net.minecraft.item.ItemBlock
-import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
 import optifine.BlockPos
 
@@ -21,11 +20,17 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
 
     private val switch = addSetting(ToggleSetting("Switch", true))
 
-    private val horizonalRadius = addSetting(NumberSetting("H. Radius", 2f, 1f, 4f, decimalPlaces = 0))
-    private val depth = addSetting(NumberSetting("Depth", 4f, 2f, 6f, decimalPlaces = 0))
+    private val horizontalRadius = addSetting(
+        FloatSetting("H. Radius", 2f, 1f, 4f, decimalPlaces = 0)
+    )
+    private val depth = addSetting(
+        FloatSetting("Depth", 4f, 2f, 6f, decimalPlaces = 0)
+    )
 
     private val blockPositions = ArrayList<BlockPos>()
     private val placeQueue = ArrayList<BlockUtil.Placement>()
+
+    private val renderList = ArrayList<Pair<BlockPos, Long>>()
 
     private fun getStartingPosition(entity: Entity): BlockPos {
         return BlockPos(
@@ -69,7 +74,7 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
 
         blockPositions.add(start)
 
-        val radius = horizonalRadius.getValue().toInt()
+        val radius = horizontalRadius.getValue().toInt()
         genHorizontalPositions(start, radius)
 
         val depthVal = depth.getValue().toInt()
@@ -137,11 +142,14 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
                 pos.x, pos.y, pos.z, placement.side, Vec3.createVectorHelper(0.0, 0.0, 0.0)
             )
             mc.thePlayer.swingItem()
+
+            renderList.add(Pair(pos, System.currentTimeMillis()))
+
             break
         }
     }
 
-
+    // function called every game tick
     private val tickListener = Listener<PlayerLivingTickEvent> {
         // build up our blockPos list
         genBlockPositions()
@@ -157,10 +165,18 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
 
     private val renderListener = Listener<RenderWorldLastEvent> { (it as RenderWorldLastEvent)
         RenderUtils.prepare3d()
+//
+//        for (placement in placeQueue) {
+//            val pos = placement.pos
+//            RenderUtils.renderBlockSideOffset(pos.x, pos.y, pos.z, placement.side, 0x8055ff55.toInt())
+//        }
 
-        for (placement in placeQueue) {
-            val pos = placement.pos
-            RenderUtils.renderBlockSideOffset(pos.x, pos.y, pos.z, placement.side, 0x8055ff55.toInt())
+        renderList.removeIf {
+            (System.currentTimeMillis() - it.second) > 100L
+        }
+
+        for (pair in renderList) {
+            RenderGlobal.drawOutlinedBoundingBox(RenderUtils.getBoxFromBlockPos(pair.first), 0x80ff55ff.toInt())
         }
 
         RenderUtils.release3d()

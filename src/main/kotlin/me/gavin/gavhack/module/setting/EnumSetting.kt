@@ -5,26 +5,30 @@ class EnumSetting<T : Enum<T>>(
     private val defaultValue: T
 ): Setting(name) {
 
-    val values: Array<T> = defaultValue.javaClass.getEnumConstants()
+    val values: Array<T> = defaultValue.declaringJavaClass.enumConstants
 
     var value = indexOf(defaultValue)
 
     fun increment(): T {
-        value = indexOf( if (value == values.size - 1) {
-            values[0]
-        } else {
-            values[value + 1]
-        })
+        value = indexOf(
+            if (value == values.size - 1) {
+                values[0]
+            } else {
+                values[value + 1]
+            }
+        )
 
         return values[value]
     }
 
     fun decrement(): T {
-        value = indexOf(if (value == 0) {
-            values[values.size - 1]
-        } else {
-            values[value - 1]
-        })
+        value = indexOf(
+            if (value == 0) {
+                values[values.size - 1]
+            } else {
+                values[value - 1]
+            }
+        )
 
         return values[value]
     }
@@ -44,6 +48,14 @@ class EnumSetting<T : Enum<T>>(
         for (i in values.indices) {
             if (values[i].name == s) return i
         }
+
         return -1
+    }
+
+    fun enumValue(): T? {
+        if (value < 0 || value > values.size)
+            return null
+
+        return values[value]
     }
 }

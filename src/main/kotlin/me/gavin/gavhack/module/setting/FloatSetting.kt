@@ -2,7 +2,7 @@ package me.gavin.gavhack.module.setting
 
 import me.gavin.gavhack.misc.MathUtils
 
-class NumberSetting(
+class FloatSetting(
         name: String,
         private val defaultValue: Float,
         val minValue: Float,

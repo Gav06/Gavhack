@@ -7,11 +7,11 @@ import me.gavin.gavhack.misc.ProjectionHelper
 import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
+import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.item.EntityEnderCrystal
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.monster.EntityMob
@@ -24,6 +24,13 @@ import org.lwjgl.opengl.GL11
 
 object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
+    enum class Mode {
+        CSGO,
+        SHADER
+    }
+
+    val mode = addSetting(EnumSetting("Mode", Mode.CSGO))
+
     val players = addSetting(ToggleSetting("Players", true))
     val hostiles = addSetting(ToggleSetting("Hostiles", true))
     val passive = addSetting(ToggleSetting("Animals", true))
@@ -32,7 +39,18 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     private val frustum = Frustum()
 
     private val renderOverlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
+        if (mode.enumValue() == Mode.CSGO) {
+            drawCSGOEsp(it)
+        } else if (mode.enumValue() == Mode.SHADER) {
+            drawShaderESP(it)
+        }
+    }
 
+    private fun drawShaderESP(it: RenderOverlayEvent) {
+        //
+    }
+
+    private fun drawCSGOEsp(it: RenderOverlayEvent) {
         frustum.setPosition(mc.renderViewEntity.posX, mc.renderViewEntity.posY, mc.renderViewEntity.posZ)
 
         for (entity in mc.theWorld.loadedEntityList) {
