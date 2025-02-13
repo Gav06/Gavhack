@@ -638,6 +638,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void hurtCameraEffect(float par1)
     {
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getHurtCamera().getValue())
+            return;
+
         EntityLivingBase var2 = this.mc.renderViewEntity;
         float var3 = (float)var2.hurtTime - par1;
         float var4;

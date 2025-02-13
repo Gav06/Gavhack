@@ -22,11 +22,11 @@ public class Shader
     private Matrix4f projectionMatrix;
     private static final String __OBFID = "CL_00001042";
 
-    public Shader(IResourceManager p_i45089_1_, String p_i45089_2_, Framebuffer p_i45089_3_, Framebuffer p_i45089_4_) throws JsonException
+    public Shader(IResourceManager resourceManager, String p_i45089_2_, Framebuffer framebufferIn, Framebuffer frameBufferOut) throws JsonException
     {
-        this.manager = new ShaderManager(p_i45089_1_, p_i45089_2_);
-        this.framebufferIn = p_i45089_3_;
-        this.framebufferOut = p_i45089_4_;
+        this.manager = new ShaderManager(resourceManager, p_i45089_2_);
+        this.framebufferIn = framebufferIn;
+        this.framebufferOut = frameBufferOut;
     }
 
     public void deleteShader()

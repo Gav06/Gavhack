@@ -12,4 +12,5 @@ object NoRender: Module("NoRender", "Prevent rendering certain annoyances", ModC
     val water = addSetting(ToggleSetting("Water", true))
     val fire = addSetting(ToggleSetting("Fire", true))
     val liquidFog = addSetting(ToggleSetting("LiquidFog", true))
+    val hurtCamera = addSetting(ToggleSetting("HurtCam", true))
 }

@@ -48,11 +48,11 @@ public class ShaderManager
     private final ShaderLoader field_148012_t;
     private static final String __OBFID = "CL_00001040";
 
-    public ShaderManager(IResourceManager p_i45087_1_, String p_i45087_2_) throws JsonException
+    public ShaderManager(IResourceManager p_i45087_1_, String shader) throws JsonException
     {
         JsonParser var3 = new JsonParser();
-        ResourceLocation var4 = new ResourceLocation("shaders/program/" + p_i45087_2_ + ".json");
-        this.field_148007_m = p_i45087_2_;
+        ResourceLocation var4 = new ResourceLocation("shaders/program/" + shader + ".json");
+        this.field_148007_m = shader;
         InputStream var5 = null;
 
         try
