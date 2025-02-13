@@ -103,7 +103,7 @@ class Window(x: Int, y: Int, w: Int, h: Int,
     }
 
     override fun getConfigFileName(): String {
-        return "Gui$title"
+        return "Window_$title"
     }
 
     override fun toJsonObj(): JsonObject {

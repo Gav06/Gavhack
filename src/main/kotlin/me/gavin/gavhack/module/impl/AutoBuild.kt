@@ -2,15 +2,12 @@ package me.gavin.gavhack.module.impl
 
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
-import me.gavin.gavhack.event.events.RenderOverlayEvent
 import me.gavin.gavhack.event.events.RenderWorldLastEvent
 import me.gavin.gavhack.misc.BPos
 import me.gavin.gavhack.misc.BlockUtil
-import me.gavin.gavhack.misc.ProjectionHelper
 import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
-import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.IntSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import net.minecraft.block.Block
@@ -19,9 +16,6 @@ import net.minecraft.entity.Entity
 import net.minecraft.item.ItemBlock
 import net.minecraft.util.Vec3
 import optifine.BlockPos
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
 
 object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.WORLD) {
 
@@ -31,7 +25,7 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
 
     private val blockList = ArrayList<BlockPos>()
 
-    val arr = arrayOf(
+    private val floorOffsets = arrayOf(
         intArrayOf(0, 0, 0),
         intArrayOf(0, 0, -1),
         intArrayOf(1, 0, -1),
@@ -67,7 +61,6 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
         )
     }
 
-
     private fun findBuildingBlock(): Boolean {
         if (isHoldingValidBlock()) return true
         if (!switch.value) return false
@@ -89,7 +82,6 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
         return false
     }
 
-
     private fun isHoldingValidBlock(): Boolean {
         return mc.thePlayer.currentEquippedItem?.let {
             it.item is ItemBlock && Block.getBlockFromItem(it.item).isNormalCube
@@ -106,8 +98,8 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
         val start = getStartingPosition(mc.thePlayer)
 
         var blocksPlaced = 0
-        for (coord in arr) {
-            val pos = BPos(coord[0] + start.x, coord[1] + start.y, coord[2] + start.z)
+        for (offset in floorOffsets) {
+            val pos = BPos(offset[0] + start.x, offset[1] + start.y, offset[2] + start.z)
 
             val block = mc.theWorld.getBlock(pos.x, pos.y, pos.z)
 
@@ -145,53 +137,5 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
     init {
         addEventListener(tickListener, PlayerLivingTickEvent::class)
         addEventListener(renderListener, RenderWorldLastEvent::class)
-
-
-
-//        val p = BPos(0, 0, 0)
-//        blockList.add(p)
-//        blockList.add(p.north())
-//        blockList.add(p.north().east())
-//        blockList.add(p.east())
-//        blockList.add(p.south().east())
-//        blockList.add(p.south())
-//        blockList.add(p.south().west())
-//        blockList.add(p.west())
-//        blockList.add(p.west().north())
-//
-//        blockList.add(p.west().north().north())
-//        blockList.add(p.north().north())
-//        blockList.add(p.north().north().east())
-//        blockList.add(p.east().east().north().north())
-//        blockList.add(p.east().east().north())
-//        blockList.add(p.east().east())
-//        blockList.add(p.east().east().south())
-//        blockList.add(p.east().east().south().south())
-//        blockList.add(p.south().south().east())
-//        blockList.add(p.south().south())
-//        blockList.add(p.south().south().west())
-//        blockList.add(p.south().south().west().west())
-//        blockList.add(p.west().west().south())
-//        blockList.add(p.west().west())
-//        blockList.add(p.west().west().north())
-//        blockList.add(p.west().west().north().north())
-//
-//
-//        val file = File("C:/Users/Gavin/Desktop/file.txt")
-//        if (!file.exists())
-//            file.createNewFile()
-//
-//        val buf = BufferedWriter(FileWriter(file))
-//
-//        val arr = intArrayOf()
-//
-//        buf.write("val arr = intArrayOf(")
-//        for (pos in blockList) {
-//            buf.write("intArrayOf(${pos.x}, ${pos.y}, ${pos.z}),\n")
-//        }
-//
-//        buf.write(")")
-//
-//        buf.close()
     }
 }
