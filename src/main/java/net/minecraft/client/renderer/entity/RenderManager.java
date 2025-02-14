@@ -243,12 +243,12 @@ public class RenderManager
         this.viewerPosZ = livingBase.lastTickPosZ + (livingBase.posZ - livingBase.lastTickPosZ) * (double)partialTicks;
     }
 
-    public boolean func_147937_a(Entity p_147937_1_, float p_147937_2_)
+    public boolean renderEntityStatic(Entity Entity, float partialTicks)
     {
-        return this.func_147936_a(p_147937_1_, p_147937_2_, false);
+        return this.renderEntityStatic(Entity, partialTicks, false);
     }
 
-    public boolean func_147936_a(Entity entity, float partialTicks, boolean p_147936_3_)
+    public boolean renderEntityStatic(Entity entity, float partialTicks, boolean p_147936_3_)
     {
         if (entity.ticksExisted == 0)
         {

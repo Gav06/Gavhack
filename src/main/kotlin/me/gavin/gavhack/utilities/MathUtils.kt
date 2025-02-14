@@ -1,10 +1,9 @@
-package me.gavin.gavhack.misc
+package me.gavin.gavhack.utilities
 
 import net.minecraft.entity.Entity
 import net.minecraft.util.Vec3
 import java.math.BigDecimal
 import java.math.RoundingMode
-import javax.vecmath.Vector3d
 
 object MathUtils {
 

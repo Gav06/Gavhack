@@ -1,17 +1,15 @@
 package me.gavin.gavhack.module.impl
 
-import com.sun.javafx.geom.Vec3d
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
-import me.gavin.gavhack.misc.MathUtils
-import me.gavin.gavhack.misc.ProjectionHelper
+import me.gavin.gavhack.utilities.MathUtils
+import me.gavin.gavhack.utilities.ProjectionHelper
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.texture.DynamicTexture
-import net.minecraft.util.MathHelper
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Vec3
 import net.minecraft.wdl.WDL

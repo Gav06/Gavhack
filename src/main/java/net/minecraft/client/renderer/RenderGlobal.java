@@ -642,7 +642,7 @@ public class RenderGlobal implements IWorldAccess
 
                     if (var25.isInRangeToRender3d(var4, var6, var8))
                     {
-                        RenderManager.instance.func_147937_a(var25, p_147589_3_);
+                        RenderManager.instance.renderEntityStatic(var25, p_147589_3_);
                     }
                 }
             }
@@ -680,7 +680,7 @@ public class RenderGlobal implements IWorldAccess
                         }
 
                         this.renderedEntity = var25;
-                        RenderManager.instance.func_147937_a(var25, p_147589_3_);
+                        RenderManager.instance.renderEntityStatic(var25, p_147589_3_);
                         this.renderedEntity = null;
                     }
                 }
@@ -774,7 +774,7 @@ public class RenderGlobal implements IWorldAccess
 
             if (RenderManager.instance.getEntityRenderObject(var3).func_147905_a())
             {
-                this.displayListEntitiesDirty = this.displayListEntitiesDirty || !RenderManager.instance.func_147936_a(var3, 0.0F, true);
+                this.displayListEntitiesDirty = this.displayListEntitiesDirty || !RenderManager.instance.renderEntityStatic(var3, 0.0F, true);
             }
         }
 

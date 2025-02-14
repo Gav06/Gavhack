@@ -2,7 +2,7 @@ package me.gavin.gavhack.gui
 
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.gui.api.GuiComponent
-import me.gavin.gavhack.misc.MathUtils
+import me.gavin.gavhack.utilities.MathUtils
 import me.gavin.gavhack.module.setting.IntSetting
 import net.minecraft.client.gui.Gui
 import kotlin.math.roundToInt

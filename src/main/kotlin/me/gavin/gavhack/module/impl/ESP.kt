@@ -2,15 +2,18 @@ package me.gavin.gavhack.module.impl
 
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
-import me.gavin.gavhack.misc.MathUtils
-import me.gavin.gavhack.misc.ProjectionHelper
-import me.gavin.gavhack.misc.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.utilities.FrameBufferEffect
+import me.gavin.gavhack.utilities.MathUtils
+import me.gavin.gavhack.utilities.ProjectionHelper
+import me.gavin.gavhack.utilities.RenderUtils
+import me.gavin.gavhack.utilities.shaders.DefaultShaderEffect
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.culling.Frustum
+import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityEnderCrystal
 import net.minecraft.entity.item.EntityItem
@@ -19,6 +22,7 @@ import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
+import net.minecraft.wdl.WDL
 import org.lwjgl.opengl.GL11
 
 
@@ -36,6 +40,8 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     val passive = addSetting(ToggleSetting("Animals", true))
     val other = addSetting(ToggleSetting("Others", false))
 
+    private val defaultshader = FrameBufferEffect(DefaultShaderEffect(), mc.displayWidth, mc.displayHeight)
+
     private val frustum = Frustum()
 
     private val renderOverlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
@@ -48,6 +54,16 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
     private fun drawShaderESP(it: RenderOverlayEvent) {
         //
+        defaultshader.resize(mc.displayWidth, mc.displayHeight)
+
+        defaultshader.beginRender()
+        for (e in mc.theWorld.loadedEntityList) {
+            if (e == mc.thePlayer) continue
+
+            RenderManager.instance.renderEntityStatic(e, it.partialTicks, true)
+        }
+
+        defaultshader.endRender()
     }
 
     private fun drawCSGOEsp(it: RenderOverlayEvent) {

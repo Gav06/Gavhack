@@ -2,7 +2,7 @@ package me.gavin.gavhack.gui
 
 import com.google.gson.JsonObject
 import me.gavin.gavhack.config.IConfigurable
-import me.gavin.gavhack.misc.RenderUtils
+import me.gavin.gavhack.utilities.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.gui.api.GuiComponent
 import net.minecraft.client.Minecraft

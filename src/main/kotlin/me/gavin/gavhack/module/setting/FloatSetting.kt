@@ -1,6 +1,6 @@
 package me.gavin.gavhack.module.setting
 
-import me.gavin.gavhack.misc.MathUtils
+import me.gavin.gavhack.utilities.MathUtils
 
 class FloatSetting(
         name: String,

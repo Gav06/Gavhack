@@ -1,4 +1,4 @@
-package me.gavin.gavhack.misc
+package me.gavin.gavhack.utilities
 
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.events.RenderWorldLastEvent

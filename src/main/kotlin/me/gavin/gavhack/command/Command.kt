@@ -1,6 +1,6 @@
 package me.gavin.gavhack.command
 
-import me.gavin.gavhack.misc.Utils
+import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.Minecraft
 import net.minecraft.util.EnumChatFormatting
 

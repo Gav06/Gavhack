@@ -1,4 +1,4 @@
-package me.gavin.gavhack.misc
+package me.gavin.gavhack.utilities
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution

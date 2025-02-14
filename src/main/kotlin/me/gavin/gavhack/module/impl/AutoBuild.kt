@@ -3,9 +3,9 @@ package me.gavin.gavhack.module.impl
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.event.events.RenderWorldLastEvent
-import me.gavin.gavhack.misc.BPos
-import me.gavin.gavhack.misc.BlockUtil
-import me.gavin.gavhack.misc.RenderUtils
+import me.gavin.gavhack.utilities.BPos
+import me.gavin.gavhack.utilities.BlockUtil
+import me.gavin.gavhack.utilities.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.IntSetting

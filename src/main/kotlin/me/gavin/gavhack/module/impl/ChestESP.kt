@@ -2,8 +2,8 @@ package me.gavin.gavhack.module.impl
 
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderWorldLastEvent
-import me.gavin.gavhack.misc.MathUtils
-import me.gavin.gavhack.misc.RenderUtils
+import me.gavin.gavhack.utilities.MathUtils
+import me.gavin.gavhack.utilities.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import net.minecraft.client.renderer.RenderGlobal
@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.tileentity.TileEntityChest
 import net.minecraft.tileentity.TileEntityEnderChest
 import net.minecraft.util.AxisAlignedBB
-import org.lwjgl.opengl.GL11
 
 object ChestESP: Module("ChestESP", "See chests through walls", ModCategory.RENDER) {
 

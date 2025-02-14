@@ -3,7 +3,7 @@ package me.gavin.gavhack.module.impl
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
-import me.gavin.gavhack.misc.BlockUtil
+import me.gavin.gavhack.utilities.BlockUtil
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.ModuleManager

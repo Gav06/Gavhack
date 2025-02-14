@@ -5,7 +5,7 @@ import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ChatMessageEvent
 import me.gavin.gavhack.event.events.KeyPressEvent
-import me.gavin.gavhack.misc.Utils
+import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiChat
 import net.minecraft.util.EnumChatFormatting

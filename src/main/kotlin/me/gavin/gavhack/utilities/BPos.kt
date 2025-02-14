@@ -1,6 +1,6 @@
-package me.gavin.gavhack.misc
+package me.gavin.gavhack.utilities
 
-import me.gavin.gavhack.misc.BlockUtil.direction
+import me.gavin.gavhack.utilities.BlockUtil.direction
 import net.minecraft.client.entity.EntityPlayerSP
 import net.minecraft.util.Direction
 import optifine.BlockPos

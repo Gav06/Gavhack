@@ -1,8 +1,8 @@
 package me.gavin.gavhack.gui
 
 import me.gavin.gavhack.Gavhack
-import me.gavin.gavhack.misc.MathUtils
-import me.gavin.gavhack.misc.Utils
+import me.gavin.gavhack.utilities.MathUtils
+import me.gavin.gavhack.utilities.Utils
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.gui.api.GuiComponent
 import net.minecraft.client.gui.Gui
