@@ -799,7 +799,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     /**
      * sets up projection, view effects, camera position/rotation
      */
-    private void setupCameraTransform(float par1, int par2)
+    public void setupCameraTransform(float partialTicks, int par2)
     {
         this.farPlaneDistance = (float)(this.mc.gameSettings.renderDistanceChunks * 16);
 
@@ -840,7 +840,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GL11.glScaled(this.cameraZoom, this.cameraZoom, 1.0D);
         }
 
-        Project.gluPerspective(this.getFOVModifier(par1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, clipDistance);
+        Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, clipDistance);
         float var4;
 
         if (this.mc.playerController.enableEverythingIsScrewedUpMode())
@@ -857,14 +857,14 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GL11.glTranslatef((float)(par2 * 2 - 1) * 0.1F, 0.0F, 0.0F);
         }
 
-        this.hurtCameraEffect(par1);
+        this.hurtCameraEffect(partialTicks);
 
         if (this.mc.gameSettings.viewBobbing)
         {
-            this.setupViewBobbing(par1);
+            this.setupViewBobbing(partialTicks);
         }
 
-        var4 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * par1;
+        var4 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * partialTicks;
 
         boolean cancelNausea = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getNausea().getValue();
 
@@ -879,12 +879,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             float var6 = 5.0F / (var4 * var4 + 5.0F) - var4 * 0.04F;
             var6 *= var6;
-            GL11.glRotatef(((float)this.rendererUpdateCount + par1) * (float)var7, 0.0F, 1.0F, 1.0F);
+            GL11.glRotatef(((float)this.rendererUpdateCount + partialTicks) * (float)var7, 0.0F, 1.0F, 1.0F);
             GL11.glScalef(1.0F / var6, 1.0F, 1.0F);
-            GL11.glRotatef(-((float)this.rendererUpdateCount + par1) * (float)var7, 0.0F, 1.0F, 1.0F);
+            GL11.glRotatef(-((float)this.rendererUpdateCount + partialTicks) * (float)var7, 0.0F, 1.0F, 1.0F);
         }
 
-        this.orientCamera(par1);
+        this.orientCamera(partialTicks);
 
         if (this.debugViewDirection > 0)
         {

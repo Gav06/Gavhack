@@ -15,11 +15,6 @@ open class GLSLShader(fragStream: InputStream?, vertStream: InputStream?) {
     constructor(fragPath: String, vertPath: String): this(getResource(fragPath), getResource(vertPath))
 
     private fun setupShader(): Int {
-        println("Vertex SRC:")
-        println(vertSrc)
-        println("Frag SRC:")
-        println(fragSrc)
-
         val vs = GL20.glCreateShader(GL20.GL_VERTEX_SHADER)
         GL20.glShaderSource(vs, vertSrc)
         GL20.glCompileShader(vs)
@@ -73,7 +68,7 @@ open class GLSLShader(fragStream: InputStream?, vertStream: InputStream?) {
         return true
     }
 
-    protected fun getUniform(name: String): Int {
+    public fun getUniform(name: String): Int {
         return if (uniforms.containsKey(name)) {
             uniforms[name]!!
         } else {
@@ -93,9 +88,11 @@ open class GLSLShader(fragStream: InputStream?, vertStream: InputStream?) {
             return src
         }
 
-        fun getResource(path: String): InputStream? {
+        fun getResource(path: String): InputStream {
             return Companion::class.java.getResourceAsStream(path)
                 ?: throw RuntimeException("Could not find shader resource: $path")
         }
     }
+
+    open fun updateUniforms() { }
 }

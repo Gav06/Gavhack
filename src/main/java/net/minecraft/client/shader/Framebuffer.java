@@ -187,13 +187,13 @@ public class Framebuffer
         }
     }
 
-    public void bindFramebuffer(boolean p_147610_1_)
+    public void bindFramebuffer(boolean setViewport)
     {
         if (OpenGlHelper.isFramebufferEnabled())
         {
             EXTFramebufferObject.glBindFramebufferEXT(36160, this.framebufferObject);
 
-            if (p_147610_1_)
+            if (setViewport)
             {
                 GL11.glViewport(0, 0, this.framebufferWidth, this.framebufferHeight);
             }

@@ -6,12 +6,15 @@ import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
-import me.gavin.gavhack.utilities.FrameBufferEffect
+import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.MathUtils
 import me.gavin.gavhack.utilities.ProjectionHelper
 import me.gavin.gavhack.utilities.RenderUtils
-import me.gavin.gavhack.utilities.shaders.DefaultShaderEffect
+import me.gavin.gavhack.utilities.shaders.DefaultShader
+import me.gavin.gavhack.utilities.shaders.DotShader
+import me.gavin.gavhack.utilities.shaders.OutlineShader
 import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.entity.Entity
@@ -22,11 +25,12 @@ import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
-import net.minecraft.wdl.WDL
 import org.lwjgl.opengl.GL11
 
 
 object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
+
+    var shouldCancelShadows = false
 
     enum class Mode {
         CSGO,
@@ -40,7 +44,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     val passive = addSetting(ToggleSetting("Animals", true))
     val other = addSetting(ToggleSetting("Others", false))
 
-    private val defaultshader = FrameBufferEffect(DefaultShaderEffect(), mc.displayWidth, mc.displayHeight)
+    private val espShader = FramebufferEffect(OutlineShader(), mc.displayWidth, mc.displayHeight)
 
     private val frustum = Frustum()
 
@@ -52,18 +56,49 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         }
     }
 
+    // written with the help of claude.ai and some of nebula
     private fun drawShaderESP(it: RenderOverlayEvent) {
-        //
-        defaultshader.resize(mc.displayWidth, mc.displayHeight)
+        espShader.updateFramebuffer(mc.displayWidth, mc.displayHeight)
 
-        defaultshader.beginRender()
+        GL11.glPushMatrix()
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT or GL11.GL_LIGHTING_BIT)
+
+        espShader.bindBuffer()
+        mc.entityRenderer.setupCameraTransform(it.partialTicks, 0)
+
+        shouldCancelShadows = true
+
         for (e in mc.theWorld.loadedEntityList) {
             if (e == mc.thePlayer) continue
 
             RenderManager.instance.renderEntityStatic(e, it.partialTicks, true)
         }
 
-        defaultshader.endRender()
+        shouldCancelShadows = false
+
+        espShader.unbindBuffer()
+        mc.framebuffer.bindFramebuffer(true)
+
+        mc.entityRenderer.disableLightmap(0.0);
+        RenderHelper.disableStandardItemLighting();
+
+        mc.entityRenderer.setupOverlayRendering()
+
+        espShader.startShader()
+        espShader.shader.updateUniforms()
+
+        GL11.glEnable(GL11.GL_BLEND)
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+        espShader.drawQuadWithFramebufferTexture(it.res)
+
+        espShader.stopShader()
+
+        mc.entityRenderer.enableLightmap(0.0);
+
+        GL11.glPopAttrib()
+        GL11.glPopMatrix()
+
+        mc.entityRenderer.setupOverlayRendering()
     }
 
     private fun drawCSGOEsp(it: RenderOverlayEvent) {

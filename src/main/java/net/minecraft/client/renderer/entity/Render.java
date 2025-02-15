@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
+import me.gavin.gavhack.module.impl.ESP;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.FontRenderer;
@@ -122,6 +123,9 @@ public abstract class Render
      */
     private void renderShadow(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
+        if (ESP.INSTANCE.getShouldCancelShadows())
+            return;
+
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         this.renderManager.renderEngine.bindTexture(shadowTextures);
