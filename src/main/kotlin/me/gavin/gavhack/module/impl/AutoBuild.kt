@@ -73,7 +73,7 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
         for (i in 0..8) {
             val stack = mc.thePlayer.inventory.getStackInSlot(i) ?: continue
 
-            if (stack.item !is ItemBlock || !Block.getBlockFromItem(stack.item).isNormalCube) continue
+            if (stack.item !is ItemBlock || !Block.getBlockFromItem(stack.item).material.isSolid) continue
 
             mc.thePlayer.inventory.currentItem = i
             return true
@@ -84,7 +84,7 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
 
     private fun isHoldingValidBlock(): Boolean {
         return mc.thePlayer.currentEquippedItem?.let {
-            it.item is ItemBlock && Block.getBlockFromItem(it.item).isNormalCube
+            it.item is ItemBlock && Block.getBlockFromItem(it.item).material.isSolid
         } ?: false
     }
 

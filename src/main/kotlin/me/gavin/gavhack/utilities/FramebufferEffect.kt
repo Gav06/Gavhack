@@ -11,7 +11,7 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int)
 
     val mc = Minecraft.getMinecraft()
 
-    private var effectFramebuffer: Framebuffer = Framebuffer(width, height, false)
+    private var effectFramebuffer: Framebuffer = Framebuffer(width, height, true)
 
     init {
         setupFrameBuffer()
@@ -19,7 +19,7 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int)
 
     private fun setupFrameBuffer() {
         effectFramebuffer.deleteFramebuffer()
-        effectFramebuffer = Framebuffer(width, height, false)
+        effectFramebuffer = Framebuffer(width, height, true)
     }
 
     fun bindBuffer() {
