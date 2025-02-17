@@ -970,7 +970,7 @@ public class Chunk
 
         if (this.isChunkLoaded)
         {
-            this.worldObj.field_147482_g.add(p_150813_1_);
+            this.worldObj.tileEntities.add(p_150813_1_);
         }
     }
 

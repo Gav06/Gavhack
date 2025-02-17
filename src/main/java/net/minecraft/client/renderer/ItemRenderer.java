@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import me.gavin.gavhack.module.impl.ESP;
 import me.gavin.gavhack.module.impl.NoRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -262,7 +263,7 @@ public class ItemRenderer
         int var9 = this.mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ), 0);
         int var10 = var9 % 65536;
         int var11 = var9 / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var10 / 1.0F, (float)var11 / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var10, (float) var11);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float var13;
         float var14;

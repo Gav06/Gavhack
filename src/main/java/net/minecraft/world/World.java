@@ -62,7 +62,7 @@ public abstract class World implements IBlockAccess
     /** A list of all Entities in all currently-loaded chunks */
     public List<Entity> loadedEntityList = new ArrayList<>();
     protected List<Entity> unloadedEntityList = new ArrayList<>();
-    public List field_147482_g = new ArrayList();
+    public List<TileEntity> tileEntities = new ArrayList<>();
     private List field_147484_a = new ArrayList();
     private List field_147483_b = new ArrayList();
 
@@ -1990,7 +1990,7 @@ public abstract class World implements IBlockAccess
 
         this.theProfiler.endStartSection("blockEntities");
         this.field_147481_N = true;
-        Iterator var14 = this.field_147482_g.iterator();
+        Iterator var14 = this.tileEntities.iterator();
 
         while (var14.hasNext())
         {
@@ -2031,7 +2031,7 @@ public abstract class World implements IBlockAccess
 
         if (!this.field_147483_b.isEmpty())
         {
-            this.field_147482_g.removeAll(this.field_147483_b);
+            this.tileEntities.removeAll(this.field_147483_b);
             this.field_147483_b.clear();
         }
 
@@ -2045,9 +2045,9 @@ public abstract class World implements IBlockAccess
 
                 if (!var12.isInvalid())
                 {
-                    if (!this.field_147482_g.contains(var12))
+                    if (!this.tileEntities.contains(var12))
                     {
-                        this.field_147482_g.add(var12);
+                        this.tileEntities.add(var12);
                     }
 
                     if (this.chunkExists(var12.x >> 4, var12.z >> 4))
@@ -2079,7 +2079,7 @@ public abstract class World implements IBlockAccess
         }
         else
         {
-            this.field_147482_g.addAll(p_147448_1_);
+            this.tileEntities.addAll(p_147448_1_);
         }
     }
 
@@ -2666,7 +2666,7 @@ public abstract class World implements IBlockAccess
             }
             else
             {
-                this.field_147482_g.add(p_147455_4_);
+                this.tileEntities.add(p_147455_4_);
                 Chunk var7 = this.getChunkFromChunkCoords(p_147455_1_ >> 4, p_147455_3_ >> 4);
 
                 if (var7 != null)
@@ -2691,7 +2691,7 @@ public abstract class World implements IBlockAccess
             if (var4 != null)
             {
                 this.field_147484_a.remove(var4);
-                this.field_147482_g.remove(var4);
+                this.tileEntities.remove(var4);
             }
 
             Chunk var5 = this.getChunkFromChunkCoords(p_147475_1_ >> 4, p_147475_3_ >> 4);

@@ -920,7 +920,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     /**
      * Render player hand
      */
-    private void renderHand(float par1, int par2)
+    public void renderHand(float par1, int par2)
     {
         if (this.debugViewDirection <= 0)
         {
@@ -1860,11 +1860,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
         if (Reflector.ForgeWorldProvider_getWeatherRenderer.exists())
         {
             WorldProvider var2 = this.mc.theWorld.provider;
-            Object var41 = Reflector.call(var2, Reflector.ForgeWorldProvider_getWeatherRenderer, new Object[0]);
+            Object var41 = Reflector.call(var2, Reflector.ForgeWorldProvider_getWeatherRenderer);
 
             if (var41 != null)
             {
-                Reflector.callVoid(var41, Reflector.IRenderHandler_render, new Object[] {Float.valueOf(par1), this.mc.theWorld, this.mc});
+                Reflector.callVoid(var41, Reflector.IRenderHandler_render, par1, this.mc.theWorld, this.mc);
                 return;
             }
         }

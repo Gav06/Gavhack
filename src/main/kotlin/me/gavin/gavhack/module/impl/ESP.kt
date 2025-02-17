@@ -11,18 +11,20 @@ import me.gavin.gavhack.utilities.MathUtils
 import me.gavin.gavhack.utilities.ProjectionHelper
 import me.gavin.gavhack.utilities.RenderUtils
 import me.gavin.gavhack.utilities.shaders.DefaultShader
-import me.gavin.gavhack.utilities.shaders.DotShader
 import me.gavin.gavhack.utilities.shaders.OutlineShader
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.entity.RenderManager
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
 import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityEnderCrystal
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.monster.EntityMob
 import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.tileentity.TileEntityChest
+import net.minecraft.tileentity.TileEntityEnderChest
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
 import org.lwjgl.opengl.GL11
@@ -31,6 +33,7 @@ import org.lwjgl.opengl.GL11
 object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
     var shouldCancelShadows = false
+    var shouldCancelEnchant = false
 
     enum class Mode {
         CSGO,
@@ -67,14 +70,27 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         mc.entityRenderer.setupCameraTransform(it.partialTicks, 0)
 
         shouldCancelShadows = true
+        shouldCancelEnchant = true
 
         for (e in mc.theWorld.loadedEntityList) {
             if (e == mc.thePlayer) continue
 
             RenderManager.instance.renderEntityStatic(e, it.partialTicks, true)
         }
+//
+//        for (tile in mc.theWorld.tileEntities) {
+//            if (tile == null) continue
+//
+//            val isChest = tile is TileEntityChest
+//            val isEnder = tile is TileEntityEnderChest
+//
+//            TileEntityRendererDispatcher.instance.func_147544_a(tile, it.partialTicks)
+//        }
+
+//        mc.entityRenderer.renderHand(it.partialTicks, 0)
 
         shouldCancelShadows = false
+        shouldCancelEnchant = false
 
         espShader.unbindBuffer()
         mc.framebuffer.bindFramebuffer(true)

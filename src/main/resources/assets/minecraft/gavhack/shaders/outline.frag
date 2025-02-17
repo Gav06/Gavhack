@@ -1,3 +1,4 @@
+
 uniform sampler2D texture;
 uniform vec2 texelSize;
 
@@ -8,7 +9,7 @@ void main(void) {
     vec4 centerCol = texture2D(texture, gl_TexCoord[0].xy);
 
     if(centerCol.a != 0) {
-        gl_FragColor = vec4(color.r, color.g, color.b, 0.25);
+        gl_FragColor = vec4(0.0);
     } else {
         for (float x = -radius; x <= radius; x++) {
             for (float y = -radius; y <= radius; y++) {

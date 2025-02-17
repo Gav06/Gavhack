@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Map.Entry;
+
+import me.gavin.gavhack.module.impl.ESP;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
@@ -730,6 +732,9 @@ public final class ItemStack
 
     public boolean hasEffect()
     {
+        if (ESP.INSTANCE.getShouldCancelEnchant())
+            return false;
+
         return this.getItem().hasEffect(this);
     }
 
