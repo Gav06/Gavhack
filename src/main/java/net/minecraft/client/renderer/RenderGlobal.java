@@ -711,7 +711,7 @@ public class RenderGlobal implements IWorldAccess
                             {
                                 FontRenderer fr = TileEntityRendererDispatcher.instance.func_147548_a();
                                 fr.enabled = false;
-                                TileEntityRendererDispatcher.instance.func_147544_a(var27, p_147589_3_);
+                                TileEntityRendererDispatcher.instance.renderTileEntity(var27, p_147589_3_);
                                 ++this.countTileEntitiesRendered;
                                 fr.enabled = true;
                                 continue;
@@ -728,7 +728,7 @@ public class RenderGlobal implements IWorldAccess
                             }
                         }
 
-                        TileEntityRendererDispatcher.instance.func_147544_a(var27, p_147589_3_);
+                        TileEntityRendererDispatcher.instance.renderTileEntity(var27, p_147589_3_);
                         ++this.countTileEntitiesRendered;
                     }
                 }

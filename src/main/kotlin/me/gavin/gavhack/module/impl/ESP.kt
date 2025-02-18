@@ -10,7 +10,7 @@ import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.MathUtils
 import me.gavin.gavhack.utilities.ProjectionHelper
 import me.gavin.gavhack.utilities.RenderUtils
-import me.gavin.gavhack.utilities.shaders.DefaultShader
+import me.gavin.gavhack.utilities.shaders.ESPColorShader
 import me.gavin.gavhack.utilities.shaders.OutlineShader
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.RenderHelper
@@ -22,12 +22,15 @@ import net.minecraft.entity.item.EntityEnderCrystal
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.monster.EntityMob
 import net.minecraft.entity.passive.EntityAnimal
+import net.minecraft.entity.passive.EntityPig
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.tileentity.TileEntity
 import net.minecraft.tileentity.TileEntityChest
 import net.minecraft.tileentity.TileEntityEnderChest
 import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
 import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL20
 
 
 object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
@@ -42,12 +45,20 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
     val mode = addSetting(EnumSetting("Mode", Mode.CSGO))
 
+    val fill = addSetting(ToggleSetting("Fill", false))
+    val dots = addSetting(ToggleSetting("Dots", false))
+
     val players = addSetting(ToggleSetting("Players", true))
     val hostiles = addSetting(ToggleSetting("Hostiles", true))
     val passive = addSetting(ToggleSetting("Animals", true))
+    val items = addSetting(ToggleSetting("Items", true))
     val other = addSetting(ToggleSetting("Others", false))
 
-    private val espShader = FramebufferEffect(OutlineShader(), mc.displayWidth, mc.displayHeight)
+    // buffer for coloring entities how we want them
+    private var colorFramebuffer = FramebufferEffect(ESPColorShader(), mc.displayWidth, mc.displayHeight, true)
+    // shader for drawing outlines of our already-colored entities. Note: this will draw an outline using the color of the
+    // current fragment, a "universal" color uniform is not passed to this.
+    private val outlineShader = OutlineShader()
 
     private val frustum = Frustum()
 
@@ -59,57 +70,85 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         }
     }
 
-    // written with the help of claude.ai and some of nebula
     private fun drawShaderESP(it: RenderOverlayEvent) {
-        espShader.updateFramebuffer(mc.displayWidth, mc.displayHeight)
+        colorFramebuffer.updateFramebuffer(mc.displayWidth, mc.displayHeight)
 
         GL11.glPushMatrix()
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT or GL11.GL_LIGHTING_BIT)
-
-        espShader.bindBuffer()
-        mc.entityRenderer.setupCameraTransform(it.partialTicks, 0)
-
         shouldCancelShadows = true
         shouldCancelEnchant = true
-
-        for (e in mc.theWorld.loadedEntityList) {
-            if (e == mc.thePlayer) continue
-
-            RenderManager.instance.renderEntityStatic(e, it.partialTicks, true)
-        }
-//
-//        for (tile in mc.theWorld.tileEntities) {
-//            if (tile == null) continue
-//
-//            val isChest = tile is TileEntityChest
-//            val isEnder = tile is TileEntityEnderChest
-//
-//            TileEntityRendererDispatcher.instance.func_147544_a(tile, it.partialTicks)
-//        }
-
-//        mc.entityRenderer.renderHand(it.partialTicks, 0)
-
-        shouldCancelShadows = false
-        shouldCancelEnchant = false
-
-        espShader.unbindBuffer()
-        mc.framebuffer.bindFramebuffer(true)
-
         mc.entityRenderer.disableLightmap(0.0);
         RenderHelper.disableStandardItemLighting();
 
+
+        // use shader to fill entities with any solid color in our framebuffer
+        colorFramebuffer.bindBuffer()
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT)
+        GL11.glDisable(GL11.GL_LIGHTING)
+        GL11.glDisable(GL11.GL_BLEND)
+
+
+        mc.entityRenderer.setupCameraTransform(it.partialTicks, 0)
+
+        colorFramebuffer.shader.startShader()
+        val uniform = colorFramebuffer.shader.getUniform("rgb")
+
+        for (e in mc.theWorld.loadedEntityList) {
+            if ((e == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) || !entityCheck(e)) continue
+
+            if (e is EntityPig) {
+                GL20.glUniform3f(uniform, 1.0f, 0.0f, 0.0f)
+            } else {
+                GL20.glUniform3f(uniform, 0.0f, 1.0f, 0.0f)
+            }
+
+            RenderManager.instance.renderEntityStatic(e, it.partialTicks, true)
+        }
+
+        // make a copy of the tileEntity list to prevent any weird concurrency issues
+        for (tile in ArrayList<TileEntity>(mc.theWorld.tileEntities)) {
+            if (tile == null) continue
+
+            if (tile is TileEntityChest) {
+                GL20.glUniform3f(uniform, 0.9764706f, 0.6117647f, 0.015686275f)
+                TileEntityRendererDispatcher.instance.renderTileEntity(tile, it.partialTicks)
+            } else if (tile is TileEntityEnderChest) {
+                GL20.glUniform3f(uniform, 0.45490196f, 0.2627451f, 0.9764706f)
+                TileEntityRendererDispatcher.instance.renderTileEntity(tile, it.partialTicks)
+
+            }
+        }
+
+//        GL20.glUniform3f(uniform, 1f, 1f, 1f)
+//        mc.entityRenderer.renderHand(it.partialTicks, 0)
+
+        colorFramebuffer.shader.stopShader()
+        colorFramebuffer.unbindBuffer()
+
+        // restore mc framebuffer and viewport
+        mc.framebuffer.bindFramebuffer(true)
         mc.entityRenderer.setupOverlayRendering()
 
-        espShader.startShader()
-        espShader.shader.updateUniforms()
 
+        // start outline shader
+        outlineShader.startShader()
+        outlineShader.updateUniforms()
+
+        // draw quad over whole screen
         GL11.glEnable(GL11.GL_BLEND)
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-        espShader.drawQuadWithFramebufferTexture(it.res)
+        GL11.glDisable(GL11.GL_LIGHTING)
+        colorFramebuffer.drawFullscreenTexQuad(it.res)
 
-        espShader.stopShader()
+        // finish outline shader
+        outlineShader.stopShader()
 
+        // restore gl state
         mc.entityRenderer.enableLightmap(0.0);
+
+        shouldCancelShadows = false
+        shouldCancelEnchant = false
 
         GL11.glPopAttrib()
         GL11.glPopMatrix()
@@ -149,6 +188,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
             is EntityPlayer -> players.value
             is EntityAnimal -> passive.value
             is EntityMob -> hostiles.value
+            is EntityItem -> items.value
             else -> other.value
         }
     }

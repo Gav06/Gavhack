@@ -1,5 +1,6 @@
 package me.gavin.gavhack.utilities.shaders
 
+import me.gavin.gavhack.module.impl.ESP
 import me.gavin.gavhack.utilities.GLSLShader
 import net.minecraft.client.Minecraft
 import org.lwjgl.opengl.GL20
@@ -12,8 +13,10 @@ class OutlineShader: GLSLShader(
     init {
         setupUniform("texture")
         setupUniform("texelSize")
-        setupUniform("color")
         setupUniform("radius")
+
+        setupUniform("fill")
+        setupUniform("dots")
     }
 
     override fun updateUniforms() {
@@ -22,5 +25,12 @@ class OutlineShader: GLSLShader(
         GL20.glUniform2f(getUniform("texelSize"), 1F / mc.displayWidth, 1F / mc.displayHeight)
         GL20.glUniform4f(getUniform("color"), 1.0f, 0f, 0f, 1.0f)
         GL20.glUniform1f(getUniform("radius"), 1.0f)
+
+        GL20.glUniform1i(getUniform("fill"), ESP.fill.value.toInt())
+        GL20.glUniform1i(getUniform("dots"), ESP.dots.value.toInt())
     }
+}
+
+private fun Boolean.toInt(): Int {
+    return if (this) 1 else 0
 }

@@ -7,11 +7,11 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL20
 
-class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int) {
+class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int, val useDepth: Boolean) {
 
     val mc = Minecraft.getMinecraft()
 
-    private var effectFramebuffer: Framebuffer = Framebuffer(width, height, true)
+    private var effectFramebuffer: Framebuffer = Framebuffer(width, height, useDepth)
 
     init {
         setupFrameBuffer()
@@ -19,7 +19,7 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int)
 
     private fun setupFrameBuffer() {
         effectFramebuffer.deleteFramebuffer()
-        effectFramebuffer = Framebuffer(width, height, true)
+        effectFramebuffer = Framebuffer(width, height, useDepth)
     }
 
     fun bindBuffer() {
@@ -35,13 +35,15 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int)
 
     }
 
-    fun startShader() {
-        GL20.glUseProgram(shader.shaderProgram)
+
+
+    fun drawFullscreenTexQuad(res: ScaledResolution) {
+        drawFullscreenTexQuad(this.effectFramebuffer.framebufferTexture, res)
     }
 
-    fun drawQuadWithFramebufferTexture(res: ScaledResolution) {
+    fun drawFullscreenTexQuad(tex: Int, res: ScaledResolution) {
         GL13.glActiveTexture(GL13.GL_TEXTURE0)
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, effectFramebuffer.framebufferTexture)
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex)
 
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glTexCoord2d(0.0, 1.0);
@@ -56,10 +58,6 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int)
 
     }
 
-    fun stopShader() {
-        GL20.glUseProgram(0);
-    }
-
     fun updateFramebuffer(newWidth: Int, newHeight: Int) {
         if (width == newWidth && height == newHeight) {
             effectFramebuffer.framebufferClear()
@@ -71,5 +69,9 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int)
 
         effectFramebuffer.deleteFramebuffer()
         setupFrameBuffer()
+    }
+
+    fun getFrameBuffer(): Framebuffer {
+        return effectFramebuffer
     }
 }

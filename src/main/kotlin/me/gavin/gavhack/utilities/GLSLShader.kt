@@ -94,5 +94,13 @@ open class GLSLShader(fragStream: InputStream?, vertStream: InputStream?) {
         }
     }
 
+    fun startShader() {
+        GL20.glUseProgram(shaderProgram)
+    }
+
+    fun stopShader() {
+        GL20.glUseProgram(0);
+    }
+
     open fun updateUniforms() { }
 }

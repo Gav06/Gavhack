@@ -3,6 +3,8 @@ package net.minecraft.client.renderer.entity;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import me.gavin.gavhack.module.impl.ESP;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelChicken;
@@ -257,10 +259,10 @@ public class RenderManager
             entity.lastTickPosZ = entity.posZ;
         }
 
-        double var4 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)partialTicks;
-        double var6 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks;
-        double var8 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)partialTicks;
-        float var10 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
+        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)partialTicks;
+        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks;
+        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)partialTicks;
+        float yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
         int var11 = entity.getBrightnessForRender(partialTicks);
 
         if (entity.isBurning())
@@ -271,22 +273,24 @@ public class RenderManager
         int var12 = var11 % 65536;
         int var13 = var11 / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var12, (float) var13);
+
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        return this.func_147939_a(entity, var4 - renderPosX, var6 - renderPosY, var8 - renderPosZ, var10, partialTicks, p_147936_3_);
+
+        return this.renderEntity(entity, x - renderPosX, y - renderPosY, z - renderPosZ, yaw, partialTicks, p_147936_3_);
     }
 
     public boolean func_147940_a(Entity p_147940_1_, double p_147940_2_, double p_147940_4_, double p_147940_6_, float p_147940_8_, float p_147940_9_)
     {
-        return this.func_147939_a(p_147940_1_, p_147940_2_, p_147940_4_, p_147940_6_, p_147940_8_, p_147940_9_, false);
+        return this.renderEntity(p_147940_1_, p_147940_2_, p_147940_4_, p_147940_6_, p_147940_8_, p_147940_9_, false);
     }
 
-    public boolean func_147939_a(Entity p_147939_1_, double p_147939_2_, double p_147939_4_, double p_147939_6_, float p_147939_8_, float p_147939_9_, boolean p_147939_10_)
+    public boolean renderEntity(Entity entity, double x, double y, double z, float yaw, float partialTicks, boolean p_147939_10_)
     {
         Render var11 = null;
 
         try
         {
-            var11 = this.getEntityRenderObject(p_147939_1_);
+            var11 = this.getEntityRenderObject(entity);
 
             if (var11 != null && this.renderEngine != null)
             {
@@ -294,7 +298,7 @@ public class RenderManager
                 {
                     try
                     {
-                        var11.doRender(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
+                        var11.doRender(entity, x, y, z, yaw, partialTicks);
                     }
                     catch (Throwable var18)
                     {
@@ -303,18 +307,18 @@ public class RenderManager
 
                     try
                     {
-                        var11.doRenderShadowAndFire(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
+                        var11.doRenderShadowAndFire(entity, x, y, z, yaw, partialTicks);
                     }
                     catch (Throwable var17)
                     {
                         throw new ReportedException(CrashReport.makeCrashReport(var17, "Post-rendering entity in world"));
                     }
 
-                    if (field_85095_o && !p_147939_1_.isInvisible() && !p_147939_10_)
+                    if (field_85095_o && !entity.isInvisible() && !p_147939_10_)
                     {
                         try
                         {
-                            this.func_85094_b(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
+                            this.func_85094_b(entity, x, y, z, yaw, partialTicks);
                         }
                         catch (Throwable var16)
                         {
@@ -334,12 +338,12 @@ public class RenderManager
         {
             CrashReport var13 = CrashReport.makeCrashReport(var19, "Rendering entity in world");
             CrashReportCategory var14 = var13.makeCategory("Entity being rendered");
-            p_147939_1_.addEntityCrashInfo(var14);
+            entity.addEntityCrashInfo(var14);
             CrashReportCategory var15 = var13.makeCategory("Renderer details");
             var15.addCrashSection("Assigned renderer", var11);
-            var15.addCrashSection("Location", CrashReportCategory.func_85074_a(p_147939_2_, p_147939_4_, p_147939_6_));
-            var15.addCrashSection("Rotation", Float.valueOf(p_147939_8_));
-            var15.addCrashSection("Delta", Float.valueOf(p_147939_9_));
+            var15.addCrashSection("Location", CrashReportCategory.func_85074_a(x, y, z));
+            var15.addCrashSection("Rotation", Float.valueOf(yaw));
+            var15.addCrashSection("Delta", Float.valueOf(partialTicks));
             throw new ReportedException(var13);
         }
     }
