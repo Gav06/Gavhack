@@ -71,25 +71,61 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     }
 
     private fun drawShaderESP(it: RenderOverlayEvent) {
-        colorFramebuffer.updateFramebuffer(mc.displayWidth, mc.displayHeight)
 
         GL11.glPushMatrix()
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT or GL11.GL_LIGHTING_BIT)
+
         shouldCancelShadows = true
         shouldCancelEnchant = true
+
         mc.entityRenderer.disableLightmap(0.0);
         RenderHelper.disableStandardItemLighting();
 
-
-        // use shader to fill entities with any solid color in our framebuffer
+        colorFramebuffer.updateFramebuffer(mc.displayWidth, mc.displayHeight)
         colorFramebuffer.bindBuffer()
 
+        buildFrameBuffer(it.partialTicks)
+
+        colorFramebuffer.unbindBuffer()
+
+        mc.framebuffer.bindFramebuffer(true)
+        mc.entityRenderer.setupOverlayRendering()
+        // draw outline shader
+        drawOutlineShader(it.res)
+
+        // restore gl state
+        mc.entityRenderer.enableLightmap(0.0);
+
+        shouldCancelShadows = false
+        shouldCancelEnchant = false
+
+        GL11.glPopAttrib()
+        GL11.glPopMatrix()
+
+        mc.entityRenderer.setupOverlayRendering()
+    }
+
+    private fun drawOutlineShader(res: ScaledResolution) {
+        outlineShader.startShader()
+        outlineShader.updateUniforms()
+
+        // draw quad over whole screen
+        GL11.glEnable(GL11.GL_BLEND)
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+        GL11.glDisable(GL11.GL_LIGHTING)
+        colorFramebuffer.drawFullscreenTexQuad(res)
+
+        // finish outline shader
+        outlineShader.stopShader()
+    }
+
+    private fun buildFrameBuffer(partialTicks: Float) {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT)
         GL11.glDisable(GL11.GL_LIGHTING)
         GL11.glDisable(GL11.GL_BLEND)
 
 
-        mc.entityRenderer.setupCameraTransform(it.partialTicks, 0)
+        mc.entityRenderer.setupCameraTransform(partialTicks, 0)
 
         colorFramebuffer.shader.startShader()
         val uniform = colorFramebuffer.shader.getUniform("rgb")
@@ -103,7 +139,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
                 GL20.glUniform3f(uniform, 0.0f, 1.0f, 0.0f)
             }
 
-            RenderManager.instance.renderEntityStatic(e, it.partialTicks, true)
+            RenderManager.instance.renderEntityStatic(e, partialTicks, true)
         }
 
         // make a copy of the tileEntity list to prevent any weird concurrency issues
@@ -112,48 +148,15 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
             if (tile is TileEntityChest) {
                 GL20.glUniform3f(uniform, 0.9764706f, 0.6117647f, 0.015686275f)
-                TileEntityRendererDispatcher.instance.renderTileEntity(tile, it.partialTicks)
+                TileEntityRendererDispatcher.instance.renderTileEntity(tile, partialTicks)
             } else if (tile is TileEntityEnderChest) {
                 GL20.glUniform3f(uniform, 0.45490196f, 0.2627451f, 0.9764706f)
-                TileEntityRendererDispatcher.instance.renderTileEntity(tile, it.partialTicks)
+                TileEntityRendererDispatcher.instance.renderTileEntity(tile, partialTicks)
 
             }
         }
 
-//        GL20.glUniform3f(uniform, 1f, 1f, 1f)
-//        mc.entityRenderer.renderHand(it.partialTicks, 0)
-
         colorFramebuffer.shader.stopShader()
-        colorFramebuffer.unbindBuffer()
-
-        // restore mc framebuffer and viewport
-        mc.framebuffer.bindFramebuffer(true)
-        mc.entityRenderer.setupOverlayRendering()
-
-
-        // start outline shader
-        outlineShader.startShader()
-        outlineShader.updateUniforms()
-
-        // draw quad over whole screen
-        GL11.glEnable(GL11.GL_BLEND)
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-        GL11.glDisable(GL11.GL_LIGHTING)
-        colorFramebuffer.drawFullscreenTexQuad(it.res)
-
-        // finish outline shader
-        outlineShader.stopShader()
-
-        // restore gl state
-        mc.entityRenderer.enableLightmap(0.0);
-
-        shouldCancelShadows = false
-        shouldCancelEnchant = false
-
-        GL11.glPopAttrib()
-        GL11.glPopMatrix()
-
-        mc.entityRenderer.setupOverlayRendering()
     }
 
     private fun drawCSGOEsp(it: RenderOverlayEvent) {
