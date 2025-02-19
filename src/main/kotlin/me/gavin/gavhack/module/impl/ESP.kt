@@ -63,6 +63,8 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     private val frustum = Frustum()
 
     private val renderOverlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
+        frustum.setPosition(mc.renderViewEntity.posX, mc.renderViewEntity.posY, mc.renderViewEntity.posZ)
+
         if (mode.enumValue() == Mode.CSGO) {
             drawCSGOEsp(it)
         } else if (mode.enumValue() == Mode.SHADER) {
@@ -131,6 +133,8 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         val uniform = colorFramebuffer.shader.getUniform("rgb")
 
         for (e in mc.theWorld.loadedEntityList) {
+            if (!frustum.isBoundingBoxInFrustum(e.boundingBox)) continue
+
             if ((e == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) || !entityCheck(e)) continue
 
             if (e is EntityPig) {
@@ -144,6 +148,13 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
         // make a copy of the tileEntity list to prevent any weird concurrency issues
         for (tile in ArrayList<TileEntity>(mc.theWorld.tileEntities)) {
+            val aabb = AxisAlignedBB.getBoundingBox(
+                tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble(),
+                tile.x + 1.0, tile.y + 1.0, tile.z + 1.0
+            )
+
+            if (!frustum.isBoundingBoxInFrustum(aabb)) continue
+
             if (tile == null) continue
 
             if (tile is TileEntityChest) {

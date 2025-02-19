@@ -4,12 +4,14 @@ import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.ToggleSetting
 import me.gavin.gavhack.gui.ClickGUI
+import me.gavin.gavhack.module.setting.IntSetting
 import org.lwjgl.input.Keyboard
 
 object GuiModule: Module("ClickGUI", "Configure the ClickGUI", ModCategory.GUI, Keyboard.KEY_RSHIFT) {
 
     val drawBackground = addSetting(ToggleSetting("Background", true))
     val drawDesc = addSetting(ToggleSetting("Descriptions", true))
+    val blurSize = addSetting(IntSetting("BlurRadius", 3, 1, 6))
 
     override fun onEnable() {
         mc.displayGuiScreen(ClickGUI)

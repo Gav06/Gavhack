@@ -372,7 +372,6 @@ public class GuiMainMenu extends GuiScreen
         }
 
         if (button.id == 69) {
-            ClickGUI.INSTANCE.setPreviousGui(this);
             mc.displayGuiScreen(ClickGUI.INSTANCE);
         }
     }
