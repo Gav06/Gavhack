@@ -2,6 +2,7 @@ package me.gavin.gavhack.utilities
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.shader.Framebuffer
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL13
@@ -61,17 +62,13 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int,
             GL13.glActiveTexture(GL13.GL_TEXTURE0)
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex)
 
-            GL11.glBegin(GL11.GL_QUADS);
-            GL11.glTexCoord2d(0.0, 1.0);
-            GL11.glVertex2d(0.0, 0.0);
-            GL11.glTexCoord2d(0.0, 0.0);
-            GL11.glVertex2d(0.0, res.scaledHeight_double);
-            GL11.glTexCoord2d(1.0, 0.0);
-            GL11.glVertex2d(res.scaledWidth_double, res.scaledHeight_double);
-            GL11.glTexCoord2d(1.0, 1.0);
-            GL11.glVertex2d(res.scaledWidth_double, 0.0);
-            GL11.glEnd();
-
+            val tes = Tessellator.instance
+            tes.startDrawing(GL11.GL_QUADS)
+            tes.addVertexWithUV(0.0, 0.0, 0.0, 0.0, 1.0)
+            tes.addVertexWithUV(0.0, res.scaledHeight_double, 0.0, 0.0, 0.0)
+            tes.addVertexWithUV(res.scaledWidth_double, res.scaledHeight_double, 0.0, 1.0, 0.0)
+            tes.addVertexWithUV(res.scaledWidth_double, 0.0, 0.0, 1.0, 1.0)
+            tes.draw()
         }
     }
 }

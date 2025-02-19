@@ -12,12 +12,15 @@ import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.IntSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.shaders.BlurShader
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.client.renderer.Tessellator
 import net.minecraft.util.ResourceLocation
+import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.GL11
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -25,7 +28,7 @@ object ClickGUI: GuiScreen() {
 
     private val windows = CopyOnWriteArrayList<Window>()
     private var shouldOpenGui = false
-    private val backgroundShader = BlurShader()
+
 
 
     /* Hacky way to get gui to open after typing the command in the chat box */
@@ -113,32 +116,43 @@ object ClickGUI: GuiScreen() {
         mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(ResourceLocation("gui.button.press"), 1.0f))
     }
 
+    private val vertBlurFbo = FramebufferEffect(
+        BlurShader(BlurShader.Type.VERTICAL),
+        Display.getWidth(), Display.getHeight(), false
+    )
+    private val horizBlurShader = BlurShader(BlurShader.Type.HORIZONTAL)
+
+    /**
+     * We use a FBO for the vertical pass, just so we don't draw 2 quads to the mc frame buffer,
+     * when we only need one
+     */
     private fun drawBackgroundShader() {
         val res = ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight)
 
         GL11.glPushMatrix()
         GL11.glEnable(GL11.GL_BLEND)
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+        GL11.glEnable(GL11.GL_TEXTURE_2D)
 
-        backgroundShader.startShader()
-        mc.framebuffer.bindFramebufferTexture()
-        backgroundShader.updateUniforms()
+        mc.framebuffer.unbindFramebuffer()
+        vertBlurFbo.updateFramebuffer(mc.displayWidth, mc.displayHeight)
+        vertBlurFbo.bindBuffer()
+        vertBlurFbo.shader.startShader()
+        vertBlurFbo.shader.updateUniforms()
+        FramebufferEffect.drawFullscreenTexQuad(mc.framebuffer.framebufferTexture, res)
+        vertBlurFbo.shader.stopShader()
+        vertBlurFbo.unbindBuffer()
+        mc.framebuffer.bindFramebuffer(true)
 
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(0.0, 1.0);
-        GL11.glVertex2d(0.0, 0.0);
-        GL11.glTexCoord2d(0.0, 0.0);
-        GL11.glVertex2d(0.0, res.scaledHeight_double);
-        GL11.glTexCoord2d(1.0, 0.0);
-        GL11.glVertex2d(res.scaledWidth_double, res.scaledHeight_double);
-        GL11.glTexCoord2d(1.0, 1.0);
-        GL11.glVertex2d(res.scaledWidth_double, 0.0);
-        GL11.glEnd();
-
-        backgroundShader.stopShader()
-        GL11.glPopMatrix()
-
+        // vertical blur pass
+        horizBlurShader.startShader()
+        horizBlurShader.updateUniforms()
+        FramebufferEffect.drawFullscreenTexQuad(vertBlurFbo.getFrameBuffer().framebufferTexture, res)
+        horizBlurShader.stopShader()
+        
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0)
+        GL11.glDisable(GL11.GL_TEXTURE_2D)
+        GL11.glPopMatrix()
     }
 
 

@@ -5,8 +5,8 @@ import me.gavin.gavhack.utilities.GLSLShader
 import net.minecraft.client.Minecraft
 import org.lwjgl.opengl.GL20
 
-class BlurShader: GLSLShader(
-    "/assets/minecraft/gavhack/shaders/blur.frag",
+class BlurShader(val type: Type): GLSLShader(
+    "/assets/minecraft/gavhack/shaders/${if (type == Type.VERTICAL) "v" else "h"}blur.frag",
     "/assets/minecraft/gavhack/shaders/default.vert"
 ) {
 
@@ -25,5 +25,10 @@ class BlurShader: GLSLShader(
             1f / Minecraft.getMinecraft().displayHeight.toFloat()
         )
         GL20.glUniform1i(getUniform("radius"), GuiModule.blurSize.getValue())
+    }
+
+    enum class Type {
+        VERTICAL,
+        HORIZONTAL
     }
 }

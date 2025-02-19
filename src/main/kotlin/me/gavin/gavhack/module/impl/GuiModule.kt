@@ -11,7 +11,7 @@ object GuiModule: Module("ClickGUI", "Configure the ClickGUI", ModCategory.GUI, 
 
     val drawBackground = addSetting(ToggleSetting("Background", true))
     val drawDesc = addSetting(ToggleSetting("Descriptions", true))
-    val blurSize = addSetting(IntSetting("BlurRadius", 3, 1, 6))
+    val blurSize = addSetting(IntSetting("BlurRadius", 25, 1, 50))
 
     override fun onEnable() {
         mc.displayGuiScreen(ClickGUI)
