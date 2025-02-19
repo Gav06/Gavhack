@@ -12,10 +12,15 @@ import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.IntSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.utilities.FramebufferEffect
+import me.gavin.gavhack.utilities.shaders.BackgroundShader
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.client.gui.GuiScreen
+import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.ResourceLocation
+import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL20
 import java.util.concurrent.CopyOnWriteArrayList
 
 object ClickGUI: GuiScreen() {
@@ -34,6 +39,8 @@ object ClickGUI: GuiScreen() {
         }
     }
 
+    val backgroundShader = BackgroundShader()
+
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         if (mc.theWorld == null)
             drawDefaultBackground()
@@ -42,6 +49,30 @@ object ClickGUI: GuiScreen() {
             drawRect(0, 0, width, height, rgba)
         }
         super.drawScreen(mouseX, mouseY, partialTicks)
+
+        val res = ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight)
+
+        GL11.glPushMatrix()
+
+        backgroundShader.startShader()
+        mc.framebuffer.bindFramebufferTexture()
+        backgroundShader.updateUniforms()
+
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2d(0.0, 1.0);
+        GL11.glVertex2d(0.0, 0.0);
+        GL11.glTexCoord2d(0.0, 0.0);
+        GL11.glVertex2d(0.0, res.scaledHeight_double);
+        GL11.glTexCoord2d(1.0, 0.0);
+        GL11.glVertex2d(res.scaledWidth_double, res.scaledHeight_double);
+        GL11.glTexCoord2d(1.0, 1.0);
+        GL11.glVertex2d(res.scaledWidth_double, 0.0);
+        GL11.glEnd();
+
+        backgroundShader.stopShader()
+        GL11.glPopMatrix()
+        
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0)
 
         if (mc.theWorld == null) {
             fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, height - 11, -1)

@@ -35,27 +35,8 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int,
 
     }
 
-
-
     fun drawFullscreenTexQuad(res: ScaledResolution) {
         drawFullscreenTexQuad(this.effectFramebuffer.framebufferTexture, res)
-    }
-
-    fun drawFullscreenTexQuad(tex: Int, res: ScaledResolution) {
-        GL13.glActiveTexture(GL13.GL_TEXTURE0)
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex)
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(0.0, 1.0);
-        GL11.glVertex2d(0.0, 0.0);
-        GL11.glTexCoord2d(0.0, 0.0);
-        GL11.glVertex2d(0.0, res.scaledHeight_double);
-        GL11.glTexCoord2d(1.0, 0.0);
-        GL11.glVertex2d(res.scaledWidth_double, res.scaledHeight_double);
-        GL11.glTexCoord2d(1.0, 1.0);
-        GL11.glVertex2d(res.scaledWidth_double, 0.0);
-        GL11.glEnd();
-
     }
 
     fun updateFramebuffer(newWidth: Int, newHeight: Int) {
@@ -73,5 +54,24 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int,
 
     fun getFrameBuffer(): Framebuffer {
         return effectFramebuffer
+    }
+
+    companion object {
+        fun drawFullscreenTexQuad(tex: Int, res: ScaledResolution) {
+            GL13.glActiveTexture(GL13.GL_TEXTURE0)
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex)
+
+            GL11.glBegin(GL11.GL_QUADS);
+            GL11.glTexCoord2d(0.0, 1.0);
+            GL11.glVertex2d(0.0, 0.0);
+            GL11.glTexCoord2d(0.0, 0.0);
+            GL11.glVertex2d(0.0, res.scaledHeight_double);
+            GL11.glTexCoord2d(1.0, 0.0);
+            GL11.glVertex2d(res.scaledWidth_double, res.scaledHeight_double);
+            GL11.glTexCoord2d(1.0, 1.0);
+            GL11.glVertex2d(res.scaledWidth_double, 0.0);
+            GL11.glEnd();
+
+        }
     }
 }
