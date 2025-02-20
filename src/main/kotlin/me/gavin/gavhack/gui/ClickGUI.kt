@@ -16,6 +16,7 @@ import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.shaders.BlurShader
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
+import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.Tessellator

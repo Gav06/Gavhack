@@ -387,23 +387,18 @@ public class BlockChest extends BlockContainer
     /**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
     {
-        if (p_149727_1_.isClient)
-        {
-            return true;
-        }
-        else
-        {
-            IInventory var10 = this.func_149951_m(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_);
+        if (!world.isClient) {
+            IInventory var10 = this.func_149951_m(world, x, y, z);
 
-            if (var10 != null)
-            {
-                p_149727_5_.displayGUIChest(var10);
+            if (var10 != null) {
+                player.displayGUIChest(var10);
             }
 
-            return true;
         }
+
+        return true;
     }
 
     public IInventory func_149951_m(World p_149951_1_, int p_149951_2_, int p_149951_3_, int p_149951_4_)

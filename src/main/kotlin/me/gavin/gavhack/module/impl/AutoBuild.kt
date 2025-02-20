@@ -14,12 +14,14 @@ import net.minecraft.block.Block
 import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.entity.Entity
 import net.minecraft.item.ItemBlock
+import net.minecraft.network.play.client.C0BPacketEntityAction
 import net.minecraft.util.Vec3
 import optifine.BlockPos
 
 object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.WORLD) {
 
     private val switch = addSetting(ToggleSetting("Switch", true))
+    private val autoSneak = addSetting(ToggleSetting("AutoSneak", true))
 
     private val blocksPerTick = addSetting(IntSetting("BlocksPerTick", 1, 1, 10))
 
@@ -115,12 +117,33 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
             if (blocksPlaced >= blocksPerTick.getValue())
                 break
 
+            val placeBlock = mc.theWorld.getBlock(placePos.x, placePos.y, placePos.z)
+            val prevSneak = mc.thePlayer.movementInput.sneak
+            val shouldSneak = autoSneak.value && !prevSneak && placeBlock
+                .onBlockActivated(
+                    mc.theWorld,
+                    placePos.x, placePos.y, placePos.z,
+                    mc.thePlayer, placement.side,
+                    0f, 0f, 0f
+                )
+
+
+            if (shouldSneak) {
+                mc.thePlayer.movementInput.sneak = true
+                mc.thePlayer.sendQueue.addToSendQueue(C0BPacketEntityAction(mc.thePlayer, 1))
+            }
+
             mc.playerController.onPlayerRightClick(
                 mc.thePlayer, mc.theWorld, mc.thePlayer.currentEquippedItem,
                 placePos.x, placePos.y, placePos.z, placement.side, Vec3.createVectorHelper(0.0, 0.0, 0.0)
             )
             mc.thePlayer.swingItem()
             blocksPlaced++
+
+            if (shouldSneak) {
+                mc.thePlayer.sendQueue.addToSendQueue(C0BPacketEntityAction(mc.thePlayer, 2))
+                mc.thePlayer.movementInput.sneak = prevSneak
+            }
         }
     }
 

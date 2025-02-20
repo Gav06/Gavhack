@@ -16,9 +16,9 @@ public class C0BPacketEntityAction extends Packet
 
     public C0BPacketEntityAction() {}
 
-    public C0BPacketEntityAction(Entity p_i45259_1_, int p_i45259_2_)
+    public C0BPacketEntityAction(Entity entity, int action)
     {
-        this(p_i45259_1_, p_i45259_2_, 0);
+        this(entity, action, 0);
     }
 
     public C0BPacketEntityAction(Entity p_i45260_1_, int p_i45260_2_, int p_i45260_3_)
