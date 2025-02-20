@@ -90,6 +90,35 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
         } ?: false
     }
 
+    private fun placeBlock(placement: BlockUtil.Placement) {
+        val placePos = placement.pos
+        val placeBlock = mc.theWorld.getBlock(placePos.x, placePos.y, placePos.z)
+        val prevSneak = mc.thePlayer.movementInput.sneak
+        val shouldSneak = autoSneak.value && !prevSneak && placeBlock
+            .onBlockActivated(
+                mc.theWorld,
+                placePos.x, placePos.y, placePos.z,
+                mc.thePlayer, placement.side,
+                0f, 0f, 0f
+            )
+
+
+        if (shouldSneak) {
+            mc.thePlayer.movementInput.sneak = true
+            mc.thePlayer.sendQueue.addToSendQueue(C0BPacketEntityAction(mc.thePlayer, 1))
+        }
+        mc.playerController.onPlayerRightClick(
+            mc.thePlayer, mc.theWorld, mc.thePlayer.currentEquippedItem,
+            placePos.x, placePos.y, placePos.z, placement.side, Vec3.createVectorHelper(0.0, 0.0, 0.0)
+        )
+        mc.thePlayer.swingItem()
+
+        if (shouldSneak) {
+            mc.thePlayer.sendQueue.addToSendQueue(C0BPacketEntityAction(mc.thePlayer, 2))
+            mc.thePlayer.movementInput.sneak = prevSneak
+        }
+    }
+
     // function called every game tick
     private val tickListener = Listener<PlayerLivingTickEvent> {
         // build up our blockPos list
@@ -101,6 +130,9 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
 
         var blocksPlaced = 0
         for (offset in floorOffsets) {
+            if (blocksPlaced >= blocksPerTick.getValue())
+                break
+
             val pos = BPos(offset[0] + start.x, offset[1] + start.y, offset[2] + start.z)
 
             val block = mc.theWorld.getBlock(pos.x, pos.y, pos.z)
@@ -112,38 +144,9 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
                 continue
 
             val placement = BlockUtil.findValidBlockPlace(pos, mc.theWorld) ?: continue
-            val placePos = placement.pos
-
-            if (blocksPlaced >= blocksPerTick.getValue())
-                break
-
-            val placeBlock = mc.theWorld.getBlock(placePos.x, placePos.y, placePos.z)
-            val prevSneak = mc.thePlayer.movementInput.sneak
-            val shouldSneak = autoSneak.value && !prevSneak && placeBlock
-                .onBlockActivated(
-                    mc.theWorld,
-                    placePos.x, placePos.y, placePos.z,
-                    mc.thePlayer, placement.side,
-                    0f, 0f, 0f
-                )
-
-
-            if (shouldSneak) {
-                mc.thePlayer.movementInput.sneak = true
-                mc.thePlayer.sendQueue.addToSendQueue(C0BPacketEntityAction(mc.thePlayer, 1))
-            }
-
-            mc.playerController.onPlayerRightClick(
-                mc.thePlayer, mc.theWorld, mc.thePlayer.currentEquippedItem,
-                placePos.x, placePos.y, placePos.z, placement.side, Vec3.createVectorHelper(0.0, 0.0, 0.0)
-            )
-            mc.thePlayer.swingItem()
+            
+            placeBlock(placement)
             blocksPlaced++
-
-            if (shouldSneak) {
-                mc.thePlayer.sendQueue.addToSendQueue(C0BPacketEntityAction(mc.thePlayer, 2))
-                mc.thePlayer.movementInput.sneak = prevSneak
-            }
         }
     }
 
