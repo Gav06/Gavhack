@@ -21,8 +21,12 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityEnderCrystal
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.monster.EntityMob
+import net.minecraft.entity.monster.EntitySlime
+import net.minecraft.entity.monster.IMob
 import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.passive.EntityPig
+import net.minecraft.entity.passive.EntitySquid
+import net.minecraft.entity.passive.EntityVillager
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.tileentity.TileEntityChest
@@ -31,6 +35,7 @@ import net.minecraft.util.AxisAlignedBB
 import net.minecraft.util.Vec3
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL20
+import org.lwjgl.util.vector.Vector3f
 
 
 object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
@@ -63,6 +68,9 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     private val frustum = Frustum()
 
     private val renderOverlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
+        if (mc.theWorld == null)
+            return@Listener
+
         frustum.setPosition(mc.renderViewEntity.posX, mc.renderViewEntity.posY, mc.renderViewEntity.posZ)
 
         if (mode.enumValue() == Mode.CSGO) {
@@ -137,17 +145,15 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
             if ((e == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) || !entityCheck(e)) continue
 
-            if (e is EntityPig) {
-                GL20.glUniform3f(uniform, 1.0f, 0.0f, 0.0f)
-            } else {
-                GL20.glUniform3f(uniform, 0.0f, 1.0f, 0.0f)
-            }
+            val color = entityColor(e)
+            GL20.glUniform3f(uniform, color.x, color.y, color.z)
 
             RenderManager.instance.renderEntityStatic(e, partialTicks, true)
         }
 
         // make a copy of the tileEntity list to prevent any weird concurrency issues
         for (tile in ArrayList<TileEntity>(mc.theWorld.tileEntities)) {
+
             val aabb = AxisAlignedBB.getBoundingBox(
                 tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble(),
                 tile.x + 1.0, tile.y + 1.0, tile.z + 1.0
@@ -155,7 +161,6 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
             if (!frustum.isBoundingBoxInFrustum(aabb)) continue
 
-            if (tile == null) continue
 
             if (tile is TileEntityChest) {
                 GL20.glUniform3f(uniform, 0.9764706f, 0.6117647f, 0.015686275f)
@@ -201,11 +206,25 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         return when (entity) {
             is EntityPlayer -> players.value
             is EntityAnimal -> passive.value
-            is EntityMob -> hostiles.value
+            is EntityVillager -> passive.value
+            is IMob -> hostiles.value
             is EntityItem -> items.value
             else -> other.value
         }
     }
+
+    private fun entityColor(entity: Entity): Vector3f {
+        return when (entity) {
+            is EntityPlayer -> Vector3f(0.0f, 0.75f, 1f)
+            is EntityAnimal -> Vector3f(0f, 1f, 0f)
+            is EntityVillager -> Vector3f(0f, 1f, 0f)
+            is EntitySquid -> Vector3f(0f, 1f, 0f)
+            is IMob -> Vector3f(1f, 0f, 0f)
+            is EntityItem -> Vector3f(1f, 1f, 0f)
+            else -> Vector3f(1f, 1f, 1f)
+        }
+    }
+
 
     private fun getCornerPositions(e: Entity, partialTicks: Float, res: ScaledResolution): FloatArray? {
         // Start with +- 1.0f out of bounds

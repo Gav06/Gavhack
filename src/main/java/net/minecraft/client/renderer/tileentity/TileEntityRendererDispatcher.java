@@ -3,6 +3,8 @@ package net.minecraft.client.renderer.tileentity;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import me.gavin.gavhack.module.impl.ESP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderEnchantmentTable;
@@ -33,7 +35,7 @@ public class TileEntityRendererDispatcher
     public static double staticPlayerY;
     public static double staticPlayerZ;
     public TextureManager field_147553_e;
-    public World field_147550_f;
+    public World world;
     public EntityLivingBase field_147551_g;
     public float field_147562_h;
     public float field_147563_i;
@@ -87,7 +89,7 @@ public class TileEntityRendererDispatcher
 
     public void func_147542_a(World p_147542_1_, TextureManager p_147542_2_, FontRenderer p_147542_3_, EntityLivingBase p_147542_4_, float p_147542_5_)
     {
-        if (this.field_147550_f != p_147542_1_)
+        if (this.world != p_147542_1_)
         {
             this.func_147543_a(p_147542_1_);
         }
@@ -107,10 +109,10 @@ public class TileEntityRendererDispatcher
     {
         if (tile.getDistanceFrom(this.field_147560_j, this.field_147561_k, this.field_147558_l) < tile.getMaxRenderDistanceSquared())
         {
-            int var3 = this.field_147550_f.getLightBrightnessForSkyBlocks(tile.x, tile.y, tile.z, 0);
+            int var3 = this.world.getLightBrightnessForSkyBlocks(tile.x, tile.y, tile.z, 0);
             int var4 = var3 % 65536;
             int var5 = var3 / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var4 / 1.0F, (float)var5 / 1.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var4, (float) var5);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.func_147549_a(tile, (double)tile.x - staticPlayerX, (double)tile.y - staticPlayerY, (double)tile.z - staticPlayerZ, partialTicks);
         }
@@ -136,18 +138,15 @@ public class TileEntityRendererDispatcher
         }
     }
 
-    public void func_147543_a(World p_147543_1_)
+    public void func_147543_a(World worldIn)
     {
-        this.field_147550_f = p_147543_1_;
-        Iterator var2 = this.mapSpecialRenderers.values().iterator();
+        this.world = worldIn;
 
-        while (var2.hasNext())
-        {
-            TileEntitySpecialRenderer var3 = (TileEntitySpecialRenderer)var2.next();
+        for (Object o : this.mapSpecialRenderers.values()) {
+            TileEntitySpecialRenderer tileEntitySpecialRenderer = (TileEntitySpecialRenderer) o;
 
-            if (var3 != null)
-            {
-                var3.func_147496_a(p_147543_1_);
+            if (tileEntitySpecialRenderer != null) {
+                tileEntitySpecialRenderer.func_147496_a(worldIn);
             }
         }
     }

@@ -122,6 +122,8 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
     // function called every game tick
     private val tickListener = Listener<PlayerLivingTickEvent> {
         // build up our blockPos list
+        if (mc.currentScreen != null)
+            return@Listener
 
         if (!findBuildingBlock())
             return@Listener
@@ -144,7 +146,7 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
                 continue
 
             val placement = BlockUtil.findValidBlockPlace(pos, mc.theWorld) ?: continue
-            
+
             placeBlock(placement)
             blocksPlaced++
         }
