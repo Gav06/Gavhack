@@ -107,7 +107,7 @@ public class TileEntityRendererDispatcher
     // formerly func_147544_a
     public void renderTileEntity(TileEntity tile, float partialTicks)
     {
-        if (tile.getDistanceFrom(this.field_147560_j, this.field_147561_k, this.field_147558_l) < tile.getMaxRenderDistanceSquared())
+        if (ESP.INSTANCE.getShouldCancelTileDistanceCheck() || tile.getDistanceFrom(this.field_147560_j, this.field_147561_k, this.field_147558_l) < tile.getMaxRenderDistanceSquared())
         {
             int var3 = this.world.getLightBrightnessForSkyBlocks(tile.x, tile.y, tile.z, 0);
             int var4 = var3 % 65536;

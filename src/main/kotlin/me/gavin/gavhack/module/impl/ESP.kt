@@ -42,6 +42,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
     var shouldCancelShadows = false
     var shouldCancelEnchant = false
+    var shouldCancelTileDistanceCheck = false
 
     enum class Mode {
         CSGO,
@@ -151,6 +152,8 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
             RenderManager.instance.renderEntityStatic(e, partialTicks, true)
         }
 
+        shouldCancelTileDistanceCheck = true
+
         // make a copy of the tileEntity list to prevent any weird concurrency issues
         for (tile in ArrayList<TileEntity>(mc.theWorld.tileEntities)) {
 
@@ -171,6 +174,8 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
             }
         }
+
+        shouldCancelTileDistanceCheck = false
 
         colorFramebuffer.shader.stopShader()
     }
