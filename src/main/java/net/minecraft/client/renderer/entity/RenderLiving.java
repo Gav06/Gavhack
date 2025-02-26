@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
+import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
@@ -10,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 public abstract class RenderLiving extends RendererLivingEntity
 {
-    private static final String __OBFID = "CL_00001015";
 
     public RenderLiving(ModelBase par1ModelBase, float par2)
     {
@@ -19,6 +19,8 @@ public abstract class RenderLiving extends RendererLivingEntity
 
     protected boolean func_110813_b(EntityLiving par1EntityLiving)
     {
+
+
         return super.func_110813_b(par1EntityLiving) && (par1EntityLiving.getAlwaysRenderNameTagForRender() || par1EntityLiving.hasCustomNameTag() && par1EntityLiving == this.renderManager.field_147941_i);
     }
 
@@ -34,9 +36,9 @@ public abstract class RenderLiving extends RendererLivingEntity
         this.func_110827_b(par1EntityLiving, par2, par4, par6, par8, par9);
     }
 
-    private double func_110828_a(double par1, double par3, double par5)
+    private double lerp(double then, double now, double delta)
     {
-        return par1 + (par3 - par1) * par5;
+        return then + (now - then) * delta;
     }
 
     protected void func_110827_b(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
@@ -47,31 +49,31 @@ public abstract class RenderLiving extends RendererLivingEntity
         {
             par4 -= (1.6D - (double)par1EntityLiving.height) * 0.5D;
             Tessellator var11 = Tessellator.instance;
-            double var12 = this.func_110828_a((double)var10.prevRotationYaw, (double)var10.rotationYaw, (double)(par9 * 0.5F)) * 0.01745329238474369D;
-            double var14 = this.func_110828_a((double)var10.prevRotationPitch, (double)var10.rotationPitch, (double)(par9 * 0.5F)) * 0.01745329238474369D;
-            double var16 = Math.cos(var12);
-            double var18 = Math.sin(var12);
-            double var20 = Math.sin(var14);
+            double yaw = this.lerp((double)var10.prevRotationYaw, (double)var10.rotationYaw, (double)(par9 * 0.5F)) * 0.01745329238474369D;
+            double pitch = this.lerp((double)var10.prevRotationPitch, (double)var10.rotationPitch, (double)(par9 * 0.5F)) * 0.01745329238474369D;
+            double cos = Math.cos(yaw);
+            double sin = Math.sin(yaw);
+            double tan = Math.sin(pitch);
 
             if (var10 instanceof EntityHanging)
             {
-                var16 = 0.0D;
-                var18 = 0.0D;
-                var20 = -1.0D;
+                cos = 0.0D;
+                sin = 0.0D;
+                tan = -1.0D;
             }
 
-            double var22 = Math.cos(var14);
-            double var24 = this.func_110828_a(var10.prevPosX, var10.posX, (double)par9) - var16 * 0.7D - var18 * 0.5D * var22;
-            double var26 = this.func_110828_a(var10.prevPosY + (double)var10.getEyeHeight() * 0.7D, var10.posY + (double)var10.getEyeHeight() * 0.7D, (double)par9) - var20 * 0.5D - 0.25D;
-            double var28 = this.func_110828_a(var10.prevPosZ, var10.posZ, (double)par9) - var18 * 0.7D + var16 * 0.5D * var22;
-            double var30 = this.func_110828_a((double)par1EntityLiving.prevRenderYawOffset, (double)par1EntityLiving.renderYawOffset, (double)par9) * 0.01745329238474369D + (Math.PI / 2D);
-            var16 = Math.cos(var30) * (double)par1EntityLiving.width * 0.4D;
-            var18 = Math.sin(var30) * (double)par1EntityLiving.width * 0.4D;
-            double var32 = this.func_110828_a(par1EntityLiving.prevPosX, par1EntityLiving.posX, (double)par9) + var16;
-            double var34 = this.func_110828_a(par1EntityLiving.prevPosY, par1EntityLiving.posY, (double)par9);
-            double var36 = this.func_110828_a(par1EntityLiving.prevPosZ, par1EntityLiving.posZ, (double)par9) + var18;
-            par2 += var16;
-            par6 += var18;
+            double var22 = Math.cos(pitch);
+            double var24 = this.lerp(var10.prevPosX, var10.posX, (double)par9) - cos * 0.7D - sin * 0.5D * var22;
+            double var26 = this.lerp(var10.prevPosY + (double)var10.getEyeHeight() * 0.7D, var10.posY + (double)var10.getEyeHeight() * 0.7D, (double)par9) - tan * 0.5D - 0.25D;
+            double var28 = this.lerp(var10.prevPosZ, var10.posZ, (double)par9) - sin * 0.7D + cos * 0.5D * var22;
+            double var30 = this.lerp((double)par1EntityLiving.prevRenderYawOffset, (double)par1EntityLiving.renderYawOffset, (double)par9) * 0.01745329238474369D + (Math.PI / 2D);
+            cos = Math.cos(var30) * (double)par1EntityLiving.width * 0.4D;
+            sin = Math.sin(var30) * (double)par1EntityLiving.width * 0.4D;
+            double var32 = this.lerp(par1EntityLiving.prevPosX, par1EntityLiving.posX, (double)par9) + cos;
+            double var34 = this.lerp(par1EntityLiving.prevPosY, par1EntityLiving.posY, (double)par9);
+            double var36 = this.lerp(par1EntityLiving.prevPosZ, par1EntityLiving.posZ, (double)par9) + sin;
+            par2 += cos;
+            par6 += sin;
             double var38 = (double)((float)(var24 - var32));
             double var40 = (double)((float)(var26 - var34));
             double var42 = (double)((float)(var28 - var36));

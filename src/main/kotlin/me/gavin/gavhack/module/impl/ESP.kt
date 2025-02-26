@@ -21,11 +21,8 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher
 import net.minecraft.entity.Entity
 import net.minecraft.entity.item.EntityEnderCrystal
 import net.minecraft.entity.item.EntityItem
-import net.minecraft.entity.monster.EntityMob
-import net.minecraft.entity.monster.EntitySlime
 import net.minecraft.entity.monster.IMob
 import net.minecraft.entity.passive.EntityAnimal
-import net.minecraft.entity.passive.EntityPig
 import net.minecraft.entity.passive.EntitySquid
 import net.minecraft.entity.passive.EntityVillager
 import net.minecraft.entity.player.EntityPlayer
@@ -41,13 +38,10 @@ import org.lwjgl.util.vector.Vector3f
 
 object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
-    var shouldCancelShadows = false
-    var shouldCancelEnchant = false
-    var shouldCancelTileDistanceCheck = false
-
     enum class Mode {
         CSGO,
-        SHADER
+        SHADER,
+        BOX
     }
 
     val mode = addSetting(EnumSetting("Mode", Mode.CSGO))
@@ -84,48 +78,50 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     }
 
     private fun drawShaderESP(it: RenderOverlayEvent) {
-
+        // prepare render
         GL11.glPushMatrix()
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT or GL11.GL_LIGHTING_BIT)
-
-        shouldCancelShadows = true
-        shouldCancelEnchant = true
-
+        RenderUtils.shouldCancelShadows = true
+        RenderUtils.shouldCancelNameTagRender = true
+        RenderUtils.shouldCancelEnchant = true
         mc.entityRenderer.disableLightmap(0.0);
         RenderHelper.disableStandardItemLighting();
 
+        // create color framebuffer
         colorFramebuffer.updateFramebuffer(mc.displayWidth, mc.displayHeight)
         colorFramebuffer.bindBuffer()
-
         buildFrameBuffer(it.partialTicks)
-
         colorFramebuffer.unbindBuffer()
 
+        // bind mc framebuffer
         mc.framebuffer.bindFramebuffer(true)
         mc.entityRenderer.setupOverlayRendering()
+
         // draw outline shader
         drawOutlineShader(it.res)
 
         // restore gl state
         mc.entityRenderer.enableLightmap(0.0);
-
-        shouldCancelShadows = false
-        shouldCancelEnchant = false
-
+        RenderUtils.shouldCancelShadows = false
+        RenderUtils.shouldCancelNameTagRender = false
+        RenderUtils.shouldCancelEnchant = false
         GL11.glPopAttrib()
         GL11.glPopMatrix()
-
         mc.entityRenderer.setupOverlayRendering()
     }
 
     private fun drawOutlineShader(res: ScaledResolution) {
+        GL11.glEnable(GL11.GL_BLEND)
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+        GL11.glDisable(GL11.GL_LIGHTING)
+
+//        colorFramebuffer.drawFullscreenTexQuad(res)
+
+
         outlineShader.startShader()
         outlineShader.updateUniforms()
 
         // draw quad over whole screen
-        GL11.glEnable(GL11.GL_BLEND)
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-        GL11.glDisable(GL11.GL_LIGHTING)
         colorFramebuffer.drawFullscreenTexQuad(res)
 
         // finish outline shader
@@ -154,7 +150,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
             RenderManager.instance.renderEntityStatic(e, partialTicks, true)
         }
 
-        shouldCancelTileDistanceCheck = true
+        RenderUtils.shouldCancelTileDistanceCheck = true
 
         // make a copy of the tileEntity list to prevent any weird concurrency issues
         for (tile in ArrayList<TileEntity>(mc.theWorld.tileEntities)) {
@@ -177,7 +173,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
             }
         }
 
-        shouldCancelTileDistanceCheck = false
+        RenderUtils.shouldCancelTileDistanceCheck = false
 
         colorFramebuffer.shader.stopShader()
     }
@@ -231,7 +227,6 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
             else -> Vector3f(1f, 1f, 1f)
         }
     }
-
 
     private fun getCornerPositions(e: Entity, partialTicks: Float, res: ScaledResolution): FloatArray? {
         // Start with +- 1.0f out of bounds

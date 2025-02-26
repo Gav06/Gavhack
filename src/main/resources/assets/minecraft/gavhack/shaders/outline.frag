@@ -1,22 +1,17 @@
-#version 120
 
 uniform sampler2D texture;
-uniform vec2 texelSize;
+uniform vec2 resolution;
 
 uniform float radius;
 
 uniform int fill;
 uniform int dots;
 
-float mod(float a, float b) {
-    return a - (b * floor(a/b));
-}
-
 void main(void) {
     vec4 centerCol = texture2D(texture, gl_TexCoord[0].xy);
-
+    vec2 texelSize = vec2(1.0 / resolution.x, 1.0 / resolution.y);
     if(centerCol.a != 0) {
-        if (dots == 1 && mod(int(gl_FragCoord.x), 10) == 0 && mod(int(gl_FragCoord.y), 10) == 0) {
+        if (dots == 1 && int(gl_FragCoord.x) % 10 == 0 && int(gl_FragCoord.y) % 10 == 0) {
             gl_FragColor = vec4(centerCol.r, centerCol.g, centerCol.b, 1.0f);
         } else {
             if (fill == 1) {

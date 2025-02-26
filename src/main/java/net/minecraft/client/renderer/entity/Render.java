@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
 import me.gavin.gavhack.module.impl.ESP;
+import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.FontRenderer;
@@ -124,7 +125,7 @@ public abstract class Render
      */
     private void renderShadow(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        if (ESP.INSTANCE.getShouldCancelShadows())
+        if (RenderUtils.INSTANCE.getShouldCancelShadows())
             return;
 
         GL11.glEnable(GL11.GL_BLEND);
@@ -344,6 +345,9 @@ public abstract class Render
 
     protected void func_147906_a(Entity p_147906_1_, String p_147906_2_, double p_147906_3_, double p_147906_5_, double p_147906_7_, int p_147906_9_)
     {
+        if (RenderUtils.INSTANCE.getShouldCancelNameTagRender())
+            return;
+
         double var10 = p_147906_1_.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
         if (var10 <= (double)(p_147906_9_ * p_147906_9_))

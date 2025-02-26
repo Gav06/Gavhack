@@ -12,6 +12,11 @@ import org.lwjgl.opengl.GL11.*
 
 object RenderUtils {
 
+    var shouldCancelShadows = false
+    var shouldCancelEnchant = false
+    var shouldCancelTileDistanceCheck = false
+    var shouldCancelNameTagRender = false
+
     val TEX_TRIANGLE = ResourceLocation("gavhack/triangle.png")
 
     // Converts GL scissor to gui overlay coordinates

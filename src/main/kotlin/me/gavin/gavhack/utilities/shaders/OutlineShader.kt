@@ -12,7 +12,7 @@ class OutlineShader: GLSLShader(
 
     init {
         setupUniform("texture")
-        setupUniform("texelSize")
+        setupUniform("resolution")
         setupUniform("radius")
 
         setupUniform("fill")
@@ -23,13 +23,13 @@ class OutlineShader: GLSLShader(
         val mc = Minecraft.getMinecraft()
         GL20.glUniform1i(getUniform("texture"), 0)
 
-        GL20.glUniform2f(getUniform("texelSize"),
-            1F / mc.displayWidth.toFloat(),
-            1F / mc.displayHeight.toFloat()
+        GL20.glUniform2f(getUniform("resolution"),
+            mc.displayWidth.toFloat(),
+            mc.displayHeight.toFloat()
         )
 
         GL20.glUniform4f(getUniform("color"), 1.0f, 0f, 0f, 1.0f)
-        GL20.glUniform1f(getUniform("radius"), ESP.radius.getValue())
+        GL20.glUniform1f(getUniform("radius"),1f)
 
         GL20.glUniform1i(getUniform("fill"), ESP.fill.value.toInt())
         GL20.glUniform1i(getUniform("dots"), ESP.dots.value.toInt())

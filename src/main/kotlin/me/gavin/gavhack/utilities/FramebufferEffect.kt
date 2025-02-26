@@ -58,19 +58,19 @@ class FramebufferEffect(val shader: GLSLShader, var width: Int, var height: Int,
 
     companion object {
         fun drawFullscreenTexQuad(tex: Int, res: ScaledResolution) {
-            drawTexQuad(0, 0, res.scaledWidth, res.scaledHeight, tex)
+            drawTexQuad(0.0, 0.0, res.scaledWidth_double, res.scaledHeight_double, tex)
         }
 
-        fun drawTexQuad(x1: Int, y1: Int, x2: Int, y2: Int, tex: Int) {
+        fun drawTexQuad(x1: Double, y1: Double, x2: Double, y2: Double, tex: Int) {
             GL13.glActiveTexture(GL13.GL_TEXTURE0)
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex)
 
             val tes = Tessellator.instance
             tes.startDrawing(GL11.GL_QUADS)
-            tes.addVertexWithUV(x1.toDouble(), y1.toDouble(), 0.0, 0.0, 1.0)
-            tes.addVertexWithUV(x1.toDouble(), y2.toDouble(), 0.0, 0.0, 0.0)
-            tes.addVertexWithUV(x2.toDouble(), y2.toDouble(), 0.0, 1.0, 0.0)
-            tes.addVertexWithUV(x2.toDouble(), y1.toDouble(), 0.0, 1.0, 1.0)
+            tes.addVertexWithUV(x1, y1, 0.0, 0.0, 1.0)
+            tes.addVertexWithUV(x1, y2, 0.0, 0.0, 0.0)
+            tes.addVertexWithUV(x2, y2, 0.0, 1.0, 0.0)
+            tes.addVertexWithUV(x2, y1, 0.0, 1.0, 1.0)
             tes.draw()
         }
     }
