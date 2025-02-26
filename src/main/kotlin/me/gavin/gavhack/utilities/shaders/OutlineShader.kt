@@ -29,7 +29,7 @@ class OutlineShader: GLSLShader(
         )
 
         GL20.glUniform4f(getUniform("color"), 1.0f, 0f, 0f, 1.0f)
-        GL20.glUniform1f(getUniform("radius"), 1.0f)
+        GL20.glUniform1f(getUniform("radius"), ESP.radius.getValue())
 
         GL20.glUniform1i(getUniform("fill"), ESP.fill.value.toInt())
         GL20.glUniform1i(getUniform("dots"), ESP.dots.value.toInt())

@@ -5,6 +5,7 @@ import me.gavin.gavhack.event.events.RenderOverlayEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.EnumSetting
+import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.MathUtils
@@ -53,6 +54,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
     val fill = addSetting(ToggleSetting("Fill", false))
     val dots = addSetting(ToggleSetting("Dots", false))
+    val radius = addSetting(FloatSetting("Radius", 1f, 1f, 5f))
 
     val players = addSetting(ToggleSetting("Players", true))
     val hostiles = addSetting(ToggleSetting("Hostiles", true))
