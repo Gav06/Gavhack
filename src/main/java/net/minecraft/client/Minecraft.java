@@ -25,6 +25,7 @@ import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.ClientTickEvent;
 import me.gavin.gavhack.event.events.KeyPressEvent;
+import me.gavin.gavhack.event.events.ScreenshotEvent;
 import me.gavin.gavhack.event.events.WorldLoadEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -1176,8 +1177,20 @@ public class Minecraft implements IPlayerUsage
         {
             if (!this.isTakingScreenshot)
             {
+                ScreenshotEvent event = new ScreenshotEvent(
+                        this.mcDataDir, this.displayWidth, this.displayHeight, this.mcFramebuffer
+                );
+
+                EventBus.INSTANCE.post(event);
+                if (event.getCancelled())
+                    return;
+
                 this.isTakingScreenshot = true;
-                this.ingameGUI.getChatGUI().addChatMessage(ScreenShotHelper.saveScreenshot(this.mcDataDir, this.displayWidth, this.displayHeight, this.mcFramebuffer));
+                this.ingameGUI.getChatGUI().addChatMessage(
+                        ScreenShotHelper.saveScreenshot(
+                                event.getDataDir(), event.getWidth(), event.getHeight(), event.getFramebuffer()
+                        )
+                );
             }
         }
         else

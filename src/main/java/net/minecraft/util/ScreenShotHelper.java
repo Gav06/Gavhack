@@ -35,29 +35,29 @@ public class ScreenShotHelper
      * Saves a screenshot in the game directory with a time-stamped filename.  Args: gameDirectory,
      * requestedWidthInPixels, requestedHeightInPixels, frameBuffer
      */
-    public static IChatComponent saveScreenshot(File p_148260_0_, int p_148260_1_, int p_148260_2_, Framebuffer p_148260_3_)
+    public static IChatComponent saveScreenshot(File mcDataDir, int width, int height, Framebuffer framebufferIn)
     {
-        return saveScreenshot(p_148260_0_, (String)null, p_148260_1_, p_148260_2_, p_148260_3_);
+        return saveScreenshot(mcDataDir, (String)null, width, height, framebufferIn);
     }
 
     /**
      * Saves a screenshot in the game directory with the given file name (or null to generate a time-stamped name).
      * Args: gameDirectory, fileName, requestedWidthInPixels, requestedHeightInPixels, frameBuffer
      */
-    public static IChatComponent saveScreenshot(File p_148259_0_, String p_148259_1_, int p_148259_2_, int p_148259_3_, Framebuffer p_148259_4_)
+    public static IChatComponent saveScreenshot(File mcDataDir, String fileName, int width, int height, Framebuffer framebufferIn)
     {
         try
         {
-            File var5 = new File(p_148259_0_, "screenshots");
+            File var5 = new File(mcDataDir, "screenshots");
             var5.mkdir();
 
             if (OpenGlHelper.isFramebufferEnabled())
             {
-                p_148259_2_ = p_148259_4_.framebufferTextureWidth;
-                p_148259_3_ = p_148259_4_.framebufferTextureHeight;
+                width = framebufferIn.framebufferTextureWidth;
+                height = framebufferIn.framebufferTextureHeight;
             }
 
-            int var6 = p_148259_2_ * p_148259_3_;
+            int var6 = width * height;
 
             if (pixelBuffer == null || pixelBuffer.capacity() < var6)
             {
@@ -71,58 +71,58 @@ public class ScreenShotHelper
 
             if (OpenGlHelper.isFramebufferEnabled())
             {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, p_148259_4_.framebufferTexture);
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, framebufferIn.framebufferTexture);
                 GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
             }
             else
             {
-                GL11.glReadPixels(0, 0, p_148259_2_, p_148259_3_, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
+                GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
             }
 
             pixelBuffer.get(pixelValues);
-            TextureUtil.func_147953_a(pixelValues, p_148259_2_, p_148259_3_);
-            BufferedImage var7 = null;
+            TextureUtil.arrayFlipVertical(pixelValues, width, height);
+            BufferedImage bufferedImg;
 
             if (OpenGlHelper.isFramebufferEnabled())
             {
-                var7 = new BufferedImage(p_148259_4_.framebufferWidth, p_148259_4_.framebufferHeight, 1);
-                int var8 = p_148259_4_.framebufferTextureHeight - p_148259_4_.framebufferHeight;
+                bufferedImg = new BufferedImage(framebufferIn.framebufferWidth, framebufferIn.framebufferHeight, 1);
+                int var8 = framebufferIn.framebufferTextureHeight - framebufferIn.framebufferHeight;
 
-                for (int var9 = var8; var9 < p_148259_4_.framebufferTextureHeight; ++var9)
+                for (int h = var8; h < framebufferIn.framebufferTextureHeight; ++h)
                 {
-                    for (int var10 = 0; var10 < p_148259_4_.framebufferWidth; ++var10)
+                    for (int w = 0; w < framebufferIn.framebufferWidth; ++w)
                     {
-                        var7.setRGB(var10, var9 - var8, pixelValues[var9 * p_148259_4_.framebufferTextureWidth + var10]);
+                        bufferedImg.setRGB(w, h - var8, pixelValues[h * framebufferIn.framebufferTextureWidth + w]);
                     }
                 }
             }
             else
             {
-                var7 = new BufferedImage(p_148259_2_, p_148259_3_, 1);
-                var7.setRGB(0, 0, p_148259_2_, p_148259_3_, pixelValues, 0, p_148259_2_);
+                bufferedImg = new BufferedImage(width, height, 1);
+                bufferedImg.setRGB(0, 0, width, height, pixelValues, 0, width);
             }
 
             File var12;
 
-            if (p_148259_1_ == null)
+            if (fileName == null)
             {
                 var12 = getTimestampedPNGFileForDirectory(var5);
             }
             else
             {
-                var12 = new File(var5, p_148259_1_);
+                var12 = new File(var5, fileName);
             }
 
-            ImageIO.write(var7, "png", var12);
+            ImageIO.write(bufferedImg, "png", var12);
             ChatComponentText var13 = new ChatComponentText(var12.getName());
             var13.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, var12.getAbsolutePath()));
-            var13.getChatStyle().setUnderlined(Boolean.valueOf(true));
-            return new ChatComponentTranslation("screenshot.success", new Object[] {var13});
+            var13.getChatStyle().setUnderlined(true);
+            return new ChatComponentTranslation("screenshot.success", var13);
         }
         catch (Exception var11)
         {
-            logger.warn("Couldn\'t save screenshot", var11);
-            return new ChatComponentTranslation("screenshot.failure", new Object[] {var11.getMessage()});
+            logger.warn("Couldn't save screenshot", var11);
+            return new ChatComponentTranslation("screenshot.failure", var11.getMessage());
         }
     }
 
@@ -132,9 +132,9 @@ public class ScreenShotHelper
      * the filename was unique when this method was called, but another process or thread created a file at the same
      * path immediately after this method returned.
      */
-    private static File getTimestampedPNGFileForDirectory(File par0File)
+    public static File getTimestampedPNGFileForDirectory(File par0File)
     {
-        String var2 = dateFormat.format(new Date()).toString();
+        String var2 = dateFormat.format(new Date());
         int var3 = 1;
 
         while (true)

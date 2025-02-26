@@ -28,7 +28,8 @@ object ModuleManager {
             AutoMine,
             SafeWalk,
             AutoTool,
-            AutoBuild
+            AutoBuild,
+            AsyncScreenshot
     )
 
     /* Sorted by length of module name */

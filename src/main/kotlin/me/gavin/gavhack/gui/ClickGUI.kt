@@ -6,6 +6,7 @@ import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ClientTickEvent
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.module.ModCategory
+import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.module.impl.GuiModule
 import me.gavin.gavhack.module.setting.EnumSetting
@@ -16,10 +17,8 @@ import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.shaders.BlurShader
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
-import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
-import net.minecraft.client.renderer.Tessellator
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.GL11
@@ -28,19 +27,6 @@ import java.util.concurrent.CopyOnWriteArrayList
 object ClickGUI: GuiScreen() {
 
     private val windows = CopyOnWriteArrayList<Window>()
-    private var shouldOpenGui = false
-
-
-
-    /* Hacky way to get gui to open after typing the command in the chat box */
-    private val livingTick = Listener<ClientTickEvent> {
-        val minecraft = Minecraft.getMinecraft()
-        if (minecraft != null && shouldOpenGui && minecraft.currentScreen == null) {
-            shouldOpenGui = false
-            minecraft.displayGuiScreen(ClickGUI)
-        }
-    }
-
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         if (mc.theWorld == null)
@@ -48,9 +34,8 @@ object ClickGUI: GuiScreen() {
         else if (GuiModule.drawBackground.value) {
             drawBackgroundShader()
         }
+
         super.drawScreen(mouseX, mouseY, partialTicks)
-
-
 
         if (mc.theWorld == null) {
             fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, height - 11, -1)
@@ -121,6 +106,7 @@ object ClickGUI: GuiScreen() {
         BlurShader(BlurShader.Type.VERTICAL),
         Display.getWidth(), Display.getHeight(), false
     )
+
     private val horizBlurShader = BlurShader(BlurShader.Type.HORIZONTAL)
 
     /**
@@ -140,7 +126,9 @@ object ClickGUI: GuiScreen() {
         vertBlurFbo.bindBuffer()
         vertBlurFbo.shader.startShader()
         vertBlurFbo.shader.updateUniforms()
+
         FramebufferEffect.drawFullscreenTexQuad(mc.framebuffer.framebufferTexture, res)
+
         vertBlurFbo.shader.stopShader()
         vertBlurFbo.unbindBuffer()
         mc.framebuffer.bindFramebuffer(true)
@@ -156,10 +144,19 @@ object ClickGUI: GuiScreen() {
         GL11.glPopMatrix()
     }
 
+    private fun addSettingComponents(button: WindowButton, module: Module) {
+        for (setting in module.settings) {
+            // add setting components
+            when (setting) {
+                is ToggleSetting -> button.subComponents.add(BooleanComponent(setting, button.w, button.h))
+                is FloatSetting -> button.subComponents.add(FloatComponent(setting, button.w, button.h))
+                is EnumSetting<*> -> button.subComponents.add(EnumComponent(setting, button.w, button.h))
+                is IntSetting -> button.subComponents.add(IntComponent(setting, button.w, button.h))
+            }
+        }
+    }
 
     init {
-        EventBus.addListener(livingTick, PlayerLivingTickEvent::class)
-
         var xOffset = 0
         for (category in ModCategory.entries) {
             // We can pass 0 as height since it will automatically be resized anyway.
@@ -168,15 +165,7 @@ object ClickGUI: GuiScreen() {
             for (module in ModuleManager.getCategoryMods(category)) {
                 val button = WindowButton(module, 0, 0, window.w, window.handle.h - 2)
 
-                for (setting in module.settings) {
-                    // add setting components
-                    when (setting) {
-                        is ToggleSetting -> button.subComponents.add(BooleanComponent(setting, button.w, button.h))
-                        is FloatSetting -> button.subComponents.add(FloatComponent(setting, button.w, button.h))
-                        is EnumSetting<*> -> button.subComponents.add(EnumComponent(setting, button.w, button.h))
-                        is IntSetting -> button.subComponents.add(IntComponent(setting, button.w, button.h))
-                    }
-                }
+                addSettingComponents(button, module)
 
                 button.subComponents.add(BindComponent(module, button.w, button.h))
                 window.components.add(button)
@@ -188,5 +177,4 @@ object ClickGUI: GuiScreen() {
             xOffset += window.w + 4
         }
     }
-
 }

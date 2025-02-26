@@ -371,16 +371,17 @@ public class TextureUtil
         return p_147948_0_;
     }
 
-    public static void func_147953_a(int[] p_147953_0_, int p_147953_1_, int p_147953_2_)
+    // performs a vertical flip of a 2d array (represented as a 1d array)
+    public static void arrayFlipVertical(int[] arrayIn, int rowWidth, int numRows)
     {
-        int[] var3 = new int[p_147953_1_];
-        int var4 = p_147953_2_ / 2;
+        int[] arr = new int[rowWidth];
+        int half = numRows / 2;
 
-        for (int var5 = 0; var5 < var4; ++var5)
+        for (int i = 0; i < half; ++i)
         {
-            System.arraycopy(p_147953_0_, var5 * p_147953_1_, var3, 0, p_147953_1_);
-            System.arraycopy(p_147953_0_, (p_147953_2_ - 1 - var5) * p_147953_1_, p_147953_0_, var5 * p_147953_1_, p_147953_1_);
-            System.arraycopy(var3, 0, p_147953_0_, (p_147953_2_ - 1 - var5) * p_147953_1_, p_147953_1_);
+            System.arraycopy(arrayIn, i * rowWidth, arr, 0, rowWidth);
+            System.arraycopy(arrayIn, (numRows - 1 - i) * rowWidth, arrayIn, i * rowWidth, rowWidth);
+            System.arraycopy(arr, 0, arrayIn, (numRows - 1 - i) * rowWidth, rowWidth);
         }
     }
 

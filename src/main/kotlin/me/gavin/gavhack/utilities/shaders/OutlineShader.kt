@@ -22,7 +22,12 @@ class OutlineShader: GLSLShader(
     override fun updateUniforms() {
         val mc = Minecraft.getMinecraft()
         GL20.glUniform1i(getUniform("texture"), 0)
-        GL20.glUniform2f(getUniform("texelSize"), 1F / mc.displayWidth, 1F / mc.displayHeight)
+
+        GL20.glUniform2f(getUniform("texelSize"),
+            1F / mc.displayWidth.toFloat(),
+            1F / mc.displayHeight.toFloat()
+        )
+
         GL20.glUniform4f(getUniform("color"), 1.0f, 0f, 0f, 1.0f)
         GL20.glUniform1f(getUniform("radius"), 1.0f)
 
