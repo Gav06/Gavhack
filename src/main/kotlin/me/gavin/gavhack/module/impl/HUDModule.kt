@@ -12,6 +12,8 @@ import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiChat
 import net.minecraft.util.Direction
 import net.minecraft.util.EnumChatFormatting
+import kotlin.math.abs
+import kotlin.math.sqrt
 
 object HUDModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
 
@@ -83,10 +85,16 @@ object HUDModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
             }
 
             it.font.drawStringWithShadow(str, 2, textY, -1)
+        }
 
-            // facing direction
+        if (speed.value) {
+            val dx = abs(mc.thePlayer.posX - mc.thePlayer.lastTickPosX)
+            val dz = abs(mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ)
 
-            it.font.drawStringWithShadow("", 2, textY - 12, -1)
+            val hyp = sqrt(dx * dx + dz * dz) * 20.0
+            val str = "%.1f".format(hyp)
+
+            it.font.drawStringWithShadow("${EnumChatFormatting.GREEN}Speed $str BPS", 2, 12, -1)
         }
     }
 
