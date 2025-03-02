@@ -13,11 +13,12 @@ import net.minecraft.client.gui.GuiChat
 import net.minecraft.util.Direction
 import net.minecraft.util.EnumChatFormatting
 
-object HudModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
+object HUDModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
 
     private val watermark = this.addSetting(ToggleSetting("Watermark", true))
     private val modList = this.addSetting(ToggleSetting("ModList", true))
     private val position = this.addSetting(ToggleSetting("Position", true))
+    private val speed = this.addSetting(ToggleSetting("Speed", true))
 
     private val overlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
         if (mc.gameSettings.showDebugInfo)

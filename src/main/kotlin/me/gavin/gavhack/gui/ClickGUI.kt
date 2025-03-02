@@ -1,21 +1,16 @@
 package me.gavin.gavhack.gui
 
 import me.gavin.gavhack.config.ConfigManager
-import me.gavin.gavhack.event.EventBus
-import me.gavin.gavhack.event.Listener
-import me.gavin.gavhack.event.events.ClientTickEvent
-import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.ModuleManager
-import me.gavin.gavhack.module.impl.GuiModule
+import me.gavin.gavhack.module.impl.GUIModule
 import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.IntSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.shaders.BlurShader
-import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
@@ -31,7 +26,7 @@ object ClickGUI: GuiScreen() {
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         if (mc.theWorld == null)
             drawDefaultBackground()
-        else if (GuiModule.drawBackground.value) {
+        else if (GUIModule.drawBackground.value) {
             drawBackgroundShader()
         }
 
@@ -46,7 +41,7 @@ object ClickGUI: GuiScreen() {
 
 
         // Draw le epic descriptions
-        if (!GuiModule.drawDesc.value)
+        if (!GUIModule.drawDesc.value)
             return
 
         for (comp in windows) {

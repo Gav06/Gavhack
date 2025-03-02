@@ -1,6 +1,7 @@
 package net.minecraft.client.entity;
 
 import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.CancelSprintEvent;
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -115,7 +116,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
             if (this.sprintingTicksLeft == 0)
             {
-                this.setSprinting(false);
+                final CancelSprintEvent event = new CancelSprintEvent();
+                EventBus.INSTANCE.post(event);
+                if (!event.getCancelled()) {
+                    this.setSprinting(false);
+                }
             }
         }
 
@@ -186,8 +191,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
 
             boolean var1 = this.movementInput.jump;
-            float var2 = 0.8F;
-            boolean var3 = this.movementInput.moveForward >= var2;
+            float sprintThreshold = 0.8F;
+            boolean var3 = this.movementInput.moveForward >= sprintThreshold;
             this.movementInput.updatePlayerMoveState();
 
             if (this.isUsingItem() && !this.isRiding())
@@ -206,9 +211,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
             this.func_145771_j(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
             this.func_145771_j(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
             this.func_145771_j(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-            boolean var4 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
+            boolean hungerAllowsSprint = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 
-            if (this.onGround && !var3 && this.movementInput.moveForward >= var2 && !this.isSprinting() && var4 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness))
+            if (this.onGround && !var3 && this.movementInput.moveForward >= sprintThreshold && !this.isSprinting() && hungerAllowsSprint && !this.isUsingItem() && !this.isPotionActive(Potion.blindness))
             {
                 if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
                 {
@@ -220,14 +225,18 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 }
             }
 
-            if (!this.isSprinting() && this.movementInput.moveForward >= var2 && var4 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
+            if (!this.isSprinting() && this.movementInput.moveForward >= sprintThreshold && hungerAllowsSprint && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
             {
                 this.setSprinting(true);
             }
 
-            if (this.isSprinting() && (this.movementInput.moveForward < var2 || this.isCollidedHorizontally || !var4))
+            if (this.isSprinting() && (this.movementInput.moveForward < sprintThreshold || this.isCollidedHorizontally || !hungerAllowsSprint))
             {
-                this.setSprinting(false);
+                final CancelSprintEvent event = new CancelSprintEvent();
+                EventBus.INSTANCE.post(event);
+                if (!event.getCancelled()) {
+                    this.setSprinting(false);
+                }
             }
 
             if (this.capabilities.allowFlying && !var1 && this.movementInput.jump)

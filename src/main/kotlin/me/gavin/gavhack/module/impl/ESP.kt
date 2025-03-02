@@ -48,7 +48,6 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
     val fill = addSetting(ToggleSetting("Fill", false))
     val dots = addSetting(ToggleSetting("Dots", false))
-    val radius = addSetting(FloatSetting("Radius", 1f, 1f, 5f))
 
     val players = addSetting(ToggleSetting("Players", true))
     val hostiles = addSetting(ToggleSetting("Hostiles", true))

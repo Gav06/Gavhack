@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.CancelSprintEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -1283,7 +1286,12 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
                             par1Entity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)var3 * 0.5F));
                             this.motionX *= 0.6D;
                             this.motionZ *= 0.6D;
-                            this.setSprinting(false);
+
+                            final CancelSprintEvent event = new CancelSprintEvent();
+                            EventBus.INSTANCE.post(event);
+                            if (!event.getCancelled()) {
+                                this.setSprinting(false);
+                            }
                         }
 
                         if (var5)
