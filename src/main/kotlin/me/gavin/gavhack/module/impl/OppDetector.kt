@@ -36,8 +36,7 @@ object OppDetector: Module("OppDetector", "schitzo esp", ModCategory.RENDER) {
                 MathUtils.lerpd(mc.thePlayer.lastTickPosY, mc.thePlayer.posY, it.partialTicks.toDouble())
             val playerZ: Double =
                 MathUtils.lerpd(mc.thePlayer.lastTickPosZ, mc.thePlayer.posZ, it.partialTicks.toDouble())
-
-
+            
             camera.setPosition(playerX, playerY, playerZ)
             for (player in mc.theWorld.playerEntities) {
                 if (player == mc.renderViewEntity) continue

@@ -69,8 +69,7 @@ object AsyncScreenshot: Module("AsyncScreenshot", "Make screenshots multi-thread
             for (h in var8 until e.framebuffer.framebufferTextureHeight) {
                 for (w in 0 until e.framebuffer.framebufferWidth) {
                     bufferedImg.setRGB(
-                        w,
-                        h - var8,
+                        w, h - var8,
                         pixelValues[h * e.framebuffer.framebufferTextureWidth + w]
                     )
                 }
@@ -80,14 +79,14 @@ object AsyncScreenshot: Module("AsyncScreenshot", "Make screenshots multi-thread
             bufferedImg.setRGB(0, 0, mc.displayWidth, mc.displayHeight, pixelValues, 0, mc.displayWidth)
         }
 
-        val ssFolder = File(e.dataDir, "/screenshots")
+        val ssFolder = File(e.dataDir, "screenshots")
         ssFolder.mkdir()
         val pngFile = ScreenShotHelper.getTimestampedPNGFileForDirectory(ssFolder)
 
         ImageIO.write(bufferedImg, "png", pngFile)
 
-        val chatComponent = ChatComponentText(pngFile.getName())
-        chatComponent.chatStyle.setChatClickEvent(ClickEvent(ClickEvent.Action.OPEN_FILE, pngFile.absolutePath))
+        val chatComponent = ChatComponentText(pngFile.name)
+        chatComponent.chatStyle.setChatClickEvent(ClickEvent(ClickEvent.Action.OPEN_FILE, pngFile.canonicalPath))
         chatComponent.chatStyle.setUnderlined(true)
         mc.ingameGUI.chatGUI.addChatMessage(ChatComponentTranslation("screenshot.success", chatComponent))
     }
@@ -107,7 +106,6 @@ object AsyncScreenshot: Module("AsyncScreenshot", "Make screenshots multi-thread
     private val tickListener = Listener<ClientTickEvent> {
         if (inProgress && !screenshotThread.isAlive) {
             inProgress = false
-
         }
     }
 

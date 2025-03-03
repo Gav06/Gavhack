@@ -5,7 +5,6 @@ import me.gavin.gavhack.event.events.RenderOverlayEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.EnumSetting
-import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.MathUtils
@@ -60,7 +59,6 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     // shader for drawing outlines of our already-colored entities. Note: this will draw an outline using the color of the
     // current fragment, a "universal" color uniform is not passed to this.
     private val outlineShader = OutlineShader()
-
     private val frustum = Frustum()
 
     private val renderOverlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
@@ -284,5 +282,4 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     init {
         addEventListener(renderOverlayEvent, RenderOverlayEvent::class)
     }
-
 }
