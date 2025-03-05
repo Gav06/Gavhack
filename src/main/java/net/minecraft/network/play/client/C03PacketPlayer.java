@@ -8,15 +8,15 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C03PacketPlayer extends Packet
 {
-    protected double posX;
-    protected double posY;
-    protected double posZ;
-    protected double eyePos;
-    protected float field_149476_e;
-    protected float field_149473_f;
-    protected boolean onGround;
-    protected boolean field_149480_h;
-    protected boolean field_149481_i;
+    public double posX;
+    public double posY;
+    public double posZ;
+    public double eyePos;
+    public float rotationYaw;
+    public float rotationPitch;
+    public boolean onGround;
+    public boolean field_149480_h;
+    public boolean field_149481_i;
     private static final String __OBFID = "CL_00001360";
 
     public C03PacketPlayer() {}
@@ -47,37 +47,37 @@ public class C03PacketPlayer extends Packet
         packetBuf.writeByte(this.onGround ? 1 : 0);
     }
 
-    public double func_149464_c()
+    public double getX()
     {
         return this.posX;
     }
 
-    public double func_149467_d()
+    public double getY()
     {
         return this.posY;
     }
 
-    public double func_149472_e()
+    public double getZ()
     {
         return this.posZ;
     }
 
-    public double func_149471_f()
+    public double getEyePos()
     {
         return this.eyePos;
     }
 
-    public float func_149462_g()
+    public float getYaw()
     {
-        return this.field_149476_e;
+        return this.rotationYaw;
     }
 
-    public float func_149470_h()
+    public float getPitch()
     {
-        return this.field_149473_f;
+        return this.rotationPitch;
     }
 
-    public boolean func_149465_i()
+    public boolean isOnGround()
     {
         return this.onGround;
     }
@@ -161,8 +161,8 @@ public class C03PacketPlayer extends Packet
             this.posY = p_i45254_3_;
             this.eyePos = p_i45254_5_;
             this.posZ = p_i45254_7_;
-            this.field_149476_e = p_i45254_9_;
-            this.field_149473_f = p_i45254_10_;
+            this.rotationYaw = p_i45254_9_;
+            this.rotationPitch = p_i45254_10_;
             this.onGround = p_i45254_11_;
             this.field_149481_i = true;
             this.field_149480_h = true;
@@ -174,8 +174,8 @@ public class C03PacketPlayer extends Packet
             this.posY = buffer.readDouble();
             this.eyePos = buffer.readDouble();
             this.posZ = buffer.readDouble();
-            this.field_149476_e = buffer.readFloat();
-            this.field_149473_f = buffer.readFloat();
+            this.rotationYaw = buffer.readFloat();
+            this.rotationPitch = buffer.readFloat();
             super.readPacketData(buffer);
         }
 
@@ -185,8 +185,8 @@ public class C03PacketPlayer extends Packet
             packetBuf.writeDouble(this.posY);
             packetBuf.writeDouble(this.eyePos);
             packetBuf.writeDouble(this.posZ);
-            packetBuf.writeFloat(this.field_149476_e);
-            packetBuf.writeFloat(this.field_149473_f);
+            packetBuf.writeFloat(this.rotationYaw);
+            packetBuf.writeFloat(this.rotationPitch);
             super.writePacketData(packetBuf);
         }
 
@@ -207,23 +207,23 @@ public class C03PacketPlayer extends Packet
 
         public C05PacketPlayerLook(float p_i45255_1_, float p_i45255_2_, boolean p_i45255_3_)
         {
-            this.field_149476_e = p_i45255_1_;
-            this.field_149473_f = p_i45255_2_;
+            this.rotationYaw = p_i45255_1_;
+            this.rotationPitch = p_i45255_2_;
             this.onGround = p_i45255_3_;
             this.field_149481_i = true;
         }
 
         public void readPacketData(PacketBuffer buffer) throws IOException
         {
-            this.field_149476_e = buffer.readFloat();
-            this.field_149473_f = buffer.readFloat();
+            this.rotationYaw = buffer.readFloat();
+            this.rotationPitch = buffer.readFloat();
             super.readPacketData(buffer);
         }
 
         public void writePacketData(PacketBuffer packetBuf) throws IOException
         {
-            packetBuf.writeFloat(this.field_149476_e);
-            packetBuf.writeFloat(this.field_149473_f);
+            packetBuf.writeFloat(this.rotationYaw);
+            packetBuf.writeFloat(this.rotationPitch);
             super.writePacketData(packetBuf);
         }
 

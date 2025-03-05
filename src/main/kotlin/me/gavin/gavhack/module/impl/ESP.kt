@@ -62,7 +62,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     private val frustum = Frustum()
 
     private val renderOverlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
-        if (mc.theWorld == null)
+        if (mc.theWorld == null || TileEntityRendererDispatcher.instance.world == null)
             return@Listener
 
         frustum.setPosition(mc.renderViewEntity.posX, mc.renderViewEntity.posY, mc.renderViewEntity.posZ)

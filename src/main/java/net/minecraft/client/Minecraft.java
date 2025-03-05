@@ -23,10 +23,7 @@ import javax.imageio.ImageIO;
 
 import me.gavin.gavhack.Gavhack;
 import me.gavin.gavhack.event.EventBus;
-import me.gavin.gavhack.event.events.ClientTickEvent;
-import me.gavin.gavhack.event.events.KeyPressEvent;
-import me.gavin.gavhack.event.events.ScreenshotEvent;
-import me.gavin.gavhack.event.events.WorldLoadEvent;
+import me.gavin.gavhack.event.events.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -2228,15 +2225,17 @@ public class Minecraft implements IPlayerUsage
     /**
      * par2Str is displayed on the loading screen to the user unloads the current world first
      */
-    public void loadWorld(WorldClient par1WorldClient, String par2Str)
+    public void loadWorld(WorldClient worldIn, String par2Str)
     {
-        if (par1WorldClient == null)
+        if (worldIn == null)
         {
-            NetHandlerPlayClient var3 = this.getNetHandler();
+            EventBus.INSTANCE.post(new WorldUnloadEvent());
 
-            if (var3 != null)
+            NetHandlerPlayClient netHandler = this.getNetHandler();
+
+            if (netHandler != null)
             {
-                var3.cleanup();
+                netHandler.cleanup();
             }
 
             if (this.theIntegratedServer != null)
@@ -2258,7 +2257,7 @@ public class Minecraft implements IPlayerUsage
             this.loadingScreen.resetProgresAndWorkingMessage("");
         }
 
-        if (par1WorldClient == null && this.theWorld != null)
+        if (worldIn == null && this.theWorld != null)
         {
             if (this.mcResourcePackRepository.func_148530_e() != null)
             {
@@ -2271,33 +2270,33 @@ public class Minecraft implements IPlayerUsage
         }
 
         this.mcSoundHandler.func_147690_c();
-        this.theWorld = par1WorldClient;
+        this.theWorld = worldIn;
 
-        if (par1WorldClient != null)
+        if (worldIn != null)
         {
             if (this.renderGlobal != null)
             {
-                this.renderGlobal.setWorldAndLoadRenderers(par1WorldClient);
+                this.renderGlobal.setWorldAndLoadRenderers(worldIn);
             }
 
             if (this.effectRenderer != null)
             {
-                this.effectRenderer.clearEffects(par1WorldClient);
+                this.effectRenderer.clearEffects(worldIn);
             }
 
             if (this.thePlayer == null)
             {
-                this.thePlayer = this.playerController.func_147493_a(par1WorldClient, new StatFileWriter());
+                this.thePlayer = this.playerController.func_147493_a(worldIn, new StatFileWriter());
                 this.playerController.flipPlayer(this.thePlayer);
             }
 
             this.thePlayer.preparePlayerToSpawn();
-            par1WorldClient.spawnEntityInWorld(this.thePlayer);
+            worldIn.spawnEntityInWorld(this.thePlayer);
             this.thePlayer.movementInput = new MovementInputFromOptions(this.gameSettings);
             this.playerController.setPlayerCapabilities(this.thePlayer);
             this.renderViewEntity = this.thePlayer;
 
-            EventBus.INSTANCE.post(new WorldLoadEvent(par1WorldClient));
+            EventBus.INSTANCE.post(new WorldLoadEvent(worldIn));
         }
         else
         {
