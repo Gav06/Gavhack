@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
+	id 'application'
 	id 'java'
 	id 'org.jetbrains.kotlin.jvm' version '2.0.21'
 }
@@ -33,6 +34,21 @@ dependencies {
 		exclude module: 'annotations'
 	}
 
+}
+
+application {
+	mainClass = 'Start'
+}
+
+tasks.register('runClient', JavaExec) {
+	group = 'application'
+	description = 'Compiles and runs client'
+
+	mainClass = application.mainClass.get()
+	classpath = sourceSets.main.runtimeClasspath
+
+	workingDir = file("run")
+	jvmArgs = ["-Djava.library.path=../libs/1.7.2-natives"]
 }
 
 tasks.withType(JavaCompile).configureEach {
