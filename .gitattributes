@@ -10,4 +10,4 @@
 # Ignore the java code because it all belongs to Mojang and I didn't write it.
 # so I don't want it counted.
 src/main/java/** linguist-vendored
-src/main/resources/assets/minecraft/shaders/program/** linguist-vendored
+src/main/resources/assets/minecraft/shaders/program linguist-vendored
