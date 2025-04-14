@@ -25,8 +25,12 @@ object MacroManager: IConfigurable {
         EventBus.addListener(keyListener, KeyPressEvent::class)
     }
 
-    override fun getConfigFileName(): String {
+    override fun getConfigName(): String {
         return "Macros"
+    }
+
+    override fun getConfigGroup(): String {
+        return "macros"
     }
 
     override fun toJsonObj(): JsonObject {

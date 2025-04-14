@@ -220,8 +220,8 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
             is EntityVillager -> Vector3f(0f, 1f, 0f)
             is EntitySquid -> Vector3f(0f, 1f, 0f)
             is IMob -> Vector3f(1f, 0f, 0f)
-            is EntityItem -> Vector3f(1f, 1f, 0f)
-            else -> Vector3f(1f, 1f, 1f)
+            is EntityItem -> Vector3f(0f, 1f, 0f)
+            else -> Vector3f(0f, 1f, 0f)
         }
     }
 

@@ -19,6 +19,13 @@ object ConfigManager {
     /* Detected to be true if the gavhack data folder doesn't already exist, used for default settings */
     private var firstTimeRunningGavhack = false
 
+    private fun setupFolder(name: String) {
+        val file = File(folder, name)
+        if (!file.exists()) {
+            file.mkdir()
+        }
+    }
+
     private fun setupConfigFolder() {
         if (!folder.exists()) {
             folder.mkdir()
@@ -29,7 +36,11 @@ object ConfigManager {
     }
 
     private fun getConfigFile(config: IConfigurable): File {
-        return File(folder, "${config.getConfigFileName()}.json")
+        val configFolder = File(folder, config.getConfigGroup())
+        if (!configFolder.exists())
+            configFolder.mkdir()
+
+        return File(configFolder, "${config.getConfigName()}.json")
     }
 
     private fun saveConfig(config: IConfigurable) {
@@ -42,7 +53,7 @@ object ConfigManager {
         val writer = FileWriter(configFile)
         gson.toJson(jsonObj, writer)
         writer.close()
-        println("Saved ${Gavhack.NAME} config for ${config.getConfigFileName()}")
+        println("[${Gavhack.NAME}-shutdown] Saved config: ${configFile.canonicalPath}")
     }
 
     private fun loadConfig(config: IConfigurable) {
@@ -58,7 +69,7 @@ object ConfigManager {
             val jsonObj = jsonElement.asJsonObject
             config.fromJsonObj(jsonObj)
         } catch (e: Exception) {
-            Gavhack.log.error("Unable to load config for: ${config.getConfigFileName()}")
+            Gavhack.log.error("Unable to load config for: ${config.getConfigName()}")
             e.printStackTrace()
         }
     }
@@ -72,6 +83,9 @@ object ConfigManager {
     }
 
     fun saveConfigs() {
+        // setup config folders if necessary
+
+        // save individual jsons
         configs.forEach { saveConfig(it) }
     }
 

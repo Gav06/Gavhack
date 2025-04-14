@@ -4,7 +4,9 @@ import com.google.gson.JsonObject
 
 interface IConfigurable {
 
-    fun getConfigFileName(): String
+    fun getConfigName(): String
+
+    fun getConfigGroup(): String
 
     fun toJsonObj(): JsonObject
 

@@ -107,8 +107,12 @@ abstract class Module(
         }
     }
 
-    override fun getConfigFileName(): String {
-        return this.name
+    override fun getConfigName(): String {
+        return name
+    }
+
+    override fun getConfigGroup(): String {
+        return "modules"
     }
 
     protected fun <T : Setting> addSetting(setting: T) : T{

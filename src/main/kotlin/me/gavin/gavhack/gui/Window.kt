@@ -102,8 +102,12 @@ class Window(x: Int, y: Int, w: Int, h: Int,
         }
     }
 
-    override fun getConfigFileName(): String {
-        return "Window_$title"
+    override fun getConfigName(): String {
+        return title
+    }
+
+    override fun getConfigGroup(): String {
+        return "windows"
     }
 
     override fun toJsonObj(): JsonObject {
