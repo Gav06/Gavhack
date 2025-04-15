@@ -4,7 +4,7 @@ import me.gavin.gavhack.config.ConfigManager
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.ModuleManager
-import me.gavin.gavhack.module.impl.GUIModule
+import me.gavin.gavhack.module.impl.GUI
 import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.IntSetting
@@ -14,6 +14,7 @@ import me.gavin.gavhack.utilities.shaders.BlurShader
 import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.util.EnumChatFormatting
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.GL11
@@ -26,14 +27,14 @@ object ClickGUI: GuiScreen() {
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
         if (mc.theWorld == null)
             drawDefaultBackground()
-        else if (GUIModule.drawBackground.value) {
+        else if (GUI.drawBackground.value) {
             drawBackgroundShader()
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks)
 
         if (mc.theWorld == null) {
-            fontRendererObj.drawStringWithShadow("Press ESCAPE to go back", 2, height - 11, -1)
+            fontRendererObj.drawStringWithShadow(EnumChatFormatting.RED.toString() + "Press ESCAPE to go back", 2, height - 11, -1)
         }
 
         for (comp in windows.reversed())
@@ -41,7 +42,7 @@ object ClickGUI: GuiScreen() {
 
 
         // Draw le epic descriptions
-        if (!GUIModule.drawDesc.value)
+        if (!GUI.drawDesc.value)
             return
 
         for (comp in windows) {
@@ -109,26 +110,27 @@ object ClickGUI: GuiScreen() {
      * when we only need one
      */
     private fun drawBackgroundShader() {
-        val res = ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight)
+        val res = ScaledResolution(mc)
 
         GL11.glPushMatrix()
         GL11.glEnable(GL11.GL_BLEND)
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
         GL11.glEnable(GL11.GL_TEXTURE_2D)
 
+        // doing vertical and horizontal blur to get a convincing gaussian blur effect
+
+        // vertical blur pass
         mc.framebuffer.unbindFramebuffer()
         vertBlurFbo.updateFramebuffer(mc.displayWidth, mc.displayHeight)
         vertBlurFbo.bindBuffer()
         vertBlurFbo.shader.startShader()
         vertBlurFbo.shader.updateUniforms()
-
         FramebufferEffect.drawFullscreenTexQuad(mc.framebuffer.framebufferTexture, res)
-
         vertBlurFbo.shader.stopShader()
         vertBlurFbo.unbindBuffer()
-        mc.framebuffer.bindFramebuffer(true)
 
-        // vertical blur pass
+        // horizontal blur pass
+        mc.framebuffer.bindFramebuffer(true)
         horizBlurShader.startShader()
         horizBlurShader.updateUniforms()
         FramebufferEffect.drawFullscreenTexQuad(vertBlurFbo.getFrameBuffer().framebufferTexture, res)
@@ -154,6 +156,8 @@ object ClickGUI: GuiScreen() {
     init {
         var xOffset = 0
         for (category in ModCategory.entries) {
+            if (category == ModCategory.HUD) continue
+
             // We can pass 0 as height since it will automatically be resized anyway.
             val window = Window(4 + xOffset, 4, 100, 0, category.title, category)
 

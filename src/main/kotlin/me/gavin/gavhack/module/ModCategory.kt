@@ -6,5 +6,6 @@ enum class ModCategory(val title: String, val iconPath: String) {
     RENDER("Render", "gavhack/render.png"),
     WORLD("World", "gavhack/world.png"),
     MISC("Miscellaneous", "gavhack/misc.png"),
-    GUI("GUI", "gavhack/gui.png")
+    GUI("GUI", "gavhack/gui.png"),
+    HUD("HUD", "")
 }

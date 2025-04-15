@@ -53,7 +53,7 @@ object ConfigManager {
         val writer = FileWriter(configFile)
         gson.toJson(jsonObj, writer)
         writer.close()
-        println("[${Gavhack.NAME}-shutdown] Saved config: ${configFile.canonicalPath}")
+        println("[${Gavhack.NAME}] Saved config: ${configFile.canonicalPath}")
     }
 
     private fun loadConfig(config: IConfigurable) {

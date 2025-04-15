@@ -3,6 +3,7 @@ package me.gavin.gavhack.module.impl
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
+import me.gavin.gavhack.gui.HudGUI
 import me.gavin.gavhack.utilities.BlockUtil
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
@@ -12,10 +13,11 @@ import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.GuiChat
 import net.minecraft.util.Direction
 import net.minecraft.util.EnumChatFormatting
+import org.lwjgl.input.Keyboard
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-object HUDModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
+object HUD: Module("HUD", "Configure the HUD", ModCategory.GUI, bind = Keyboard.KEY_RCONTROL) {
 
     private val watermark = this.addSetting(ToggleSetting("Watermark", true))
     private val modList = this.addSetting(ToggleSetting("ModList", true))
@@ -96,6 +98,12 @@ object HUDModule: Module("HUD", "Configure the HUD", ModCategory.GUI) {
 
             it.font.drawStringWithShadow("${EnumChatFormatting.GREEN}Speed $str BPS", 2, 12, -1)
         }
+    }
+
+    override fun onEnable() {
+        super.onEnable()
+        mc.displayGuiScreen(HudGUI)
+        disable()
     }
 
     init {

@@ -5,6 +5,7 @@ import me.gavin.gavhack.config.ConfigManager
 import me.gavin.gavhack.macro.MacroManager
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.gui.ClickGUI
+import me.gavin.gavhack.gui.HudGUI
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.awt.Color
@@ -38,7 +39,8 @@ object Gavhack {
         log.info("Macros initialized")
 
         ClickGUI
-        log.info("Click GUI initialized")
+        HudGUI
+        log.info("GUI's initialized")
 
         ConfigManager
         log.info("Config initialized")

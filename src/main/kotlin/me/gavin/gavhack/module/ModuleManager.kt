@@ -12,8 +12,8 @@ object ModuleManager {
     /* Gets sorted to alphabetic order by default */
     val mods : Array<Module> = arrayOf(
             Fullbright,
-            GUIModule,
-            HUDModule,
+            GUI,
+            HUD,
             ConsoleModule,
             KillAura,
             ChestESP,

@@ -1,5 +1,6 @@
 package net.minecraft.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.MathHelper;
 
@@ -10,7 +11,10 @@ public class ScaledResolution
     private double scaledWidthD;
     private double scaledHeightD;
     private int scaleFactor;
-    private static final String __OBFID = "CL_00000666";
+
+    public ScaledResolution(Minecraft mc) {
+        this(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+    }
 
     public ScaledResolution(GameSettings par1GameSettings, int par2, int par3)
     {
