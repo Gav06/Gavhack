@@ -4,8 +4,9 @@ import me.gavin.gavhack.config.ConfigManager
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.KeyPressEvent
-import me.gavin.gavhack.gui.hud.*
 import me.gavin.gavhack.module.impl.*
+import me.gavin.gavhack.module.impl.hud.Position
+import me.gavin.gavhack.module.impl.hud.Watermark
 import net.minecraft.client.Minecraft
 
 object ModuleManager {
@@ -33,7 +34,8 @@ object ModuleManager {
             AsyncScreenshot,
             Sprint,
         // hud modules
-            Watermark
+            Watermark,
+            Position
     )
 
     /* Sorted by length of module name */

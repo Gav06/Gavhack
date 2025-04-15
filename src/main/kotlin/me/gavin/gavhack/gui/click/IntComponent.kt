@@ -1,4 +1,4 @@
-package me.gavin.gavhack.gui
+package me.gavin.gavhack.gui.click
 
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.gui.api.GuiComponent

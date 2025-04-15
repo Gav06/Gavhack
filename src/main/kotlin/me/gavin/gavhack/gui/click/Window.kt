@@ -1,4 +1,4 @@
-package me.gavin.gavhack.gui
+package me.gavin.gavhack.gui.click
 
 import com.google.gson.JsonObject
 import me.gavin.gavhack.config.IConfigurable
@@ -11,10 +11,10 @@ import net.minecraft.client.gui.ScaledResolution
 import org.lwjgl.opengl.GL11
 import kotlin.math.roundToInt
 
+// Window contains the handle (header) and a list of the subcomponents (the buttons)
 class Window(x: Int, y: Int, w: Int, h: Int,
              var title: String,
-             val category: ModCategory,
-             val closeable: Boolean = false
+             val category: ModCategory
 ): GuiComponent(x, y, w, h), IConfigurable {
 
     private val defaultHandleHeight = 16
@@ -56,27 +56,31 @@ class Window(x: Int, y: Int, w: Int, h: Int,
             additionalHeight += it.getRenderHeight() + 1
         }
 
-        val res = ScaledResolution(
-                Minecraft.getMinecraft().gameSettings,
-                Minecraft.getMinecraft().displayWidth,
-                Minecraft.getMinecraft().displayHeight
-
-        )
+        val res = ScaledResolution(Minecraft.getMinecraft())
 
         val easeValue = handle.getEasingValue()
-        val scissorY2 = bottom() + 1 + (additionalHeight * easeValue)
+
+        // we limit the scissor box to not extend past the height of the screen to prevent weird render bugs
+        val scissorBottom = (bottom() + 1 + (additionalHeight * easeValue))
+            .coerceAtMost(res.scaledHeight_double.toFloat())
 
         if (easeValue == 0f)
             additionalHeight = 0
 
+
         GL11.glPushMatrix()
         GL11.glEnable(GL11.GL_SCISSOR_TEST)
-        RenderUtils.scissorBox(left() - 1, top() - 1, right() + 1, scissorY2.roundToInt(), res)
-
-
-        Gui.drawRect(left() - 1, top() - 1, right() + 1, bottom() + 1 + additionalHeight, 0xAA000000.toInt())
+        // we have this lovely scissorBox function to handle the maths so the GL_SCISSOR actually fits our
+        // view matrix setup
+        RenderUtils.scissorBox(left() - 1, top() - 1, right() + 1, scissorBottom.roundToInt(), res)
+        Gui.drawRect(
+            left() - 1,
+            top() - 1,
+            right() + 1,
+            bottom() + 1 + additionalHeight,
+            0xAA000000.toInt()
+        )
         handle.onRender(mouseX, mouseY, partialTicks)
-
 
         if (open || easeValue != 0f) {
             var yOffset = this.h + 1

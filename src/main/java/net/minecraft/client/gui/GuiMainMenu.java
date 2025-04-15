@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import me.gavin.gavhack.gui.ClickGUI;
+import me.gavin.gavhack.gui.click.ClickGUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.mco.ExceptionMcoService;
 import net.minecraft.client.mco.ExceptionRetryCall;

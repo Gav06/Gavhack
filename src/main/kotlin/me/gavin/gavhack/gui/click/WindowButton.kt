@@ -1,4 +1,4 @@
-package me.gavin.gavhack.gui
+package me.gavin.gavhack.gui.click
 
 import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.utilities.MathUtils
@@ -57,28 +57,6 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
 
 
         if (open && getEasingValue() == 1f) {
-            /*
-                // save previous scissor box
-                val res = ScaledResolution(
-                Minecraft.getMinecraft().gameSettings,
-                Minecraft.getMinecraft().displayWidth,
-                Minecraft.getMinecraft().displayHeight
-                )
-
-                val intBuf = BufferUtils.createIntBuffer(16)
-                val on = GL11.glIsEnabled(GL11.GL_SCISSOR_TEST)
-                GL11.glGetInteger(GL11.GL_SCISSOR_BOX, intBuf)
-
-                GL11.glEnable(GL11.GL_SCISSOR_TEST)
-                RenderUtils.scissorBox(
-                    left(),
-                    top(),
-                    right(),
-                    bottom() + (getComponentsHeight() * getEasingValue()).roundToInt(),
-                    res
-                )
-             */
-
             var yOffset = 1
             for (comp in subComponents) {
                 comp.setPos(this.x, this.bottom() + yOffset)
@@ -86,14 +64,6 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
 
                 yOffset += comp.getRenderHeight() + 1
             }
-
-            /*
-                // restore our previous scissor box (openGL scissor boxes are a pain to do multiple)
-                GL11.glScissor(intBuf.get(), intBuf.get(), intBuf.get(), intBuf.get())
-
-                if (!on)
-                    GL11.glDisable(GL11.GL_SCISSOR_TEST)
-             */
         }
     }
 

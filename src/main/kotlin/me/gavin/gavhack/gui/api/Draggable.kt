@@ -1,6 +1,6 @@
 package me.gavin.gavhack.gui.api
 
-abstract class Draggable(x: Int, y: Int, w: Int, h: Int) : GuiComponent(x, y, w, h) {
+open class Draggable(x: Int, y: Int, w: Int, h: Int) : GuiComponent(x, y, w, h) {
 
     private var dragX: Int = 0
     private var dragY: Int = 0
@@ -25,6 +25,8 @@ abstract class Draggable(x: Int, y: Int, w: Int, h: Int) : GuiComponent(x, y, w,
     fun isDragging() : Boolean {
         return dragging
     }
+
+    override fun onRender(mouseX: Int, mouseY: Int, partialTicks: Float) { }
 
     // Must be called each frame to keep things moving properly
     fun updateDragPosition(mouseX: Int, mouseY: Int) {

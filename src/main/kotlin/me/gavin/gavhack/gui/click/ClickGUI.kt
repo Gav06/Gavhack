@@ -1,6 +1,7 @@
-package me.gavin.gavhack.gui
+package me.gavin.gavhack.gui.click
 
 import me.gavin.gavhack.config.ConfigManager
+import me.gavin.gavhack.gui.api.Rect
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.ModuleManager
@@ -11,11 +12,9 @@ import me.gavin.gavhack.module.setting.IntSetting
 import me.gavin.gavhack.module.setting.ToggleSetting
 import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.shaders.BlurShader
-import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.util.EnumChatFormatting
-import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.GL11
 import java.util.concurrent.CopyOnWriteArrayList

@@ -4,8 +4,8 @@ import me.gavin.gavhack.command.CommandManager
 import me.gavin.gavhack.config.ConfigManager
 import me.gavin.gavhack.macro.MacroManager
 import me.gavin.gavhack.module.ModuleManager
-import me.gavin.gavhack.gui.ClickGUI
-import me.gavin.gavhack.gui.HudGUI
+import me.gavin.gavhack.gui.click.ClickGUI
+import me.gavin.gavhack.gui.hud.HUDEditor
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.awt.Color
@@ -29,6 +29,10 @@ object Gavhack {
         System.setProperty("log4j2.formatMsgNoLookups", "true")
         log.info("log4j2.formatMsgNoLookups set to TRUE, to disable lookups")
 
+        // the nice thing about kotlin is we can initialize all the
+        // 'object' singletons by simply referencing them, because they
+        // are initialized on reference (lazy loading)
+
         ModuleManager
         log.info("Modules initialized")
 
@@ -39,7 +43,7 @@ object Gavhack {
         log.info("Macros initialized")
 
         ClickGUI
-        HudGUI
+        HUDEditor
         log.info("GUI's initialized")
 
         ConfigManager

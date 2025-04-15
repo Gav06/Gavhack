@@ -1,9 +1,8 @@
 package me.gavin.gavhack.module.impl
 
-import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
-import me.gavin.gavhack.gui.HudGUI
+import me.gavin.gavhack.gui.hud.HUDEditor
 import me.gavin.gavhack.utilities.BlockUtil
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
@@ -19,34 +18,31 @@ import kotlin.math.sqrt
 
 object HUD: Module("HUD", "Configure the HUD", ModCategory.GUI, bind = Keyboard.KEY_RCONTROL) {
 
-    private val watermark = this.addSetting(ToggleSetting("Watermark", true))
-    private val modList = this.addSetting(ToggleSetting("ModList", true))
-    private val position = this.addSetting(ToggleSetting("Position", true))
-    private val speed = this.addSetting(ToggleSetting("Speed", true))
+    private val clamping = ToggleSetting("Clamping", true)
 
     private val overlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
         if (mc.gameSettings.showDebugInfo)
             return@Listener
-
-        if (modList.value) {
-            var yOffset = 2
-            for (mod in ModuleManager.modsSorted) {
-                if (!mod.isEnabled())
-                    continue
-
-                val textX = it.res.scaledWidth - it.font.getStringWidth(mod.name) - 1
-                val textY = yOffset
-
-                Gui.drawRect(
-                    textX - 2, textY - 2, it.res.scaledWidth, textY + it.font.FONT_HEIGHT,
-                    0x80000000.toInt()
-                )
-                it.font.drawString(mod.name, textX, textY, -1)
-                yOffset += it.font.FONT_HEIGHT + 2
-            }
-        }
-
-        if (position.value) {
+//
+//        if (modList.value) {
+//            var yOffset = 2
+//            for (mod in ModuleManager.modsSorted) {
+//                if (!mod.isEnabled())
+//                    continue
+//
+//                val textX = it.res.scaledWidth - it.font.getStringWidth(mod.name) - 1
+//                val textY = yOffset
+//
+//                Gui.drawRect(
+//                    textX - 2, textY - 2, it.res.scaledWidth, textY + it.font.FONT_HEIGHT,
+//                    0x80000000.toInt()
+//                )
+//                it.font.drawString(mod.name, textX, textY, -1)
+//                yOffset += it.font.FONT_HEIGHT + 2
+//            }
+//        }
+//
+//        if (position.value) {
             // co-ordinates
             var textY = it.res.scaledHeight - it.font.FONT_HEIGHT - 1
 
@@ -82,22 +78,22 @@ object HUD: Module("HUD", "Configure the HUD", ModCategory.GUI, bind = Keyboard.
             }
 
             it.font.drawStringWithShadow(str, 2, textY, -1)
-        }
-
-        if (speed.value) {
-            val dx = abs(mc.thePlayer.posX - mc.thePlayer.lastTickPosX)
-            val dz = abs(mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ)
-
-            val hyp = sqrt(dx * dx + dz * dz) * 20.0
-            val str = "%.1f".format(hyp)
-
-            it.font.drawStringWithShadow("${EnumChatFormatting.GREEN}Speed $str BPS", 2, 12, -1)
-        }
+//        }
+//
+//        if (speed.value) {
+//            val dx = abs(mc.thePlayer.posX - mc.thePlayer.lastTickPosX)
+//            val dz = abs(mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ)
+//
+//            val hyp = sqrt(dx * dx + dz * dz) * 20.0
+//            val str = "%.1f".format(hyp)
+//
+//            it.font.drawStringWithShadow("${EnumChatFormatting.GREEN}Speed $str BPS", 2, 12, -1)
+//        }
     }
 
     override fun onEnable() {
         super.onEnable()
-        mc.displayGuiScreen(HudGUI)
+        mc.displayGuiScreen(HUDEditor)
         disable()
     }
 

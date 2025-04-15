@@ -3,7 +3,7 @@ package me.gavin.gavhack.module.impl
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.ToggleSetting
-import me.gavin.gavhack.gui.ClickGUI
+import me.gavin.gavhack.gui.click.ClickGUI
 import me.gavin.gavhack.module.setting.IntSetting
 import org.lwjgl.input.Keyboard
 

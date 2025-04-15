@@ -1,6 +1,5 @@
 package me.gavin.gavhack.utilities
 
-import me.gavin.gavhack.gui.ClickGUI.mc
 import net.minecraft.client.Minecraft
 import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.item.ItemStack
