@@ -19,7 +19,7 @@ class WindowHandle(x: Int, y: Int, w: Int, h: Int, val parent: Window): Draggabl
         if (isInside(mouseX, mouseY) && button == 1) {
             parent.open = !parent.open
             openAnimTime = System.currentTimeMillis()
-            ClickGUI.buttonClick()
+            Utils.clickSound()
         }
     }
 

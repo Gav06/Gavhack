@@ -2,6 +2,7 @@ package me.gavin.gavhack.gui
 
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.gui.api.GuiComponent
+import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.gui.Gui
 import org.lwjgl.input.Keyboard
 
@@ -17,11 +18,11 @@ class BindComponent(val module: Module, w: Int, h: Int): GuiComponent(0, 0, w, h
         when (button) {
             0 -> {
                 binding = !binding;
-                ClickGUI.buttonClick()
+                Utils.clickSound()
             }
             1 -> {
                 module.bind = 0
-                ClickGUI.buttonClick()
+                Utils.clickSound()
                 binding = false
             }
         }
@@ -44,7 +45,7 @@ class BindComponent(val module: Module, w: Int, h: Int): GuiComponent(0, 0, w, h
             return
 
         module.bind = if (keyCode == Keyboard.KEY_DELETE) 0 else keyCode
-        ClickGUI.buttonClick()
+        Utils.clickSound()
         binding = false
     }
 }

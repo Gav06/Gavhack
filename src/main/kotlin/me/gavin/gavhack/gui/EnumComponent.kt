@@ -2,6 +2,7 @@ package me.gavin.gavhack.gui
 
 import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.gui.api.GuiComponent
+import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.gui.Gui
 
 class EnumComponent(val setting: EnumSetting<*>, w: Int, h: Int) : GuiComponent(0, 0, w, h) {
@@ -11,8 +12,8 @@ class EnumComponent(val setting: EnumSetting<*>, w: Int, h: Int) : GuiComponent(
             return
 
         when (button) {
-            0 -> { setting.increment(); ClickGUI.buttonClick() }
-            1 -> { setting.decrement(); ClickGUI.buttonClick() }
+            0 -> { setting.increment(); Utils.clickSound() }
+            1 -> { setting.decrement(); Utils.clickSound() }
         }
     }
 

@@ -4,6 +4,7 @@ import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.utilities.MathUtils
 import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.gui.api.GuiComponent
+import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.gui.Gui
 
 // Slider!!!
@@ -15,7 +16,7 @@ class FloatComponent(val setting: FloatSetting, w: Int, h: Int) : GuiComponent(0
     override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
         if (isInside(mouseX, mouseY) && button == 0) {
             draggingSlider = true
-            ClickGUI.buttonClick()
+            Utils.clickSound()
         }
     }
 

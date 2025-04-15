@@ -4,6 +4,7 @@ import me.gavin.gavhack.Gavhack
 import me.gavin.gavhack.gui.api.GuiComponent
 import me.gavin.gavhack.utilities.MathUtils
 import me.gavin.gavhack.module.setting.IntSetting
+import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.gui.Gui
 import kotlin.math.roundToInt
 
@@ -16,7 +17,7 @@ class IntComponent(val setting: IntSetting, w: Int, h: Int) : GuiComponent(0, 0,
     override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
         if (isInside(mouseX, mouseY) && button == 0) {
             draggingSlider = true
-            ClickGUI.buttonClick()
+            Utils.clickSound()
         }
     }
 

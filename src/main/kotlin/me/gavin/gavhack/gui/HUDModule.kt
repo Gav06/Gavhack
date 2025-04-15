@@ -7,7 +7,7 @@ abstract class HUDModule(name: String, desc: String): Module(name, desc, ModCate
 
     private var componentArea = Rect(0, 0, 0, 0)
 
-    abstract fun drawComponent(x: Int, y: Int, mouseX: Int, mouseY: Int)
+    abstract fun drawComponent(mouseX: Int, mouseY: Int, partialTicks: Float, isGui: Boolean)
 
     fun getComponentArea(): Rect {
         return componentArea

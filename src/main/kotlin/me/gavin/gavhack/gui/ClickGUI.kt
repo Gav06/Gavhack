@@ -94,10 +94,6 @@ object ClickGUI: GuiScreen() {
         return false
     }
 
-    fun buttonClick() {
-        mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(ResourceLocation("gui.button.press"), 1.0f))
-    }
-
     private val vertBlurFbo = FramebufferEffect(
         BlurShader(BlurShader.Type.VERTICAL),
         Display.getWidth(), Display.getHeight(), false

@@ -28,11 +28,6 @@ object HUD: Module("HUD", "Configure the HUD", ModCategory.GUI, bind = Keyboard.
         if (mc.gameSettings.showDebugInfo)
             return@Listener
 
-        if (watermark.value) {
-            it.font.drawStringWithShadow("${Gavhack.NAME} ${Gavhack.VERSION_STRING}",
-                    2, 2, Gavhack.colorScheme.rgb)
-        }
-
         if (modList.value) {
             var yOffset = 2
             for (mod in ModuleManager.modsSorted) {

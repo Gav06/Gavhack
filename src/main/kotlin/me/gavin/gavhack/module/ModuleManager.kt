@@ -4,6 +4,7 @@ import me.gavin.gavhack.config.ConfigManager
 import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.KeyPressEvent
+import me.gavin.gavhack.gui.hud.*
 import me.gavin.gavhack.module.impl.*
 import net.minecraft.client.Minecraft
 
@@ -11,6 +12,7 @@ object ModuleManager {
 
     /* Gets sorted to alphabetic order by default */
     val mods : Array<Module> = arrayOf(
+        // hack modules
             Fullbright,
             GUI,
             HUD,
@@ -20,7 +22,6 @@ object ModuleManager {
             NoRender,
             ESP,
             FastPlace,
-//            StrongholdFinder,
             SignColors,
             AntiWeather,
             Xray,
@@ -30,7 +31,9 @@ object ModuleManager {
             AutoTool,
             AutoBuild,
             AsyncScreenshot,
-            Sprint
+            Sprint,
+        // hud modules
+            Watermark
     )
 
     /* Sorted by length of module name */

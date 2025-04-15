@@ -20,12 +20,12 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
             when (button) {
                 0 -> {
                     module.toggle()
-                    ClickGUI.buttonClick()
+                    Utils.clickSound()
                 }
                 1 -> {
                     this.open = !open
                     openAnimTime = System.currentTimeMillis()
-                    ClickGUI.buttonClick()
+                    Utils.clickSound()
                 }
             }
         }

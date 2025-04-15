@@ -1,10 +1,13 @@
 package me.gavin.gavhack.utilities
 
+import me.gavin.gavhack.gui.ClickGUI.mc
 import net.minecraft.client.Minecraft
+import net.minecraft.client.audio.PositionedSoundRecord
 import net.minecraft.item.ItemStack
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.EnumChatFormatting
+import net.minecraft.util.ResourceLocation
 import optifine.BlockPos
 import kotlin.math.cos
 
@@ -68,5 +71,12 @@ object Utils {
 
     fun blockPlacePacket(x: Int, y: Int, z: Int, side: Int, stack: ItemStack) {
         Minecraft.getMinecraft().netHandler.addToSendQueue(C08PacketPlayerBlockPlacement(x, y, z, side, stack, 0f, 0f, 0f))
+    }
+
+    fun clickSound() {
+        val mc = Minecraft.getMinecraft()
+        if (mc != null && mc.soundHandler != null) {
+            mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(ResourceLocation("gui.button.press"), 1.0f))
+        }
     }
 }

@@ -2,6 +2,7 @@ package me.gavin.gavhack.gui
 
 import me.gavin.gavhack.module.setting.ToggleSetting
 import me.gavin.gavhack.gui.api.GuiComponent
+import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.gui.Gui
 import net.minecraft.util.EnumChatFormatting
 
@@ -12,7 +13,7 @@ class BooleanComponent(val setting: ToggleSetting, w: Int, h: Int) : GuiComponen
             return
 
         setting.toggle()
-        ClickGUI.buttonClick()
+        Utils.clickSound()
     }
 
     // unused
