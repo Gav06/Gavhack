@@ -18,9 +18,9 @@ public class S27PacketExplosion extends Packet
     private double field_149157_c;
     private float field_149154_d;
     private List field_149155_e;
-    private float field_149152_f;
-    private float field_149153_g;
-    private float field_149159_h;
+    public float motionX;
+    public float motionY;
+    public float motionZ;
     private static final String __OBFID = "CL_00001300";
 
     public S27PacketExplosion() {}
@@ -35,9 +35,9 @@ public class S27PacketExplosion extends Packet
 
         if (p_i45193_9_ != null)
         {
-            this.field_149152_f = (float)p_i45193_9_.xCoord;
-            this.field_149153_g = (float)p_i45193_9_.yCoord;
-            this.field_149159_h = (float)p_i45193_9_.zCoord;
+            this.motionX = (float)p_i45193_9_.xCoord;
+            this.motionY = (float)p_i45193_9_.yCoord;
+            this.motionZ = (float)p_i45193_9_.zCoord;
         }
     }
 
@@ -64,9 +64,9 @@ public class S27PacketExplosion extends Packet
             this.field_149155_e.add(new ChunkPosition(var7, var8, var9));
         }
 
-        this.field_149152_f = p_148837_1_.readFloat();
-        this.field_149153_g = p_148837_1_.readFloat();
-        this.field_149159_h = p_148837_1_.readFloat();
+        this.motionX = p_148837_1_.readFloat();
+        this.motionY = p_148837_1_.readFloat();
+        this.motionZ = p_148837_1_.readFloat();
     }
 
     /**
@@ -82,11 +82,11 @@ public class S27PacketExplosion extends Packet
         int var2 = (int)this.field_149158_a;
         int var3 = (int)this.field_149156_b;
         int var4 = (int)this.field_149157_c;
-        Iterator var5 = this.field_149155_e.iterator();
+        Iterator it = this.field_149155_e.iterator();
 
-        while (var5.hasNext())
+        while (it.hasNext())
         {
-            ChunkPosition var6 = (ChunkPosition)var5.next();
+            ChunkPosition var6 = (ChunkPosition)it.next();
             int var7 = var6.field_151329_a - var2;
             int var8 = var6.field_151327_b - var3;
             int var9 = var6.field_151328_c - var4;
@@ -95,9 +95,9 @@ public class S27PacketExplosion extends Packet
             p_148840_1_.writeByte(var9);
         }
 
-        p_148840_1_.writeFloat(this.field_149152_f);
-        p_148840_1_.writeFloat(this.field_149153_g);
-        p_148840_1_.writeFloat(this.field_149159_h);
+        p_148840_1_.writeFloat(this.motionX);
+        p_148840_1_.writeFloat(this.motionY);
+        p_148840_1_.writeFloat(this.motionZ);
     }
 
     public void processPacket(INetHandlerPlayClient p_149151_1_)
@@ -105,19 +105,19 @@ public class S27PacketExplosion extends Packet
         p_149151_1_.handleExplosion(this);
     }
 
-    public float func_149149_c()
+    public float getMotionX()
     {
-        return this.field_149152_f;
+        return this.motionX;
     }
 
-    public float func_149144_d()
+    public float getMotionY()
     {
-        return this.field_149153_g;
+        return this.motionY;
     }
 
-    public float func_149147_e()
+    public float getMotionZ()
     {
-        return this.field_149159_h;
+        return this.motionZ;
     }
 
     public double func_149148_f()

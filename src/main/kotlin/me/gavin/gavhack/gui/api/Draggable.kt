@@ -1,5 +1,9 @@
 package me.gavin.gavhack.gui.api
 
+import me.gavin.gavhack.utilities.MathUtils
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.ScaledResolution
+
 open class Draggable(x: Int, y: Int, w: Int, h: Int) : GuiComponent(x, y, w, h) {
 
     private var dragX: Int = 0
@@ -31,7 +35,10 @@ open class Draggable(x: Int, y: Int, w: Int, h: Int) : GuiComponent(x, y, w, h) 
     // Must be called each frame to keep things moving properly
     fun updateDragPosition(mouseX: Int, mouseY: Int) {
         if (dragging) {
-            setPos(mouseX - dragX, mouseY - dragY)
+            val sr = ScaledResolution(Minecraft.getMinecraft())
+            val newX = MathUtils.clampi(mouseX - dragX, 0, sr.scaledWidth - w)
+            val newY = MathUtils.clampi(mouseY - dragY, 0, sr.scaledHeight - h)
+            setPos(newX, newY)
         }
     }
 }

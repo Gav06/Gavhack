@@ -5,9 +5,9 @@ import me.gavin.gavhack.event.EventBus
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.KeyPressEvent
 import me.gavin.gavhack.module.impl.*
-import me.gavin.gavhack.module.impl.hud.Position
-import me.gavin.gavhack.module.impl.hud.Watermark
+import me.gavin.gavhack.module.impl.hud.*
 import net.minecraft.client.Minecraft
+import java.awt.Color
 
 object ModuleManager {
 
@@ -33,9 +33,11 @@ object ModuleManager {
             AutoBuild,
             AsyncScreenshot,
             Sprint,
+            AntiKnockback,
         // hud modules
             Watermark,
-            Position
+            Position,
+            ModList
     )
 
     /* Sorted by length of module name */
@@ -47,6 +49,10 @@ object ModuleManager {
 
     fun getCategoryMods(category: ModCategory): List<Module> {
         return mods.filter { it.category == category }.toList()
+    }
+
+    fun getModuleColor(mod: Module): Int {
+        return Color.HSBtoRGB((mod.hashCode() % 360) / 360.0f, 0.6f, 1.0f)
     }
 
     init {

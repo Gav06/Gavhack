@@ -490,7 +490,7 @@
          */
         public void handleEntityVelocity(S12PacketEntityVelocity p_147244_1_)
         {
-            Entity var2 = this.clientWorldController.getEntityByID(p_147244_1_.func_149412_c());
+            Entity var2 = this.clientWorldController.getEntityByID(p_147244_1_.getEntityId());
 
             if (var2 != null)
             {
@@ -1021,14 +1021,14 @@
         /**
          * Initiates a new explosion (sound, particles, drop spawn) for the affected blocks indicated by the packet.
          */
-        public void handleExplosion(S27PacketExplosion p_147283_1_)
+        public void handleExplosion(S27PacketExplosion packet)
         {
-            Explosion var2 = new Explosion(this.gameController.theWorld, (Entity)null, p_147283_1_.func_149148_f(), p_147283_1_.func_149143_g(), p_147283_1_.func_149145_h(), p_147283_1_.func_149146_i());
-            var2.affectedBlockPositions = p_147283_1_.func_149150_j();
+            Explosion var2 = new Explosion(this.gameController.theWorld, (Entity)null, packet.func_149148_f(), packet.func_149143_g(), packet.func_149145_h(), packet.func_149146_i());
+            var2.affectedBlockPositions = packet.func_149150_j();
             var2.doExplosionB(true);
-            this.gameController.thePlayer.motionX += (double)p_147283_1_.func_149149_c();
-            this.gameController.thePlayer.motionY += (double)p_147283_1_.func_149144_d();
-            this.gameController.thePlayer.motionZ += (double)p_147283_1_.func_149147_e();
+            this.gameController.thePlayer.motionX += (double)packet.getMotionX();
+            this.gameController.thePlayer.motionY += (double)packet.getMotionY();
+            this.gameController.thePlayer.motionZ += (double)packet.getMotionZ();
         }
 
         /**
