@@ -1,6 +1,8 @@
 package me.gavin.gavhack.module.setting
 
-abstract class Setting(val name: String) {
+import me.gavin.gavhack.gui.api.Visibility
+
+abstract class Setting(val name: String, val visibility: Visibility? = null) {
 
     abstract fun reset()
 }

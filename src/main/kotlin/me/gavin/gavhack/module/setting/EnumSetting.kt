@@ -1,9 +1,13 @@
 package me.gavin.gavhack.module.setting
 
+import me.gavin.gavhack.gui.api.Visibility
+import java.util.function.Predicate
+
 class EnumSetting<T : Enum<T>>(
     name: String,
-    private val defaultValue: T
-): Setting(name) {
+    private val defaultValue: T,
+    visibility: Visibility? = null
+): Setting(name, visibility) {
 
     val values: Array<T> = defaultValue.declaringJavaClass.enumConstants
 

@@ -6,7 +6,7 @@ import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.IntSetting
-import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.module.setting.BooleanSetting
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.monster.EntityMob
 import net.minecraft.entity.passive.EntityAnimal
@@ -15,15 +15,15 @@ import kotlin.jvm.optionals.getOrNull
 
 object KillAura: Module("KillAura", "Attack entities automatically", ModCategory.COMBAT) {
 
-    private val walls = ToggleSetting("ThruWalls", true)
+    private val walls = BooleanSetting("ThruWalls", true)
     private val cpsSetting = IntSetting("CPS", 10, 1, 20)
     private val rangeSetting = FloatSetting("Range", 5.0f, 0.0f, 8.0f)
     private val wallRangeSetting = FloatSetting("WallRange", 3.0f, 0.0f, 5.0f)
 
-    private val players = addSetting(ToggleSetting("Players", true))
-    private val hostiles = addSetting(ToggleSetting("Hostiles", true))
-    private val passive = addSetting(ToggleSetting("Animals", true))
-    private val other = addSetting(ToggleSetting("Others", false))
+    private val players = addSetting(BooleanSetting("Players", true))
+    private val hostiles = addSetting(BooleanSetting("Hostiles", true))
+    private val passive = addSetting(BooleanSetting("Animals", true))
+    private val other = addSetting(BooleanSetting("Others", false))
 
     private var target: EntityLivingBase? = null
     private var lastAttack = 0L

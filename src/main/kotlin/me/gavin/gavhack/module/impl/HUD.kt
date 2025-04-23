@@ -6,19 +6,15 @@ import me.gavin.gavhack.gui.hud.HUDEditor
 import me.gavin.gavhack.utilities.BlockUtil
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
-import me.gavin.gavhack.module.ModuleManager
-import me.gavin.gavhack.module.setting.ToggleSetting
-import net.minecraft.client.gui.Gui
+import me.gavin.gavhack.module.setting.BooleanSetting
 import net.minecraft.client.gui.GuiChat
 import net.minecraft.util.Direction
 import net.minecraft.util.EnumChatFormatting
 import org.lwjgl.input.Keyboard
-import kotlin.math.abs
-import kotlin.math.sqrt
 
 object HUD: Module("HUD", "Configure the HUD", ModCategory.GUI, bind = Keyboard.KEY_RCONTROL) {
 
-    private val clamping = ToggleSetting("Clamping", true)
+    private val clamping = BooleanSetting("Clamping", true)
 
     private val overlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
         if (mc.gameSettings.showDebugInfo)

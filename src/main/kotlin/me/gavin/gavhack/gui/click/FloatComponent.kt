@@ -8,7 +8,7 @@ import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.gui.Gui
 
 // Slider!!!
-class FloatComponent(val setting: FloatSetting, w: Int, h: Int) : GuiComponent(0, 0, w, h){
+class FloatComponent(override val setting: FloatSetting, w: Int, h: Int) : SettingComponent(setting, 0, 0, w, h){
 
     private var draggingSlider = false
     private var sliderWidth = 0

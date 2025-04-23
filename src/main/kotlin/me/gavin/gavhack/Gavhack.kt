@@ -8,6 +8,7 @@ import me.gavin.gavhack.gui.click.ClickGUI
 import me.gavin.gavhack.gui.hud.HUDEditor
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.lwjgl.opengl.GL11
 import java.awt.Color
 
 object Gavhack {

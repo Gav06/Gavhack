@@ -1,6 +1,12 @@
 package me.gavin.gavhack.module.setting
 
-class ToggleSetting(name: String, private val defaultValue: Boolean): Setting(name) {
+import me.gavin.gavhack.gui.api.Visibility
+
+class BooleanSetting(
+    name: String,
+    private val defaultValue: Boolean,
+    visibility: Visibility? = null
+): Setting(name, visibility) {
 
     var value = defaultValue
 

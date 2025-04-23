@@ -28,8 +28,6 @@ object HUDEditor: GuiScreen() {
     }
 
     init {
-        println("HUDEDITOR clinit")
-
         EventBus.addListener(overlayListener, RenderOverlayEvent::class)
 
         for (mod in hudMods) {

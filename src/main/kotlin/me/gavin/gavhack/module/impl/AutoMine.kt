@@ -4,12 +4,12 @@ import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.ClientTickEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
-import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.module.setting.BooleanSetting
 import net.minecraft.util.MovingObjectPosition
 
 object AutoMine: Module("AutoMine", "Mine automatically", ModCategory.WORLD) {
 
-    private val noBreak = addSetting(ToggleSetting("NoBreak", true))
+    private val noBreak = addSetting(BooleanSetting("NoBreak", true))
 
     private var shouldMine = false
 

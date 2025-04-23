@@ -9,7 +9,7 @@ import me.gavin.gavhack.utilities.RenderUtils
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.IntSetting
-import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.module.setting.BooleanSetting
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.entity.Entity
@@ -20,8 +20,8 @@ import optifine.BlockPos
 
 object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.WORLD) {
 
-    private val switch = addSetting(ToggleSetting("Switch", true))
-    private val autoSneak = addSetting(ToggleSetting("AutoSneak", true))
+    private val switch = addSetting(BooleanSetting("Switch", true))
+    private val autoSneak = addSetting(BooleanSetting("AutoSneak", true))
 
     private val blocksPerTick = addSetting(IntSetting("BlocksPerTick", 1, 1, 10))
 

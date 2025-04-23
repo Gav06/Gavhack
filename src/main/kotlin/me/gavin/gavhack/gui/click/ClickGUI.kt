@@ -9,7 +9,7 @@ import me.gavin.gavhack.module.impl.GUI
 import me.gavin.gavhack.module.setting.EnumSetting
 import me.gavin.gavhack.module.setting.FloatSetting
 import me.gavin.gavhack.module.setting.IntSetting
-import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.module.setting.BooleanSetting
 import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.shaders.BlurShader
 import net.minecraft.client.gui.GuiScreen
@@ -27,7 +27,7 @@ object ClickGUI: GuiScreen() {
         if (mc.theWorld == null)
             drawDefaultBackground()
         else if (GUI.drawBackground.value) {
-            drawBackgroundShader()
+            drawRect(0, 0, width, height, 0x30CCCCCC)
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks)
@@ -36,9 +36,8 @@ object ClickGUI: GuiScreen() {
             fontRendererObj.drawStringWithShadow(EnumChatFormatting.RED.toString() + "Press ESCAPE to go back", 2, height - 11, -1)
         }
 
-        for (comp in windows.reversed())
-            comp.onRender(mouseX, mouseY, partialTicks)
-
+        // draw each window in reverse order so the window at the front of the list is drawn last, or in front.
+        windows.reversed().forEach { it.onRender(mouseX, mouseY, partialTicks) }
 
         // Draw le epic descriptions
         if (!GUI.drawDesc.value)
@@ -140,7 +139,7 @@ object ClickGUI: GuiScreen() {
         for (setting in module.settings) {
             // add setting components
             when (setting) {
-                is ToggleSetting -> button.subComponents.add(BooleanComponent(setting, button.w, button.h))
+                is BooleanSetting -> button.subComponents.add(BooleanComponent(setting, button.w, button.h))
                 is FloatSetting -> button.subComponents.add(FloatComponent(setting, button.w, button.h))
                 is EnumSetting<*> -> button.subComponents.add(EnumComponent(setting, button.w, button.h))
                 is IntSetting -> button.subComponents.add(IntComponent(setting, button.w, button.h))

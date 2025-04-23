@@ -9,7 +9,7 @@ import net.minecraft.client.gui.Gui
 import kotlin.math.roundToInt
 
 // Slider!!!
-class IntComponent(val setting: IntSetting, w: Int, h: Int) : GuiComponent(0, 0, w, h){
+class IntComponent(override val setting: IntSetting, w: Int, h: Int) : SettingComponent(setting, 0, 0, w, h){
 
     private var draggingSlider = false
     private var sliderWidth = 0

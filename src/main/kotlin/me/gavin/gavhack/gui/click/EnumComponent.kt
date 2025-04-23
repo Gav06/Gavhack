@@ -5,7 +5,7 @@ import me.gavin.gavhack.gui.api.GuiComponent
 import me.gavin.gavhack.utilities.Utils
 import net.minecraft.client.gui.Gui
 
-class EnumComponent(val setting: EnumSetting<*>, w: Int, h: Int) : GuiComponent(0, 0, w, h) {
+class EnumComponent(override val setting: EnumSetting<*>, w: Int, h: Int) : SettingComponent(setting,0, 0, w, h) {
 
     override fun onClick(mouseX: Int, mouseY: Int, button: Int) {
         if (!isInside(mouseX, mouseY))

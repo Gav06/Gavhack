@@ -59,6 +59,9 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
         if (open && getEasingValue() == 1f) {
             var yOffset = 1
             for (comp in subComponents) {
+                if (comp is SettingComponent && !comp.isVisible())
+                    continue
+
                 comp.setPos(this.x, this.bottom() + yOffset)
                 comp.onRender(mouseX, mouseY, partialTicks)
 
@@ -96,6 +99,9 @@ class WindowButton(val module: Module, x: Int, y: Int, w: Int, h: Int): GuiCompo
     private fun getComponentsHeight(): Int {
         var h = 0
         for (comp in subComponents) {
+            if (comp is SettingComponent && !comp.isVisible())
+                continue
+
             h += 1 + comp.getRenderHeight()
         }
         return h

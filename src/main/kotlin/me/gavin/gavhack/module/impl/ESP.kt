@@ -2,10 +2,11 @@ package me.gavin.gavhack.module.impl
 
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
+import me.gavin.gavhack.gui.api.Visibility
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.EnumSetting
-import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.module.setting.BooleanSetting
 import me.gavin.gavhack.utilities.FramebufferEffect
 import me.gavin.gavhack.utilities.MathUtils
 import me.gavin.gavhack.utilities.ProjectionHelper
@@ -45,14 +46,14 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
     val mode = addSetting(EnumSetting("Mode", Mode.CSGO))
 
-    val fill = addSetting(ToggleSetting("Fill", false))
-    val dots = addSetting(ToggleSetting("Dots", false))
+    val fill = addSetting(BooleanSetting("Fill", false) { mode.enumValue() == Mode.SHADER })
+    val dots = addSetting(BooleanSetting("Dots", false) { mode.enumValue() == Mode.SHADER })
 
-    val players = addSetting(ToggleSetting("Players", true))
-    val hostiles = addSetting(ToggleSetting("Hostiles", true))
-    val passive = addSetting(ToggleSetting("Animals", true))
-    val items = addSetting(ToggleSetting("Items", true))
-    val other = addSetting(ToggleSetting("Others", false))
+    val players = addSetting(BooleanSetting("Players", true))
+    val hostiles = addSetting(BooleanSetting("Hostiles", true))
+    val passive = addSetting(BooleanSetting("Animals", true))
+    val items = addSetting(BooleanSetting("Items", true))
+    val other = addSetting(BooleanSetting("Others", false))
 
     // buffer for coloring entities how we want them
     private var colorFramebuffer = FramebufferEffect(ESPColorShader(), mc.displayWidth, mc.displayHeight, true)

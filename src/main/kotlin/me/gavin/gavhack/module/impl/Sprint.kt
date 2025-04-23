@@ -6,12 +6,12 @@ import me.gavin.gavhack.event.events.PlayerLivingTickEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.EnumSetting
-import me.gavin.gavhack.module.setting.ToggleSetting
+import me.gavin.gavhack.module.setting.BooleanSetting
 
 object Sprint: Module("Sprint", "Automatically sprints", ModCategory.MOVEMENT) {
 
     val mode = addSetting(EnumSetting("Mode", Mode.LEGIT))
-    val collideCheck = addSetting(ToggleSetting("CollideCheck", true))
+    val collideCheck = addSetting(BooleanSetting("CollideCheck", true))
 
     private val playerTickListener = Listener<PlayerLivingTickEvent> {
         if (collideCheck.value && mc.thePlayer.isCollidedHorizontally)

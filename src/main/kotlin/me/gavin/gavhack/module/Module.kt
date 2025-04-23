@@ -65,7 +65,7 @@ abstract class Module(
 
         for (setting in settings) {
             when (setting) {
-                is ToggleSetting -> settingObj.addProperty(setting.name, setting.value)
+                is BooleanSetting -> settingObj.addProperty(setting.name, setting.value)
                 is FloatSetting ->  settingObj.addProperty(setting.name, setting.getValue())
                 is EnumSetting<*> -> settingObj.addProperty(setting.name, setting.value)
                 is IntSetting -> settingObj.addProperty(setting.name, setting.getValue())
@@ -93,7 +93,7 @@ abstract class Module(
 
         for (setting in settings) {
             when (setting) {
-                is ToggleSetting ->
+                is BooleanSetting ->
                     if (settingsObj.has(setting.name)) setting.value = settingsObj[setting.name].asBoolean
                 is FloatSetting ->
                     if (settingsObj.has(setting.name)) setting.setValue(settingsObj[setting.name].asFloat)

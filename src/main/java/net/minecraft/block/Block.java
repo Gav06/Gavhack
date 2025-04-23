@@ -134,7 +134,6 @@ public class Block
     public float slipperiness;
     private String unlocalizedNameBlock;
     protected IIcon blockIcon;
-    private static final String __OBFID = "CL_00000199";
 
     public static int getIdFromBlock(Block p_149682_0_)
     {
@@ -391,31 +390,25 @@ public class Block
         blockRegistry.addObject(173, "coal_block", (new Block(Material.rock)).setHardness(5.0F).setResistance(10.0F).setStepSound(soundTypePiston).setBlockName("blockCoal").setCreativeTab(CreativeTabs.tabBlock).setBlockTextureName("coal_block"));
         blockRegistry.addObject(174, "packed_ice", (new BlockPackedIce()).setHardness(0.5F).setStepSound(soundTypeGlass).setBlockName("icePacked").setBlockTextureName("ice_packed"));
         blockRegistry.addObject(175, "double_plant", new BlockDoublePlant());
-        Iterator var10 = blockRegistry.iterator();
 
-        while (var10.hasNext())
-        {
-            Block var11 = (Block)var10.next();
+        for (Object o : blockRegistry) {
+            Block block = (Block) o;
 
-            if (var11.blockMaterial == Material.air)
-            {
-                var11.field_149783_u = false;
-            }
-            else
-            {
+            if (block.blockMaterial == Material.air) {
+                block.field_149783_u = false;
+            } else {
                 boolean var12 = false;
-                boolean var13 = var11.getRenderType() == 10;
-                boolean var14 = var11 instanceof BlockSlab;
-                boolean var15 = var11 == var4;
-                boolean var16 = var11.canBlockGrass;
-                boolean var17 = var11.lightOpacity == 0;
+                boolean var13 = block.getRenderType() == 10;
+                boolean var14 = block instanceof BlockSlab;
+                boolean var15 = block == var4;
+                boolean var16 = block.canBlockGrass;
+                boolean var17 = block.lightOpacity == 0;
 
-                if (var13 || var14 || var15 || var16 || var17)
-                {
+                if (var13 || var14 || var15 || var16 || var17) {
                     var12 = true;
                 }
 
-                var11.field_149783_u = var12;
+                block.field_149783_u = var12;
             }
         }
     }
@@ -827,8 +820,7 @@ public class Block
 
         Vec3 var13 = null;
 
-        if (var7 != null && (var13 == null || p_149731_5_.squareDistanceTo(var7) < p_149731_5_.squareDistanceTo(var13)))
-        {
+        if (var7 != null) {
             var13 = var7;
         }
 
@@ -904,7 +896,7 @@ public class Block
      */
     private boolean isVecInsideYZBounds(Vec3 p_149654_1_)
     {
-        return p_149654_1_ == null ? false : p_149654_1_.yCoord >= this.field_149760_C && p_149654_1_.yCoord <= this.field_149756_F && p_149654_1_.zCoord >= this.field_149754_D && p_149654_1_.zCoord <= this.field_149757_G;
+        return p_149654_1_ != null && p_149654_1_.yCoord >= this.field_149760_C && p_149654_1_.yCoord <= this.field_149756_F && p_149654_1_.zCoord >= this.field_149754_D && p_149654_1_.zCoord <= this.field_149757_G;
     }
 
     /**
@@ -912,7 +904,7 @@ public class Block
      */
     private boolean isVecInsideXZBounds(Vec3 p_149687_1_)
     {
-        return p_149687_1_ == null ? false : p_149687_1_.xCoord >= this.field_149759_B && p_149687_1_.xCoord <= this.field_149755_E && p_149687_1_.zCoord >= this.field_149754_D && p_149687_1_.zCoord <= this.field_149757_G;
+        return p_149687_1_ != null && p_149687_1_.xCoord >= this.field_149759_B && p_149687_1_.xCoord <= this.field_149755_E && p_149687_1_.zCoord >= this.field_149754_D && p_149687_1_.zCoord <= this.field_149757_G;
     }
 
     /**
@@ -920,7 +912,7 @@ public class Block
      */
     private boolean isVecInsideXYBounds(Vec3 p_149661_1_)
     {
-        return p_149661_1_ == null ? false : p_149661_1_.xCoord >= this.field_149759_B && p_149661_1_.xCoord <= this.field_149755_E && p_149661_1_.yCoord >= this.field_149760_C && p_149661_1_.yCoord <= this.field_149756_F;
+        return p_149661_1_ != null && p_149661_1_.xCoord >= this.field_149759_B && p_149661_1_.xCoord <= this.field_149755_E && p_149661_1_.yCoord >= this.field_149760_C && p_149661_1_.yCoord <= this.field_149756_F;
     }
 
     /**
@@ -1279,7 +1271,7 @@ public class Block
 
     public static boolean isEqualTo(Block p_149680_0_, Block p_149680_1_)
     {
-        return p_149680_0_ != null && p_149680_1_ != null ? (p_149680_0_ == p_149680_1_ ? true : p_149680_0_.func_149667_c(p_149680_1_)) : false;
+        return p_149680_0_ != null && p_149680_1_ != null && (p_149680_0_ == p_149680_1_ || p_149680_0_.func_149667_c(p_149680_1_));
     }
 
     public boolean hasComparatorInputOverride()
