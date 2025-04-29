@@ -783,7 +783,7 @@
 
         public void addToSendQueue(Packet p_147297_1_)
         {
-            this.netManager.scheduleOutboundPacket(p_147297_1_, new GenericFutureListener[0]);
+            this.netManager.scheduleOutboundPacket(p_147297_1_);
         }
 
         public void handleCollectItem(S0DPacketCollectItem p_147246_1_)
@@ -959,7 +959,7 @@
                     this.gameController.ingameGUI.func_110326_a(I18n.format("mount.onboard", new Object[] {GameSettings.getKeyDisplayString(var5.keyBindSneak.getKeyCode())}), false);
                 }
             }
-            else if (p_147243_1_.func_149404_c() == 1 && var2 != null && var2 instanceof EntityLiving)
+            else if (p_147243_1_.func_149404_c() == 1 && var2 instanceof EntityLiving)
             {
                 if (var3 != null)
                 {

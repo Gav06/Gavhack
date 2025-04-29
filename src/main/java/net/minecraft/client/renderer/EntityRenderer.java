@@ -11,7 +11,9 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 
 import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.RenderHandEvent;
 import me.gavin.gavhack.event.events.RenderWorldLastEvent;
+import me.gavin.gavhack.event.events.ViewBobbingEvent;
 import me.gavin.gavhack.module.impl.NoRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -567,8 +569,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
     /**
      * Changes the field of view of the player depending on if they are underwater or not
      */
-    private float getFOVModifier(float par1, boolean par2)
+    private float getFOVModifier(float partialTicks, boolean hand)
     {
+//        hand = true;
+
         if (this.debugViewDirection > 0)
         {
             return 90.0F;
@@ -578,10 +582,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
             EntityLivingBase var3 = this.mc.renderViewEntity;
             float var4 = 70.0F;
 
-            if (par2)
+            if (hand)
             {
                 var4 += this.mc.gameSettings.fovSetting * 40.0F;
-                var4 *= this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * par1;
+                var4 *= this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * partialTicks;
             }
 
             boolean zoomActive = false;
@@ -606,10 +610,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     this.mc.gameSettings.smoothCamera = true;
                 }
 
-                if (Config.zoomMode)
-                {
-                    var4 /= 4.0F;
-                }
+                var4 /= 4.0F;
             }
             else if (Config.zoomMode)
             {
@@ -621,18 +622,19 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             if (var3.getHealth() <= 0.0F)
             {
-                float var6 = (float)var3.deathTime + par1;
+                float var6 = (float)var3.deathTime + partialTicks;
                 var4 /= (1.0F - 500.0F / (var6 + 500.0F)) * 2.0F + 1.0F;
             }
 
-            Block var61 = ActiveRenderInfo.getBlockAtEntityViewpoint(this.mc.theWorld, var3, par1);
+            Block var61 = ActiveRenderInfo.getBlockAtEntityViewpoint(this.mc.theWorld, var3, partialTicks);
 
             if (var61.getMaterial() == Material.water)
             {
                 var4 = var4 * 60.0F / 70.0F;
             }
 
-            return var4 + this.prevDebugCamFOV + (this.debugCamFOV - this.prevDebugCamFOV) * par1;
+//            return var4;
+            return var4 + this.prevDebugCamFOV + (this.debugCamFOV - this.prevDebugCamFOV) * partialTicks;
         }
     }
 
@@ -669,6 +671,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         if (this.mc.renderViewEntity instanceof EntityPlayer)
         {
+            final ViewBobbingEvent event = new ViewBobbingEvent();
+            EventBus.INSTANCE.post(event);
+            if (event.getCancelled()) return;
+
             EntityPlayer var2 = (EntityPlayer)this.mc.renderViewEntity;
             float var3 = var2.distanceWalkedModified - var2.prevDistanceWalkedModified;
             float var4 = -(var2.distanceWalkedModified + var3 * par1);
@@ -719,7 +725,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
         else if (this.mc.gameSettings.thirdPersonView > 0)
         {
-            double var271 = (double)(this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * par1);
+            double camDistance = this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * par1;
             float var28;
             float var281;
 
@@ -727,7 +733,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 var28 = this.prevDebugCamYaw + (this.debugCamYaw - this.prevDebugCamYaw) * par1;
                 var281 = this.prevDebugCamPitch + (this.debugCamPitch - this.prevDebugCamPitch) * par1;
-                GL11.glTranslatef(0.0F, 0.0F, (float)(-var271));
+                GL11.glTranslatef(0.0F, 0.0F, (float)(-camDistance));
                 GL11.glRotatef(var281, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(var28, 0.0F, 1.0F, 0.0F);
             }
@@ -741,9 +747,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     var281 += 180.0F;
                 }
 
-                double var14 = (double)(-MathHelper.sin(var28 / 180.0F * (float)Math.PI) * MathHelper.cos(var281 / 180.0F * (float)Math.PI)) * var271;
-                double var16 = (double)(MathHelper.cos(var28 / 180.0F * (float)Math.PI) * MathHelper.cos(var281 / 180.0F * (float)Math.PI)) * var271;
-                double var18 = (double)(-MathHelper.sin(var281 / 180.0F * (float)Math.PI)) * var271;
+                double var14 = (double)(-MathHelper.sin(var28 / 180.0F * (float)Math.PI) * MathHelper.cos(var281 / 180.0F * (float)Math.PI)) * camDistance;
+                double var16 = (double)(MathHelper.cos(var28 / 180.0F * (float)Math.PI) * MathHelper.cos(var281 / 180.0F * (float)Math.PI)) * camDistance;
+                double var18 = (double)(-MathHelper.sin(var281 / 180.0F * (float)Math.PI)) * camDistance;
 
                 for (int var20 = 0; var20 < 8; ++var20)
                 {
@@ -757,11 +763,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                     if (var24 != null)
                     {
-                        double var25 = var24.hitVec.distanceTo(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4, var6, var8));
+                        double camDist = var24.hitVec.distanceTo(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4, var6, var8));
 
-                        if (var25 < var271)
+                        if (camDist < camDistance)
                         {
-                            var271 = var25;
+                            camDistance = camDist;
                         }
                     }
                 }
@@ -773,7 +779,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                 GL11.glRotatef(var2.rotationPitch - var281, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(var2.rotationYaw - var28, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslatef(0.0F, 0.0F, (float)(-var271));
+                GL11.glTranslatef(0.0F, 0.0F, (float)(-camDistance));
                 GL11.glRotatef(var28 - var2.rotationYaw, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(var281 - var2.rotationPitch, 1.0F, 0.0F, 0.0F);
             }
@@ -924,6 +930,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         if (this.debugViewDirection <= 0)
         {
+            final RenderHandEvent event = new RenderHandEvent();
+            EventBus.INSTANCE.post(event);
+            if (event.getCancelled()) return;
+
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
             float var3 = 0.07F;

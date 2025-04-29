@@ -79,13 +79,13 @@ public class EntityClientPlayerMP extends EntityPlayerSP
     /**
      * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
      */
-    public void mountEntity(Entity par1Entity)
+    public void mountEntity(Entity entityIn)
     {
-        super.mountEntity(par1Entity);
+        super.mountEntity(entityIn);
 
-        if (par1Entity instanceof EntityMinecart)
+        if (entityIn instanceof EntityMinecart)
         {
-            this.mc.getSoundHandler().playSound(new MovingSoundMinecartRiding(this, (EntityMinecart)par1Entity));
+            this.mc.getSoundHandler().playSound(new MovingSoundMinecartRiding(this, (EntityMinecart) entityIn));
         }
     }
 
@@ -150,8 +150,8 @@ public class EntityClientPlayerMP extends EntityPlayerSP
         double var3 = this.posX - this.oldPosX;
         double var5 = this.boundingBox.minY - this.oldMinY;
         double var7 = this.posZ - this.oldPosZ;
-        double var9 = (double)(this.rotationYaw - this.oldRotationYaw);
-        double var11 = (double)(this.rotationPitch - this.oldRotationPitch);
+        double var9 = this.rotationYaw - this.oldRotationYaw;
+        double var11 = this.rotationPitch - this.oldRotationPitch;
         boolean var13 = var3 * var3 + var5 * var5 + var7 * var7 > 9.0E-4D || this.ticksSinceMovePacket >= 20;
         boolean var14 = var9 != 0.0D || var11 != 0.0D;
 

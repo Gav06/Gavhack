@@ -25,6 +25,7 @@ import javax.crypto.SecretKey;
 import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.PacketReadEvent;
 import me.gavin.gavhack.event.events.PacketSendEvent;
+import net.minecraft.network.play.client.C0CPacketInput;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.CryptManager;
 import net.minecraft.util.IChatComponent;
@@ -144,20 +145,25 @@ public class NetworkManager extends SimpleChannelInboundHandler
      * Will flush the outbound queue and dispatch the supplied Packet if the channel is ready, otherwise it adds the
      * packet to the outbound queue and registers the GenericFutureListener to fire after transmission
      */
-    public void scheduleOutboundPacket(Packet p_150725_1_, GenericFutureListener ... p_150725_2_)
+    public void scheduleOutboundPacket(Packet packet, GenericFutureListener ... p_150725_2_)
     {
-        final PacketSendEvent event = new PacketSendEvent(p_150725_1_);
+        if (packet instanceof C0CPacketInput) {
+            final C0CPacketInput c0cPacketInput = (C0CPacketInput)packet;
+            System.out.println("Input Packet: sneak=" + c0cPacketInput.sneak);
+        }
+
+        final PacketSendEvent event = new PacketSendEvent(packet);
         if (EventBus.INSTANCE.post(event))
             return;
 
         if (this.channel != null && this.channel.isOpen())
         {
             this.flushOutboundQueue();
-            this.dispatchPacket(p_150725_1_, p_150725_2_);
+            this.dispatchPacket(packet, p_150725_2_);
         }
         else
         {
-            this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(p_150725_1_, p_150725_2_));
+            this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(packet, p_150725_2_));
         }
     }
 

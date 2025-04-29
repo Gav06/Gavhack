@@ -9,6 +9,7 @@ import me.gavin.gavhack.gui.click.WindowButton
 import me.gavin.gavhack.module.HUDModule
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.ModuleManager
+import me.gavin.gavhack.module.impl.HUD
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
 
@@ -19,6 +20,11 @@ object HUDEditor: GuiScreen() {
 
     private val overlayListener = Listener<RenderOverlayEvent> { (it as RenderOverlayEvent)
         val mc = Minecraft.getMinecraft()
+
+
+        if (mc.gameSettings.showDebugInfo)
+            return@Listener
+
         if (mc.currentScreen != null && mc.currentScreen is HUDEditor)
             return@Listener
 

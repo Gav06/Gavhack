@@ -2,6 +2,7 @@ package net.minecraft.entity.passive;
 
 import java.util.Iterator;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.IEntitySelector;
@@ -329,9 +330,9 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
         this.hasReproduced = par1;
     }
 
-    public void setHorseSaddled(boolean par1)
+    public void setHorseSaddled(boolean isSaddled)
     {
-        this.setHorseWatchableBoolean(4, par1);
+        this.setHorseWatchableBoolean(4, isSaddled);
     }
 
     public int getTemper()

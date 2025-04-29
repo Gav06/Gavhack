@@ -35,6 +35,7 @@ object ModuleManager {
         Sprint,
         AntiKnockback,
         BowSpam,
+        Freecam,
         // hud modules
         Watermark,
         Position,

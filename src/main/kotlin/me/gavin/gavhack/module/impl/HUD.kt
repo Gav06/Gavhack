@@ -17,28 +17,8 @@ object HUD: Module("HUD", "Configure the HUD", ModCategory.GUI, bind = Keyboard.
     private val clamping = BooleanSetting("Clamping", true)
 
     private val overlayEvent = Listener<RenderOverlayEvent> { it as RenderOverlayEvent
-        if (mc.gameSettings.showDebugInfo)
-            return@Listener
-//
-//        if (modList.value) {
-//            var yOffset = 2
-//            for (mod in ModuleManager.modsSorted) {
-//                if (!mod.isEnabled())
-//                    continue
-//
-//                val textX = it.res.scaledWidth - it.font.getStringWidth(mod.name) - 1
-//                val textY = yOffset
-//
-//                Gui.drawRect(
-//                    textX - 2, textY - 2, it.res.scaledWidth, textY + it.font.FONT_HEIGHT,
-//                    0x80000000.toInt()
-//                )
-//                it.font.drawString(mod.name, textX, textY, -1)
-//                yOffset += it.font.FONT_HEIGHT + 2
-//            }
-//        }
-//
-//        if (position.value) {
+
+
             // co-ordinates
             var textY = it.res.scaledHeight - it.font.FONT_HEIGHT - 1
 

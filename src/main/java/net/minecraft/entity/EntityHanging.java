@@ -260,9 +260,9 @@ public abstract class EntityHanging extends Entity
     /**
      * Tries to moves the entity by the passed in displacement. Args: x, y, z
      */
-    public void moveEntity(double par1, double par3, double par5)
+    public void moveEntity(double x, double y, double z)
     {
-        if (!this.worldObj.isClient && !this.isDead && par1 * par1 + par3 * par3 + par5 * par5 > 0.0D)
+        if (!this.worldObj.isClient && !this.isDead && x * x + y * y + z * z > 0.0D)
         {
             this.setDead();
             this.onBroken((Entity)null);

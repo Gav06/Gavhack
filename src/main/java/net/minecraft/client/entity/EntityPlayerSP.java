@@ -2,7 +2,9 @@ package net.minecraft.client.entity;
 
 import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.CancelSprintEvent;
+import me.gavin.gavhack.event.events.FieldOfViewEvent;
 import me.gavin.gavhack.event.events.PlayerLivingTickEvent;
+import me.gavin.gavhack.event.events.PlayerPushOutOfBlocksEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiCommandBlock;
@@ -207,10 +209,15 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 this.ySize = 0.2F;
             }
 
-            this.func_145771_j(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-            this.func_145771_j(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
-            this.func_145771_j(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
-            this.func_145771_j(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+            final PlayerPushOutOfBlocksEvent event = new PlayerPushOutOfBlocksEvent();
+            EventBus.INSTANCE.post(event);
+            if (!event.getCancelled()) {
+                this.func_145771_j(this.posX - (double) this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double) this.width * 0.35D);
+                this.func_145771_j(this.posX - (double) this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double) this.width * 0.35D);
+                this.func_145771_j(this.posX + (double) this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double) this.width * 0.35D);
+                this.func_145771_j(this.posX + (double) this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double) this.width * 0.35D);
+            }
+
             boolean hungerAllowsSprint = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 
             if (this.onGround && !var3 && this.movementInput.moveForward >= sprintThreshold && !this.isSprinting() && hungerAllowsSprint && !this.isUsingItem() && !this.isPotionActive(Potion.blindness))
@@ -232,9 +239,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
             if (this.isSprinting() && (this.movementInput.moveForward < sprintThreshold || this.isCollidedHorizontally || !hungerAllowsSprint))
             {
-                final CancelSprintEvent event = new CancelSprintEvent();
-                EventBus.INSTANCE.post(event);
-                if (!event.getCancelled()) {
+                final CancelSprintEvent sprintEvent = new CancelSprintEvent();
+                EventBus.INSTANCE.post(sprintEvent);
+                if (!sprintEvent.getCancelled()) {
                     this.setSprinting(false);
                 }
             }
@@ -324,6 +331,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public float getFOVMultiplier()
     {
+
+
         float var1 = 1.0F;
 
         if (this.capabilities.isFlying)
@@ -356,7 +365,10 @@ public class EntityPlayerSP extends AbstractClientPlayer
             var1 *= 1.0F - var4 * 0.15F;
         }
 
-        return var1;
+        final FieldOfViewEvent event = new FieldOfViewEvent(var1);
+        EventBus.INSTANCE.post(event);
+
+        return event.getFovModifier();
     }
 
     /**

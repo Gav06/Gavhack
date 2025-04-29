@@ -8,20 +8,20 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C0CPacketInput extends Packet
 {
-    private float field_149624_a;
-    private float field_149622_b;
-    private boolean field_149623_c;
-    private boolean field_149621_d;
+    public float moveStrafe;
+    public float moveForward;
+    public boolean jump;
+    public boolean sneak;
     private static final String __OBFID = "CL_00001367";
 
     public C0CPacketInput() {}
 
-    public C0CPacketInput(float p_i45261_1_, float p_i45261_2_, boolean p_i45261_3_, boolean p_i45261_4_)
+    public C0CPacketInput(float moveStrafing, float moveForward, boolean jump, boolean sneak)
     {
-        this.field_149624_a = p_i45261_1_;
-        this.field_149622_b = p_i45261_2_;
-        this.field_149623_c = p_i45261_3_;
-        this.field_149621_d = p_i45261_4_;
+        this.moveStrafe = moveStrafing;
+        this.moveForward = moveForward;
+        this.jump = jump;
+        this.sneak = sneak;
     }
 
     /**
@@ -29,10 +29,10 @@ public class C0CPacketInput extends Packet
      */
     public void readPacketData(PacketBuffer p_148837_1_) throws IOException
     {
-        this.field_149624_a = p_148837_1_.readFloat();
-        this.field_149622_b = p_148837_1_.readFloat();
-        this.field_149623_c = p_148837_1_.readBoolean();
-        this.field_149621_d = p_148837_1_.readBoolean();
+        this.moveStrafe = p_148837_1_.readFloat();
+        this.moveForward = p_148837_1_.readFloat();
+        this.jump = p_148837_1_.readBoolean();
+        this.sneak = p_148837_1_.readBoolean();
     }
 
     /**
@@ -40,10 +40,10 @@ public class C0CPacketInput extends Packet
      */
     public void writePacketData(PacketBuffer p_148840_1_) throws IOException
     {
-        p_148840_1_.writeFloat(this.field_149624_a);
-        p_148840_1_.writeFloat(this.field_149622_b);
-        p_148840_1_.writeBoolean(this.field_149623_c);
-        p_148840_1_.writeBoolean(this.field_149621_d);
+        p_148840_1_.writeFloat(this.moveStrafe);
+        p_148840_1_.writeFloat(this.moveForward);
+        p_148840_1_.writeBoolean(this.jump);
+        p_148840_1_.writeBoolean(this.sneak);
     }
 
     public void processPacket(INetHandlerPlayServer p_149619_1_)
@@ -53,22 +53,22 @@ public class C0CPacketInput extends Packet
 
     public float func_149620_c()
     {
-        return this.field_149624_a;
+        return this.moveStrafe;
     }
 
     public float func_149616_d()
     {
-        return this.field_149622_b;
+        return this.moveForward;
     }
 
     public boolean func_149618_e()
     {
-        return this.field_149623_c;
+        return this.jump;
     }
 
     public boolean func_149617_f()
     {
-        return this.field_149621_d;
+        return this.sneak;
     }
 
     public void processPacket(INetHandler p_148833_1_)

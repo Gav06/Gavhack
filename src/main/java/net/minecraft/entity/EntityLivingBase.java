@@ -1613,6 +1613,7 @@ public abstract class EntityLivingBase extends Entity
             }
 
             float var4 = 0.16277136F / (var3 * var3 * var3);
+//            var4 = 1.0f;
             float var5;
 
             if (this.onGround)
@@ -1638,22 +1639,22 @@ public abstract class EntityLivingBase extends Entity
 
                 if (this.motionX < (double)(-var6))
                 {
-                    this.motionX = (double)(-var6);
+                    this.motionX = -var6;
                 }
 
                 if (this.motionX > (double)var6)
                 {
-                    this.motionX = (double)var6;
+                    this.motionX = var6;
                 }
 
                 if (this.motionZ < (double)(-var6))
                 {
-                    this.motionZ = (double)(-var6);
+                    this.motionZ = -var6;
                 }
 
                 if (this.motionZ > (double)var6)
                 {
-                    this.motionZ = (double)var6;
+                    this.motionZ = var6;
                 }
 
                 this.fallDistance = 0.0F;
@@ -1695,8 +1696,8 @@ public abstract class EntityLivingBase extends Entity
             }
 
             this.motionY *= 0.9800000190734863D;
-            this.motionX *= (double)var3;
-            this.motionZ *= (double)var3;
+            this.motionX *= var3;
+            this.motionZ *= var3;
         }
 
         this.prevLimbSwingAmount = this.limbSwingAmount;

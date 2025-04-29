@@ -649,9 +649,9 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     /**
      * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
      */
-    public void mountEntity(Entity par1Entity)
+    public void mountEntity(Entity entityIn)
     {
-        super.mountEntity(par1Entity);
+        super.mountEntity(entityIn);
         this.playerNetServerHandler.sendPacket(new S1BPacketEntityAttach(0, this, this.ridingEntity));
         this.playerNetServerHandler.setPlayerLocation(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
     }

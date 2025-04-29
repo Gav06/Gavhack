@@ -508,9 +508,9 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
     /**
      * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
      */
-    public void mountEntity(Entity par1Entity)
+    public void mountEntity(Entity entityIn)
     {
-        if (this.ridingEntity != null && par1Entity == null)
+        if (this.ridingEntity != null && entityIn == null)
         {
             if (!this.worldObj.isClient)
             {
@@ -526,7 +526,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
         }
         else
         {
-            super.mountEntity(par1Entity);
+            super.mountEntity(entityIn);
         }
     }
 
@@ -712,15 +712,8 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
             this.inventory.dropAllItems();
         }
 
-        if (par1DamageSource != null)
-        {
-            this.motionX = (double)(-MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
-            this.motionZ = (double)(-MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
-        }
-        else
-        {
-            this.motionX = this.motionZ = 0.0D;
-        }
+        this.motionX = (double) (-MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * (float) Math.PI / 180.0F) * 0.1F);
+        this.motionZ = (double)(-MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
 
         this.yOffset = 0.1F;
         this.addStat(StatList.deathsStat, 1);
@@ -1656,11 +1649,11 @@ public abstract class EntityPlayer extends EntityLivingBase implements ICommandS
 
         if (par2)
         {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var3 | 1 << par1)));
+            this.dataWatcher.updateObject(16, (byte) (var3 | 1 << par1));
         }
         else
         {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var3 & ~(1 << par1))));
+            this.dataWatcher.updateObject(16, (byte) (var3 & ~(1 << par1)));
         }
     }
 
