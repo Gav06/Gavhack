@@ -51,7 +51,7 @@ object Gavhack {
         log.info("Config initialized")
 
         ConfigManager.loadConfigs()
-        log.info("Attempted to load configs")
+        log.info("Attempting to load configs")
 
         println(GL11.glGetString(GL11.GL_VERSION))
 

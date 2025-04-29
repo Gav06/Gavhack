@@ -2,6 +2,8 @@ package optifine;
 
 public class BlockPos
 {
+    public static final BlockPos ORIGIN = new BlockPos(0, 0, 0);
+
     private final int x;
     private final int y;
     private final int z;

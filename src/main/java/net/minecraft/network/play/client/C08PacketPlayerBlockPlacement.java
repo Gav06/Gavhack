@@ -67,22 +67,22 @@ public class C08PacketPlayerBlockPlacement extends Packet
         p_149572_1_.processPlayerBlockPlacement(this);
     }
 
-    public int func_149576_c()
+    public int getX()
     {
         return this.x;
     }
 
-    public int func_149571_d()
+    public int getY()
     {
         return this.y;
     }
 
-    public int func_149570_e()
+    public int getZ()
     {
         return this.z;
     }
 
-    public int func_149568_f()
+    public int getSide()
     {
         return this.side;
     }

@@ -420,20 +420,20 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer
      * initiated, 1: reinitiated, 2? , 3-4 drop item (respectively without or with player control), 5: stopped; x,y,z,
      * side clicked on;)
      */
-    public void processPlayerDigging(C07PacketPlayerDigging p_147345_1_)
+    public void processPlayerDigging(C07PacketPlayerDigging packet)
     {
         WorldServer var2 = this.serverController.worldServerForDimension(this.playerEntity.dimension);
         this.playerEntity.func_143004_u();
 
-        if (p_147345_1_.func_149506_g() == 4)
+        if (packet.getAction() == 4)
         {
             this.playerEntity.dropOneItem(false);
         }
-        else if (p_147345_1_.func_149506_g() == 3)
+        else if (packet.getAction() == 3)
         {
             this.playerEntity.dropOneItem(true);
         }
-        else if (p_147345_1_.func_149506_g() == 5)
+        else if (packet.getAction() == 5)
         {
             this.playerEntity.stopUsingItem();
         }
@@ -441,24 +441,24 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer
         {
             boolean var3 = false;
 
-            if (p_147345_1_.func_149506_g() == 0)
+            if (packet.getAction() == 0)
             {
                 var3 = true;
             }
 
-            if (p_147345_1_.func_149506_g() == 1)
+            if (packet.getAction() == 1)
             {
                 var3 = true;
             }
 
-            if (p_147345_1_.func_149506_g() == 2)
+            if (packet.getAction() == 2)
             {
                 var3 = true;
             }
 
-            int var4 = p_147345_1_.func_149505_c();
-            int var5 = p_147345_1_.func_149503_d();
-            int var6 = p_147345_1_.func_149502_e();
+            int var4 = packet.getX();
+            int var5 = packet.getY();
+            int var6 = packet.getZ();
 
             if (var3)
             {
@@ -478,18 +478,18 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer
                 }
             }
 
-            if (p_147345_1_.func_149506_g() == 0)
+            if (packet.getAction() == 0)
             {
                 if (!this.serverController.isBlockProtected(var2, var4, var5, var6, this.playerEntity))
                 {
-                    this.playerEntity.theItemInWorldManager.onBlockClicked(var4, var5, var6, p_147345_1_.func_149501_f());
+                    this.playerEntity.theItemInWorldManager.onBlockClicked(var4, var5, var6, packet.getSide());
                 }
                 else
                 {
                     this.playerEntity.playerNetServerHandler.sendPacket(new S23PacketBlockChange(var4, var5, var6, var2));
                 }
             }
-            else if (p_147345_1_.func_149506_g() == 2)
+            else if (packet.getAction() == 2)
             {
                 this.playerEntity.theItemInWorldManager.uncheckedTryHarvestBlock(var4, var5, var6);
 
@@ -498,7 +498,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer
                     this.playerEntity.playerNetServerHandler.sendPacket(new S23PacketBlockChange(var4, var5, var6, var2));
                 }
             }
-            else if (p_147345_1_.func_149506_g() == 1)
+            else if (packet.getAction() == 1)
             {
                 this.playerEntity.theItemInWorldManager.cancelDestroyingBlock(var4, var5, var6);
 
@@ -513,99 +513,99 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer
     /**
      * Processes block placement and block activation (anvil, furnace, etc.)
      */
-    public void processPlayerBlockPlacement(C08PacketPlayerBlockPlacement p_147346_1_)
+    public void processPlayerBlockPlacement(C08PacketPlayerBlockPlacement packet)
     {
-        WorldServer var2 = this.serverController.worldServerForDimension(this.playerEntity.dimension);
-        ItemStack var3 = this.playerEntity.inventory.getCurrentItem();
-        boolean var4 = false;
-        int var5 = p_147346_1_.func_149576_c();
-        int var6 = p_147346_1_.func_149571_d();
-        int var7 = p_147346_1_.func_149570_e();
-        int var8 = p_147346_1_.func_149568_f();
+        WorldServer worldServer = this.serverController.worldServerForDimension(this.playerEntity.dimension);
+        ItemStack currentItem = this.playerEntity.inventory.getCurrentItem();
+        boolean placeBoundsFlag = false;
+        int x = packet.getX();
+        int y = packet.getY();
+        int z = packet.getZ();
+        int side = packet.getSide();
         this.playerEntity.func_143004_u();
 
-        if (p_147346_1_.func_149568_f() == 255)
+        if (packet.getSide() == 255)
         {
-            if (var3 == null)
+            if (currentItem == null)
             {
                 return;
             }
 
-            this.playerEntity.theItemInWorldManager.tryUseItem(this.playerEntity, var2, var3);
+            this.playerEntity.theItemInWorldManager.tryUseItem(this.playerEntity, worldServer, currentItem);
         }
-        else if (p_147346_1_.func_149571_d() >= this.serverController.getBuildLimit() - 1 && (p_147346_1_.func_149568_f() == 1 || p_147346_1_.func_149571_d() >= this.serverController.getBuildLimit()))
+        else if (packet.getY() >= this.serverController.getBuildLimit() - 1 && (packet.getSide() == 1 || packet.getY() >= this.serverController.getBuildLimit()))
         {
-            ChatComponentTranslation var9 = new ChatComponentTranslation("build.tooHigh", new Object[] {Integer.valueOf(this.serverController.getBuildLimit())});
+            ChatComponentTranslation var9 = new ChatComponentTranslation("build.tooHigh", this.serverController.getBuildLimit());
             var9.getChatStyle().setColor(EnumChatFormatting.RED);
             this.playerEntity.playerNetServerHandler.sendPacket(new S02PacketChat(var9));
-            var4 = true;
+            placeBoundsFlag = true;
         }
         else
         {
-            if (this.hasMoved && this.playerEntity.getDistanceSq((double)var5 + 0.5D, (double)var6 + 0.5D, (double)var7 + 0.5D) < 64.0D && !this.serverController.isBlockProtected(var2, var5, var6, var7, this.playerEntity))
+            if (this.hasMoved && this.playerEntity.getDistanceSq((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) < 64.0D && !this.serverController.isBlockProtected(worldServer, x, y, z, this.playerEntity))
             {
-                this.playerEntity.theItemInWorldManager.activateBlockOrUseItem(this.playerEntity, var2, var3, var5, var6, var7, var8, p_147346_1_.func_149573_h(), p_147346_1_.func_149569_i(), p_147346_1_.func_149575_j());
+                this.playerEntity.theItemInWorldManager.activateBlockOrUseItem(this.playerEntity, worldServer, currentItem, x, y, z, side, packet.func_149573_h(), packet.func_149569_i(), packet.func_149575_j());
             }
 
-            var4 = true;
+            placeBoundsFlag = true;
         }
 
-        if (var4)
+        if (placeBoundsFlag)
         {
-            this.playerEntity.playerNetServerHandler.sendPacket(new S23PacketBlockChange(var5, var6, var7, var2));
+            this.playerEntity.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, worldServer));
 
-            if (var8 == 0)
+            if (side == 0)
             {
-                --var6;
+                --y;
             }
 
-            if (var8 == 1)
+            if (side == 1)
             {
-                ++var6;
+                ++y;
             }
 
-            if (var8 == 2)
+            if (side == 2)
             {
-                --var7;
+                --z;
             }
 
-            if (var8 == 3)
+            if (side == 3)
             {
-                ++var7;
+                ++z;
             }
 
-            if (var8 == 4)
+            if (side == 4)
             {
-                --var5;
+                --x;
             }
 
-            if (var8 == 5)
+            if (side == 5)
             {
-                ++var5;
+                ++x;
             }
 
-            this.playerEntity.playerNetServerHandler.sendPacket(new S23PacketBlockChange(var5, var6, var7, var2));
+            this.playerEntity.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, worldServer));
         }
 
-        var3 = this.playerEntity.inventory.getCurrentItem();
+        currentItem = this.playerEntity.inventory.getCurrentItem();
 
-        if (var3 != null && var3.stackSize == 0)
+        if (currentItem != null && currentItem.stackSize == 0)
         {
             this.playerEntity.inventory.mainInventory[this.playerEntity.inventory.currentItem] = null;
-            var3 = null;
+            currentItem = null;
         }
 
-        if (var3 == null || var3.getMaxItemUseDuration() == 0)
+        if (currentItem == null || currentItem.getMaxItemUseDuration() == 0)
         {
             this.playerEntity.isChangingQuantityOnly = true;
             this.playerEntity.inventory.mainInventory[this.playerEntity.inventory.currentItem] = ItemStack.copyItemStack(this.playerEntity.inventory.mainInventory[this.playerEntity.inventory.currentItem]);
-            Slot var10 = this.playerEntity.openContainer.getSlotFromInventory(this.playerEntity.inventory, this.playerEntity.inventory.currentItem);
+            Slot slot = this.playerEntity.openContainer.getSlotFromInventory(this.playerEntity.inventory, this.playerEntity.inventory.currentItem);
             this.playerEntity.openContainer.detectAndSendChanges();
             this.playerEntity.isChangingQuantityOnly = false;
 
-            if (!ItemStack.areItemStacksEqual(this.playerEntity.inventory.getCurrentItem(), p_147346_1_.func_149574_g()))
+            if (!ItemStack.areItemStacksEqual(this.playerEntity.inventory.getCurrentItem(), packet.func_149574_g()))
             {
-                this.sendPacket(new S2FPacketSetSlot(this.playerEntity.openContainer.windowId, var10.slotNumber, this.playerEntity.inventory.getCurrentItem()));
+                this.sendPacket(new S2FPacketSetSlot(this.playerEntity.openContainer.windowId, slot.slotNumber, this.playerEntity.inventory.getCurrentItem()));
             }
         }
     }
@@ -613,9 +613,9 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer
     /**
      * Invoked when disconnecting, the parameter is a ChatComponent describing the reason for termination
      */
-    public void onDisconnect(IChatComponent p_147231_1_)
+    public void onDisconnect(IChatComponent reason)
     {
-        logger.info(this.playerEntity.getCommandSenderName() + " lost connection: " + p_147231_1_);
+        logger.info(this.playerEntity.getCommandSenderName() + " lost connection: " + reason);
         this.serverController.func_147132_au();
         ChatComponentTranslation var2 = new ChatComponentTranslation("multiplayer.player.left", new Object[] {this.playerEntity.func_145748_c_()});
         var2.getChatStyle().setColor(EnumChatFormatting.YELLOW);

@@ -14,16 +14,18 @@ import net.minecraft.entity.player.EntityPlayer
 import kotlin.jvm.optionals.getOrNull
 
 object KillAura: Module("KillAura", "Attack entities automatically", ModCategory.COMBAT) {
-
-    private val walls = BooleanSetting("ThruWalls", true)
-    private val cpsSetting = IntSetting("CPS", 10, 1, 20)
-    private val rangeSetting = FloatSetting("Range", 5.0f, 0.0f, 8.0f)
-    private val wallRangeSetting = FloatSetting("WallRange", 3.0f, 0.0f, 5.0f)
-
     private val players = addSetting(BooleanSetting("Players", true))
     private val hostiles = addSetting(BooleanSetting("Hostiles", true))
     private val passive = addSetting(BooleanSetting("Animals", true))
     private val other = addSetting(BooleanSetting("Others", false))
+
+    private val cpsSetting = addSetting(IntSetting("CPS", 10, 1, 20))
+    private val rangeSetting = addSetting(FloatSetting("Range", 5.0f, 0.0f, 8.0f))
+
+    private val walls = addSetting(BooleanSetting("ThruWalls", true))
+    private val wallRangeSetting = addSetting(FloatSetting("WallRange", 3.0f, 0.0f, 5.0f) { walls.value })
+
+
 
     private var target: EntityLivingBase? = null
     private var lastAttack = 0L
@@ -79,10 +81,5 @@ object KillAura: Module("KillAura", "Attack entities automatically", ModCategory
 
     init {
         addEventListener(tickListener, PlayerLivingTickEvent::class)
-
-        addSetting(walls)
-        addSetting(cpsSetting)
-        addSetting(rangeSetting)
-        addSetting(wallRangeSetting)
     }
 }
