@@ -53,6 +53,8 @@ object Gavhack {
         ConfigManager.loadConfigs()
         log.info("Attempted to load configs")
 
+        println(GL11.glGetString(GL11.GL_VERSION))
+
         log.info("Completed $NAME initialization in ${System.currentTimeMillis() - startTime}ms")
     }
 }
