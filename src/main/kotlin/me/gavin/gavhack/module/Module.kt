@@ -23,10 +23,6 @@ abstract class Module(
     private val listeners = HashMap<Listener<Event>, KClass<out Event>>()
 
     var enabled = false
-        set(value) {
-            if (value) enable() else disable()
-            field = value
-        }
 
     protected open fun onEnable() { }
 

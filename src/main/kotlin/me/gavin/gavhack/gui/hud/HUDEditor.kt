@@ -34,13 +34,12 @@ object HUDEditor: GuiScreen() {
     }
 
     init {
-        EventBus.addListener(overlayListener, RenderOverlayEvent::class)
+        ConfigManager.addConfig(window)
 
+        EventBus.addListener(overlayListener, RenderOverlayEvent::class)
         for (mod in hudMods) {
             window.components.add(WindowButton(mod, 0, 0, window.w, window.handle.h - 2))
         }
-
-        ConfigManager.addConfig(window)
     }
 
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {

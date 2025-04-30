@@ -220,27 +220,27 @@ public class RenderBlocks
         }
     }
 
-    public void setRenderBoundsFromBlock(Block p_147775_1_)
+    public void setRenderBoundsFromBlock(Block block)
     {
         if (!this.lockBlockBounds)
         {
-            this.renderMinX = p_147775_1_.getBlockBoundsMinX();
-            this.renderMaxX = p_147775_1_.getBlockBoundsMaxX();
-            this.renderMinY = p_147775_1_.getBlockBoundsMinY();
-            this.renderMaxY = p_147775_1_.getBlockBoundsMaxY();
-            this.renderMinZ = p_147775_1_.getBlockBoundsMinZ();
-            this.renderMaxZ = p_147775_1_.getBlockBoundsMaxZ();
+            this.renderMinX = block.getBlockBoundsMinX();
+            this.renderMaxX = block.getBlockBoundsMaxX();
+            this.renderMinY = block.getBlockBoundsMinY();
+            this.renderMaxY = block.getBlockBoundsMaxY();
+            this.renderMinZ = block.getBlockBoundsMinZ();
+            this.renderMaxZ = block.getBlockBoundsMaxZ();
             this.partialRenderBounds = this.minecraftRB.gameSettings.ambientOcclusion >= 2 && (this.renderMinX > 0.0D || this.renderMaxX < 1.0D || this.renderMinY > 0.0D || this.renderMaxY < 1.0D || this.renderMinZ > 0.0D || this.renderMaxZ < 1.0D);
         }
     }
 
-    public void overrideBlockBounds(double p_147770_1_, double p_147770_3_, double p_147770_5_, double p_147770_7_, double p_147770_9_, double p_147770_11_)
+    public void overrideBlockBounds(double minX, double minY, double minZ, double p_147770_7_, double p_147770_9_, double p_147770_11_)
     {
-        this.renderMinX = p_147770_1_;
+        this.renderMinX = minX;
         this.renderMaxX = p_147770_7_;
-        this.renderMinY = p_147770_3_;
+        this.renderMinY = minY;
         this.renderMaxY = p_147770_9_;
-        this.renderMinZ = p_147770_5_;
+        this.renderMinZ = minZ;
         this.renderMaxZ = p_147770_11_;
         this.lockBlockBounds = true;
         this.partialRenderBounds = this.minecraftRB.gameSettings.ambientOcclusion >= 2 && (this.renderMinX > 0.0D || this.renderMaxX < 1.0D || this.renderMinY > 0.0D || this.renderMaxY < 1.0D || this.renderMinZ > 0.0D || this.renderMaxZ < 1.0D);
@@ -276,7 +276,7 @@ public class RenderBlocks
 
     public boolean renderBlockByRenderType(Block block, int x, int y, int z)
     {
-        if (Xray.INSTANCE.isEnabled() && !Xray.INSTANCE.getBlockIds().contains(Block.getIdFromBlock(block))) {
+        if (Xray.INSTANCE.isEnabled() && !Xray.INSTANCE.getBlockSet().contains(block)) {
             return false;
         }
 
@@ -4668,9 +4668,13 @@ public class RenderBlocks
     /**
      * Renders a standard cube block at the given coordinates
      */
-    public boolean renderStandardBlock(Block p_147784_1_, int p_147784_2_, int p_147784_3_, int p_147784_4_)
+    public boolean renderStandardBlock(Block block, int x, int y, int z)
     {
-        int var5 = CustomColorizer.getColorMultiplier(p_147784_1_, this.blockAccess, p_147784_2_, p_147784_3_, p_147784_4_);
+        if (Xray.INSTANCE.isEnabled() && !Xray.INSTANCE.getBlockSet().contains(block)) {
+            return false;
+        }
+
+        int var5 = CustomColorizer.getColorMultiplier(block, this.blockAccess, x, y, z);
         float var6 = (float)(var5 >> 16 & 255) / 255.0F;
         float var7 = (float)(var5 >> 8 & 255) / 255.0F;
         float var8 = (float)(var5 & 255) / 255.0F;
@@ -4685,7 +4689,7 @@ public class RenderBlocks
             var8 = var11;
         }
 
-        return Minecraft.isAmbientOcclusionEnabled() && p_147784_1_.getLightValue() == 0 ? (this.partialRenderBounds ? this.renderStandardBlockWithAmbientOcclusionPartial(p_147784_1_, p_147784_2_, p_147784_3_, p_147784_4_, var6, var7, var8) : this.renderStandardBlockWithAmbientOcclusion(p_147784_1_, p_147784_2_, p_147784_3_, p_147784_4_, var6, var7, var8)) : this.renderStandardBlockWithColorMultiplier(p_147784_1_, p_147784_2_, p_147784_3_, p_147784_4_, var6, var7, var8);
+        return Minecraft.isAmbientOcclusionEnabled() && block.getLightValue() == 0 ? (this.partialRenderBounds ? this.renderStandardBlockWithAmbientOcclusionPartial(block, x, y, z, var6, var7, var8) : this.renderStandardBlockWithAmbientOcclusion(block, x, y, z, var6, var7, var8)) : this.renderStandardBlockWithColorMultiplier(block, x, y, z, var6, var7, var8);
     }
 
     public boolean renderBlockLog(Block p_147742_1_, int p_147742_2_, int p_147742_3_, int p_147742_4_)
