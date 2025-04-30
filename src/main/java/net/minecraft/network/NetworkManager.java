@@ -147,11 +147,6 @@ public class NetworkManager extends SimpleChannelInboundHandler
      */
     public void scheduleOutboundPacket(Packet packet, GenericFutureListener ... p_150725_2_)
     {
-        if (packet instanceof C0CPacketInput) {
-            final C0CPacketInput c0cPacketInput = (C0CPacketInput)packet;
-            System.out.println("Input Packet: sneak=" + c0cPacketInput.sneak);
-        }
-
         final PacketSendEvent event = new PacketSendEvent(packet);
         if (EventBus.INSTANCE.post(event))
             return;

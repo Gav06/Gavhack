@@ -12,7 +12,6 @@ public class C0CPacketInput extends Packet
     public float moveForward;
     public boolean jump;
     public boolean sneak;
-    private static final String __OBFID = "CL_00001367";
 
     public C0CPacketInput() {}
 
@@ -38,12 +37,12 @@ public class C0CPacketInput extends Packet
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer p_148840_1_) throws IOException
+    public void writePacketData(PacketBuffer buf) throws IOException
     {
-        p_148840_1_.writeFloat(this.moveStrafe);
-        p_148840_1_.writeFloat(this.moveForward);
-        p_148840_1_.writeBoolean(this.jump);
-        p_148840_1_.writeBoolean(this.sneak);
+        buf.writeFloat(this.moveStrafe);
+        buf.writeFloat(this.moveForward);
+        buf.writeBoolean(this.jump);
+        buf.writeBoolean(this.sneak);
     }
 
     public void processPacket(INetHandlerPlayServer p_149619_1_)

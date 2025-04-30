@@ -8,7 +8,6 @@ import me.gavin.gavhack.module.setting.BooleanSetting
 import me.gavin.gavhack.module.setting.FloatSetting
 import net.minecraft.entity.Entity
 import net.minecraft.network.play.client.C03PacketPlayer
-import net.minecraft.network.play.client.C03PacketPlayer.C04PacketPlayerPosition
 import net.minecraft.network.play.client.C0CPacketInput
 import net.minecraft.util.Vec3
 import org.lwjgl.input.Keyboard
@@ -38,6 +37,8 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
         if (mc.thePlayer != null && mc.theWorld != null) {
             stopFreecam()
         }
+
+
     }
 
     private fun startFreecam() {

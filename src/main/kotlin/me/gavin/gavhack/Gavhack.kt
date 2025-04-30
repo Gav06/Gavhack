@@ -6,6 +6,7 @@ import me.gavin.gavhack.macro.MacroManager
 import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.gui.click.ClickGUI
 import me.gavin.gavhack.gui.hud.HUDEditor
+import me.gavin.gavhack.module.impl.Freecam
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.lwjgl.opengl.GL11

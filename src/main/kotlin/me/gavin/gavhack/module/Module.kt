@@ -21,7 +21,12 @@ abstract class Module(
     protected val mc: Minecraft = Minecraft.getMinecraft()
 
     private val listeners = HashMap<Listener<Event>, KClass<out Event>>()
-    private var enabled = false
+
+    var enabled = false
+        set(value) {
+            if (value) enable() else disable()
+            field = value
+        }
 
     protected open fun onEnable() { }
 
