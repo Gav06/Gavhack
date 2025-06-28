@@ -5,7 +5,6 @@ import java.net.Proxy;
 public class McoClientConfig
 {
     private static Proxy field_148686_a;
-    private static final String __OBFID = "CL_00001157";
 
     public static Proxy func_148685_a()
     {

@@ -9,7 +9,6 @@ import net.minecraft.util.TupleIntJsonSerializable;
 public class StatFileWriter
 {
     protected final Map field_150875_a = new HashMap();
-    private static final String __OBFID = "CL_00001481";
 
     /**
      * Returns true if the achievement has been unlocked.

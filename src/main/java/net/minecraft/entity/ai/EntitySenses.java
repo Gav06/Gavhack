@@ -14,7 +14,6 @@ public class EntitySenses
 
     /** Cache of entities which we cannot see */
     List unseenEntities = new ArrayList();
-    private static final String __OBFID = "CL_00001628";
 
     public EntitySenses(EntityLiving par1EntityLiving)
     {

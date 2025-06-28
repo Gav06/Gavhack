@@ -16,7 +16,6 @@ public class GuiScreenOnlineServersSubscreen
     String[][] field_148401_d;
     int field_148402_e;
     int field_148399_f;
-    private static final String __OBFID = "CL_00000796";
 
     public GuiScreenOnlineServersSubscreen(int par1, int par2, int par3, int par4, int par5, int par6)
     {

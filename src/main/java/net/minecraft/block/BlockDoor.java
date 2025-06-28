@@ -18,7 +18,6 @@ public class BlockDoor extends Block
 {
     private IIcon[] field_150017_a;
     private IIcon[] field_150016_b;
-    private static final String __OBFID = "CL_00000230";
 
     protected BlockDoor(Material p_i45402_1_)
     {
@@ -36,7 +35,7 @@ public class BlockDoor extends Block
         return this.field_150016_b[0];
     }
 
-    public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
+    public IIcon getBlockTexture(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
     {
         if (p_149673_5_ != 1 && p_149673_5_ != 0)
         {
@@ -98,7 +97,7 @@ public class BlockDoor extends Block
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150017_a = new IIcon[2];
         this.field_150016_b = new IIcon[2];
@@ -113,9 +112,9 @@ public class BlockDoor extends Block
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
     {
-        int var5 = this.func_150012_g(access, x, y, z);
+        int var5 = this.func_150012_g(p_149655_1_, p_149655_2_, p_149655_3_, p_149655_4_);
         return (var5 & 4) != 0;
     }
 
@@ -411,7 +410,7 @@ public class BlockDoor extends Block
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return this.blockMaterial == Material.iron ? Items.iron_door : Items.wooden_door;
     }

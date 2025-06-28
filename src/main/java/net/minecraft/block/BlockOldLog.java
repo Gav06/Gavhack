@@ -10,7 +10,6 @@ import net.minecraft.util.IIcon;
 public class BlockOldLog extends BlockLog
 {
     public static final String[] field_150168_M = new String[] {"oak", "spruce", "birch", "jungle"};
-    private static final String __OBFID = "CL_00000281";
 
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
     {
@@ -20,7 +19,7 @@ public class BlockOldLog extends BlockLog
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 3));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150167_a = new IIcon[field_150168_M.length];
         this.field_150166_b = new IIcon[field_150168_M.length];

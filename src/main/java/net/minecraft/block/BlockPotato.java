@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 public class BlockPotato extends BlockCrops
 {
     private IIcon[] field_149869_a;
-    private static final String __OBFID = "CL_00000286";
 
     /**
      * Gets the block's texture. Args: side, meta
@@ -58,7 +57,7 @@ public class BlockPotato extends BlockCrops
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149869_a = new IIcon[4];
 

@@ -40,7 +40,6 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
 {
     private EntityAIArrowAttack aiArrowAttack = new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F);
     private EntityAIAttackOnCollide aiAttackOnCollide = new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.2D, false);
-    private static final String __OBFID = "CL_00001697";
 
     public EntitySkeleton(World par1World)
     {
@@ -386,7 +385,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.func_150297_b("SkeletonType", 99))
+        if (par1NBTTagCompound.hasKey("SkeletonType", 99))
         {
             byte var2 = par1NBTTagCompound.getByte("SkeletonType");
             this.setSkeletonType(var2);

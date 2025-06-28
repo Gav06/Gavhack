@@ -50,7 +50,6 @@ public class EntityZombie extends EntityMob
     private boolean field_146076_bu = false;
     private float field_146074_bv = -1.0F;
     private float field_146073_bw;
-    private static final String __OBFID = "CL_00001702";
 
     public EntityZombie(World par1World)
     {
@@ -443,7 +442,7 @@ public class EntityZombie extends EntityMob
             this.setVillager(true);
         }
 
-        if (par1NBTTagCompound.func_150297_b("ConversionTime", 99) && par1NBTTagCompound.getInteger("ConversionTime") > -1)
+        if (par1NBTTagCompound.hasKey("ConversionTime", 99) && par1NBTTagCompound.getInteger("ConversionTime") > -1)
         {
             this.startConversion(par1NBTTagCompound.getInteger("ConversionTime"));
         }
@@ -699,7 +698,6 @@ public class EntityZombie extends EntityMob
     {
         public boolean field_142048_a;
         public boolean field_142046_b;
-        private static final String __OBFID = "CL_00001704";
 
         private GroupData(boolean par2, boolean par3)
         {

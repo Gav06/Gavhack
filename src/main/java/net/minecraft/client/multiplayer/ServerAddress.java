@@ -8,7 +8,6 @@ public class ServerAddress
 {
     private final String ipAddress;
     private final int serverPort;
-    private static final String __OBFID = "CL_00000889";
 
     private ServerAddress(String par1Str, int par2)
     {

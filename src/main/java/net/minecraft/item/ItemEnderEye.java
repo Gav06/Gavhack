@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 
 public class ItemEnderEye extends Item
 {
-    private static final String __OBFID = "CL_00000026";
 
     public ItemEnderEye()
     {
@@ -24,22 +23,22 @@ public class ItemEnderEye extends Item
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        Block var11 = par3World.getBlock(par4, par5, par6);
-        int var12 = par3World.getBlockMetadata(par4, par5, par6);
+        Block var11 = world.getBlock(par4, par5, par6);
+        int var12 = world.getBlockMetadata(par4, par5, par6);
 
-        if (par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) && var11 == Blocks.end_portal_frame && !BlockEndPortalFrame.func_150020_b(var12))
+        if (player.canPlayerEdit(par4, par5, par6, par7, stack) && var11 == Blocks.end_portal_frame && !BlockEndPortalFrame.isEnderEyeInserted(var12))
         {
-            if (par3World.isClient)
+            if (world.isClient)
             {
                 return true;
             }
             else
             {
-                par3World.setBlockMetadataWithNotify(par4, par5, par6, var12 + 4, 2);
-                par3World.func_147453_f(par4, par5, par6, Blocks.end_portal_frame);
-                --par1ItemStack.stackSize;
+                world.setBlockMetadataWithNotify(par4, par5, par6, var12 + 4, 2);
+                world.func_147453_f(par4, par5, par6, Blocks.end_portal_frame);
+                --stack.stackSize;
                 int var13;
 
                 for (var13 = 0; var13 < 16; ++var13)
@@ -50,7 +49,7 @@ public class ItemEnderEye extends Item
                     double var20 = 0.0D;
                     double var22 = 0.0D;
                     double var24 = 0.0D;
-                    par3World.spawnParticle("smoke", var14, var16, var18, var20, var22, var24);
+                    world.spawnParticle("smoke", var14, var16, var18, var20, var22, var24);
                 }
 
                 var13 = var12 & 3;
@@ -68,9 +67,9 @@ public class ItemEnderEye extends Item
                     var29 = par4 + Direction.offsetX[var28] * var19;
                     var21 = par6 + Direction.offsetZ[var28] * var19;
 
-                    if (par3World.getBlock(var29, par5, var21) == Blocks.end_portal_frame)
+                    if (world.getBlock(var29, par5, var21) == Blocks.end_portal_frame)
                     {
-                        if (!BlockEndPortalFrame.func_150020_b(par3World.getBlockMetadata(var29, par5, var21)))
+                        if (!BlockEndPortalFrame.isEnderEyeInserted(world.getBlockMetadata(var29, par5, var21)))
                         {
                             var17 = false;
                             break;
@@ -95,7 +94,7 @@ public class ItemEnderEye extends Item
                         var29 += Direction.offsetX[var13] * 4;
                         var21 += Direction.offsetZ[var13] * 4;
 
-                        if (par3World.getBlock(var29, par5, var21) != Blocks.end_portal_frame || !BlockEndPortalFrame.func_150020_b(par3World.getBlockMetadata(var29, par5, var21)))
+                        if (world.getBlock(var29, par5, var21) != Blocks.end_portal_frame || !BlockEndPortalFrame.isEnderEyeInserted(world.getBlockMetadata(var29, par5, var21)))
                         {
                             var17 = false;
                             break;
@@ -113,7 +112,7 @@ public class ItemEnderEye extends Item
                             var21 += Direction.offsetX[var13] * var29;
                             var30 += Direction.offsetZ[var13] * var29;
 
-                            if (par3World.getBlock(var21, par5, var30) != Blocks.end_portal_frame || !BlockEndPortalFrame.func_150020_b(par3World.getBlockMetadata(var21, par5, var30)))
+                            if (world.getBlock(var21, par5, var30) != Blocks.end_portal_frame || !BlockEndPortalFrame.isEnderEyeInserted(world.getBlockMetadata(var21, par5, var30)))
                             {
                                 var17 = false;
                                 break;
@@ -131,7 +130,7 @@ public class ItemEnderEye extends Item
                                 var30 = par6 + Direction.offsetZ[var28] * var19;
                                 var21 += Direction.offsetX[var13] * var29;
                                 var30 += Direction.offsetZ[var13] * var29;
-                                par3World.setBlock(var21, par5, var30, Blocks.end_portal, 0, 2);
+                                world.setBlock(var21, par5, var30, Blocks.end_portal, 0, 2);
                             }
                         }
                     }

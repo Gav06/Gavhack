@@ -20,7 +20,6 @@ public class EntityAIMoveThroughVillage extends EntityAIBase
     private VillageDoorInfo doorInfo;
     private boolean isNocturnal;
     private List doorList = new ArrayList();
-    private static final String __OBFID = "CL_00001597";
 
     public EntityAIMoveThroughVillage(EntityCreature par1EntityCreature, double par2, boolean par4)
     {

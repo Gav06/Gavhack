@@ -107,14 +107,12 @@ public enum EnumConnectionState
 {
     HANDSHAKING("HANDSHAKING", 0, -1, null)
     {
-        private static final String __OBFID = "CL_00001249";
         {
             this.func_150751_a(0, C00Handshake.class);
         }
     },
     PLAY("PLAY", 1, 0, null)
     {
-        private static final String __OBFID = "CL_00001247";
         {
             this.func_150756_b(0, S00PacketKeepAlive.class);
             this.func_150756_b(1, S01PacketJoinGame.class);
@@ -209,7 +207,6 @@ public enum EnumConnectionState
     },
     STATUS("STATUS", 2, 1, null)
     {
-        private static final String __OBFID = "CL_00001246";
         {
             this.func_150751_a(0, C00PacketServerQuery.class);
             this.func_150756_b(0, S00PacketServerInfo.class);
@@ -219,7 +216,6 @@ public enum EnumConnectionState
     },
     LOGIN("LOGIN", 3, 2, null)
     {
-        private static final String __OBFID = "CL_00001250";
         {
             this.func_150756_b(0, S00PacketDisconnect.class);
             this.func_150756_b(1, S01PacketEncryptionRequest.class);
@@ -233,7 +229,6 @@ public enum EnumConnectionState
     private final int field_150762_g;
     private final BiMap field_150769_h;
     private final BiMap field_150770_i;
-    private static final String __OBFID = "CL_00001245";
 
     private EnumConnectionState(int p_i45152_3_)
     {

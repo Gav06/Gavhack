@@ -20,7 +20,6 @@ public class Vec3Pool
     private int nextFreeSpace;
     private int maximumSizeSinceLastTruncation;
     private int resetCount;
-    private static final String __OBFID = "CL_00000613";
 
     public Vec3Pool(int par1, int par2)
     {

@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 public class ItemBed extends Item
 {
-    private static final String __OBFID = "CL_00001771";
 
     public ItemBed()
     {
@@ -20,9 +19,9 @@ public class ItemBed extends Item
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        if (par3World.isClient)
+        if (world.isClient)
         {
             return true;
         }
@@ -34,7 +33,7 @@ public class ItemBed extends Item
         {
             ++par5;
             BlockBed var11 = (BlockBed)Blocks.bed;
-            int var12 = MathHelper.floor_double((double)(par2EntityPlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+            int var12 = MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
             byte var13 = 0;
             byte var14 = 0;
 
@@ -58,18 +57,18 @@ public class ItemBed extends Item
                 var13 = 1;
             }
 
-            if (par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) && par2EntityPlayer.canPlayerEdit(par4 + var13, par5, par6 + var14, par7, par1ItemStack))
+            if (player.canPlayerEdit(par4, par5, par6, par7, stack) && player.canPlayerEdit(par4 + var13, par5, par6 + var14, par7, stack))
             {
-                if (par3World.isAirBlock(par4, par5, par6) && par3World.isAirBlock(par4 + var13, par5, par6 + var14) && World.doesBlockHaveSolidTopSurface(par3World, par4, par5 - 1, par6) && World.doesBlockHaveSolidTopSurface(par3World, par4 + var13, par5 - 1, par6 + var14))
+                if (world.isAirBlock(par4, par5, par6) && world.isAirBlock(par4 + var13, par5, par6 + var14) && World.doesBlockHaveSolidTopSurface(world, par4, par5 - 1, par6) && World.doesBlockHaveSolidTopSurface(world, par4 + var13, par5 - 1, par6 + var14))
                 {
-                    par3World.setBlock(par4, par5, par6, var11, var12, 3);
+                    world.setBlock(par4, par5, par6, var11, var12, 3);
 
-                    if (par3World.getBlock(par4, par5, par6) == var11)
+                    if (world.getBlock(par4, par5, par6) == var11)
                     {
-                        par3World.setBlock(par4 + var13, par5, par6 + var14, var11, var12 + 8, 3);
+                        world.setBlock(par4 + var13, par5, par6 + var14, var11, var12 + 8, 3);
                     }
 
-                    --par1ItemStack.stackSize;
+                    --stack.stackSize;
                     return true;
                 }
                 else

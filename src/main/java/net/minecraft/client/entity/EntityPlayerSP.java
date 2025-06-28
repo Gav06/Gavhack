@@ -1,10 +1,5 @@
 package net.minecraft.client.entity;
 
-import me.gavin.gavhack.event.EventBus;
-import me.gavin.gavhack.event.events.CancelSprintEvent;
-import me.gavin.gavhack.event.events.FieldOfViewEvent;
-import me.gavin.gavhack.event.events.PlayerLivingTickEvent;
-import me.gavin.gavhack.event.events.PlayerPushOutOfBlocksEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiCommandBlock;
@@ -83,7 +78,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     /** The amount of time an entity has been in a Portal the previous tick */
     public float prevTimeInPortal;
-    private static final String __OBFID = "CL_00000938";
 
     public EntityPlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, int par4)
     {
@@ -110,19 +104,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void onLivingUpdate()
     {
-        EventBus.INSTANCE.post(new PlayerLivingTickEvent());
-
         if (this.sprintingTicksLeft > 0)
         {
             --this.sprintingTicksLeft;
 
             if (this.sprintingTicksLeft == 0)
             {
-                final CancelSprintEvent event = new CancelSprintEvent();
-                EventBus.INSTANCE.post(event);
-                if (!event.getCancelled()) {
-                    this.setSprinting(false);
-                }
+                this.setSprinting(false);
             }
         }
 
@@ -153,7 +141,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
                 if (this.timeInPortal == 0.0F)
                 {
-                    this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(new ResourceLocation("portal.trigger"), this.rand.nextFloat() * 0.4F + 0.8F));
+                    this.mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("portal.trigger"), this.rand.nextFloat() * 0.4F + 0.8F));
                 }
 
                 this.timeInPortal += 0.0125F;
@@ -193,8 +181,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
 
             boolean var1 = this.movementInput.jump;
-            float sprintThreshold = 0.8F;
-            boolean var3 = this.movementInput.moveForward >= sprintThreshold;
+            float var2 = 0.8F;
+            boolean var3 = this.movementInput.moveForward >= var2;
             this.movementInput.updatePlayerMoveState();
 
             if (this.isUsingItem() && !this.isRiding())
@@ -209,18 +197,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 this.ySize = 0.2F;
             }
 
-            final PlayerPushOutOfBlocksEvent event = new PlayerPushOutOfBlocksEvent();
-            EventBus.INSTANCE.post(event);
-            if (!event.getCancelled()) {
-                this.func_145771_j(this.posX - (double) this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double) this.width * 0.35D);
-                this.func_145771_j(this.posX - (double) this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double) this.width * 0.35D);
-                this.func_145771_j(this.posX + (double) this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double) this.width * 0.35D);
-                this.func_145771_j(this.posX + (double) this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double) this.width * 0.35D);
-            }
+            this.func_145771_j(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+            this.func_145771_j(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
+            this.func_145771_j(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
+            this.func_145771_j(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+            boolean var4 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 
-            boolean hungerAllowsSprint = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
-
-            if (this.onGround && !var3 && this.movementInput.moveForward >= sprintThreshold && !this.isSprinting() && hungerAllowsSprint && !this.isUsingItem() && !this.isPotionActive(Potion.blindness))
+            if (this.onGround && !var3 && this.movementInput.moveForward >= var2 && !this.isSprinting() && var4 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness))
             {
                 if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
                 {
@@ -232,18 +215,14 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 }
             }
 
-            if (!this.isSprinting() && this.movementInput.moveForward >= sprintThreshold && hungerAllowsSprint && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
+            if (!this.isSprinting() && this.movementInput.moveForward >= var2 && var4 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.getIsKeyPressed())
             {
                 this.setSprinting(true);
             }
 
-            if (this.isSprinting() && (this.movementInput.moveForward < sprintThreshold || this.isCollidedHorizontally || !hungerAllowsSprint))
+            if (this.isSprinting() && (this.movementInput.moveForward < var2 || this.isCollidedHorizontally || !var4))
             {
-                final CancelSprintEvent sprintEvent = new CancelSprintEvent();
-                EventBus.INSTANCE.post(sprintEvent);
-                if (!sprintEvent.getCancelled()) {
-                    this.setSprinting(false);
-                }
+                this.setSprinting(false);
             }
 
             if (this.capabilities.allowFlying && !var1 && this.movementInput.jump)
@@ -322,8 +301,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 this.sendPlayerAbilities();
             }
         }
-
-        EventBus.INSTANCE.post(new PlayerLivingTickEvent.Post());
     }
 
     /**
@@ -331,8 +308,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public float getFOVMultiplier()
     {
-
-
         float var1 = 1.0F;
 
         if (this.capabilities.isFlying)
@@ -365,10 +340,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             var1 *= 1.0F - var4 * 0.15F;
         }
 
-        final FieldOfViewEvent event = new FieldOfViewEvent(var1);
-        EventBus.INSTANCE.post(event);
-
-        return event.getFovModifier();
+        return var1;
     }
 
     /**
@@ -541,7 +513,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public void addChatComponentMessage(IChatComponent p_146105_1_)
     {
-        this.mc.ingameGUI.getChatGUI().addChatMessage(p_146105_1_);
+        this.mc.ingameGUI.getChatGui().printChatMessage(p_146105_1_);
     }
 
     private boolean isBlockTranslucent(int par1, int par2, int par3)
@@ -643,7 +615,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void addChatMessage(IChatComponent p_145747_1_)
     {
-        this.mc.ingameGUI.getChatGUI().addChatMessage(p_145747_1_);
+        this.mc.ingameGUI.getChatGui().printChatMessage(p_145747_1_);
     }
 
     /**

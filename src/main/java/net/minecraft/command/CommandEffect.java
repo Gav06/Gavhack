@@ -9,7 +9,6 @@ import net.minecraft.util.ChatComponentTranslation;
 
 public class CommandEffect extends CommandBase
 {
-    private static final String __OBFID = "CL_00000323";
 
     public String getCommandName()
     {

@@ -33,7 +33,7 @@ object ClickGUI: GuiScreen() {
         super.drawScreen(mouseX, mouseY, partialTicks)
 
         if (mc.theWorld == null) {
-            fontRendererObj.drawStringWithShadow(EnumChatFormatting.RED.toString() + "Press ESCAPE to go back", 2, height - 11, -1)
+            fontRenderer.drawStringWithShadow(EnumChatFormatting.RED.toString() + "Press ESCAPE to go back", 2, height - 11, -1)
         }
 
         // draw each window in reverse order so the window at the front of the list is drawn last, or in front.
@@ -52,7 +52,7 @@ object ClickGUI: GuiScreen() {
                     continue
 
                 val desc = button.module.desc
-                this.drawToolTipBox(listOf(desc), mouseX + 5, mouseY + 5)
+                this.drawTooltipBox(listOf(desc), mouseX + 5, mouseY + 5)
                 return
             }
         }

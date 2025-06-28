@@ -15,7 +15,6 @@ public class BlockOldLeaf extends BlockLeaves
 {
     public static final String[][] field_150130_N = new String[][] {{"leaves_oak", "leaves_spruce", "leaves_birch", "leaves_jungle"}, {"leaves_oak_opaque", "leaves_spruce_opaque", "leaves_birch_opaque", "leaves_jungle_opaque"}};
     public static final String[] field_150131_O = new String[] {"oak", "spruce", "birch", "jungle"};
-    private static final String __OBFID = "CL_00000280";
 
     /**
      * Returns the color this block should be rendered. Used by leaves.
@@ -71,7 +70,7 @@ public class BlockOldLeaf extends BlockLeaves
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 3));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         for (int var2 = 0; var2 < field_150130_N.length; ++var2)
         {

@@ -39,7 +39,6 @@ public class Explosion
     /** A list of ChunkPositions of blocks affected by this explosion */
     public List affectedBlockPositions = new ArrayList();
     private Map field_77288_k = new HashMap();
-    private static final String __OBFID = "CL_00000134";
 
     public Explosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
@@ -249,7 +248,7 @@ public class Explosion
         }
     }
 
-    public Map func_77277_b()
+    public Map getEntityKnockbackVec()
     {
         return this.field_77288_k;
     }

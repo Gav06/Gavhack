@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 public class BlockCocoa extends BlockDirectional implements IGrowable
 {
     private IIcon[] field_149989_a;
-    private static final String __OBFID = "CL_00000216";
 
     public BlockCocoa()
     {
@@ -34,7 +33,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
         return this.field_149989_a[2];
     }
 
-    public IIcon func_149988_b(int p_149988_1_)
+    public IIcon getCocoaIcon(int p_149988_1_)
     {
         if (p_149988_1_ < 0 || p_149988_1_ >= this.field_149989_a.length)
         {
@@ -62,7 +61,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
             if (var7 < 2)
             {
                 ++var7;
-                p_149674_1_.setBlockMetadataWithNotify(p_149674_2_, p_149674_3_, p_149674_4_, var7 << 2 | func_149895_l(var6), 2);
+                p_149674_1_.setBlockMetadataWithNotify(p_149674_2_, p_149674_3_, p_149674_4_, var7 << 2 | getDirection(var6), 2);
             }
         }
     }
@@ -72,7 +71,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
      */
     public boolean canBlockStay(World p_149718_1_, int p_149718_2_, int p_149718_3_, int p_149718_4_)
     {
-        int var5 = func_149895_l(p_149718_1_.getBlockMetadata(p_149718_2_, p_149718_3_, p_149718_4_));
+        int var5 = getDirection(p_149718_1_.getBlockMetadata(p_149718_2_, p_149718_3_, p_149718_4_));
         p_149718_2_ += Direction.offsetX[var5];
         p_149718_4_ += Direction.offsetZ[var5];
         Block var6 = p_149718_1_.getBlock(p_149718_2_, p_149718_3_, p_149718_4_);
@@ -119,7 +118,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
     public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
     {
         int var5 = p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_);
-        int var6 = func_149895_l(var5);
+        int var6 = getDirection(var5);
         int var7 = func_149987_c(var5);
         int var8 = 4 + var7 * 2;
         int var9 = 5 + var7 * 2;
@@ -199,7 +198,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.dye;
     }
@@ -212,7 +211,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
         return 3;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149989_a = new IIcon[3];
 
@@ -237,7 +236,7 @@ public class BlockCocoa extends BlockDirectional implements IGrowable
     public void func_149853_b(World p_149853_1_, Random p_149853_2_, int p_149853_3_, int p_149853_4_, int p_149853_5_)
     {
         int var6 = p_149853_1_.getBlockMetadata(p_149853_3_, p_149853_4_, p_149853_5_);
-        int var7 = BlockDirectional.func_149895_l(var6);
+        int var7 = BlockDirectional.getDirection(var6);
         int var8 = func_149987_c(var6);
         ++var8;
         p_149853_1_.setBlockMetadataWithNotify(p_149853_3_, p_149853_4_, p_149853_5_, var8 << 2 | var7, 2);

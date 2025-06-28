@@ -11,7 +11,6 @@ import net.minecraft.util.IIcon;
 public class BlockMelon extends Block
 {
     private IIcon field_150201_a;
-    private static final String __OBFID = "CL_00000267";
 
     protected BlockMelon()
     {
@@ -55,7 +54,7 @@ public class BlockMelon extends Block
         return var3;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
         this.field_150201_a = p_149651_1_.registerIcon(this.getTextureName() + "_top");

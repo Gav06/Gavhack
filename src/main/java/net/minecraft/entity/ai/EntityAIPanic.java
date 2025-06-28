@@ -10,7 +10,6 @@ public class EntityAIPanic extends EntityAIBase
     private double randPosX;
     private double randPosY;
     private double randPosZ;
-    private static final String __OBFID = "CL_00001604";
 
     public EntityAIPanic(EntityCreature par1EntityCreature, double par2)
     {

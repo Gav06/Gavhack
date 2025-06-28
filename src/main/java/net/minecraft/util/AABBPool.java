@@ -28,7 +28,6 @@ public class AABBPool
 
     /** Number of times this Pool has been cleaned */
     private int numCleans;
-    private static final String __OBFID = "CL_00000609";
 
     public AABBPool(int par1, int par2)
     {

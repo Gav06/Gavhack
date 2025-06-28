@@ -13,7 +13,6 @@ public class GuiOptions extends GuiScreen
     private final GuiScreen field_146441_g;
     private final GameSettings field_146443_h;
     protected String field_146442_a = "Options";
-    private static final String __OBFID = "CL_00000700";
 
     public GuiOptions(GuiScreen par1GuiScreen, GameSettings par2GameSettings)
     {
@@ -58,14 +57,13 @@ public class GuiOptions extends GuiScreen
         this.buttonList.add(new GuiButton(106, this.width / 2 - 152, this.height / 6 + 72 - 6, 150, 20, I18n.format("options.sounds", new Object[0])));
         this.buttonList.add(new GuiButton(8675309, this.width / 2 + 2, this.height / 6 + 72 - 6, 150, 20, "Super Secret Settings...")
         {
-            private static final String __OBFID = "CL_00000701";
-            public void func_146113_a(SoundHandler soundHandler)
+            public void func_146113_a(SoundHandler p_146113_1_)
             {
-                SoundEventAccessorComposite var2 = soundHandler.func_147686_a(new SoundCategory[] {SoundCategory.ANIMALS, SoundCategory.BLOCKS, SoundCategory.MOBS, SoundCategory.PLAYERS, SoundCategory.WEATHER});
+                SoundEventAccessorComposite var2 = p_146113_1_.func_147686_a(new SoundCategory[] {SoundCategory.ANIMALS, SoundCategory.BLOCKS, SoundCategory.MOBS, SoundCategory.PLAYERS, SoundCategory.WEATHER});
 
                 if (var2 != null)
                 {
-                    soundHandler.playSound(PositionedSoundRecord.getMasterRecord(var2.func_148729_c(), 0.5F));
+                    p_146113_1_.playSound(PositionedSoundRecord.func_147674_a(var2.func_148729_c(), 0.5F));
                 }
             }
         });
@@ -84,7 +82,7 @@ public class GuiOptions extends GuiScreen
         {
             if (p_146284_1_.id < 100 && p_146284_1_ instanceof GuiOptionButton)
             {
-                this.field_146443_h.setOptionValue(((GuiOptionButton)p_146284_1_).func_146136_c(), 1);
+                this.field_146443_h.setOptionValue(((GuiOptionButton)p_146284_1_).returnEnumOptions(), 1);
                 p_146284_1_.displayString = this.field_146443_h.getKeyBinding(GameSettings.Options.getEnumOptions(p_146284_1_.id));
             }
 
@@ -146,10 +144,10 @@ public class GuiOptions extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.field_146442_a, this.width / 2, 15, 16777215);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.drawCenteredString(this.fontRenderer, this.field_146442_a, this.width / 2, 15, 16777215);
+        super.drawScreen(par1, par2, par3);
     }
 }

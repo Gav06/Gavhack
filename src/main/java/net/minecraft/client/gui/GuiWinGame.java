@@ -23,7 +23,6 @@ public class GuiWinGame extends GuiScreen
     private List field_146582_i;
     private int field_146579_r;
     private float field_146578_s = 0.5F;
-    private static final String __OBFID = "CL_00000719";
 
     /**
      * Called from the main game loop to update the screen.
@@ -159,14 +158,14 @@ public class GuiWinGame extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
-        this.func_146575_b(mouseX, mouseY, partialTicks);
+        this.func_146575_b(par1, par2, par3);
         Tessellator var4 = Tessellator.instance;
         short var5 = 274;
         int var6 = this.width / 2 - var5 / 2;
         int var7 = this.height + 50;
-        float var8 = -((float)this.field_146581_h + partialTicks) * this.field_146578_s;
+        float var8 = -((float)this.field_146581_h + par3) * this.field_146578_s;
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, var8, 0.0F);
         this.mc.getTextureManager().bindTexture(field_146576_f);
@@ -195,12 +194,12 @@ public class GuiWinGame extends GuiScreen
 
                 if (var12.startsWith("[C]"))
                 {
-                    this.fontRendererObj.drawStringWithShadow(var12.substring(3), var6 + (var5 - this.fontRendererObj.getStringWidth(var12.substring(3))) / 2, var9, 16777215);
+                    this.fontRenderer.drawStringWithShadow(var12.substring(3), var6 + (var5 - this.fontRenderer.getStringWidth(var12.substring(3))) / 2, var9, 16777215);
                 }
                 else
                 {
-                    this.fontRendererObj.fontRandom.setSeed((long)var10 * 4238972211L + (long)(this.field_146581_h / 4));
-                    this.fontRendererObj.drawStringWithShadow(var12, var6, var9, 16777215);
+                    this.fontRenderer.fontRandom.setSeed((long)var10 * 4238972211L + (long)(this.field_146581_h / 4));
+                    this.fontRenderer.drawStringWithShadow(var12, var6, var9, 16777215);
                 }
             }
 
@@ -221,6 +220,6 @@ public class GuiWinGame extends GuiScreen
         var4.addVertexWithUV(0.0D, 0.0D, (double)this.zLevel, 0.0D, 0.0D);
         var4.draw();
         GL11.glDisable(GL11.GL_BLEND);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

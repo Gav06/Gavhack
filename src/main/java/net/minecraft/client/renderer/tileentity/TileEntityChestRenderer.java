@@ -22,7 +22,6 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
     private ModelChest field_147510_h = new ModelChest();
     private ModelChest field_147511_i = new ModelLargeChest();
     private boolean field_147509_j;
-    private static final String __OBFID = "CL_00000965";
 
     public TileEntityChestRenderer()
     {
@@ -49,7 +48,7 @@ public class TileEntityChestRenderer extends TileEntitySpecialRenderer
 
             if (var10 instanceof BlockChest && var9 == 0)
             {
-                ((BlockChest)var10).func_149954_e(p_147502_1_.getWorldObj(), p_147502_1_.x, p_147502_1_.y, p_147502_1_.z);
+                ((BlockChest)var10).func_149954_e(p_147502_1_.getWorldObj(), p_147502_1_.xCoord, p_147502_1_.yCoord, p_147502_1_.zCoord);
                 var9 = p_147502_1_.getBlockMetadata();
             }
 

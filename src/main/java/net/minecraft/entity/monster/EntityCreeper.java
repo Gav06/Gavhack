@@ -37,7 +37,6 @@ public class EntityCreeper extends EntityMob
 
     /** Explosion radius for this creeper. */
     private int explosionRadius = 3;
-    private static final String __OBFID = "CL_00001684";
 
     public EntityCreeper(World par1World)
     {
@@ -122,12 +121,12 @@ public class EntityCreeper extends EntityMob
         super.readEntityFromNBT(par1NBTTagCompound);
         this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
 
-        if (par1NBTTagCompound.func_150297_b("Fuse", 99))
+        if (par1NBTTagCompound.hasKey("Fuse", 99))
         {
             this.fuseTime = par1NBTTagCompound.getShort("Fuse");
         }
 
-        if (par1NBTTagCompound.func_150297_b("ExplosionRadius", 99))
+        if (par1NBTTagCompound.hasKey("ExplosionRadius", 99))
         {
             this.explosionRadius = par1NBTTagCompound.getByte("ExplosionRadius");
         }

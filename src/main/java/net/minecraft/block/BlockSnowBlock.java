@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 
 public class BlockSnowBlock extends Block
 {
-    private static final String __OBFID = "CL_00000308";
 
     protected BlockSnowBlock()
     {

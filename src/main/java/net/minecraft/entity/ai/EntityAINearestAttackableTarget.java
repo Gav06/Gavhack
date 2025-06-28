@@ -22,7 +22,6 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
      */
     private final IEntitySelector targetEntitySelector;
     private EntityLivingBase targetEntity;
-    private static final String __OBFID = "CL_00001620";
 
     public EntityAINearestAttackableTarget(EntityCreature par1EntityCreature, Class par2Class, int par3, boolean par4)
     {
@@ -43,7 +42,6 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
         this.setMutexBits(1);
         this.targetEntitySelector = new IEntitySelector()
         {
-            private static final String __OBFID = "CL_00001621";
             public boolean isEntityApplicable(Entity par1Entity)
             {
                 return !(par1Entity instanceof EntityLivingBase) ? false : (par6IEntitySelector != null && !par6IEntitySelector.isEntityApplicable(par1Entity) ? false : EntityAINearestAttackableTarget.this.isSuitableTarget((EntityLivingBase)par1Entity, false));
@@ -90,7 +88,6 @@ public class EntityAINearestAttackableTarget extends EntityAITarget
     public static class Sorter implements Comparator
     {
         private final Entity theEntity;
-        private static final String __OBFID = "CL_00001622";
 
         public Sorter(Entity par1Entity)
         {

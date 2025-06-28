@@ -31,7 +31,6 @@ public class EntityAIAttackOnCollide extends EntityAIBase
     private double field_151497_i;
     private double field_151495_j;
     private double field_151496_k;
-    private static final String __OBFID = "CL_00001595";
 
     public EntityAIAttackOnCollide(EntityCreature par1EntityCreature, Class par2Class, double par3, boolean par5)
     {

@@ -13,7 +13,6 @@ public class GuiControls extends GuiScreen
     public KeyBinding field_146491_f = null;
     private GuiKeyBindingList field_146494_r;
     private GuiButton field_146493_s;
-    private static final String __OBFID = "CL_00000736";
 
     public GuiControls(GuiScreen par1GuiScreen, GameSettings par2GameSettings)
     {
@@ -72,7 +71,7 @@ public class GuiControls extends GuiScreen
         }
         else if (p_146284_1_.id < 100 && p_146284_1_ instanceof GuiOptionButton)
         {
-            this.field_146497_i.setOptionValue(((GuiOptionButton)p_146284_1_).func_146136_c(), 1);
+            this.field_146497_i.setOptionValue(((GuiOptionButton)p_146284_1_).returnEnumOptions(), 1);
             p_146284_1_.displayString = this.field_146497_i.getKeyBinding(GameSettings.Options.getEnumOptions(p_146284_1_.id));
         }
     }
@@ -130,11 +129,11 @@ public class GuiControls extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.field_146494_r.func_148128_a(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.field_146495_a, this.width / 2, 8, 16777215);
+        this.field_146494_r.drawScreen(par1, par2, par3);
+        this.drawCenteredString(this.fontRenderer, this.field_146495_a, this.width / 2, 8, 16777215);
         boolean var4 = true;
         KeyBinding[] var5 = this.field_146497_i.keyBindings;
         int var6 = var5.length;
@@ -151,6 +150,6 @@ public class GuiControls extends GuiScreen
         }
 
         this.field_146493_s.enabled = !var4;
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

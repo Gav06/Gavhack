@@ -26,7 +26,6 @@ public class ItemArmor extends Item
     public static final String[] EMPTY_SLOT_NAMES = new String[] {"empty_armor_slot_helmet", "empty_armor_slot_chestplate", "empty_armor_slot_leggings", "empty_armor_slot_boots"};
     private static final IBehaviorDispenseItem dispenserBehavior = new BehaviorDefaultDispenseItem()
     {
-        private static final String __OBFID = "CL_00001767";
         protected ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
         {
             EnumFacing var3 = BlockDispenser.func_149937_b(par1IBlockSource.getBlockMetadata());
@@ -78,7 +77,6 @@ public class ItemArmor extends Item
     private final ItemArmor.ArmorMaterial material;
     private IIcon overlayIcon;
     private IIcon emptySlotIcon;
-    private static final String __OBFID = "CL_00001766";
 
     public ItemArmor(ItemArmor.ArmorMaterial p_i45325_1_, int p_i45325_2_, int p_i45325_3_)
     {
@@ -137,7 +135,7 @@ public class ItemArmor extends Item
      */
     public boolean hasColor(ItemStack par1ItemStack)
     {
-        return this.material != ItemArmor.ArmorMaterial.CLOTH ? false : (!par1ItemStack.hasTagCompound() ? false : (!par1ItemStack.getTagCompound().func_150297_b("display", 10) ? false : par1ItemStack.getTagCompound().getCompoundTag("display").func_150297_b("color", 3)));
+        return this.material != ItemArmor.ArmorMaterial.CLOTH ? false : (!par1ItemStack.hasTagCompound() ? false : (!par1ItemStack.getTagCompound().hasKey("display", 10) ? false : par1ItemStack.getTagCompound().getCompoundTag("display").hasKey("color", 3)));
     }
 
     /**
@@ -160,7 +158,7 @@ public class ItemArmor extends Item
             else
             {
                 NBTTagCompound var3 = var2.getCompoundTag("display");
-                return var3 == null ? 10511680 : (var3.func_150297_b("color", 3) ? var3.getInteger("color") : 10511680);
+                return var3 == null ? 10511680 : (var3.hasKey("color", 3) ? var3.getInteger("color") : 10511680);
             }
         }
     }
@@ -212,7 +210,7 @@ public class ItemArmor extends Item
 
             NBTTagCompound var4 = var3.getCompoundTag("display");
 
-            if (!var3.func_150297_b("display", 10))
+            if (!var3.hasKey("display", 10))
             {
                 var3.setTag("display", var4);
             }
@@ -291,7 +289,6 @@ public class ItemArmor extends Item
         private int enchantability;
 
         private static final ItemArmor.ArmorMaterial[] $VALUES = new ItemArmor.ArmorMaterial[]{CLOTH, CHAIN, IRON, GOLD, DIAMOND};
-        private static final String __OBFID = "CL_00001768";
 
         private ArmorMaterial(String par1Str, int par2, int par3, int[] par4ArrayOfInteger, int par5)
         {

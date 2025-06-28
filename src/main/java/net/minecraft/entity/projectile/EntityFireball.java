@@ -26,7 +26,6 @@ public abstract class EntityFireball extends Entity
     public double accelerationX;
     public double accelerationY;
     public double accelerationZ;
-    private static final String __OBFID = "CL_00001717";
 
     public EntityFireball(World par1World)
     {
@@ -254,7 +253,7 @@ public abstract class EntityFireball extends Entity
         this.field_145796_h = Block.getBlockById(par1NBTTagCompound.getByte("inTile") & 255);
         this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
 
-        if (par1NBTTagCompound.func_150297_b("direction", 9))
+        if (par1NBTTagCompound.hasKey("direction", 9))
         {
             NBTTagList var2 = par1NBTTagCompound.getTagList("direction", 6);
             this.motionX = var2.func_150309_d(0);

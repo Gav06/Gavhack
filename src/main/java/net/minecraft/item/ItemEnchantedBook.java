@@ -13,7 +13,6 @@ import net.minecraft.util.WeightedRandomChestContent;
 
 public class ItemEnchantedBook extends Item
 {
-    private static final String __OBFID = "CL_00000025";
 
     public boolean hasEffect(ItemStack par1ItemStack)
     {
@@ -38,7 +37,7 @@ public class ItemEnchantedBook extends Item
 
     public NBTTagList func_92110_g(ItemStack par1ItemStack)
     {
-        return par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.func_150297_b("StoredEnchantments", 9) ? (NBTTagList)par1ItemStack.stackTagCompound.getTag("StoredEnchantments") : new NBTTagList();
+        return par1ItemStack.stackTagCompound != null && par1ItemStack.stackTagCompound.hasKey("StoredEnchantments", 9) ? (NBTTagList)par1ItemStack.stackTagCompound.getTag("StoredEnchantments") : new NBTTagList();
     }
 
     /**

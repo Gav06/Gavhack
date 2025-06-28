@@ -29,7 +29,6 @@ public class EntityBoat extends Entity
     private double velocityX;
     private double velocityY;
     private double velocityZ;
-    private static final String __OBFID = "CL_00001667";
 
     public EntityBoat(World par1World)
     {

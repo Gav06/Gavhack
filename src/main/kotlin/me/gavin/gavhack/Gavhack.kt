@@ -31,10 +31,6 @@ object Gavhack {
         System.setProperty("log4j2.formatMsgNoLookups", "true")
         log.info("log4j2.formatMsgNoLookups set to TRUE, to disable lookups")
 
-        // the nice thing about kotlin is we can initialize all the
-        // 'object' singletons by simply referencing them, because they
-        // are initialized on reference (lazy loading)
-
         ModuleManager
         log.info("Modules initialized")
 

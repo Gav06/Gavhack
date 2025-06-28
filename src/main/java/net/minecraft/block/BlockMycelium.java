@@ -14,7 +14,6 @@ public class BlockMycelium extends Block
 {
     private IIcon field_150200_a;
     private IIcon field_150199_b;
-    private static final String __OBFID = "CL_00000273";
 
     protected BlockMycelium()
     {
@@ -31,7 +30,7 @@ public class BlockMycelium extends Block
         return p_149691_1_ == 1 ? this.field_150200_a : (p_149691_1_ == 0 ? Blocks.dirt.getBlockTextureFromSide(p_149691_1_) : this.blockIcon);
     }
 
-    public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
+    public IIcon getBlockTexture(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
     {
         if (p_149673_5_ == 1)
         {
@@ -48,7 +47,7 @@ public class BlockMycelium extends Block
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
         this.field_150200_a = p_149651_1_.registerIcon(this.getTextureName() + "_top");

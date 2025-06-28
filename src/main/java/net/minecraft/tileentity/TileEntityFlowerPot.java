@@ -7,30 +7,29 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 public class TileEntityFlowerPot extends TileEntity
 {
-    private Item field_145967_a;
-    private int field_145968_i;
-    private static final String __OBFID = "CL_00000356";
+    private Item flowerPotItem;
+    private int flowerPotData;
 
     public TileEntityFlowerPot() {}
 
     public TileEntityFlowerPot(Item p_i45442_1_, int p_i45442_2_)
     {
-        this.field_145967_a = p_i45442_1_;
-        this.field_145968_i = p_i45442_2_;
+        this.flowerPotItem = p_i45442_1_;
+        this.flowerPotData = p_i45442_2_;
     }
 
-    public void writeToNBT(NBTTagCompound tag)
+    public void writeToNBT(NBTTagCompound p_145841_1_)
     {
-        super.writeToNBT(tag);
-        tag.setInteger("Item", Item.getIdFromItem(this.field_145967_a));
-        tag.setInteger("Data", this.field_145968_i);
+        super.writeToNBT(p_145841_1_);
+        p_145841_1_.setInteger("Item", Item.getIdFromItem(this.flowerPotItem));
+        p_145841_1_.setInteger("Data", this.flowerPotData);
     }
 
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(NBTTagCompound p_145839_1_)
     {
-        super.readFromNBT(tag);
-        this.field_145967_a = Item.getItemById(tag.getInteger("Item"));
-        this.field_145968_i = tag.getInteger("Data");
+        super.readFromNBT(p_145839_1_);
+        this.flowerPotItem = Item.getItemById(p_145839_1_.getInteger("Item"));
+        this.flowerPotData = p_145839_1_.getInteger("Data");
     }
 
     /**
@@ -40,22 +39,22 @@ public class TileEntityFlowerPot extends TileEntity
     {
         NBTTagCompound var1 = new NBTTagCompound();
         this.writeToNBT(var1);
-        return new S35PacketUpdateTileEntity(this.x, this.y, this.z, 5, var1);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 5, var1);
     }
 
     public void func_145964_a(Item p_145964_1_, int p_145964_2_)
     {
-        this.field_145967_a = p_145964_1_;
-        this.field_145968_i = p_145964_2_;
+        this.flowerPotItem = p_145964_1_;
+        this.flowerPotData = p_145964_2_;
     }
 
-    public Item func_145965_a()
+    public Item getFlowerPotItem()
     {
-        return this.field_145967_a;
+        return this.flowerPotItem;
     }
 
-    public int func_145966_b()
+    public int getFlowerPotData()
     {
-        return this.field_145968_i;
+        return this.flowerPotData;
     }
 }

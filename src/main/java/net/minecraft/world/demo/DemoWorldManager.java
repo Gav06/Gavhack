@@ -13,7 +13,6 @@ public class DemoWorldManager extends ItemInWorldManager
     private boolean demoTimeExpired;
     private int field_73104_e;
     private int field_73102_f;
-    private static final String __OBFID = "CL_00001429";
 
     public DemoWorldManager(World par1World)
     {
@@ -30,7 +29,7 @@ public class DemoWorldManager extends ItemInWorldManager
         if (!this.field_73105_c && this.field_73102_f > 20)
         {
             this.field_73105_c = true;
-            this.thisPlayerMP.playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(5, 0.0F));
+            this.thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new S2BPacketChangeGameState(5, 0.0F));
         }
 
         this.demoTimeExpired = var1 > 120500L;
@@ -51,15 +50,15 @@ public class DemoWorldManager extends ItemInWorldManager
         {
             if (var1 == 100L)
             {
-                this.thisPlayerMP.playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(5, 101.0F));
+                this.thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new S2BPacketChangeGameState(5, 101.0F));
             }
             else if (var1 == 175L)
             {
-                this.thisPlayerMP.playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(5, 102.0F));
+                this.thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new S2BPacketChangeGameState(5, 102.0F));
             }
             else if (var1 == 250L)
             {
-                this.thisPlayerMP.playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(5, 103.0F));
+                this.thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new S2BPacketChangeGameState(5, 103.0F));
             }
         }
         else if (var3 == 5L && var1 % 24000L == 22000L)

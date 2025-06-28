@@ -38,7 +38,6 @@ public class ItemInWorldManager
     private int posZ;
     private int initialBlockDamage;
     private int durabilityRemainingOnBlock;
-    private static final String __OBFID = "CL_00001442";
 
     public ItemInWorldManager(World par1World)
     {
@@ -263,7 +262,7 @@ public class ItemInWorldManager
 
             if (this.isCreative())
             {
-                this.thisPlayerMP.playerNetServerHandler.sendPacket(new S23PacketBlockChange(par1, par2, par3, this.theWorld));
+                this.thisPlayerMP.playerNetServerHandler.sendPacketToPlayer(new S23PacketBlockChange(par1, par2, par3, this.theWorld));
             }
             else
             {

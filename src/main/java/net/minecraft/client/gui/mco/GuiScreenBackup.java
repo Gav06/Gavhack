@@ -38,7 +38,6 @@ public class GuiScreenBackup extends GuiScreen
     private List field_146847_i = Collections.emptyList();
     private GuiScreenBackup.SelectionList field_146844_r;
     private int field_146843_s = -1;
-    private static final String __OBFID = "CL_00000766";
 
     public GuiScreenBackup(GuiScreenConfigureWorld par1GuiScreenConfigureWorld, long par2)
     {
@@ -56,7 +55,6 @@ public class GuiScreenBackup extends GuiScreen
         this.field_146844_r = new GuiScreenBackup.SelectionList();
         (new Thread("MCO Backup Requester #" + field_146845_a.incrementAndGet())
         {
-            private static final String __OBFID = "CL_00000767";
             public void run()
             {
                 Session var1 = GuiScreenBackup.this.mc.getSession();
@@ -194,12 +192,12 @@ public class GuiScreenBackup extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.field_146844_r.func_148350_a(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.backup.title", new Object[0]), this.width / 2, 20, 16777215);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.field_146844_r.func_148350_a(par1, par2, par3);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.backup.title", new Object[0]), this.width / 2, 20, 16777215);
+        super.drawScreen(par1, par2, par3);
     }
 
     private String func_146829_a(Long p_146829_1_)
@@ -241,7 +239,6 @@ public class GuiScreenBackup extends GuiScreen
 
     class SelectionList extends GuiScreenSelectLocation
     {
-        private static final String __OBFID = "CL_00000768";
 
         public SelectionList()
         {
@@ -292,8 +289,8 @@ public class GuiScreenBackup extends GuiScreen
         private void func_148385_b(int p_148385_1_, int p_148385_2_, int p_148385_3_, int p_148385_4_, Tessellator p_148385_5_)
         {
             Backup var6 = (Backup)GuiScreenBackup.this.field_146847_i.get(p_148385_1_);
-            GuiScreenBackup.this.drawString(GuiScreenBackup.this.fontRendererObj, "Backup (" + GuiScreenBackup.this.func_146829_a(Long.valueOf(MinecraftServer.getSystemTimeMillis() - var6.field_148778_b.getTime())) + ")", p_148385_2_ + 2, p_148385_3_ + 1, 16777215);
-            GuiScreenBackup.this.drawString(GuiScreenBackup.this.fontRendererObj, this.func_148384_a(var6.field_148778_b), p_148385_2_ + 2, p_148385_3_ + 12, 7105644);
+            GuiScreenBackup.this.drawString(GuiScreenBackup.this.fontRenderer, "Backup (" + GuiScreenBackup.this.func_146829_a(Long.valueOf(MinecraftServer.getSystemTimeMillis() - var6.field_148778_b.getTime())) + ")", p_148385_2_ + 2, p_148385_3_ + 1, 16777215);
+            GuiScreenBackup.this.drawString(GuiScreenBackup.this.fontRenderer, this.func_148384_a(var6.field_148778_b), p_148385_2_ + 2, p_148385_3_ + 12, 7105644);
         }
 
         private String func_148384_a(Date p_148384_1_)
@@ -305,7 +302,6 @@ public class GuiScreenBackup extends GuiScreen
     class RestoreTask extends TaskLongRunning
     {
         private final Backup field_148424_c;
-        private static final String __OBFID = "CL_00000769";
 
         private RestoreTask(Backup par2Backup)
         {

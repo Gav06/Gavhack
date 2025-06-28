@@ -12,7 +12,6 @@ import net.minecraft.util.ChatComponentTranslation;
 
 public class CommandWhitelist extends CommandBase
 {
-    private static final String __OBFID = "CL_00001186";
 
     public String getCommandName()
     {

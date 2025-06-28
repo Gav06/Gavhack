@@ -6,7 +6,6 @@ import java.io.IOException;
 
 public class NBTTagEnd extends NBTBase
 {
-    private static final String __OBFID = "CL_00001219";
 
     /**
      * Read the actual data contents of the tag, implemented in NBT extension classes

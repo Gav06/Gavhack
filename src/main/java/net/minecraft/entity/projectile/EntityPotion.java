@@ -18,7 +18,6 @@ public class EntityPotion extends EntityThrowable
      * The damage value of the thrown potion that this EntityPotion represents.
      */
     private ItemStack potionDamage;
-    private static final String __OBFID = "CL_00001727";
 
     public EntityPotion(World par1World)
     {
@@ -158,7 +157,7 @@ public class EntityPotion extends EntityThrowable
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.func_150297_b("Potion", 10))
+        if (par1NBTTagCompound.hasKey("Potion", 10))
         {
             this.potionDamage = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("Potion"));
         }

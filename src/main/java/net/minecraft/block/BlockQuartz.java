@@ -19,7 +19,6 @@ public class BlockQuartz extends Block
     private IIcon field_150194_O;
     private IIcon field_150190_P;
     private IIcon field_150188_Q;
-    private static final String __OBFID = "CL_00000292";
 
     public BlockQuartz()
     {
@@ -118,7 +117,7 @@ public class BlockQuartz extends Block
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 2));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150192_M = new IIcon[field_150189_b.length];
 
@@ -140,7 +139,7 @@ public class BlockQuartz extends Block
         this.field_150188_Q = p_149651_1_.registerIcon(this.getTextureName() + "_" + "bottom");
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
         return MapColor.field_151677_p;
     }

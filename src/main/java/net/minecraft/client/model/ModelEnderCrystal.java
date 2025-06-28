@@ -13,7 +13,6 @@ public class ModelEnderCrystal extends ModelBase
 
     /** The base model for the Ender Crystal. */
     private ModelRenderer base;
-    private static final String __OBFID = "CL_00000871";
 
     public ModelEnderCrystal(float par1, boolean par2)
     {

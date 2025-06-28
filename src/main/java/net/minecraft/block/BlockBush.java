@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 public class BlockBush extends Block
 {
-    private static final String __OBFID = "CL_00000208";
 
     protected BlockBush(Material p_i45395_1_)
     {

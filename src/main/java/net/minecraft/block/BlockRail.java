@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 public class BlockRail extends BlockRailBase
 {
     private IIcon field_150056_b;
-    private static final String __OBFID = "CL_00000293";
 
     protected BlockRail()
     {
@@ -22,9 +21,9 @@ public class BlockRail extends BlockRailBase
         return p_149691_2_ >= 6 ? this.field_150056_b : this.blockIcon;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
-        super.registerBlockIcons(p_149651_1_);
+        super.registerIcons(p_149651_1_);
         this.field_150056_b = p_149651_1_.registerIcon(this.getTextureName() + "_turned");
     }
 

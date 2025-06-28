@@ -10,7 +10,6 @@ public class EntityAIWander extends EntityAIBase
     private double yPosition;
     private double zPosition;
     private double speed;
-    private static final String __OBFID = "CL_00001608";
 
     public EntityAIWander(EntityCreature par1EntityCreature, double par2)
     {

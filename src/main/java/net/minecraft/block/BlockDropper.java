@@ -15,9 +15,8 @@ import net.minecraft.world.World;
 public class BlockDropper extends BlockDispenser
 {
     private final IBehaviorDispenseItem field_149947_P = new BehaviorDefaultDispenseItem();
-    private static final String __OBFID = "CL_00000233";
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("furnace_side");
         this.field_149944_M = p_149651_1_.registerIcon("furnace_top");

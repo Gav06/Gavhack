@@ -138,7 +138,6 @@ public class BiomeDecorator
 
     /** True if decorator should generate surface lava & water */
     public boolean generateLakes;
-    private static final String __OBFID = "CL_00000164";
 
     public BiomeDecorator()
     {

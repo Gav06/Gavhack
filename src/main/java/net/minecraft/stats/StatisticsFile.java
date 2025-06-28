@@ -34,7 +34,6 @@ public class StatisticsFile extends StatFileWriter
     private final Set field_150888_e = Sets.newHashSet();
     private int field_150885_f = -300;
     private boolean field_150886_g = false;
-    private static final String __OBFID = "CL_00001471";
 
     public StatisticsFile(MinecraftServer p_i45306_1_, File p_i45306_2_)
     {
@@ -86,7 +85,7 @@ public class StatisticsFile extends StatFileWriter
 
             if (this.field_150890_c.func_147136_ar())
             {
-                this.field_150890_c.getConfigurationManager().func_148539_a(new ChatComponentTranslation("chat.type.achievement", new Object[] {p_150873_1_.func_145748_c_(), p_150873_2_.func_150955_j()}));
+                this.field_150890_c.getConfigurationManager().sendChatMsg(new ChatComponentTranslation("chat.type.achievement", new Object[] {p_150873_1_.func_145748_c_(), p_150873_2_.func_150955_j()}));
             }
         }
     }
@@ -224,7 +223,7 @@ public class StatisticsFile extends StatFileWriter
             }
         }
 
-        p_150876_1_.playerNetServerHandler.sendPacket(new S37PacketStatistics(var3));
+        p_150876_1_.playerNetServerHandler.sendPacketToPlayer(new S37PacketStatistics(var3));
     }
 
     public void func_150884_b(EntityPlayerMP p_150884_1_)
@@ -243,7 +242,7 @@ public class StatisticsFile extends StatFileWriter
             }
         }
 
-        p_150884_1_.playerNetServerHandler.sendPacket(new S37PacketStatistics(var2));
+        p_150884_1_.playerNetServerHandler.sendPacketToPlayer(new S37PacketStatistics(var2));
     }
 
     public boolean func_150879_e()

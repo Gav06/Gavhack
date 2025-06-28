@@ -25,7 +25,6 @@ public class GuiScreenPendingInvitation extends GuiScreen
     private GuiScreenPendingInvitation.List field_146733_h;
     private java.util.List field_146734_i = Lists.newArrayList();
     private int field_146731_r = -1;
-    private static final String __OBFID = "CL_00000797";
 
     public GuiScreenPendingInvitation(GuiScreen par1GuiScreen)
     {
@@ -42,7 +41,6 @@ public class GuiScreenPendingInvitation extends GuiScreen
         this.field_146733_h = new GuiScreenPendingInvitation.List();
         (new Thread("MCO List Invites #" + field_146732_a.incrementAndGet())
         {
-            private static final String __OBFID = "CL_00000798";
             public void run()
             {
                 Session var1 = GuiScreenPendingInvitation.this.mc.getSession();
@@ -105,7 +103,6 @@ public class GuiScreenPendingInvitation extends GuiScreen
         {
             (new Thread("MCO Reject Invite #" + field_146732_a.incrementAndGet())
             {
-                private static final String __OBFID = "CL_00000800";
                 public void run()
                 {
                     try
@@ -130,7 +127,6 @@ public class GuiScreenPendingInvitation extends GuiScreen
         {
             (new Thread("MCO Accept Invite #" + field_146732_a.incrementAndGet())
             {
-                private static final String __OBFID = "CL_00000801";
                 public void run()
                 {
                     try
@@ -169,17 +165,16 @@ public class GuiScreenPendingInvitation extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.field_146733_h.func_148350_a(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.invites.title", new Object[0]), this.width / 2, 20, 16777215);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.field_146733_h.func_148350_a(par1, par2, par3);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.invites.title", new Object[0]), this.width / 2, 20, 16777215);
+        super.drawScreen(par1, par2, par3);
     }
 
     class List extends GuiScreenSelectLocation
     {
-        private static final String __OBFID = "CL_00000802";
 
         public List()
         {
@@ -230,8 +225,8 @@ public class GuiScreenPendingInvitation extends GuiScreen
         private void func_148382_b(int p_148382_1_, int p_148382_2_, int p_148382_3_, int p_148382_4_, Tessellator p_148382_5_)
         {
             PendingInvite var6 = (PendingInvite)GuiScreenPendingInvitation.this.field_146734_i.get(p_148382_1_);
-            GuiScreenPendingInvitation.this.drawString(GuiScreenPendingInvitation.this.fontRendererObj, var6.field_148774_b, p_148382_2_ + 2, p_148382_3_ + 1, 16777215);
-            GuiScreenPendingInvitation.this.drawString(GuiScreenPendingInvitation.this.fontRendererObj, var6.field_148775_c, p_148382_2_ + 2, p_148382_3_ + 12, 7105644);
+            GuiScreenPendingInvitation.this.drawString(GuiScreenPendingInvitation.this.fontRenderer, var6.field_148774_b, p_148382_2_ + 2, p_148382_3_ + 1, 16777215);
+            GuiScreenPendingInvitation.this.drawString(GuiScreenPendingInvitation.this.fontRenderer, var6.field_148775_c, p_148382_2_ + 2, p_148382_3_ + 12, 7105644);
         }
     }
 }

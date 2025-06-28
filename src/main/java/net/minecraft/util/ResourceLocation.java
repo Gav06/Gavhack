@@ -6,22 +6,21 @@ public class ResourceLocation
 {
     private final String resourceDomain;
     private final String resourcePath;
-    private static final String __OBFID = "CL_00001082";
 
-    public ResourceLocation(String domain, String path)
+    public ResourceLocation(String par1Str, String par2Str)
     {
-        Validate.notNull(path);
+        Validate.notNull(par2Str);
 
-        if (domain != null && !domain.isEmpty())
+        if (par1Str != null && par1Str.length() != 0)
         {
-            this.resourceDomain = domain;
+            this.resourceDomain = par1Str;
         }
         else
         {
             this.resourceDomain = "minecraft";
         }
 
-        this.resourcePath = path;
+        this.resourcePath = par2Str;
     }
 
     public ResourceLocation(String par1Str)

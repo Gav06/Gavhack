@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 public abstract class BlockLiquid extends Block
 {
     private IIcon[] field_149806_a;
-    private static final String __OBFID = "CL_00000265";
 
     protected BlockLiquid(Material p_i45413_1_)
     {
@@ -26,7 +25,7 @@ public abstract class BlockLiquid extends Block
         this.setTickRandomly(true);
     }
 
-    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
     {
         return this.blockMaterial != Material.lava;
     }
@@ -67,7 +66,7 @@ public abstract class BlockLiquid extends Block
         }
     }
 
-    public static float func_149801_b(int p_149801_0_)
+    public static float getFluidHeightPercent(int p_149801_0_)
     {
         if (p_149801_0_ >= 8)
         {
@@ -128,16 +127,16 @@ public abstract class BlockLiquid extends Block
         return p_149678_2_ && p_149678_1_ == 0;
     }
 
-    public boolean isBlockSolid(IBlockAccess access, int x, int y, int z, int side)
+    public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_)
     {
-        Material var6 = access.getBlock(x, y, z).getMaterial();
-        return var6 == this.blockMaterial ? false : (side == 1 ? true : (var6 == Material.ice ? false : super.isBlockSolid(access, x, y, z, side)));
+        Material var6 = p_149747_1_.getBlock(p_149747_2_, p_149747_3_, p_149747_4_).getMaterial();
+        return var6 == this.blockMaterial ? false : (p_149747_5_ == 1 ? true : (var6 == Material.ice ? false : super.isBlockSolid(p_149747_1_, p_149747_2_, p_149747_3_, p_149747_4_, p_149747_5_)));
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
-        Material var6 = blockAccess.getBlock(x, y, z).getMaterial();
-        return var6 == this.blockMaterial ? false : (side == 1 ? true : super.shouldSideBeRendered(blockAccess, x, y, z, side));
+        Material var6 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_).getMaterial();
+        return var6 == this.blockMaterial ? false : (p_149646_5_ == 1 ? true : super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_));
     }
 
     /**
@@ -285,7 +284,7 @@ public abstract class BlockLiquid extends Block
         p_149640_6_.zCoord += var7.zCoord;
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return this.blockMaterial == Material.water ? 5 : (this.blockMaterial == Material.lava ? (p_149738_1_.provider.hasNoSky ? 10 : 30) : 0);
     }
@@ -428,7 +427,7 @@ public abstract class BlockLiquid extends Block
             if (p_149734_5_.nextInt(100) == 0)
             {
                 var21 = (double)((float)p_149734_2_ + p_149734_5_.nextFloat());
-                var22 = (double)p_149734_3_ + this.field_149756_F;
+                var22 = (double)p_149734_3_ + this.maxY;
                 var23 = (double)((float)p_149734_4_ + p_149734_5_.nextFloat());
                 p_149734_1_.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
                 p_149734_1_.playSound(var21, var22, var23, "liquid.lavapop", 0.2F + p_149734_5_.nextFloat() * 0.2F, 0.9F + p_149734_5_.nextFloat() * 0.15F, false);
@@ -457,7 +456,7 @@ public abstract class BlockLiquid extends Block
         }
     }
 
-    public static double func_149802_a(IBlockAccess p_149802_0_, int p_149802_1_, int p_149802_2_, int p_149802_3_, Material p_149802_4_)
+    public static double getFlowDirection(IBlockAccess p_149802_0_, int p_149802_1_, int p_149802_2_, int p_149802_3_, Material p_149802_4_)
     {
         Vec3 var5 = null;
 
@@ -546,7 +545,7 @@ public abstract class BlockLiquid extends Block
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         if (this.blockMaterial == Material.lava)
         {
@@ -558,7 +557,7 @@ public abstract class BlockLiquid extends Block
         }
     }
 
-    public static IIcon func_149803_e(String p_149803_0_)
+    public static IIcon getFluidIcon(String p_149803_0_)
     {
         return p_149803_0_ == "water_still" ? Blocks.flowing_water.field_149806_a[0] : (p_149803_0_ == "water_flow" ? Blocks.flowing_water.field_149806_a[1] : (p_149803_0_ == "lava_still" ? Blocks.flowing_lava.field_149806_a[0] : (p_149803_0_ == "lava_flow" ? Blocks.flowing_lava.field_149806_a[1] : null)));
     }

@@ -86,7 +86,6 @@ public class WorldServer extends World
 
     /** An IntHashMap of entity IDs (integers) to their Entity objects. */
     private IntHashMap entityIdMap;
-    private static final String __OBFID = "CL_00001437";
 
     public WorldServer(MinecraftServer p_i45284_1_, ISaveHandler p_i45284_2_, String p_i45284_3_, int p_i45284_4_, WorldSettings p_i45284_5_, Profiler p_i45284_6_)
     {
@@ -399,7 +398,7 @@ public class WorldServer extends World
         }
     }
 
-    public boolean func_147477_a(int p_147477_1_, int p_147477_2_, int p_147477_3_, Block p_147477_4_)
+    public boolean isBlockTickScheduledThisTick(int p_147477_1_, int p_147477_2_, int p_147477_3_, Block p_147477_4_)
     {
         NextTickListEntry var5 = new NextTickListEntry(p_147477_1_, p_147477_2_, p_147477_3_, p_147477_4_);
         return this.pendingTickListEntriesThisTick.contains(var5);
@@ -410,10 +409,10 @@ public class WorldServer extends World
      */
     public void scheduleBlockUpdate(int p_147464_1_, int p_147464_2_, int p_147464_3_, Block p_147464_4_, int p_147464_5_)
     {
-        this.func_147454_a(p_147464_1_, p_147464_2_, p_147464_3_, p_147464_4_, p_147464_5_, 0);
+        this.scheduleBlockUpdateWithPriority(p_147464_1_, p_147464_2_, p_147464_3_, p_147464_4_, p_147464_5_, 0);
     }
 
-    public void func_147454_a(int p_147454_1_, int p_147454_2_, int p_147454_3_, Block p_147454_4_, int p_147454_5_, int p_147454_6_)
+    public void scheduleBlockUpdateWithPriority(int p_147454_1_, int p_147454_2_, int p_147454_3_, Block p_147454_4_, int p_147454_5_, int p_147454_6_)
     {
         NextTickListEntry var7 = new NextTickListEntry(p_147454_1_, p_147454_2_, p_147454_3_, p_147454_4_);
         byte var8 = 0;
@@ -673,11 +672,11 @@ public class WorldServer extends World
     {
         ArrayList var7 = new ArrayList();
 
-        for (int var8 = 0; var8 < this.tileEntities.size(); ++var8)
+        for (int var8 = 0; var8 < this.field_147482_g.size(); ++var8)
         {
-            TileEntity var9 = (TileEntity)this.tileEntities.get(var8);
+            TileEntity var9 = (TileEntity)this.field_147482_g.get(var8);
 
-            if (var9.x >= p_147486_1_ && var9.y >= p_147486_2_ && var9.z >= p_147486_3_ && var9.x < p_147486_4_ && var9.y < p_147486_5_ && var9.z < p_147486_6_)
+            if (var9.xCoord >= p_147486_1_ && var9.yCoord >= p_147486_2_ && var9.zCoord >= p_147486_3_ && var9.xCoord < p_147486_4_ && var9.yCoord < p_147486_5_ && var9.zCoord < p_147486_6_)
             {
                 var7.add(var9);
             }
@@ -886,7 +885,7 @@ public class WorldServer extends World
     {
         if (super.addWeatherEffect(par1Entity))
         {
-            this.mcServer.getConfigurationManager().func_148541_a(par1Entity.posX, par1Entity.posY, par1Entity.posZ, 512.0D, this.provider.dimensionId, new S2CPacketSpawnGlobalEntity(par1Entity));
+            this.mcServer.getConfigurationManager().sendToAllNear(par1Entity.posX, par1Entity.posY, par1Entity.posZ, 512.0D, this.provider.dimensionId, new S2CPacketSpawnGlobalEntity(par1Entity));
             return true;
         }
         else
@@ -906,35 +905,31 @@ public class WorldServer extends World
     /**
      * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
      */
-    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10)
+    public Explosion newExplosion(Entity entity, double x, double y, double z, float size, boolean par9, boolean par10)
     {
-        Explosion var11 = new Explosion(this, par1Entity, par2, par4, par6, par8);
-        var11.isFlaming = par9;
-        var11.isSmoking = par10;
-        var11.doExplosionA();
-        var11.doExplosionB(false);
+        Explosion explosion = new Explosion(this, entity, x, y, z, size);
+        explosion.isFlaming = par9;
+        explosion.isSmoking = par10;
+        explosion.doExplosionA();
+        explosion.doExplosionB(false);
 
         if (!par10)
         {
-            var11.affectedBlockPositions.clear();
+            explosion.affectedBlockPositions.clear();
         }
 
-        Iterator var12 = this.playerEntities.iterator();
+        for (Object playerEntity : this.playerEntities) {
+            EntityPlayer player = (EntityPlayer) playerEntity;
 
-        while (var12.hasNext())
-        {
-            EntityPlayer var13 = (EntityPlayer)var12.next();
-
-            if (var13.getDistanceSq(par2, par4, par6) < 4096.0D)
-            {
-                ((EntityPlayerMP)var13).playerNetServerHandler.sendPacket(new S27PacketExplosion(par2, par4, par6, par8, var11.affectedBlockPositions, (Vec3)var11.func_77277_b().get(var13)));
+            if (player.getDistanceSq(x, y, z) < 4096.0D) {
+                ((EntityPlayerMP) player).playerNetServerHandler.sendPacketToPlayer(new S27PacketExplosion(x, y, z, size, explosion.affectedBlockPositions, (Vec3) explosion.getEntityKnockbackVec().get(player)));
             }
         }
 
-        return var11;
+        return explosion;
     }
 
-    public void func_147452_c(int p_147452_1_, int p_147452_2_, int p_147452_3_, Block p_147452_4_, int p_147452_5_, int p_147452_6_)
+    public void addBlockEvent(int p_147452_1_, int p_147452_2_, int p_147452_3_, Block p_147452_4_, int p_147452_5_, int p_147452_6_)
     {
         BlockEventData var7 = new BlockEventData(p_147452_1_, p_147452_2_, p_147452_3_, p_147452_4_, p_147452_5_, p_147452_6_);
         Iterator var8 = this.field_147490_S[this.field_147489_T].iterator();
@@ -967,7 +962,7 @@ public class WorldServer extends World
 
                 if (this.func_147485_a(var3))
                 {
-                    this.mcServer.getConfigurationManager().func_148541_a((double)var3.func_151340_a(), (double)var3.func_151342_b(), (double)var3.func_151341_c(), 64.0D, this.provider.dimensionId, new S24PacketBlockAction(var3.func_151340_a(), var3.func_151342_b(), var3.func_151341_c(), var3.getBlock(), var3.getEventID(), var3.getEventParameter()));
+                    this.mcServer.getConfigurationManager().sendToAllNear((double)var3.func_151340_a(), (double)var3.func_151342_b(), (double)var3.func_151341_c(), 64.0D, this.provider.dimensionId, new S24PacketBlockAction(var3.func_151340_a(), var3.func_151342_b(), var3.func_151341_c(), var3.getBlock(), var3.getEventID(), var3.getEventParameter()));
                 }
             }
 
@@ -999,27 +994,27 @@ public class WorldServer extends World
 
         if (this.prevRainingStrength != this.rainingStrength)
         {
-            this.mcServer.getConfigurationManager().func_148537_a(new S2BPacketChangeGameState(7, this.rainingStrength), this.provider.dimensionId);
+            this.mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(new S2BPacketChangeGameState(7, this.rainingStrength), this.provider.dimensionId);
         }
 
         if (this.prevThunderingStrength != this.thunderingStrength)
         {
-            this.mcServer.getConfigurationManager().func_148537_a(new S2BPacketChangeGameState(8, this.thunderingStrength), this.provider.dimensionId);
+            this.mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(new S2BPacketChangeGameState(8, this.thunderingStrength), this.provider.dimensionId);
         }
 
         if (var1 != this.isRaining())
         {
             if (var1)
             {
-                this.mcServer.getConfigurationManager().func_148540_a(new S2BPacketChangeGameState(2, 0.0F));
+                this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new S2BPacketChangeGameState(2, 0.0F));
             }
             else
             {
-                this.mcServer.getConfigurationManager().func_148540_a(new S2BPacketChangeGameState(1, 0.0F));
+                this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new S2BPacketChangeGameState(1, 0.0F));
             }
 
-            this.mcServer.getConfigurationManager().func_148540_a(new S2BPacketChangeGameState(7, this.rainingStrength));
-            this.mcServer.getConfigurationManager().func_148540_a(new S2BPacketChangeGameState(8, this.thunderingStrength));
+            this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new S2BPacketChangeGameState(7, this.rainingStrength));
+            this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new S2BPacketChangeGameState(8, this.thunderingStrength));
         }
     }
 
@@ -1061,14 +1056,13 @@ public class WorldServer extends World
 
             if (var27 <= 256.0D)
             {
-                var19.playerNetServerHandler.sendPacket(var17);
+                var19.playerNetServerHandler.sendPacketToPlayer(var17);
             }
         }
     }
 
     static class ServerBlockEventList extends ArrayList
     {
-        private static final String __OBFID = "CL_00001439";
 
         private ServerBlockEventList() {}
 

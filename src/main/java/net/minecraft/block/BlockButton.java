@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 public abstract class BlockButton extends Block
 {
     private final boolean field_150047_a;
-    private static final String __OBFID = "CL_00000209";
 
     protected BlockButton(boolean p_i45396_1_)
     {
@@ -34,7 +33,7 @@ public abstract class BlockButton extends Block
         return null;
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return this.field_150047_a ? 30 : 20;
     }
@@ -208,7 +207,7 @@ public abstract class BlockButton extends Block
             p_149727_1_.markBlockRangeForRenderUpdate(p_149727_2_, p_149727_3_, p_149727_4_, p_149727_2_, p_149727_3_, p_149727_4_);
             p_149727_1_.playSoundEffect((double)p_149727_2_ + 0.5D, (double)p_149727_3_ + 0.5D, (double)p_149727_4_ + 0.5D, "random.click", 0.3F, 0.6F);
             this.func_150042_a(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_, var11);
-            p_149727_1_.scheduleBlockUpdate(p_149727_2_, p_149727_3_, p_149727_4_, this, this.func_149738_a(p_149727_1_));
+            p_149727_1_.scheduleBlockUpdate(p_149727_2_, p_149727_3_, p_149727_4_, this, this.tickRate(p_149727_1_));
             return true;
         }
     }
@@ -310,7 +309,7 @@ public abstract class BlockButton extends Block
         int var6 = var5 & 7;
         boolean var7 = (var5 & 8) != 0;
         this.func_150043_b(var5);
-        List var9 = p_150046_1_.getEntitiesWithinAABB(EntityArrow.class, AxisAlignedBB.getAABBPool().getAABB((double)p_150046_2_ + this.field_149759_B, (double)p_150046_3_ + this.field_149760_C, (double)p_150046_4_ + this.field_149754_D, (double)p_150046_2_ + this.field_149755_E, (double)p_150046_3_ + this.field_149756_F, (double)p_150046_4_ + this.field_149757_G));
+        List var9 = p_150046_1_.getEntitiesWithinAABB(EntityArrow.class, AxisAlignedBB.getAABBPool().getAABB((double)p_150046_2_ + this.minX, (double)p_150046_3_ + this.minY, (double)p_150046_4_ + this.minZ, (double)p_150046_2_ + this.maxX, (double)p_150046_3_ + this.maxY, (double)p_150046_4_ + this.maxZ));
         boolean var8 = !var9.isEmpty();
 
         if (var8 && !var7)
@@ -331,7 +330,7 @@ public abstract class BlockButton extends Block
 
         if (var8)
         {
-            p_150046_1_.scheduleBlockUpdate(p_150046_2_, p_150046_3_, p_150046_4_, this, this.func_149738_a(p_150046_1_));
+            p_150046_1_.scheduleBlockUpdate(p_150046_2_, p_150046_3_, p_150046_4_, this, this.tickRate(p_150046_1_));
         }
     }
 
@@ -361,5 +360,5 @@ public abstract class BlockButton extends Block
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerIcons(IIconRegister p_149651_1_) {}
 }

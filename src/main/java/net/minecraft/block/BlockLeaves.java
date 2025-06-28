@@ -19,7 +19,6 @@ public abstract class BlockLeaves extends BlockLeavesBase
     int[] field_150128_a;
     protected int field_150127_b;
     protected IIcon[][] field_150129_M = new IIcon[2][];
-    private static final String __OBFID = "CL_00000263";
 
     public BlockLeaves()
     {
@@ -322,7 +321,7 @@ public abstract class BlockLeaves extends BlockLeavesBase
      */
     public abstract IIcon getIcon(int var1, int var2);
 
-    public void func_150122_b(boolean p_150122_1_)
+    public void setGraphicsLevel(boolean p_150122_1_)
     {
         this.field_150121_P = p_150122_1_;
         this.field_150127_b = p_150122_1_ ? 0 : 1;

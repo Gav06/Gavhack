@@ -53,7 +53,6 @@ public class EntityFishHook extends Entity
     private double field_146061_aH;
     private double field_146052_aI;
     private double field_146053_aJ;
-    private static final String __OBFID = "CL_00001663";
 
     public EntityFishHook(World par1World)
     {

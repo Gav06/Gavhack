@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 public class EntityDamageSourceIndirect extends EntityDamageSource
 {
     private Entity indirectEntity;
-    private static final String __OBFID = "CL_00001523";
 
     public EntityDamageSourceIndirect(String par1Str, Entity par2Entity, Entity par3Entity)
     {

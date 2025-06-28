@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.texture.DynamicTexture
 import net.minecraft.util.ResourceLocation
 import net.minecraft.util.Vec3
-import net.minecraft.wdl.WDL
 import org.lwjgl.opengl.GL11
 import java.awt.image.BufferedImage
 import java.io.InputStream
@@ -69,7 +68,6 @@ object OppDetector: Module("OppDetector", "schitzo esp", ModCategory.RENDER) {
 
 
     init {
-
         var image: BufferedImage? = null
         try {
             val stream: InputStream? = javaClass.getResourceAsStream(ARAB_PATH)
@@ -79,7 +77,7 @@ object OppDetector: Module("OppDetector", "schitzo esp", ModCategory.RENDER) {
 
             if (image != null) {
                 val tex = DynamicTexture(image)
-                tex.loadTexture(WDL.mc.resourceManager)
+                tex.loadTexture(mc.resourceManager)
                 arabTex = mc.textureManager.getDynamicTextureLocation("GAVHACK_ARAB", tex)
             } else {
                 Gavhack.log.error("Failed to load image")

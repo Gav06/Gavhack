@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 
 public class BlockClay extends Block
 {
-    private static final String __OBFID = "CL_00000215";
 
     public BlockClay()
     {

@@ -50,10 +50,10 @@ object Utils {
 
     fun gameMessage(msg: String) {
         val mc = Minecraft.getMinecraft()
-        if (mc != null && mc.ingameGUI.chatGUI != null) {
+        if (mc != null && mc.ingameGUI.chatGui != null) {
             val gray = EnumChatFormatting.GRAY
             val green = EnumChatFormatting.GREEN;
-            mc.ingameGUI.chatGUI.addChatMessage(ChatComponentText(
+            mc.ingameGUI.chatGui.printChatMessage(ChatComponentText(
                     "$gray[${green}gh$gray]${EnumChatFormatting.RESET} $msg"))
         }
     }
@@ -75,7 +75,7 @@ object Utils {
     fun clickSound() {
         val mc = Minecraft.getMinecraft()
         if (mc != null && mc.soundHandler != null) {
-            mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(ResourceLocation("gui.button.press"), 1.0f))
+            mc.soundHandler.playSound(PositionedSoundRecord.func_147674_a(ResourceLocation("gui.button.press"), 1.0f))
         }
     }
 }

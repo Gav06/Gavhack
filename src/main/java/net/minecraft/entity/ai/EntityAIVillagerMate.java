@@ -13,7 +13,6 @@ public class EntityAIVillagerMate extends EntityAIBase
     private World worldObj;
     private int matingTimeout;
     Village villageObj;
-    private static final String __OBFID = "CL_00001594";
 
     public EntityAIVillagerMate(EntityVillager par1EntityVillager)
     {

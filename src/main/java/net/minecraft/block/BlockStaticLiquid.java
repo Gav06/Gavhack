@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 
 public class BlockStaticLiquid extends BlockLiquid
 {
-    private static final String __OBFID = "CL_00000315";
 
     protected BlockStaticLiquid(Material p_i45429_1_)
     {
@@ -34,7 +33,7 @@ public class BlockStaticLiquid extends BlockLiquid
     {
         int var5 = p_149818_1_.getBlockMetadata(p_149818_2_, p_149818_3_, p_149818_4_);
         p_149818_1_.setBlock(p_149818_2_, p_149818_3_, p_149818_4_, Block.getBlockById(Block.getIdFromBlock(this) - 1), var5, 2);
-        p_149818_1_.scheduleBlockUpdate(p_149818_2_, p_149818_3_, p_149818_4_, Block.getBlockById(Block.getIdFromBlock(this) - 1), this.func_149738_a(p_149818_1_));
+        p_149818_1_.scheduleBlockUpdate(p_149818_2_, p_149818_3_, p_149818_4_, Block.getBlockById(Block.getIdFromBlock(this) - 1), this.tickRate(p_149818_1_));
     }
 
     /**

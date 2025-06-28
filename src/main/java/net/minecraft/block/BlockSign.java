@@ -16,7 +16,6 @@ public class BlockSign extends BlockContainer
 {
     private Class field_149968_a;
     private boolean field_149967_b;
-    private static final String __OBFID = "CL_00000306";
 
     protected BlockSign(Class p_i45426_1_, boolean p_i45426_2_)
     {
@@ -101,7 +100,7 @@ public class BlockSign extends BlockContainer
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
     {
         return true;
     }
@@ -180,10 +179,10 @@ public class BlockSign extends BlockContainer
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.sign;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerIcons(IIconRegister p_149651_1_) {}
 }

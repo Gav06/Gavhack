@@ -9,7 +9,6 @@ public class NBTTagFloat extends NBTBase.NBTPrimitive
 {
     /** The float value for the tag. */
     private float data;
-    private static final String __OBFID = "CL_00001220";
 
     NBTTagFloat() {}
 

@@ -11,7 +11,6 @@ public class GuiScreenConfirmation extends GuiScreen
     protected final String field_146931_f;
     protected final String field_146932_g;
     protected final int field_146936_h;
-    private static final String __OBFID = "CL_00000781";
 
     public GuiScreenConfirmation(GuiScreen par1GuiScreen, GuiScreenConfirmation.ConfirmationType par2GuiScreenConfirmationType, String par3Str, String par4Str, int par5)
     {
@@ -41,13 +40,13 @@ public class GuiScreenConfirmation extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.field_146937_i.field_148515_d, this.width / 2, 70, this.field_146937_i.field_148518_c);
-        this.drawCenteredString(this.fontRendererObj, this.field_146934_r, this.width / 2, 90, 16777215);
-        this.drawCenteredString(this.fontRendererObj, this.field_146933_s, this.width / 2, 110, 16777215);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.drawCenteredString(this.fontRenderer, this.field_146937_i.field_148515_d, this.width / 2, 70, this.field_146937_i.field_148518_c);
+        this.drawCenteredString(this.fontRenderer, this.field_146934_r, this.width / 2, 90, 16777215);
+        this.drawCenteredString(this.fontRenderer, this.field_146933_s, this.width / 2, 110, 16777215);
+        super.drawScreen(par1, par2, par3);
     }
 
     public static enum ConfirmationType
@@ -58,7 +57,6 @@ public class GuiScreenConfirmation extends GuiScreen
         public final String field_148515_d;
 
         private static final GuiScreenConfirmation.ConfirmationType[] $VALUES = new GuiScreenConfirmation.ConfirmationType[]{Warning, Info};
-        private static final String __OBFID = "CL_00000782";
 
         private ConfirmationType(String par1Str, int par2, String par3Str, int par4)
         {

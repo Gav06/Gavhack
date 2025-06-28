@@ -53,7 +53,6 @@ public class NetworkSystem
 
     /** A list containing all NetworkManager instances of all endpoints */
     private final List networkManagers = Collections.synchronizedList(new ArrayList());
-    private static final String __OBFID = "CL_00001447";
 
     public NetworkSystem(MinecraftServer p_i45292_1_)
     {
@@ -72,7 +71,6 @@ public class NetworkSystem
         {
             this.endpoints.add(((ServerBootstrap)((ServerBootstrap)(new ServerBootstrap()).channel(NioServerSocketChannel.class)).childHandler(new ChannelInitializer()
             {
-                private static final String __OBFID = "CL_00001448";
                 protected void initChannel(Channel p_initChannel_1_)
                 {
                     try
@@ -115,7 +113,6 @@ public class NetworkSystem
         {
             var1 = ((ServerBootstrap)((ServerBootstrap)(new ServerBootstrap()).channel(LocalServerChannel.class)).childHandler(new ChannelInitializer()
             {
-                private static final String __OBFID = "CL_00001449";
                 protected void initChannel(Channel p_initChannel_1_)
                 {
                     NetworkManager var2 = new NetworkManager(false);
@@ -188,7 +185,6 @@ public class NetworkSystem
                             CrashReportCategory var6 = var10.makeCategory("Ticking connection");
                             var6.addCrashSectionCallable("Connection", new Callable()
                             {
-                                private static final String __OBFID = "CL_00001450";
                                 public String call()
                                 {
                                     return var3.toString();
@@ -201,7 +197,6 @@ public class NetworkSystem
                         final ChatComponentText var5 = new ChatComponentText("Internal server error");
                         var3.scheduleOutboundPacket(new S40PacketDisconnect(var5), new GenericFutureListener[] {new GenericFutureListener()
                             {
-                                private static final String __OBFID = "CL_00001451";
                                 public void operationComplete(Future p_operationComplete_1_)
                                 {
                                     var3.closeChannel(var5);

@@ -8,7 +8,6 @@ public class NoiseGeneratorImproved extends NoiseGenerator
     public double xCoord;
     public double yCoord;
     public double zCoord;
-    private static final String __OBFID = "CL_00000534";
 
     public NoiseGeneratorImproved()
     {

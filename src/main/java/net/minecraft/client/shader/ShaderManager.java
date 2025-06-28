@@ -46,13 +46,12 @@ public class ShaderManager
     private final List field_148014_r;
     private final ShaderLoader field_148013_s;
     private final ShaderLoader field_148012_t;
-    private static final String __OBFID = "CL_00001040";
 
-    public ShaderManager(IResourceManager p_i45087_1_, String shader) throws JsonException
+    public ShaderManager(IResourceManager p_i45087_1_, String p_i45087_2_) throws JsonException
     {
         JsonParser var3 = new JsonParser();
-        ResourceLocation var4 = new ResourceLocation("shaders/program/" + shader + ".json");
-        this.field_148007_m = shader;
+        ResourceLocation var4 = new ResourceLocation("shaders/program/" + p_i45087_2_ + ".json");
+        this.field_148007_m = p_i45087_2_;
         InputStream var5 = null;
 
         try

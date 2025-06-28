@@ -27,7 +27,6 @@ public abstract class GuiScreenSelectLocation
     private boolean field_148379_r = true;
     private boolean field_148378_s;
     private int field_148377_t;
-    private static final String __OBFID = "CL_00000785";
 
     public GuiScreenSelectLocation(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6)
     {

@@ -2,7 +2,6 @@ package net.minecraft.entity.passive;
 
 import java.util.Iterator;
 import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.command.IEntitySelector;
@@ -43,7 +42,6 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
 {
     private static final IEntitySelector horseBreedingSelector = new IEntitySelector()
     {
-        private static final String __OBFID = "CL_00001642";
         public boolean isEntityApplicable(Entity par1Entity)
         {
             return par1Entity instanceof EntityHorse && ((EntityHorse)par1Entity).func_110205_ce();
@@ -81,7 +79,6 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
     private int field_110285_bP;
     private String field_110286_bQ;
     private String[] field_110280_bR = new String[3];
-    private static final String __OBFID = "CL_00001641";
 
     public EntityHorse(World par1World)
     {
@@ -330,9 +327,9 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
         this.hasReproduced = par1;
     }
 
-    public void setHorseSaddled(boolean isSaddled)
+    public void setHorseSaddled(boolean par1)
     {
-        this.setHorseWatchableBoolean(4, isSaddled);
+        this.setHorseWatchableBoolean(4, par1);
     }
 
     public int getTemper()
@@ -1401,7 +1398,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
         this.setTemper(par1NBTTagCompound.getInteger("Temper"));
         this.setHorseTamed(par1NBTTagCompound.getBoolean("Tame"));
 
-        if (par1NBTTagCompound.func_150297_b("OwnerName", 8))
+        if (par1NBTTagCompound.hasKey("OwnerName", 8))
         {
             this.setOwnerName(par1NBTTagCompound.getString("OwnerName"));
         }
@@ -1432,7 +1429,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
 
         ItemStack var7;
 
-        if (par1NBTTagCompound.func_150297_b("ArmorItem", 10))
+        if (par1NBTTagCompound.hasKey("ArmorItem", 10))
         {
             var7 = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("ArmorItem"));
 
@@ -1442,7 +1439,7 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
             }
         }
 
-        if (par1NBTTagCompound.func_150297_b("SaddleItem", 10))
+        if (par1NBTTagCompound.hasKey("SaddleItem", 10))
         {
             var7 = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("SaddleItem"));
 
@@ -1752,7 +1749,6 @@ public class EntityHorse extends EntityAnimal implements IInvBasic
     {
         public int field_111107_a;
         public int field_111106_b;
-        private static final String __OBFID = "CL_00001643";
 
         public GroupData(int par1, int par2)
         {

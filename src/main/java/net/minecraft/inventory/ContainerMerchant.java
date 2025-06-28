@@ -14,7 +14,6 @@ public class ContainerMerchant extends Container
 
     /** Instance of World. */
     private final World theWorld;
-    private static final String __OBFID = "CL_00001757";
 
     public ContainerMerchant(InventoryPlayer par1InventoryPlayer, IMerchant par2IMerchant, World par3World)
     {

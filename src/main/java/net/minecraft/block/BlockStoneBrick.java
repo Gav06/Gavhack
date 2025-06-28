@@ -13,7 +13,6 @@ public class BlockStoneBrick extends Block
     public static final String[] field_150142_a = new String[] {"default", "mossy", "cracked", "chiseled"};
     public static final String[] field_150141_b = new String[] {null, "mossy", "cracked", "carved"};
     private IIcon[] field_150143_M;
-    private static final String __OBFID = "CL_00000318";
 
     public BlockStoneBrick()
     {
@@ -50,7 +49,7 @@ public class BlockStoneBrick extends Block
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150143_M = new IIcon[field_150141_b.length];
 

@@ -9,7 +9,6 @@ import net.minecraft.util.ValueObject;
 public class McoServerAddress extends ValueObject
 {
     public String field_148770_a;
-    private static final String __OBFID = "CL_00001168";
 
     public static McoServerAddress func_148769_a(String p_148769_0_)
     {

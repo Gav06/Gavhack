@@ -35,12 +35,12 @@ object ChestESP: Module("ChestESP", "See chests through walls", ModCategory.REND
                 val color = if (tile is TileEntityChest) 0xf99c04 else 0x7443f9
 
                 val aabb = AxisAlignedBB.getBoundingBox(
-                    tile.x.toDouble(),
-                    tile.y.toDouble(),
-                    tile.z.toDouble(),
-                    tile.x.toDouble() + 1.0,
-                    tile.y.toDouble() + 1.0,
-                    tile.z.toDouble() + 1.0
+                    tile.xCoord.toDouble(),
+                    tile.yCoord.toDouble(),
+                    tile.zCoord.toDouble(),
+                    tile.xCoord.toDouble() + 1.0,
+                    tile.yCoord.toDouble() + 1.0,
+                    tile.zCoord.toDouble() + 1.0
                 )
 
 

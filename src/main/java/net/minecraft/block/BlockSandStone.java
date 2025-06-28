@@ -15,7 +15,6 @@ public class BlockSandStone extends Block
     private IIcon[] field_150158_M;
     private IIcon field_150159_N;
     private IIcon field_150160_O;
-    private static final String __OBFID = "CL_00000304";
 
     public BlockSandStone()
     {
@@ -65,7 +64,7 @@ public class BlockSandStone extends Block
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 2));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150158_M = new IIcon[field_150156_b.length];
 

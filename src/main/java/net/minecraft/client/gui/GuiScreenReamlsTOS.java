@@ -23,7 +23,6 @@ public class GuiScreenReamlsTOS extends GuiScreen
     private GuiButton field_146774_h;
     private boolean field_146775_i = false;
     private String field_146772_r = "https://minecraft.net/realms/terms";
-    private static final String __OBFID = "CL_00000809";
 
     public GuiScreenReamlsTOS(GuiScreen p_i45045_1_, McoServer p_i45045_2_)
     {
@@ -124,30 +123,30 @@ public class GuiScreenReamlsTOS extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.terms.title", new Object[0]), this.width / 2, 17, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("mco.terms.sentence.1", new Object[0]), this.width / 2 - 120, 87, 16777215);
-        int var4 = this.fontRendererObj.getStringWidth(I18n.format("mco.terms.sentence.1", new Object[0]));
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.terms.title", new Object[0]), this.width / 2, 17, 16777215);
+        this.drawString(this.fontRenderer, I18n.format("mco.terms.sentence.1", new Object[0]), this.width / 2 - 120, 87, 16777215);
+        int var4 = this.fontRenderer.getStringWidth(I18n.format("mco.terms.sentence.1", new Object[0]));
         int var5 = 3368635;
         int var6 = 7107012;
         int var7 = this.width / 2 - 121 + var4;
         byte var8 = 86;
-        int var9 = var7 + this.fontRendererObj.getStringWidth("mco.terms.sentence.2") + 1;
-        int var10 = 87 + this.fontRendererObj.FONT_HEIGHT;
+        int var9 = var7 + this.fontRenderer.getStringWidth("mco.terms.sentence.2") + 1;
+        int var10 = 87 + this.fontRenderer.FONT_HEIGHT;
 
-        if (var7 <= mouseX && mouseX <= var9 && var8 <= mouseY && mouseY <= var10)
+        if (var7 <= par1 && par1 <= var9 && var8 <= par2 && par2 <= var10)
         {
             this.field_146775_i = true;
-            this.drawString(this.fontRendererObj, " " + I18n.format("mco.terms.sentence.2", new Object[0]), this.width / 2 - 120 + var4, 87, var6);
+            this.drawString(this.fontRenderer, " " + I18n.format("mco.terms.sentence.2", new Object[0]), this.width / 2 - 120 + var4, 87, var6);
         }
         else
         {
             this.field_146775_i = false;
-            this.drawString(this.fontRendererObj, " " + I18n.format("mco.terms.sentence.2", new Object[0]), this.width / 2 - 120 + var4, 87, var5);
+            this.drawString(this.fontRenderer, " " + I18n.format("mco.terms.sentence.2", new Object[0]), this.width / 2 - 120 + var4, 87, var5);
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

@@ -138,7 +138,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         val uniform = colorFramebuffer.shader.getUniform("rgb")
 
         for (e in mc.theWorld.loadedEntityList) {
-            if (!frustum.isBoundingBoxInFrustum(e.boundingBox)) continue
+            if (!frustum.isBoundingBoxInFrustum(e.getBoundingBox())) continue
 
             if ((e == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) || !entityCheck(e)) continue
 
@@ -151,11 +151,11 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         RenderUtils.shouldCancelTileDistanceCheck = true
 
         // make a copy of the tileEntity list to prevent any weird concurrency issues
-        for (tile in ArrayList<TileEntity>(mc.theWorld.tileEntities)) {
+        for (tile in ArrayList<TileEntity>(mc.renderGlobal.tileEntities)) {
 
             val aabb = AxisAlignedBB.getBoundingBox(
-                tile.x.toDouble(), tile.y.toDouble(), tile.z.toDouble(),
-                tile.x + 1.0, tile.y + 1.0, tile.z + 1.0
+                tile.xCoord.toDouble(), tile.yCoord.toDouble(), tile.zCoord.toDouble(),
+                tile.xCoord + 1.0, tile.yCoord + 1.0, tile.zCoord + 1.0
             )
 
             if (!frustum.isBoundingBoxInFrustum(aabb)) continue

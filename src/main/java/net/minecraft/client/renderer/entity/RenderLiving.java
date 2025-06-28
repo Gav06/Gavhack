@@ -1,13 +1,14 @@
 package net.minecraft.client.renderer.entity;
 
-import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.src.Config;
 import org.lwjgl.opengl.GL11;
+import shadersmod.client.Shaders;
 
 public abstract class RenderLiving extends RendererLivingEntity
 {
@@ -19,8 +20,6 @@ public abstract class RenderLiving extends RendererLivingEntity
 
     protected boolean func_110813_b(EntityLiving par1EntityLiving)
     {
-
-
         return super.func_110813_b(par1EntityLiving) && (par1EntityLiving.getAlwaysRenderNameTagForRender() || par1EntityLiving.hasCustomNameTag() && par1EntityLiving == this.renderManager.field_147941_i);
     }
 
@@ -36,95 +35,110 @@ public abstract class RenderLiving extends RendererLivingEntity
         this.func_110827_b(par1EntityLiving, par2, par4, par6, par8, par9);
     }
 
-    private double lerp(double then, double now, double delta)
+    private double func_110828_a(double par1, double par3, double par5)
     {
-        return then + (now - then) * delta;
+        return par1 + (par3 - par1) * par5;
     }
 
     protected void func_110827_b(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
     {
-        Entity var10 = par1EntityLiving.getLeashedToEntity();
-
-        if (var10 != null)
+        if (!Config.isShaders() || !Shaders.isShadowPass)
         {
-            par4 -= (1.6D - (double)par1EntityLiving.height) * 0.5D;
-            Tessellator var11 = Tessellator.instance;
-            double yaw = this.lerp((double)var10.prevRotationYaw, (double)var10.rotationYaw, (double)(par9 * 0.5F)) * 0.01745329238474369D;
-            double pitch = this.lerp((double)var10.prevRotationPitch, (double)var10.rotationPitch, (double)(par9 * 0.5F)) * 0.01745329238474369D;
-            double cos = Math.cos(yaw);
-            double sin = Math.sin(yaw);
-            double tan = Math.sin(pitch);
+            Entity var10 = par1EntityLiving.getLeashedToEntity();
 
-            if (var10 instanceof EntityHanging)
+            if (var10 != null)
             {
-                cos = 0.0D;
-                sin = 0.0D;
-                tan = -1.0D;
+                par4 -= (1.6D - (double)par1EntityLiving.height) * 0.5D;
+                Tessellator var11 = Tessellator.instance;
+                double var12 = this.func_110828_a((double)var10.prevRotationYaw, (double)var10.rotationYaw, (double)(par9 * 0.5F)) * 0.01745329238474369D;
+                double var14 = this.func_110828_a((double)var10.prevRotationPitch, (double)var10.rotationPitch, (double)(par9 * 0.5F)) * 0.01745329238474369D;
+                double var16 = Math.cos(var12);
+                double var18 = Math.sin(var12);
+                double var20 = Math.sin(var14);
+
+                if (var10 instanceof EntityHanging)
+                {
+                    var16 = 0.0D;
+                    var18 = 0.0D;
+                    var20 = -1.0D;
+                }
+
+                double var22 = Math.cos(var14);
+                double var24 = this.func_110828_a(var10.prevPosX, var10.posX, (double)par9) - var16 * 0.7D - var18 * 0.5D * var22;
+                double var26 = this.func_110828_a(var10.prevPosY + (double)var10.getEyeHeight() * 0.7D, var10.posY + (double)var10.getEyeHeight() * 0.7D, (double)par9) - var20 * 0.5D - 0.25D;
+                double var28 = this.func_110828_a(var10.prevPosZ, var10.posZ, (double)par9) - var18 * 0.7D + var16 * 0.5D * var22;
+                double var30 = this.func_110828_a((double)par1EntityLiving.prevRenderYawOffset, (double)par1EntityLiving.renderYawOffset, (double)par9) * 0.01745329238474369D + (Math.PI / 2D);
+                var16 = Math.cos(var30) * (double)par1EntityLiving.width * 0.4D;
+                var18 = Math.sin(var30) * (double)par1EntityLiving.width * 0.4D;
+                double var32 = this.func_110828_a(par1EntityLiving.prevPosX, par1EntityLiving.posX, (double)par9) + var16;
+                double var34 = this.func_110828_a(par1EntityLiving.prevPosY, par1EntityLiving.posY, (double)par9);
+                double var36 = this.func_110828_a(par1EntityLiving.prevPosZ, par1EntityLiving.posZ, (double)par9) + var18;
+                par2 += var16;
+                par6 += var18;
+                double var38 = (double)((float)(var24 - var32));
+                double var40 = (double)((float)(var26 - var34));
+                double var42 = (double)((float)(var28 - var36));
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                GL11.glDisable(GL11.GL_CULL_FACE);
+
+                if (Config.isShaders())
+                {
+                    Shaders.beginLeash();
+                }
+
+                boolean var44 = true;
+                double var45 = 0.025D;
+                var11.startDrawing(5);
+                int var47;
+                float var48;
+
+                for (var47 = 0; var47 <= 24; ++var47)
+                {
+                    if (var47 % 2 == 0)
+                    {
+                        var11.setColorRGBA_F(0.5F, 0.4F, 0.3F, 1.0F);
+                    }
+                    else
+                    {
+                        var11.setColorRGBA_F(0.35F, 0.28F, 0.21000001F, 1.0F);
+                    }
+
+                    var48 = (float)var47 / 24.0F;
+                    var11.addVertex(par2 + var38 * (double)var48 + 0.0D, par4 + var40 * (double)(var48 * var48 + var48) * 0.5D + (double)((24.0F - (float)var47) / 18.0F + 0.125F), par6 + var42 * (double)var48);
+                    var11.addVertex(par2 + var38 * (double)var48 + 0.025D, par4 + var40 * (double)(var48 * var48 + var48) * 0.5D + (double)((24.0F - (float)var47) / 18.0F + 0.125F) + 0.025D, par6 + var42 * (double)var48);
+                }
+
+                var11.draw();
+                var11.startDrawing(5);
+
+                for (var47 = 0; var47 <= 24; ++var47)
+                {
+                    if (var47 % 2 == 0)
+                    {
+                        var11.setColorRGBA_F(0.5F, 0.4F, 0.3F, 1.0F);
+                    }
+                    else
+                    {
+                        var11.setColorRGBA_F(0.35F, 0.28F, 0.21000001F, 1.0F);
+                    }
+
+                    var48 = (float)var47 / 24.0F;
+                    var11.addVertex(par2 + var38 * (double)var48 + 0.0D, par4 + var40 * (double)(var48 * var48 + var48) * 0.5D + (double)((24.0F - (float)var47) / 18.0F + 0.125F) + 0.025D, par6 + var42 * (double)var48);
+                    var11.addVertex(par2 + var38 * (double)var48 + 0.025D, par4 + var40 * (double)(var48 * var48 + var48) * 0.5D + (double)((24.0F - (float)var47) / 18.0F + 0.125F), par6 + var42 * (double)var48 + 0.025D);
+                }
+
+                var11.draw();
+
+                if (Config.isShaders())
+                {
+                    Shaders.endLeash();
+                }
+
+                GL11.glEnable(GL11.GL_LIGHTING);
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                GL11.glEnable(GL11.GL_CULL_FACE);
             }
-
-            double var22 = Math.cos(pitch);
-            double var24 = this.lerp(var10.prevPosX, var10.posX, (double)par9) - cos * 0.7D - sin * 0.5D * var22;
-            double var26 = this.lerp(var10.prevPosY + (double)var10.getEyeHeight() * 0.7D, var10.posY + (double)var10.getEyeHeight() * 0.7D, (double)par9) - tan * 0.5D - 0.25D;
-            double var28 = this.lerp(var10.prevPosZ, var10.posZ, (double)par9) - sin * 0.7D + cos * 0.5D * var22;
-            double var30 = this.lerp((double)par1EntityLiving.prevRenderYawOffset, (double)par1EntityLiving.renderYawOffset, (double)par9) * 0.01745329238474369D + (Math.PI / 2D);
-            cos = Math.cos(var30) * (double)par1EntityLiving.width * 0.4D;
-            sin = Math.sin(var30) * (double)par1EntityLiving.width * 0.4D;
-            double var32 = this.lerp(par1EntityLiving.prevPosX, par1EntityLiving.posX, (double)par9) + cos;
-            double var34 = this.lerp(par1EntityLiving.prevPosY, par1EntityLiving.posY, (double)par9);
-            double var36 = this.lerp(par1EntityLiving.prevPosZ, par1EntityLiving.posZ, (double)par9) + sin;
-            par2 += cos;
-            par6 += sin;
-            double var38 = (double)((float)(var24 - var32));
-            double var40 = (double)((float)(var26 - var34));
-            double var42 = (double)((float)(var28 - var36));
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            boolean var44 = true;
-            double var45 = 0.025D;
-            var11.startDrawing(5);
-            int var47;
-            float var48;
-
-            for (var47 = 0; var47 <= 24; ++var47)
-            {
-                if (var47 % 2 == 0)
-                {
-                    var11.setColorRGBA_F(0.5F, 0.4F, 0.3F, 1.0F);
-                }
-                else
-                {
-                    var11.setColorRGBA_F(0.35F, 0.28F, 0.21000001F, 1.0F);
-                }
-
-                var48 = (float)var47 / 24.0F;
-                var11.addVertex(par2 + var38 * (double)var48 + 0.0D, par4 + var40 * (double)(var48 * var48 + var48) * 0.5D + (double)((24.0F - (float)var47) / 18.0F + 0.125F), par6 + var42 * (double)var48);
-                var11.addVertex(par2 + var38 * (double)var48 + 0.025D, par4 + var40 * (double)(var48 * var48 + var48) * 0.5D + (double)((24.0F - (float)var47) / 18.0F + 0.125F) + 0.025D, par6 + var42 * (double)var48);
-            }
-
-            var11.draw();
-            var11.startDrawing(5);
-
-            for (var47 = 0; var47 <= 24; ++var47)
-            {
-                if (var47 % 2 == 0)
-                {
-                    var11.setColorRGBA_F(0.5F, 0.4F, 0.3F, 1.0F);
-                }
-                else
-                {
-                    var11.setColorRGBA_F(0.35F, 0.28F, 0.21000001F, 1.0F);
-                }
-
-                var48 = (float)var47 / 24.0F;
-                var11.addVertex(par2 + var38 * (double)var48 + 0.0D, par4 + var40 * (double)(var48 * var48 + var48) * 0.5D + (double)((24.0F - (float)var47) / 18.0F + 0.125F) + 0.025D, par6 + var42 * (double)var48);
-                var11.addVertex(par2 + var38 * (double)var48 + 0.025D, par4 + var40 * (double)(var48 * var48 + var48) * 0.5D + (double)((24.0F - (float)var47) / 18.0F + 0.125F), par6 + var42 * (double)var48 + 0.025D);
-            }
-
-            var11.draw();
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glEnable(GL11.GL_CULL_FACE);
         }
     }
 

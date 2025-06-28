@@ -7,7 +7,6 @@ public class EntityFlameFX extends EntityFX
 {
     /** the scale of the flame FX */
     private float flameScale;
-    private static final String __OBFID = "CL_00000907";
 
     public EntityFlameFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
     {

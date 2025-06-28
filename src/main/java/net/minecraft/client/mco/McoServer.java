@@ -29,7 +29,6 @@ public class McoServer
     public String field_148816_m = "";
     public String field_148813_n = "\u00a770";
     public boolean field_148814_o = false;
-    private static final String __OBFID = "CL_00001166";
 
     public String func_148800_a()
     {
@@ -160,7 +159,6 @@ public class McoServer
         ADMIN_LOCK("ADMIN_LOCK", 2);
 
         private static final McoServer.State[] $VALUES = new McoServer.State[]{CLOSED, OPEN, ADMIN_LOCK};
-        private static final String __OBFID = "CL_00001167";
 
         private State(String p_i45485_1_, int p_i45485_2_) {}
     }

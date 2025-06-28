@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class RecipesArmorDyes implements IRecipe
 {
-    private static final String __OBFID = "CL_00000079";
 
     /**
      * Used to check if a recipe matches current crafting inventory

@@ -39,7 +39,6 @@ public abstract class MobSpawnerBaseLogic
 
     /** The range coefficient for spawning entities around. */
     private int spawnRange = 4;
-    private static final String __OBFID = "CL_00000129";
 
     /**
      * Gets the entity name that should be spawned.
@@ -180,7 +179,7 @@ public abstract class MobSpawnerBaseLogic
 
             NBTTagCompound var11;
 
-            for (Entity var10 = par1Entity; var2.func_150297_b("Riding", 10); var2 = var11)
+            for (Entity var10 = par1Entity; var2.hasKey("Riding", 10); var2 = var11)
             {
                 var11 = var2.getCompoundTag("Riding");
                 Entity var12 = EntityList.createEntityByName(var11.getString("id"), par1Entity.worldObj);
@@ -246,7 +245,7 @@ public abstract class MobSpawnerBaseLogic
         this.mobID = par1NBTTagCompound.getString("EntityId");
         this.spawnDelay = par1NBTTagCompound.getShort("Delay");
 
-        if (par1NBTTagCompound.func_150297_b("SpawnPotentials", 9))
+        if (par1NBTTagCompound.hasKey("SpawnPotentials", 9))
         {
             this.minecartToSpawn = new ArrayList();
             NBTTagList var2 = par1NBTTagCompound.getTagList("SpawnPotentials", 10);
@@ -261,7 +260,7 @@ public abstract class MobSpawnerBaseLogic
             this.minecartToSpawn = null;
         }
 
-        if (par1NBTTagCompound.func_150297_b("SpawnData", 10))
+        if (par1NBTTagCompound.hasKey("SpawnData", 10))
         {
             this.setRandomMinecart(new MobSpawnerBaseLogic.WeightedRandomMinecart(par1NBTTagCompound.getCompoundTag("SpawnData"), this.mobID));
         }
@@ -270,20 +269,20 @@ public abstract class MobSpawnerBaseLogic
             this.setRandomMinecart((MobSpawnerBaseLogic.WeightedRandomMinecart)null);
         }
 
-        if (par1NBTTagCompound.func_150297_b("MinSpawnDelay", 99))
+        if (par1NBTTagCompound.hasKey("MinSpawnDelay", 99))
         {
             this.minSpawnDelay = par1NBTTagCompound.getShort("MinSpawnDelay");
             this.maxSpawnDelay = par1NBTTagCompound.getShort("MaxSpawnDelay");
             this.spawnCount = par1NBTTagCompound.getShort("SpawnCount");
         }
 
-        if (par1NBTTagCompound.func_150297_b("MaxNearbyEntities", 99))
+        if (par1NBTTagCompound.hasKey("MaxNearbyEntities", 99))
         {
             this.maxNearbyEntities = par1NBTTagCompound.getShort("MaxNearbyEntities");
             this.activatingRangeFromPlayer = par1NBTTagCompound.getShort("RequiredPlayerRange");
         }
 
-        if (par1NBTTagCompound.func_150297_b("SpawnRange", 99))
+        if (par1NBTTagCompound.hasKey("SpawnRange", 99))
         {
             this.spawnRange = par1NBTTagCompound.getShort("SpawnRange");
         }
@@ -385,7 +384,6 @@ public abstract class MobSpawnerBaseLogic
     {
         public final NBTTagCompound field_98222_b;
         public final String minecartName;
-        private static final String __OBFID = "CL_00000130";
 
         public WeightedRandomMinecart(NBTTagCompound par2NBTTagCompound)
         {

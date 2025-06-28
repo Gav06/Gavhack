@@ -11,7 +11,6 @@ public class ItemSlab extends ItemBlock
     private final boolean field_150948_b;
     private final BlockSlab field_150949_c;
     private final BlockSlab field_150947_d;
-    private static final String __OBFID = "CL_00000071";
 
     public ItemSlab(Block p_i45355_1_, BlockSlab p_i45355_2_, BlockSlab p_i45355_3_, boolean p_i45355_4_)
     {
@@ -52,40 +51,40 @@ public class ItemSlab extends ItemBlock
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (this.field_150948_b)
         {
-            return super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10);
+            return super.onItemUse(stack, player, world, par4, par5, par6, par7, par8, par9, par10);
         }
-        else if (par1ItemStack.stackSize == 0)
+        else if (stack.stackSize == 0)
         {
             return false;
         }
-        else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
+        else if (!player.canPlayerEdit(par4, par5, par6, par7, stack))
         {
             return false;
         }
         else
         {
-            Block var11 = par3World.getBlock(par4, par5, par6);
-            int var12 = par3World.getBlockMetadata(par4, par5, par6);
+            Block var11 = world.getBlock(par4, par5, par6);
+            int var12 = world.getBlockMetadata(par4, par5, par6);
             int var13 = var12 & 7;
             boolean var14 = (var12 & 8) != 0;
 
-            if ((par7 == 1 && !var14 || par7 == 0 && var14) && var11 == this.field_150949_c && var13 == par1ItemStack.getItemDamage())
+            if ((par7 == 1 && !var14 || par7 == 0 && var14) && var11 == this.field_150949_c && var13 == stack.getItemDamage())
             {
-                if (par3World.checkNoEntityCollision(this.field_150947_d.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.field_150947_d, var13, 3))
+                if (world.checkNoEntityCollision(this.field_150947_d.getCollisionBoundingBoxFromPool(world, par4, par5, par6)) && world.setBlock(par4, par5, par6, this.field_150947_d, var13, 3))
                 {
-                    par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.field_150947_d.stepSound.func_150496_b(), (this.field_150947_d.stepSound.func_150497_c() + 1.0F) / 2.0F, this.field_150947_d.stepSound.func_150494_d() * 0.8F);
-                    --par1ItemStack.stackSize;
+                    world.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.field_150947_d.stepSound.func_150496_b(), (this.field_150947_d.stepSound.func_150497_c() + 1.0F) / 2.0F, this.field_150947_d.stepSound.func_150494_d() * 0.8F);
+                    --stack.stackSize;
                 }
 
                 return true;
             }
             else
             {
-                return this.func_150946_a(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7) ? true : super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10);
+                return this.func_150946_a(stack, player, world, par4, par5, par6, par7) ? true : super.onItemUse(stack, player, world, par4, par5, par6, par7, par8, par9, par10);
             }
         }
     }

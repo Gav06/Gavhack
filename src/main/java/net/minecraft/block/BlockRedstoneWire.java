@@ -24,7 +24,6 @@ public class BlockRedstoneWire extends Block
     private IIcon field_150183_N;
     private IIcon field_150184_O;
     private IIcon field_150180_P;
-    private static final String __OBFID = "CL_00000295";
 
     public BlockRedstoneWire()
     {
@@ -439,7 +438,7 @@ public class BlockRedstoneWire extends Block
         }
     }
 
-    public static boolean func_150174_f(IBlockAccess p_150174_0_, int p_150174_1_, int p_150174_2_, int p_150174_3_, int p_150174_4_)
+    public static boolean isPowerProviderOrWire(IBlockAccess p_150174_0_, int p_150174_1_, int p_150174_2_, int p_150174_3_, int p_150174_4_)
     {
         Block var5 = p_150174_0_.getBlock(p_150174_1_, p_150174_2_, p_150174_3_);
 
@@ -460,7 +459,7 @@ public class BlockRedstoneWire extends Block
 
     public static boolean func_150176_g(IBlockAccess p_150176_0_, int p_150176_1_, int p_150176_2_, int p_150176_3_, int p_150176_4_)
     {
-        if (func_150174_f(p_150176_0_, p_150176_1_, p_150176_2_, p_150176_3_, p_150176_4_))
+        if (isPowerProviderOrWire(p_150176_0_, p_150176_1_, p_150176_2_, p_150176_3_, p_150176_4_))
         {
             return true;
         }
@@ -478,12 +477,12 @@ public class BlockRedstoneWire extends Block
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.redstone;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150182_M = p_149651_1_.registerIcon(this.getTextureName() + "_" + "cross");
         this.field_150183_N = p_149651_1_.registerIcon(this.getTextureName() + "_" + "line");
@@ -492,7 +491,7 @@ public class BlockRedstoneWire extends Block
         this.blockIcon = this.field_150182_M;
     }
 
-    public static IIcon func_150173_e(String p_150173_0_)
+    public static IIcon getRedstoneWireIcon(String p_150173_0_)
     {
         return p_150173_0_.equals("cross") ? Blocks.redstone_wire.field_150182_M : (p_150173_0_.equals("line") ? Blocks.redstone_wire.field_150183_N : (p_150173_0_.equals("cross_overlay") ? Blocks.redstone_wire.field_150184_O : (p_150173_0_.equals("line_overlay") ? Blocks.redstone_wire.field_150180_P : null)));
     }

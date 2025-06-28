@@ -11,7 +11,6 @@ public class GuiOptionSlider extends GuiButton
     private GameSettings.Options field_146133_q;
     private final float field_146132_r;
     private final float field_146131_s;
-    private static final String __OBFID = "CL_00000680";
 
     public GuiOptionSlider(int p_i45016_1_, int p_i45016_2_, int p_i45016_3_, GameSettings.Options p_i45016_4_)
     {
@@ -40,11 +39,11 @@ public class GuiOptionSlider extends GuiButton
      */
     protected void mouseDragged(Minecraft p_146119_1_, int p_146119_2_, int p_146119_3_)
     {
-        if (this.field_146125_m)
+        if (this.drawButton)
         {
             if (this.field_146135_o)
             {
-                this.field_146134_p = (float)(p_146119_2_ - (this.x + 4)) / (float)(this.width - 8);
+                this.field_146134_p = (float)(p_146119_2_ - (this.xPosition + 4)) / (float)(this.width - 8);
 
                 if (this.field_146134_p < 0.0F)
                 {
@@ -63,8 +62,8 @@ public class GuiOptionSlider extends GuiButton
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(this.x + (int)(this.field_146134_p * (float)(this.width - 8)), this.y, 0, 66, 4, 20);
-            this.drawTexturedModalRect(this.x + (int)(this.field_146134_p * (float)(this.width - 8)) + 4, this.y, 196, 66, 4, 20);
+            this.drawTexturedModalRect(this.xPosition + (int)(this.field_146134_p * (float)(this.width - 8)), this.yPosition, 0, 66, 4, 20);
+            this.drawTexturedModalRect(this.xPosition + (int)(this.field_146134_p * (float)(this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
         }
     }
 
@@ -76,7 +75,7 @@ public class GuiOptionSlider extends GuiButton
     {
         if (super.mousePressed(p_146116_1_, p_146116_2_, p_146116_3_))
         {
-            this.field_146134_p = (float)(p_146116_2_ - (this.x + 4)) / (float)(this.width - 8);
+            this.field_146134_p = (float)(p_146116_2_ - (this.xPosition + 4)) / (float)(this.width - 8);
 
             if (this.field_146134_p < 0.0F)
             {

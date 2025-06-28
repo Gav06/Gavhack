@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 
 public class EntityRainFX extends EntityFX
 {
-    private static final String __OBFID = "CL_00000934";
 
     public EntityRainFX(World par1World, double par2, double par4, double par6)
     {
@@ -58,7 +57,7 @@ public class EntityRainFX extends EntityFX
 
         if (var1.isLiquid() || var1.isSolid())
         {
-            double var2 = (double)((float)(MathHelper.floor_double(this.posY) + 1) - BlockLiquid.func_149801_b(this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))));
+            double var2 = (double)((float)(MathHelper.floor_double(this.posY) + 1) - BlockLiquid.getFluidHeightPercent(this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))));
 
             if (this.posY < var2)
             {

@@ -26,7 +26,6 @@ public enum EnumCreatureType
 
     /** Whether this creature type is an animal. */
     private final boolean isAnimal;
-    private static final String __OBFID = "CL_00001551";
 
     private EnumCreatureType(Class par3Class, int par4, Material par5Material, boolean par6, boolean par7)
     {

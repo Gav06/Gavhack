@@ -6,7 +6,6 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class BlockHardenedClay extends Block
 {
-    private static final String __OBFID = "CL_00000255";
 
     public BlockHardenedClay()
     {
@@ -14,7 +13,7 @@ public class BlockHardenedClay extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
         return MapColor.field_151676_q;
     }

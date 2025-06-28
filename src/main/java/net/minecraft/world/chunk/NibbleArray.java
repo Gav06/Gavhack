@@ -17,7 +17,6 @@ public class NibbleArray
      * Log base 2 of the chunk height (128) * width (16); applied as a shift on X coordinate
      */
     private final int depthBitsPlusFour;
-    private static final String __OBFID = "CL_00000371";
 
     public NibbleArray(int par1, int par2)
     {

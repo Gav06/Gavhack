@@ -17,7 +17,6 @@ public class MessageSerializer extends MessageToByteEncoder
 {
     private static final Logger logger = LogManager.getLogger();
     private static final Marker field_150797_b = MarkerManager.getMarker("PACKET_SENT", NetworkManager.logMarkerPackets);
-    private static final String __OBFID = "CL_00001253";
 
     protected void encode(ChannelHandlerContext p_150796_1_, Packet p_150796_2_, ByteBuf p_150796_3_) throws IOException
     {

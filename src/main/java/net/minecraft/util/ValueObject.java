@@ -5,7 +5,6 @@ import java.lang.reflect.Modifier;
 
 public abstract class ValueObject
 {
-    private static final String __OBFID = "CL_00001173";
 
     public String toString()
     {

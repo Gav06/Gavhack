@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class BlockWeb extends Block
 {
-    private static final String __OBFID = "CL_00000333";
 
     public BlockWeb()
     {

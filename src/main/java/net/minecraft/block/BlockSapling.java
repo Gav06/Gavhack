@@ -24,7 +24,6 @@ public class BlockSapling extends BlockBush implements IGrowable
 {
     public static final String[] field_149882_a = new String[] {"oak", "spruce", "birch", "jungle", "acacia", "roofed_oak"};
     private static final IIcon[] field_149881_b = new IIcon[field_149882_a.length];
-    private static final String __OBFID = "CL_00000305";
 
     protected BlockSapling()
     {
@@ -216,7 +215,7 @@ public class BlockSapling extends BlockBush implements IGrowable
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 5));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         for (int var2 = 0; var2 < field_149881_b.length; ++var2)
         {

@@ -20,7 +20,6 @@ public abstract class SelectionListBase
     private float field_148460_k;
     private int field_148457_l = -1;
     private long field_148458_m;
-    private static final String __OBFID = "CL_00000789";
 
     public SelectionListBase(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6)
     {

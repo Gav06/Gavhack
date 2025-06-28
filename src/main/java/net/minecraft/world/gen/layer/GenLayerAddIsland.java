@@ -2,7 +2,6 @@ package net.minecraft.world.gen.layer;
 
 public class GenLayerAddIsland extends GenLayer
 {
-    private static final String __OBFID = "CL_00000551";
 
     public GenLayerAddIsland(long par1, GenLayer par3GenLayer)
     {

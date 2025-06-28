@@ -50,7 +50,6 @@ public class EntityTracker
     private Set trackedEntities = new HashSet();
     private IntHashMap trackedEntityIDs = new IntHashMap();
     private int entityViewDistance;
-    private static final String __OBFID = "CL_00001431";
 
     public EntityTracker(WorldServer par1WorldServer)
     {
@@ -209,7 +208,6 @@ public class EntityTracker
             var7.addCrashSection("Tracking range", par2 + " blocks");
             var7.addCrashSectionCallable("Update interval", new Callable()
             {
-                private static final String __OBFID = "CL_00001432";
                 public String call()
                 {
                     String var1 = "Once per " + par3 + " ticks";

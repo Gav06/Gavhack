@@ -15,7 +15,6 @@ public class StructureNetherBridgePieces
 {
     private static final StructureNetherBridgePieces.PieceWeight[] primaryComponents = new StructureNetherBridgePieces.PieceWeight[] {new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Straight.class, 30, 0, true), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Crossing3.class, 10, 4), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Crossing.class, 10, 4), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Stairs.class, 10, 3), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Throne.class, 5, 2), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Entrance.class, 5, 1)};
     private static final StructureNetherBridgePieces.PieceWeight[] secondaryComponents = new StructureNetherBridgePieces.PieceWeight[] {new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Corridor5.class, 25, 0, true), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Crossing2.class, 15, 5), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Corridor2.class, 5, 10), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Corridor.class, 5, 10), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Corridor3.class, 10, 3, true), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.Corridor4.class, 7, 2), new StructureNetherBridgePieces.PieceWeight(StructureNetherBridgePieces.NetherStalkRoom.class, 5, 2)};
-    private static final String __OBFID = "CL_00000453";
 
     public static void func_143049_a()
     {
@@ -103,7 +102,6 @@ public class StructureNetherBridgePieces
         public List primaryWeights;
         public List secondaryWeights;
         public ArrayList field_74967_d = new ArrayList();
-        private static final String __OBFID = "CL_00000470";
 
         public Start() {}
 
@@ -148,7 +146,6 @@ public class StructureNetherBridgePieces
 
     public static class Crossing extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000468";
 
         public Crossing() {}
 
@@ -207,7 +204,6 @@ public class StructureNetherBridgePieces
 
     public static class Straight extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000456";
 
         public Straight() {}
 
@@ -263,7 +259,6 @@ public class StructureNetherBridgePieces
 
     public static class Crossing2 extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000460";
 
         public Crossing2() {}
 
@@ -311,7 +306,6 @@ public class StructureNetherBridgePieces
 
     public static class Crossing3 extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000454";
 
         public Crossing3() {}
 
@@ -402,7 +396,6 @@ public class StructureNetherBridgePieces
 
     public static class NetherStalkRoom extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000464";
 
         public NetherStalkRoom() {}
 
@@ -557,7 +550,6 @@ public class StructureNetherBridgePieces
     abstract static class Piece extends StructureComponent
     {
         protected static final WeightedRandomChestContent[] field_111019_a = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Items.diamond, 0, 1, 3, 5), new WeightedRandomChestContent(Items.iron_ingot, 0, 1, 5, 5), new WeightedRandomChestContent(Items.gold_ingot, 0, 1, 3, 15), new WeightedRandomChestContent(Items.golden_sword, 0, 1, 1, 5), new WeightedRandomChestContent(Items.golden_chestplate, 0, 1, 1, 5), new WeightedRandomChestContent(Items.flint_and_steel, 0, 1, 1, 5), new WeightedRandomChestContent(Items.nether_wart, 0, 3, 7, 5), new WeightedRandomChestContent(Items.saddle, 0, 1, 1, 10), new WeightedRandomChestContent(Items.golden_horse_armor, 0, 1, 1, 8), new WeightedRandomChestContent(Items.iron_horse_armor, 0, 1, 1, 5), new WeightedRandomChestContent(Items.diamond_horse_armor, 0, 1, 1, 3)};
-        private static final String __OBFID = "CL_00000466";
 
         public Piece() {}
 
@@ -733,7 +725,6 @@ public class StructureNetherBridgePieces
     public static class End extends StructureNetherBridgePieces.Piece
     {
         private int fillSeed;
-        private static final String __OBFID = "CL_00000455";
 
         public End() {}
 
@@ -810,7 +801,6 @@ public class StructureNetherBridgePieces
         public int field_78827_c;
         public int field_78824_d;
         public boolean field_78825_e;
-        private static final String __OBFID = "CL_00000467";
 
         public PieceWeight(Class par1Class, int par2, int par3, boolean par4)
         {
@@ -839,7 +829,6 @@ public class StructureNetherBridgePieces
     public static class Corridor extends StructureNetherBridgePieces.Piece
     {
         private boolean field_111021_b;
-        private static final String __OBFID = "CL_00000461";
 
         public Corridor() {}
 
@@ -918,7 +907,6 @@ public class StructureNetherBridgePieces
     public static class Throne extends StructureNetherBridgePieces.Piece
     {
         private boolean hasSpawner;
-        private static final String __OBFID = "CL_00000465";
 
         public Throne() {}
 
@@ -1003,7 +991,6 @@ public class StructureNetherBridgePieces
 
     public static class Entrance extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000459";
 
         public Entrance() {}
 
@@ -1115,7 +1102,6 @@ public class StructureNetherBridgePieces
 
     public static class Stairs extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000469";
 
         public Stairs() {}
 
@@ -1174,7 +1160,6 @@ public class StructureNetherBridgePieces
     public static class Corridor2 extends StructureNetherBridgePieces.Piece
     {
         private boolean field_111020_b;
-        private static final String __OBFID = "CL_00000463";
 
         public Corridor2() {}
 
@@ -1252,7 +1237,6 @@ public class StructureNetherBridgePieces
 
     public static class Corridor3 extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000457";
 
         public Corridor3() {}
 
@@ -1315,7 +1299,6 @@ public class StructureNetherBridgePieces
 
     public static class Corridor4 extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000458";
 
         public Corridor4() {}
 
@@ -1381,7 +1364,6 @@ public class StructureNetherBridgePieces
 
     public static class Corridor5 extends StructureNetherBridgePieces.Piece
     {
-        private static final String __OBFID = "CL_00000462";
 
         public Corridor5() {}
 

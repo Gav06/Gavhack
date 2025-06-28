@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 
 public class BlockBeacon extends BlockContainer
 {
-    private static final String __OBFID = "CL_00000197";
 
     public BlockBeacon()
     {
@@ -69,9 +68,9 @@ public class BlockBeacon extends BlockContainer
         return 34;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
-        super.registerBlockIcons(p_149651_1_);
+        super.registerIcons(p_149651_1_);
     }
 
     /**

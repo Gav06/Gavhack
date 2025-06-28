@@ -7,7 +7,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandClearInventory extends CommandBase
 {
-    private static final String __OBFID = "CL_00000218";
 
     public String getCommandName()
     {

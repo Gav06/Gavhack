@@ -9,18 +9,17 @@ public class TileEntityNote extends TileEntity
 {
     public byte field_145879_a;
     public boolean field_145880_i;
-    private static final String __OBFID = "CL_00000362";
 
-    public void writeToNBT(NBTTagCompound tag)
+    public void writeToNBT(NBTTagCompound p_145841_1_)
     {
-        super.writeToNBT(tag);
-        tag.setByte("note", this.field_145879_a);
+        super.writeToNBT(p_145841_1_);
+        p_145841_1_.setByte("note", this.field_145879_a);
     }
 
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(NBTTagCompound p_145839_1_)
     {
-        super.readFromNBT(tag);
-        this.field_145879_a = tag.getByte("note");
+        super.readFromNBT(p_145839_1_);
+        this.field_145879_a = p_145839_1_.getByte("note");
 
         if (this.field_145879_a < 0)
         {
@@ -66,7 +65,7 @@ public class TileEntityNote extends TileEntity
                 var6 = 4;
             }
 
-            p_145878_1_.func_147452_c(p_145878_2_, p_145878_3_, p_145878_4_, Blocks.noteblock, var6, this.field_145879_a);
+            p_145878_1_.addBlockEvent(p_145878_2_, p_145878_3_, p_145878_4_, Blocks.noteblock, var6, this.field_145879_a);
         }
     }
 }

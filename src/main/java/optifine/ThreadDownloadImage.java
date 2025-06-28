@@ -50,7 +50,7 @@ public class ThreadDownloadImage extends Thread
                 var2 = this.imageBuffer.parseUserSkin(var2);
             }
 
-            this.parent.func_147641_a(var2);
+            this.parent.setBufferedImage(var2);
             return;
         }
         catch (Exception var7)

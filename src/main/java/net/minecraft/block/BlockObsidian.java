@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 
 public class BlockObsidian extends BlockStone
 {
-    private static final String __OBFID = "CL_00000279";
 
     /**
      * Returns the quantity of items to drop on block destruction.
@@ -22,7 +21,7 @@ public class BlockObsidian extends BlockStone
         return Item.getItemFromBlock(Blocks.obsidian);
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
         return MapColor.field_151654_J;
     }

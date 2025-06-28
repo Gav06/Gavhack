@@ -12,7 +12,6 @@ public abstract class Request
     protected HttpURLConnection field_148677_a;
     private boolean field_148676_c;
     protected String field_148675_b;
-    private static final String __OBFID = "CL_00001159";
 
     public Request(String par1Str, int par2, int par3)
     {
@@ -228,7 +227,6 @@ public abstract class Request
 
     public static class Delete extends Request
     {
-        private static final String __OBFID = "CL_00001160";
 
         public Delete(String par1Str, int par2, int par3)
         {
@@ -254,7 +252,6 @@ public abstract class Request
     public static class Put extends Request
     {
         private byte[] field_148681_c;
-        private static final String __OBFID = "CL_00001163";
 
         public Put(String par1Str, byte[] par2ArrayOfByte, int par3, int par4)
         {
@@ -284,7 +281,6 @@ public abstract class Request
     public static class Post extends Request
     {
         private byte[] field_148683_c;
-        private static final String __OBFID = "CL_00001162";
 
         public Post(String par1Str, byte[] par2ArrayOfByte, int par3, int par4)
         {
@@ -314,7 +310,6 @@ public abstract class Request
 
     public static class Get extends Request
     {
-        private static final String __OBFID = "CL_00001161";
 
         public Get(String par1Str, int par2, int par3)
         {

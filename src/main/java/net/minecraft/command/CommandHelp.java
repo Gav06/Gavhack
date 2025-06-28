@@ -13,7 +13,6 @@ import net.minecraft.util.MathHelper;
 
 public class CommandHelp extends CommandBase
 {
-    private static final String __OBFID = "CL_00000529";
 
     public String getCommandName()
     {

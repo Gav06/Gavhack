@@ -13,7 +13,6 @@ public class RenderEnchantmentTable extends TileEntitySpecialRenderer
 {
     private static final ResourceLocation field_147540_b = new ResourceLocation("textures/entity/enchanting_table_book.png");
     private ModelBook field_147541_c = new ModelBook();
-    private static final String __OBFID = "CL_00000966";
 
     public void renderTileEntityAt(TileEntityEnchantmentTable p_147539_1_, double p_147539_2_, double p_147539_4_, double p_147539_6_, float p_147539_8_)
     {

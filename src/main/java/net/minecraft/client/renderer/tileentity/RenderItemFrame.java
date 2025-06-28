@@ -20,12 +20,15 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.src.Config;
+import net.minecraft.src.Reflector;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
+import shadersmod.client.ShadersTex;
 
 public class RenderItemFrame extends Render
 {
@@ -33,7 +36,6 @@ public class RenderItemFrame extends Render
     private final RenderBlocks field_147916_f = new RenderBlocks();
     private final Minecraft field_147917_g = Minecraft.getMinecraft();
     private IIcon field_94147_f;
-    private static final String __OBFID = "CL_00001002";
 
     public void updateIcons(IIconRegister par1IconRegister)
     {
@@ -187,78 +189,89 @@ public class RenderItemFrame extends Render
                     GL11.glTranslatef(0.16F, -0.16F, 0.0F);
             }
 
-            if (var4 == Items.filled_map)
+            if (!Reflector.postForgeBusEvent(Reflector.RenderItemInFrameEvent_Constructor, new Object[] {par1EntityItemFrame, this}))
             {
-                this.renderManager.renderEngine.bindTexture(mapBackgroundTextures);
-                Tessellator var5 = Tessellator.instance;
-                GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-                float var6 = 0.0078125F;
-                GL11.glScalef(var6, var6, var6);
-
-                switch (par1EntityItemFrame.getRotation())
+                if (var4 == Items.filled_map)
                 {
-                    case 0:
-                        GL11.glTranslatef(-64.0F, -87.0F, -1.5F);
-                        break;
+                    this.renderManager.renderEngine.bindTexture(mapBackgroundTextures);
+                    Tessellator var13 = Tessellator.instance;
+                    GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+                    GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+                    float var14 = 0.0078125F;
+                    GL11.glScalef(var14, var14, var14);
 
-                    case 1:
-                        GL11.glTranslatef(-66.5F, -84.5F, -1.5F);
-                        break;
-
-                    case 2:
-                        GL11.glTranslatef(-64.0F, -82.0F, -1.5F);
-                        break;
-
-                    case 3:
-                        GL11.glTranslatef(-61.5F, -84.5F, -1.5F);
-                }
-
-                GL11.glNormal3f(0.0F, 0.0F, -1.0F);
-                MapData var7 = Items.filled_map.getMapData(var3.getEntityItem(), par1EntityItemFrame.worldObj);
-                GL11.glTranslatef(0.0F, 0.0F, -1.0F);
-
-                if (var7 != null)
-                {
-                    this.field_147917_g.entityRenderer.getMapItemRenderer().func_148250_a(var7, true);
-                }
-            }
-            else
-            {
-                if (var4 == Items.compass)
-                {
-                    TextureManager var12 = Minecraft.getMinecraft().getTextureManager();
-                    var12.bindTexture(TextureMap.locationItemsTexture);
-                    TextureAtlasSprite var14 = ((TextureMap)var12.getTexture(TextureMap.locationItemsTexture)).getAtlasSprite(Items.compass.getIconIndex(var3.getEntityItem()).getIconName());
-
-                    if (var14 instanceof TextureCompass)
+                    switch (par1EntityItemFrame.getRotation())
                     {
-                        TextureCompass var15 = (TextureCompass)var14;
-                        double var8 = var15.currentAngle;
-                        double var10 = var15.angleDelta;
-                        var15.currentAngle = 0.0D;
-                        var15.angleDelta = 0.0D;
-                        var15.updateCompass(par1EntityItemFrame.worldObj, par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
-                        var15.currentAngle = var8;
-                        var15.angleDelta = var10;
+                        case 0:
+                            GL11.glTranslatef(-64.0F, -87.0F, -1.5F);
+                            break;
+
+                        case 1:
+                            GL11.glTranslatef(-66.5F, -84.5F, -1.5F);
+                            break;
+
+                        case 2:
+                            GL11.glTranslatef(-64.0F, -82.0F, -1.5F);
+                            break;
+
+                        case 3:
+                            GL11.glTranslatef(-61.5F, -84.5F, -1.5F);
+                    }
+
+                    GL11.glNormal3f(0.0F, 0.0F, -1.0F);
+                    MapData var15 = Items.filled_map.getMapData(var3.getEntityItem(), par1EntityItemFrame.worldObj);
+                    GL11.glTranslatef(0.0F, 0.0F, -1.0F);
+
+                    if (var15 != null)
+                    {
+                        this.field_147917_g.entityRenderer.getMapItemRenderer().func_148250_a(var15, true);
                     }
                 }
-
-                RenderItem.renderInFrame = true;
-                RenderManager.instance.func_147940_a(var3, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
-                RenderItem.renderInFrame = false;
-
-                if (var4 == Items.compass)
+                else
                 {
-                    TextureAtlasSprite var13 = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationItemsTexture)).getAtlasSprite(Items.compass.getIconIndex(var3.getEntityItem()).getIconName());
-
-                    if (var13.getFrameCount() > 0)
+                    if (var4 == Items.compass)
                     {
-                        var13.updateAnimation();
+                        TextureManager var131 = Minecraft.getMinecraft().getTextureManager();
+
+                        if (Config.isShaders())
+                        {
+                            ShadersTex.bindTextureMapForUpdateAndRender(Config.getMinecraft().getTextureManager(), TextureMap.locationBlocksTexture);
+                        }
+                        else
+                        {
+                            var131.bindTexture(TextureMap.locationItemsTexture);
+                        }
+
+                        TextureAtlasSprite var141 = ((TextureMap)var131.getTexture(TextureMap.locationItemsTexture)).getAtlasSprite(Items.compass.getIconIndex(var3.getEntityItem()).getIconName());
+
+                        if (var141 instanceof TextureCompass)
+                        {
+                            TextureCompass var151 = (TextureCompass)var141;
+                            double var8 = var151.currentAngle;
+                            double var10 = var151.angleDelta;
+                            var151.currentAngle = 0.0D;
+                            var151.angleDelta = 0.0D;
+                            var151.updateCompass(par1EntityItemFrame.worldObj, par1EntityItemFrame.posX, par1EntityItemFrame.posZ, (double)MathHelper.wrapAngleTo180_float((float)(180 + par1EntityItemFrame.hangingDirection * 90)), false, true);
+                            var151.currentAngle = var8;
+                            var151.angleDelta = var10;
+                        }
+                    }
+
+                    RenderItem.renderInFrame = true;
+                    RenderManager.instance.func_147940_a(var3, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+                    RenderItem.renderInFrame = false;
+
+                    if (var4 == Items.compass)
+                    {
+                        TextureAtlasSprite var132 = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationItemsTexture)).getAtlasSprite(Items.compass.getIconIndex(var3.getEntityItem()).getIconName());
+
+                        if (var132.getFrameCount() > 0)
+                        {
+                            var132.updateAnimation();
+                        }
                     }
                 }
             }
-
             GL11.glPopMatrix();
         }
     }

@@ -17,7 +17,6 @@ public class EntityAIFollowOwner extends EntityAIBase
     float maxDist;
     float minDist;
     private boolean field_75344_i;
-    private static final String __OBFID = "CL_00001585";
 
     public EntityAIFollowOwner(EntityTameable par1EntityTameable, double par2, float par4, float par5)
     {

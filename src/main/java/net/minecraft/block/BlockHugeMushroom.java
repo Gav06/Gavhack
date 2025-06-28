@@ -15,7 +15,6 @@ public class BlockHugeMushroom extends Block
     private IIcon[] field_149794_M;
     private IIcon field_149795_N;
     private IIcon field_149796_O;
-    private static final String __OBFID = "CL_00000258";
 
     public BlockHugeMushroom(Material p_i45412_1_, int p_i45412_2_)
     {
@@ -54,12 +53,12 @@ public class BlockHugeMushroom extends Block
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemById(Block.getIdFromBlock(Blocks.brown_mushroom) + this.field_149792_b);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149794_M = new IIcon[field_149793_a.length];
 

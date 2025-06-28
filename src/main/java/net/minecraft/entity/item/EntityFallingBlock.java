@@ -28,7 +28,6 @@ public class EntityFallingBlock extends Entity
     private int field_145815_h;
     private float field_145816_i;
     public NBTTagCompound field_145810_d;
-    private static final String __OBFID = "CL_00001668";
 
     public EntityFallingBlock(World par1World)
     {
@@ -248,7 +247,7 @@ public class EntityFallingBlock extends Entity
      */
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if (par1NBTTagCompound.func_150297_b("TileID", 99))
+        if (par1NBTTagCompound.hasKey("TileID", 99))
         {
             this.field_145811_e = Block.getBlockById(par1NBTTagCompound.getInteger("TileID"));
         }
@@ -260,7 +259,7 @@ public class EntityFallingBlock extends Entity
         this.field_145814_a = par1NBTTagCompound.getByte("Data") & 255;
         this.field_145812_b = par1NBTTagCompound.getByte("Time") & 255;
 
-        if (par1NBTTagCompound.func_150297_b("HurtEntities", 99))
+        if (par1NBTTagCompound.hasKey("HurtEntities", 99))
         {
             this.field_145809_g = par1NBTTagCompound.getBoolean("HurtEntities");
             this.field_145816_i = par1NBTTagCompound.getFloat("FallHurtAmount");
@@ -271,12 +270,12 @@ public class EntityFallingBlock extends Entity
             this.field_145809_g = true;
         }
 
-        if (par1NBTTagCompound.func_150297_b("DropItem", 99))
+        if (par1NBTTagCompound.hasKey("DropItem", 99))
         {
             this.field_145813_c = par1NBTTagCompound.getBoolean("DropItem");
         }
 
-        if (par1NBTTagCompound.func_150297_b("TileEntityData", 10))
+        if (par1NBTTagCompound.hasKey("TileEntityData", 10))
         {
             this.field_145810_d = par1NBTTagCompound.getCompoundTag("TileEntityData");
         }

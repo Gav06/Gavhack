@@ -16,7 +16,6 @@ public class EntityLargeExplodeFX extends EntityFX
     /** The Rendering Engine. */
     private TextureManager theRenderEngine;
     private float field_70582_as;
-    private static final String __OBFID = "CL_00000910";
 
     public EntityLargeExplodeFX(TextureManager par1TextureManager, World par2World, double par3, double par5, double par7, double par9, double par11, double par13)
     {

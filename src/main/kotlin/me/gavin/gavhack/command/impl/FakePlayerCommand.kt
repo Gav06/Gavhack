@@ -37,7 +37,7 @@ class FakePlayerCommand: Command("fakeplayer", "Creates a fake player", "<spawn|
                     return true
                 }
                 val player = EntityOtherPlayerMP(mc.theWorld, GameProfile("", args[1]))
-                player.copyLocationAndAnglesFrom(mc.thePlayer, mc.thePlayer.boundingBox.minY)
+                player.copyLocationAndAnglesFrom(mc.thePlayer)
                 mc.theWorld.addEntityToWorld(-(args[1].hashCode()), player)
                 players[player.gameProfile.name] = player.entityId
                 message("Spawned fake player named ${player.gameProfile.name}")

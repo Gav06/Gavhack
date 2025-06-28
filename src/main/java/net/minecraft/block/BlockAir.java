@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 
 public class BlockAir extends Block
 {
-    private static final String __OBFID = "CL_00000190";
 
     protected BlockAir()
     {

@@ -28,7 +28,6 @@ public class RenderPlayer extends RendererLivingEntity
     private ModelBiped modelBipedMain;
     private ModelBiped modelArmorChestplate;
     private ModelBiped modelArmor;
-    private static final String __OBFID = "CL_00001020";
 
     public RenderPlayer()
     {
@@ -191,7 +190,7 @@ public class RenderPlayer extends RendererLivingEntity
                 GL11.glScalef(var4, -var4, -var4);
                 String var5 = "";
 
-                if (var3.hasTagCompound() && var3.getTagCompound().func_150297_b("SkullOwner", 8))
+                if (var3.hasTagCompound() && var3.getTagCompound().hasKey("SkullOwner", 8))
                 {
                     var5 = var3.getTagCompound().getString("SkullOwner");
                 }

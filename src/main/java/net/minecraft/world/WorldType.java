@@ -35,7 +35,6 @@ public class WorldType
     /** Whether this WorldType has a version or not. */
     private boolean isWorldTypeVersioned;
     private boolean field_151361_l;
-    private static final String __OBFID = "CL_00000150";
 
     private WorldType(int par1, String par2Str)
     {

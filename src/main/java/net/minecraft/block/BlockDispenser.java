@@ -31,7 +31,6 @@ public class BlockDispenser extends BlockContainer
     protected IIcon field_149944_M;
     protected IIcon field_149945_N;
     protected IIcon field_149946_O;
-    private static final String __OBFID = "CL_00000229";
 
     protected BlockDispenser()
     {
@@ -39,7 +38,7 @@ public class BlockDispenser extends BlockContainer
         this.setCreativeTab(CreativeTabs.tabRedstone);
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 4;
     }
@@ -93,7 +92,7 @@ public class BlockDispenser extends BlockContainer
         return p_149691_1_ == var3 ? (var3 != 1 && var3 != 0 ? this.field_149945_N : this.field_149946_O) : (var3 != 1 && var3 != 0 ? (p_149691_1_ != 1 && p_149691_1_ != 0 ? this.blockIcon : this.field_149944_M) : this.field_149944_M);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("furnace_side");
         this.field_149944_M = p_149651_1_.registerIcon("furnace_top");
@@ -163,7 +162,7 @@ public class BlockDispenser extends BlockContainer
 
         if (var6 && !var8)
         {
-            p_149695_1_.scheduleBlockUpdate(p_149695_2_, p_149695_3_, p_149695_4_, this, this.func_149738_a(p_149695_1_));
+            p_149695_1_.scheduleBlockUpdate(p_149695_2_, p_149695_3_, p_149695_4_, this, this.tickRate(p_149695_1_));
             p_149695_1_.setBlockMetadataWithNotify(p_149695_2_, p_149695_3_, p_149695_4_, var7 | 8, 4);
         }
         else if (!var6 && var8)
@@ -196,7 +195,7 @@ public class BlockDispenser extends BlockContainer
      */
     public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_, EntityLivingBase p_149689_5_, ItemStack p_149689_6_)
     {
-        int var7 = BlockPistonBase.func_150071_a(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
+        int var7 = BlockPistonBase.determineOrientation(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_);
         p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, var7, 2);
 
         if (p_149689_6_.hasDisplayName())

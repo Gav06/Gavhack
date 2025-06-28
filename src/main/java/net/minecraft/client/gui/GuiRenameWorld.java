@@ -10,7 +10,6 @@ public class GuiRenameWorld extends GuiScreen
     private GuiScreen field_146585_a;
     private GuiTextField field_146583_f;
     private final String field_146584_g;
-    private static final String __OBFID = "CL_00000709";
 
     public GuiRenameWorld(GuiScreen par1GuiScreen, String par2Str)
     {
@@ -38,7 +37,7 @@ public class GuiRenameWorld extends GuiScreen
         ISaveFormat var1 = this.mc.getSaveLoader();
         WorldInfo var2 = var1.getWorldInfo(this.field_146584_g);
         String var3 = var2.getWorldName();
-        this.field_146583_f = new GuiTextField(this.fontRendererObj, this.width / 2 - 100, 60, 200, 20);
+        this.field_146583_f = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 60, 200, 20);
         this.field_146583_f.setFocused(true);
         this.field_146583_f.setText(var3);
     }
@@ -94,12 +93,12 @@ public class GuiRenameWorld extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("selectWorld.renameTitle", new Object[0]), this.width / 2, 20, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("selectWorld.enterName", new Object[0]), this.width / 2 - 100, 47, 10526880);
+        this.drawCenteredString(this.fontRenderer, I18n.format("selectWorld.renameTitle", new Object[0]), this.width / 2, 20, 16777215);
+        this.drawString(this.fontRenderer, I18n.format("selectWorld.enterName", new Object[0]), this.width / 2 - 100, 47, 10526880);
         this.field_146583_f.drawTextBox();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

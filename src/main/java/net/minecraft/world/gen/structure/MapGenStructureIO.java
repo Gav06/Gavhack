@@ -14,7 +14,6 @@ public class MapGenStructureIO
     private static Map field_143038_b = new HashMap();
     private static Map field_143039_c = new HashMap();
     private static Map field_143037_d = new HashMap();
-    private static final String __OBFID = "CL_00000509";
 
     private static void func_143034_b(Class par0Class, String par1Str)
     {

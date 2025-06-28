@@ -28,7 +28,6 @@ public abstract class EntityThrowable extends Entity implements IProjectile
     private String throwerName;
     private int ticksInGround;
     private int ticksInAir;
-    private static final String __OBFID = "CL_00001723";
 
     public EntityThrowable(World par1World)
     {

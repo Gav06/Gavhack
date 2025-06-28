@@ -17,7 +17,6 @@ public class BlockPumpkin extends BlockDirectional
     private boolean field_149985_a;
     private IIcon field_149984_b;
     private IIcon field_149986_M;
-    private static final String __OBFID = "CL_00000291";
 
     protected BlockPumpkin(boolean p_i45419_1_)
     {
@@ -123,7 +122,7 @@ public class BlockPumpkin extends BlockDirectional
         p_149689_1_.setBlockMetadataWithNotify(p_149689_2_, p_149689_3_, p_149689_4_, var7, 2);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149986_M = p_149651_1_.registerIcon(this.getTextureName() + "_face_" + (this.field_149985_a ? "on" : "off"));
         this.field_149984_b = p_149651_1_.registerIcon(this.getTextureName() + "_top");

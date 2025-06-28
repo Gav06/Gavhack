@@ -163,7 +163,6 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     private boolean isGamemodeForced;
     private final MinecraftSessionService field_147143_S;
     private long field_147142_T = 0L;
-    private static final String __OBFID = "CL_00001462";
 
     public MinecraftServer(File p_i45281_1_, Proxy p_i45281_2_)
     {
@@ -190,7 +189,6 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
             this.getActiveAnvilConverter().convertMapFormat(par1Str, new IProgressUpdate()
             {
                 private long field_96245_b = System.currentTimeMillis();
-                private static final String __OBFID = "CL_00001417";
                 public void displayProgressMessage(String par1Str) {}
                 public void resetProgressAndMessage(String par1Str) {}
                 public void setLoadingProgress(int par1)
@@ -661,7 +659,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
                 if (this.tickCounter % 20 == 0)
                 {
                     this.theProfiler.startSection("timeSync");
-                    this.serverConfigManager.func_148537_a(new S03PacketTimeUpdate(var4.getTotalWorldTime(), var4.getWorldTime(), var4.getGameRules().getGameRuleBooleanValue("doDaylightCycle")), var4.provider.dimensionId);
+                    this.serverConfigManager.sendPacketToAllPlayersInDimension(new S03PacketTimeUpdate(var4.getTotalWorldTime(), var4.getWorldTime(), var4.getGameRules().getGameRuleBooleanValue("doDaylightCycle")), var4.provider.dimensionId);
                     this.theProfiler.endSection();
                 }
 
@@ -723,7 +721,6 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         (new Thread("Server thread")
         {
-            private static final String __OBFID = "CL_00001418";
             public void run()
             {
                 MinecraftServer.this.run();
@@ -799,7 +796,6 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
     {
         par1CrashReport.getCategory().addCrashSectionCallable("Profiler Position", new Callable()
         {
-            private static final String __OBFID = "CL_00001419";
             public String call()
             {
                 return MinecraftServer.this.theProfiler.profilingEnabled ? MinecraftServer.this.theProfiler.getNameOfLastSection() : "N/A (disabled)";
@@ -810,7 +806,6 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         {
             par1CrashReport.getCategory().addCrashSectionCallable("Vec3 Pool Size", new Callable()
             {
-                private static final String __OBFID = "CL_00001420";
                 public String call()
                 {
                     int var1 = MinecraftServer.this.worldServers[0].getWorldVec3Pool().getPoolSize();
@@ -828,7 +823,6 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         {
             par1CrashReport.getCategory().addCrashSectionCallable("Player Count", new Callable()
             {
-                private static final String __OBFID = "CL_00001780";
                 public String call()
                 {
                     return MinecraftServer.this.serverConfigManager.getCurrentPlayerCount() + " / " + MinecraftServer.this.serverConfigManager.getMaxPlayers() + "; " + MinecraftServer.this.serverConfigManager.playerEntityList;
@@ -1069,7 +1063,7 @@ public abstract class MinecraftServer implements ICommandSender, Runnable, IPlay
         this.initiateShutdown();
     }
 
-    public String func_147133_T()
+    public String getTexturePack()
     {
         return this.field_147141_M;
     }

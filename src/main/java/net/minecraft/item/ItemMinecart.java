@@ -18,7 +18,6 @@ public class ItemMinecart extends Item
     private static final IBehaviorDispenseItem dispenserMinecartBehavior = new BehaviorDefaultDispenseItem()
     {
         private final BehaviorDefaultDispenseItem behaviourDefaultDispenseItem = new BehaviorDefaultDispenseItem();
-        private static final String __OBFID = "CL_00000050";
         public ItemStack dispenseStack(IBlockSource par1IBlockSource, ItemStack par2ItemStack)
         {
             EnumFacing var3 = BlockDispenser.func_149937_b(par1IBlockSource.getBlockMetadata());
@@ -63,7 +62,6 @@ public class ItemMinecart extends Item
         }
     };
     public int minecartType;
-    private static final String __OBFID = "CL_00000049";
 
     public ItemMinecart(int p_i45345_1_)
     {
@@ -77,23 +75,23 @@ public class ItemMinecart extends Item
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        if (BlockRailBase.func_150051_a(par3World.getBlock(par4, par5, par6)))
+        if (BlockRailBase.func_150051_a(world.getBlock(par4, par5, par6)))
         {
-            if (!par3World.isClient)
+            if (!world.isClient)
             {
-                EntityMinecart var11 = EntityMinecart.createMinecart(par3World, (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.minecartType);
+                EntityMinecart var11 = EntityMinecart.createMinecart(world, (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.minecartType);
 
-                if (par1ItemStack.hasDisplayName())
+                if (stack.hasDisplayName())
                 {
-                    var11.setMinecartName(par1ItemStack.getDisplayName());
+                    var11.setMinecartName(stack.getDisplayName());
                 }
 
-                par3World.spawnEntityInWorld(var11);
+                world.spawnEntityInWorld(var11);
             }
 
-            --par1ItemStack.stackSize;
+            --stack.stackSize;
             return true;
         }
         else

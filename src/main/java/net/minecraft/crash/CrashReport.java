@@ -12,13 +12,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
-
+import net.minecraft.src.CrashReporter;
+import net.minecraft.src.Reflector;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.gen.layer.IntCache;
-import optifine.CrashReporter;
-import optifine.Reflector;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
@@ -44,7 +42,6 @@ public class CrashReport
     private File crashReportFile;
     private boolean field_85059_f = true;
     private StackTraceElement[] stacktrace = new StackTraceElement[0];
-    private static final String __OBFID = "CL_00000990";
     private boolean reported = false;
 
     public CrashReport(String par1Str, Throwable par2Throwable)
@@ -60,110 +57,43 @@ public class CrashReport
      */
     private void populateEnvironment()
     {
-        this.theReportCategory.addCrashSectionCallable("Minecraft Version", new Callable()
-        {
-            private static final String __OBFID = "CL_00001197";
-            public String call()
-            {
-                return "1.7.2";
-            }
-            public Object call1() throws Exception
-            {
-                return this.call();
-            }
+        this.theReportCategory.addCrashSectionCallable("Minecraft Version", () -> "1.7.2");
+        this.theReportCategory.addCrashSectionCallable("Operating System", () -> System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version"));
+        this.theReportCategory.addCrashSectionCallable("Java Version", () -> System.getProperty("java.version") + ", " + System.getProperty("java.vendor"));
+        this.theReportCategory.addCrashSectionCallable("Java VM Version", () -> System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor"));
+        this.theReportCategory.addCrashSectionCallable("Memory", () -> {
+            Runtime var1 = Runtime.getRuntime();
+            long var2 = var1.maxMemory();
+            long var4 = var1.totalMemory();
+            long var6 = var1.freeMemory();
+            long var8 = var2 / 1024L / 1024L;
+            long var10 = var4 / 1024L / 1024L;
+            long var12 = var6 / 1024L / 1024L;
+            return var6 + " bytes (" + var12 + " MB) / " + var4 + " bytes (" + var10 + " MB) up to " + var2 + " bytes (" + var8 + " MB)";
         });
-        this.theReportCategory.addCrashSectionCallable("Operating System", new Callable()
-        {
-            private static final String __OBFID = "CL_00001222";
-            public String call()
-            {
-                return System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version");
-            }
-            public Object call1() throws Exception
-            {
-                return this.call();
-            }
-        });
-        this.theReportCategory.addCrashSectionCallable("Java Version", new Callable()
-        {
-            private static final String __OBFID = "CL_00001248";
-            public String call()
-            {
-                return System.getProperty("java.version") + ", " + System.getProperty("java.vendor");
-            }
-            public Object call1() throws Exception
-            {
-                return this.call();
-            }
-        });
-        this.theReportCategory.addCrashSectionCallable("Java VM Version", new Callable()
-        {
-            private static final String __OBFID = "CL_00001275";
-            public String call()
-            {
-                return System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor");
-            }
-            public Object call1() throws Exception
-            {
-                return this.call();
-            }
-        });
-        this.theReportCategory.addCrashSectionCallable("Memory", new Callable()
-        {
-            private static final String __OBFID = "CL_00001302";
-            public String call()
-            {
-                Runtime var1 = Runtime.getRuntime();
-                long var2 = var1.maxMemory();
-                long var4 = var1.totalMemory();
-                long var6 = var1.freeMemory();
-                long var8 = var2 / 1024L / 1024L;
-                long var10 = var4 / 1024L / 1024L;
-                long var12 = var6 / 1024L / 1024L;
-                return var6 + " bytes (" + var12 + " MB) / " + var4 + " bytes (" + var10 + " MB) up to " + var2 + " bytes (" + var8 + " MB)";
-            }
-            public Object call1() throws Exception
-            {
-                return this.call();
-            }
-        });
-        this.theReportCategory.addCrashSectionCallable("JVM Flags", new Callable()
-        {
-            private static final String __OBFID = "CL_00001329";
-            public String call()
-            {
-                RuntimeMXBean var1 = ManagementFactory.getRuntimeMXBean();
-                List var2 = var1.getInputArguments();
-                int var3 = 0;
-                StringBuilder var4 = new StringBuilder();
-                Iterator var5 = var2.iterator();
+        this.theReportCategory.addCrashSectionCallable("JVM Flags", () -> {
+            RuntimeMXBean var1 = ManagementFactory.getRuntimeMXBean();
+            List var2 = var1.getInputArguments();
+            int var3 = 0;
+            StringBuilder var4 = new StringBuilder();
 
-                while (var5.hasNext())
-                {
-                    String var6 = (String)var5.next();
+            for (Object o : var2) {
+                String var6 = (String) o;
 
-                    if (var6.startsWith("-X"))
-                    {
-                        if (var3++ > 0)
-                        {
-                            var4.append(" ");
-                        }
-
-                        var4.append(var6);
+                if (var6.startsWith("-X")) {
+                    if (var3++ > 0) {
+                        var4.append(" ");
                     }
-                }
 
-                return String.format("%d total; %s", new Object[] {Integer.valueOf(var3), var4.toString()});
+                    var4.append(var6);
+                }
             }
-            public Object call1() throws Exception
-            {
-                return this.call();
-            }
+
+            return String.format("%d total; %s", new Object[] {Integer.valueOf(var3), var4.toString()});
         });
         this.theReportCategory.addCrashSectionCallable("AABB Pool Size", new Callable()
         {
-            private static final String __OBFID = "CL_00001355";
-            public String call1()
+            public String call()
             {
                 int var1 = AxisAlignedBB.getAABBPool().getlistAABBsize();
                 int var2 = 56 * var1;
@@ -173,23 +103,8 @@ public class CrashReport
                 int var6 = var5 / 1024 / 1024;
                 return var1 + " (" + var2 + " bytes; " + var3 + " MB) allocated, " + var4 + " (" + var5 + " bytes; " + var6 + " MB) used";
             }
-            public Object call() throws Exception
-            {
-                return this.call1();
-            }
         });
-        this.theReportCategory.addCrashSectionCallable("IntCache", new Callable()
-        {
-            private static final String __OBFID = "CL_00001382";
-            public String call1() throws SecurityException, NoSuchFieldException, IllegalAccessException, IllegalArgumentException
-            {
-                return IntCache.getCacheSizes();
-            }
-            public Object call() throws Exception
-            {
-                return this.call1();
-            }
-        });
+        this.theReportCategory.addCrashSectionCallable("IntCache", IntCache::getCacheSizes);
 
         if (Reflector.FMLCommonHandler_enhanceCrashReport.exists())
         {

@@ -2,7 +2,6 @@ package net.minecraft.world.gen.layer;
 
 public class GenLayerVoronoiZoom extends GenLayer
 {
-    private static final String __OBFID = "CL_00000571";
 
     public GenLayerVoronoiZoom(long par1, GenLayer par3GenLayer)
     {

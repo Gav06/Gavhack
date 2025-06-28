@@ -12,15 +12,14 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.shader.TesselatorVertexState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.src.ChunkCacheOF;
+import net.minecraft.src.Config;
+import net.minecraft.src.Reflector;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import optifine.Config;
-import optifine.Reflector;
-
 import org.lwjgl.opengl.GL11;
 
 public class WorldRenderer
@@ -108,7 +107,6 @@ public class WorldRenderer
     public RenderGlobal renderGlobal;
     public static int globalChunkOffsetX = 0;
     public static int globalChunkOffsetZ = 0;
-    private static final String __OBFID = "CL_00000942";
 
     public WorldRenderer(World par1World, List par2List, int par3, int par4, int par5, int par6)
     {
@@ -218,11 +216,12 @@ public class WorldRenderer
                 int viewEntityPosY = MathHelper.floor_double(var10.posY);
                 int viewEntityPosZ = MathHelper.floor_double(var10.posZ);
                 byte var14 = 1;
-                ChunkCache chunkcache = new ChunkCache(this.worldObj, xMin - var14, yMin - var14, zMain - var14, xMax + var14, yMax + var14, zMax + var14, var14);
+                ChunkCacheOF chunkcache = new ChunkCacheOF(this.worldObj, xMin - var14, yMin - var14, zMain - var14, xMax + var14, yMax + var14, zMax + var14, var14);
 
                 if (!chunkcache.extendedLevelsInChunkCache())
                 {
                     ++chunksUpdated;
+                    chunkcache.renderStart();
                     RenderBlocks var27 = new RenderBlocks(chunkcache);
                     Reflector.callVoid(Reflector.ForgeHooksClient_setWorldRendererRB, new Object[] {var27});
                     this.bytesDrawn = 0;
@@ -326,6 +325,7 @@ public class WorldRenderer
                     }
 
                     Reflector.callVoid(Reflector.ForgeHooksClient_setWorldRendererRB, new Object[] {(RenderBlocks)null});
+                    chunkcache.renderFinish();
                 }
 
                 HashSet var31 = new HashSet();

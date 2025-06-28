@@ -27,7 +27,6 @@ public class GuiBeacon extends GuiContainer
     private TileEntityBeacon field_147024_w;
     private GuiBeacon.ConfirmButton field_147028_x;
     private boolean field_147027_y;
-    private static final String __OBFID = "CL_00000739";
 
     public GuiBeacon(InventoryPlayer par1InventoryPlayer, TileEntityBeacon par2TileEntityBeacon)
     {
@@ -183,8 +182,8 @@ public class GuiBeacon extends GuiContainer
     protected void func_146979_b(int p_146979_1_, int p_146979_2_)
     {
         RenderHelper.disableStandardItemLighting();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("tile.beacon.primary", new Object[0]), 62, 10, 14737632);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("tile.beacon.secondary", new Object[0]), 169, 10, 14737632);
+        this.drawCenteredString(this.fontRenderer, I18n.format("tile.beacon.primary", new Object[0]), 62, 10, 14737632);
+        this.drawCenteredString(this.fontRenderer, I18n.format("tile.beacon.secondary", new Object[0]), 169, 10, 14737632);
         Iterator var3 = this.buttonList.iterator();
 
         while (var3.hasNext())
@@ -208,17 +207,16 @@ public class GuiBeacon extends GuiContainer
         int var4 = (this.width - this.field_146999_f) / 2;
         int var5 = (this.height - this.field_147000_g) / 2;
         this.drawTexturedModalRect(var4, var5, 0, 0, this.field_146999_f, this.field_147000_g);
-        itemRender.zLevel = 100.0F;
-        itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), new ItemStack(Items.emerald), var4 + 42, var5 + 109);
-        itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), new ItemStack(Items.diamond), var4 + 42 + 22, var5 + 109);
-        itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), new ItemStack(Items.gold_ingot), var4 + 42 + 44, var5 + 109);
-        itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), new ItemStack(Items.iron_ingot), var4 + 42 + 66, var5 + 109);
-        itemRender.zLevel = 0.0F;
+        renderItemGs.zLevel = 100.0F;
+        renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), new ItemStack(Items.emerald), var4 + 42, var5 + 109);
+        renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), new ItemStack(Items.diamond), var4 + 42 + 22, var5 + 109);
+        renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), new ItemStack(Items.gold_ingot), var4 + 42 + 44, var5 + 109);
+        renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), new ItemStack(Items.iron_ingot), var4 + 42 + 66, var5 + 109);
+        renderItemGs.zLevel = 0.0F;
     }
 
     class CancelButton extends GuiBeacon.Button
     {
-        private static final String __OBFID = "CL_00000740";
 
         public CancelButton(int par2, int par3, int par4)
         {
@@ -237,7 +235,6 @@ public class GuiBeacon extends GuiContainer
         private final int field_146144_p;
         private final int field_146143_q;
         private boolean field_146142_r;
-        private static final String __OBFID = "CL_00000743";
 
         protected Button(int par1, int par2, int par3, ResourceLocation par4ResourceLocation, int par5, int par6)
         {
@@ -249,11 +246,11 @@ public class GuiBeacon extends GuiContainer
 
         public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_)
         {
-            if (this.field_146125_m)
+            if (this.drawButton)
             {
                 p_146112_1_.getTextureManager().bindTexture(GuiBeacon.field_147025_v);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                this.field_146123_n = p_146112_2_ >= this.x && p_146112_3_ >= this.y && p_146112_2_ < this.x + this.width && p_146112_3_ < this.y + this.height;
+                this.field_146123_n = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
                 short var4 = 219;
                 int var5 = 0;
 
@@ -270,14 +267,14 @@ public class GuiBeacon extends GuiContainer
                     var5 += this.width * 3;
                 }
 
-                this.drawTexturedModalRect(this.x, this.y, var5, var4, this.width, this.height);
+                this.drawTexturedModalRect(this.xPosition, this.yPosition, var5, var4, this.width, this.height);
 
                 if (!GuiBeacon.field_147025_v.equals(this.field_146145_o))
                 {
                     p_146112_1_.getTextureManager().bindTexture(this.field_146145_o);
                 }
 
-                this.drawTexturedModalRect(this.x + 2, this.y + 2, this.field_146144_p, this.field_146143_q, 18, 18);
+                this.drawTexturedModalRect(this.xPosition + 2, this.yPosition + 2, this.field_146144_p, this.field_146143_q, 18, 18);
             }
         }
 
@@ -296,7 +293,6 @@ public class GuiBeacon extends GuiContainer
     {
         private final int field_146149_p;
         private final int field_146148_q;
-        private static final String __OBFID = "CL_00000742";
 
         public PowerButton(int par2, int par3, int par4, int par5, int par6)
         {
@@ -320,7 +316,6 @@ public class GuiBeacon extends GuiContainer
 
     class ConfirmButton extends GuiBeacon.Button
     {
-        private static final String __OBFID = "CL_00000741";
 
         public ConfirmButton(int par2, int par3, int par4)
         {

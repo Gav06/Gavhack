@@ -11,7 +11,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandTeleport extends CommandBase
 {
-    private static final String __OBFID = "CL_00001180";
 
     public String getCommandName()
     {

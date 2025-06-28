@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 public class BlockRailDetector extends BlockRailBase
 {
     private IIcon[] field_150055_b;
-    private static final String __OBFID = "CL_00000225";
 
     public BlockRailDetector()
     {
@@ -25,7 +24,7 @@ public class BlockRailDetector extends BlockRailBase
         this.setTickRandomly(true);
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 20;
     }
@@ -107,7 +106,7 @@ public class BlockRailDetector extends BlockRailBase
 
         if (var7)
         {
-            p_150054_1_.scheduleBlockUpdate(p_150054_2_, p_150054_3_, p_150054_4_, this, this.func_149738_a(p_150054_1_));
+            p_150054_1_.scheduleBlockUpdate(p_150054_2_, p_150054_3_, p_150054_4_, this, this.tickRate(p_150054_1_));
         }
 
         p_150054_1_.func_147453_f(p_150054_2_, p_150054_3_, p_150054_4_, this);
@@ -147,7 +146,7 @@ public class BlockRailDetector extends BlockRailBase
         return 0;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150055_b = new IIcon[2];
         this.field_150055_b[0] = p_149651_1_.registerIcon(this.getTextureName());

@@ -5,7 +5,6 @@ import net.minecraft.world.World;
 
 public class StructureMineshaftStart extends StructureStart
 {
-    private static final String __OBFID = "CL_00000450";
 
     public StructureMineshaftStart() {}
 

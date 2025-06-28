@@ -8,75 +8,75 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C07PacketPlayerDigging extends Packet
 {
-    private int x;
-    private int y;
-    private int z;
-    private int side;
-    private int action;
+    private int field_149511_a;
+    private int field_149509_b;
+    private int field_149510_c;
+    private int field_149507_d;
+    private int field_149508_e;
 
     public C07PacketPlayerDigging() {}
 
-    public C07PacketPlayerDigging(int action, int x, int y, int z, int side)
+    public C07PacketPlayerDigging(int p_i45258_1_, int p_i45258_2_, int p_i45258_3_, int p_i45258_4_, int p_i45258_5_)
     {
-        this.action = action;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.side = side;
+        this.field_149508_e = p_i45258_1_;
+        this.field_149511_a = p_i45258_2_;
+        this.field_149509_b = p_i45258_3_;
+        this.field_149510_c = p_i45258_4_;
+        this.field_149507_d = p_i45258_5_;
     }
 
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer buf) throws IOException
+    public void readPacketData(PacketBuffer p_148837_1_) throws IOException
     {
-        this.action = buf.readUnsignedByte();
-        this.x = buf.readInt();
-        this.y = buf.readUnsignedByte();
-        this.z = buf.readInt();
-        this.side = buf.readUnsignedByte();
+        this.field_149508_e = p_148837_1_.readUnsignedByte();
+        this.field_149511_a = p_148837_1_.readInt();
+        this.field_149509_b = p_148837_1_.readUnsignedByte();
+        this.field_149510_c = p_148837_1_.readInt();
+        this.field_149507_d = p_148837_1_.readUnsignedByte();
     }
 
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer buf) throws IOException
+    public void writePacketData(PacketBuffer p_148840_1_) throws IOException
     {
-        buf.writeByte(this.action);
-        buf.writeInt(this.x);
-        buf.writeByte(this.y);
-        buf.writeInt(this.z);
-        buf.writeByte(this.side);
+        p_148840_1_.writeByte(this.field_149508_e);
+        p_148840_1_.writeInt(this.field_149511_a);
+        p_148840_1_.writeByte(this.field_149509_b);
+        p_148840_1_.writeInt(this.field_149510_c);
+        p_148840_1_.writeByte(this.field_149507_d);
     }
 
-    public void processPacket(INetHandlerPlayServer handler)
+    public void processPacket(INetHandlerPlayServer p_149504_1_)
     {
-        handler.processPlayerDigging(this);
+        p_149504_1_.processPlayerDigging(this);
     }
 
-    public int getX()
+    public int func_149505_c()
     {
-        return this.x;
+        return this.field_149511_a;
     }
 
-    public int getY()
+    public int func_149503_d()
     {
-        return this.y;
+        return this.field_149509_b;
     }
 
-    public int getZ()
+    public int func_149502_e()
     {
-        return this.z;
+        return this.field_149510_c;
     }
 
-    public int getSide()
+    public int func_149501_f()
     {
-        return this.side;
+        return this.field_149507_d;
     }
 
-    public int getAction()
+    public int func_149506_g()
     {
-        return this.action;
+        return this.field_149508_e;
     }
 
     public void processPacket(INetHandler p_148833_1_)

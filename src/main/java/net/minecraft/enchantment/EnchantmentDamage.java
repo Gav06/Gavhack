@@ -33,7 +33,6 @@ public class EnchantmentDamage extends Enchantment
      * Defines the type of damage of the enchantment, 0 = all, 1 = undead, 3 = arthropods
      */
     public final int damageType;
-    private static final String __OBFID = "CL_00000102";
 
     public EnchantmentDamage(int par1, int par2, int par3)
     {

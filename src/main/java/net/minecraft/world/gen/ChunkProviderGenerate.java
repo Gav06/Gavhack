@@ -69,7 +69,6 @@ public class ChunkProviderGenerate implements IChunkProvider
     double[] field_147425_f;
     double[] field_147426_g;
     int[][] field_73219_j = new int[32][32];
-    private static final String __OBFID = "CL_00000396";
 
     public ChunkProviderGenerate(World par1World, long par2, boolean par4)
     {

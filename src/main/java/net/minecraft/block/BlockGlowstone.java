@@ -10,7 +10,6 @@ import net.minecraft.util.MathHelper;
 
 public class BlockGlowstone extends Block
 {
-    private static final String __OBFID = "CL_00000250";
 
     public BlockGlowstone(Material p_i45409_1_)
     {
@@ -39,8 +38,8 @@ public class BlockGlowstone extends Block
         return Items.glowstone_dust;
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
-        return MapColor.yellow;
+        return MapColor.field_151658_d;
     }
 }

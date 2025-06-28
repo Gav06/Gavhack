@@ -2,7 +2,6 @@ package net.minecraft.enchantment;
 
 public class EnchantmentFireAspect extends Enchantment
 {
-    private static final String __OBFID = "CL_00000116";
 
     protected EnchantmentFireAspect(int par1, int par2)
     {

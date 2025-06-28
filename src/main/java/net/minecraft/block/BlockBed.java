@@ -23,7 +23,6 @@ public class BlockBed extends BlockDirectional
     private IIcon[] field_149980_b;
     private IIcon[] field_149982_M;
     private IIcon[] field_149983_N;
-    private static final String __OBFID = "CL_00000198";
 
     public BlockBed()
     {
@@ -44,9 +43,9 @@ public class BlockBed extends BlockDirectional
         {
             int var10 = p_149727_1_.getBlockMetadata(p_149727_2_, p_149727_3_, p_149727_4_);
 
-            if (!func_149975_b(var10))
+            if (!isBlockHeadOfBed(var10))
             {
-                int var11 = func_149895_l(var10);
+                int var11 = getDirection(var10);
                 p_149727_2_ += field_149981_a[var11][0];
                 p_149727_4_ += field_149981_a[var11][1];
 
@@ -116,7 +115,7 @@ public class BlockBed extends BlockDirectional
                 double var13 = (double)p_149727_3_ + 0.5D;
                 double var15 = (double)p_149727_4_ + 0.5D;
                 p_149727_1_.setBlockToAir(p_149727_2_, p_149727_3_, p_149727_4_);
-                int var17 = func_149895_l(var10);
+                int var17 = getDirection(var10);
                 p_149727_2_ += field_149981_a[var17][0];
                 p_149727_4_ += field_149981_a[var17][1];
 
@@ -145,14 +144,14 @@ public class BlockBed extends BlockDirectional
         }
         else
         {
-            int var3 = func_149895_l(p_149691_2_);
+            int var3 = getDirection(p_149691_2_);
             int var4 = Direction.bedDirection[var3][p_149691_1_];
-            int var5 = func_149975_b(p_149691_2_) ? 1 : 0;
+            int var5 = isBlockHeadOfBed(p_149691_2_) ? 1 : 0;
             return (var5 != 1 || var4 != 2) && (var5 != 0 || var4 != 3) ? (var4 != 5 && var4 != 4 ? this.field_149983_N[var5] : this.field_149982_M[var5]) : this.field_149980_b[var5];
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149983_N = new IIcon[] {p_149651_1_.registerIcon(this.getTextureName() + "_feet_top"), p_149651_1_.registerIcon(this.getTextureName() + "_head_top")};
         this.field_149980_b = new IIcon[] {p_149651_1_.registerIcon(this.getTextureName() + "_feet_end"), p_149651_1_.registerIcon(this.getTextureName() + "_head_end")};
@@ -185,9 +184,9 @@ public class BlockBed extends BlockDirectional
     public void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_)
     {
         int var6 = p_149695_1_.getBlockMetadata(p_149695_2_, p_149695_3_, p_149695_4_);
-        int var7 = func_149895_l(var6);
+        int var7 = getDirection(var6);
 
-        if (func_149975_b(var6))
+        if (isBlockHeadOfBed(var6))
         {
             if (p_149695_1_.getBlock(p_149695_2_ - field_149981_a[var7][0], p_149695_3_, p_149695_4_ - field_149981_a[var7][1]) != this)
             {
@@ -207,7 +206,7 @@ public class BlockBed extends BlockDirectional
 
     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
     {
-        return func_149975_b(p_149650_1_) ? Item.getItemById(0) : Items.bed;
+        return isBlockHeadOfBed(p_149650_1_) ? Item.getItemById(0) : Items.bed;
     }
 
     private void func_149978_e()
@@ -215,7 +214,7 @@ public class BlockBed extends BlockDirectional
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5625F, 1.0F);
     }
 
-    public static boolean func_149975_b(int p_149975_0_)
+    public static boolean isBlockHeadOfBed(int p_149975_0_)
     {
         return (p_149975_0_ & 8) != 0;
     }
@@ -244,7 +243,7 @@ public class BlockBed extends BlockDirectional
     public static ChunkCoordinates func_149977_a(World p_149977_0_, int p_149977_1_, int p_149977_2_, int p_149977_3_, int p_149977_4_)
     {
         int var5 = p_149977_0_.getBlockMetadata(p_149977_1_, p_149977_2_, p_149977_3_);
-        int var6 = BlockDirectional.func_149895_l(var5);
+        int var6 = BlockDirectional.getDirection(var5);
 
         for (int var7 = 0; var7 <= 1; ++var7)
         {
@@ -278,7 +277,7 @@ public class BlockBed extends BlockDirectional
      */
     public void dropBlockAsItemWithChance(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_, int p_149690_5_, float p_149690_6_, int p_149690_7_)
     {
-        if (!func_149975_b(p_149690_5_))
+        if (!isBlockHeadOfBed(p_149690_5_))
         {
             super.dropBlockAsItemWithChance(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_, p_149690_5_, p_149690_6_, 0);
         }
@@ -292,7 +291,7 @@ public class BlockBed extends BlockDirectional
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.bed;
     }
@@ -302,9 +301,9 @@ public class BlockBed extends BlockDirectional
      */
     public void onBlockHarvested(World p_149681_1_, int p_149681_2_, int p_149681_3_, int p_149681_4_, int p_149681_5_, EntityPlayer p_149681_6_)
     {
-        if (p_149681_6_.capabilities.isCreativeMode && func_149975_b(p_149681_5_))
+        if (p_149681_6_.capabilities.isCreativeMode && isBlockHeadOfBed(p_149681_5_))
         {
-            int var7 = func_149895_l(p_149681_5_);
+            int var7 = getDirection(p_149681_5_);
             p_149681_2_ -= field_149981_a[var7][0];
             p_149681_4_ -= field_149981_a[var7][1];
 

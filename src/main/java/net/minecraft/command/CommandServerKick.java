@@ -6,7 +6,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandServerKick extends CommandBase
 {
-    private static final String __OBFID = "CL_00000550";
 
     public String getCommandName()
     {

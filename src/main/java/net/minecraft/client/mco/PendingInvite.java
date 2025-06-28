@@ -8,7 +8,6 @@ public class PendingInvite extends ValueObject
     public String field_148776_a;
     public String field_148774_b;
     public String field_148775_c;
-    private static final String __OBFID = "CL_00001170";
 
     public static PendingInvite func_148773_a(JsonObject p_148773_0_)
     {

@@ -3,8 +3,6 @@ package net.minecraft.client.renderer.entity;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import me.gavin.gavhack.module.impl.ESP;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelChicken;
@@ -87,6 +85,7 @@ import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityWitherSkull;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.src.Reflector;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ReportedException;
@@ -124,7 +123,6 @@ public class RenderManager
     public double viewerPosY;
     public double viewerPosZ;
     public static boolean field_85095_o;
-    private static final String __OBFID = "CL_00000991";
 
     private RenderManager()
     {
@@ -183,9 +181,11 @@ public class RenderManager
         this.entityRenderMap.put(EntityFishHook.class, new RenderFish());
         this.entityRenderMap.put(EntityHorse.class, new RenderHorse(new ModelHorse(), 0.75F));
         this.entityRenderMap.put(EntityLightningBolt.class, new RenderLightningBolt());
+        Iterator var1 = this.entityRenderMap.values().iterator();
 
-        for (Object o : this.entityRenderMap.values()) {
-            Render var2 = (Render) o;
+        while (var1.hasNext())
+        {
+            Render var2 = (Render)var1.next();
             var2.setRenderManager(this);
         }
     }
@@ -208,22 +208,32 @@ public class RenderManager
         return this.getEntityClassRenderObject(par1Entity.getClass());
     }
 
-    public void func_147938_a(World p_147938_1_, TextureManager p_147938_2_, FontRenderer p_147938_3_, EntityLivingBase livingBase, Entity p_147938_5_, GameSettings p_147938_6_, float partialTicks)
+    public void cacheActiveRenderInfo(World p_147938_1_, TextureManager p_147938_2_, FontRenderer p_147938_3_, EntityLivingBase p_147938_4_, Entity p_147938_5_, GameSettings p_147938_6_, float p_147938_7_)
     {
         this.worldObj = p_147938_1_;
         this.renderEngine = p_147938_2_;
         this.options = p_147938_6_;
-        this.livingPlayer = livingBase;
+        this.livingPlayer = p_147938_4_;
         this.field_147941_i = p_147938_5_;
         this.fontRenderer = p_147938_3_;
 
-        if (livingBase.isPlayerSleeping())
+        if (p_147938_4_.isPlayerSleeping())
         {
-            Block var8 = p_147938_1_.getBlock(MathHelper.floor_double(livingBase.posX), MathHelper.floor_double(livingBase.posY), MathHelper.floor_double(livingBase.posZ));
+            Block var8 = p_147938_1_.getBlock(MathHelper.floor_double(p_147938_4_.posX), MathHelper.floor_double(p_147938_4_.posY), MathHelper.floor_double(p_147938_4_.posZ));
+            int x = MathHelper.floor_double(p_147938_4_.posX);
+            int y = MathHelper.floor_double(p_147938_4_.posY);
+            int z = MathHelper.floor_double(p_147938_4_.posZ);
+            int var9;
 
-            if (var8 == Blocks.bed)
+            if (Reflector.callBoolean(Reflector.ForgeBlock_isBed, new Object[] {p_147938_1_, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z), p_147938_4_}))
             {
-                int var9 = p_147938_1_.getBlockMetadata(MathHelper.floor_double(livingBase.posX), MathHelper.floor_double(livingBase.posY), MathHelper.floor_double(livingBase.posZ));
+                var9 = Reflector.callInt(var8, Reflector.ForgeBlock_getBedDirection, new Object[] {p_147938_1_, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z)});
+                this.playerViewY = (float)(var9 * 90 + 180);
+                this.playerViewX = 0.0F;
+            }
+            else if (var8 == Blocks.bed)
+            {
+                var9 = p_147938_1_.getBlockMetadata(MathHelper.floor_double(p_147938_4_.posX), MathHelper.floor_double(p_147938_4_.posY), MathHelper.floor_double(p_147938_4_.posZ));
                 int var10 = var9 & 3;
                 this.playerViewY = (float)(var10 * 90 + 180);
                 this.playerViewX = 0.0F;
@@ -231,8 +241,8 @@ public class RenderManager
         }
         else
         {
-            this.playerViewY = livingBase.prevRotationYaw + (livingBase.rotationYaw - livingBase.prevRotationYaw) * partialTicks;
-            this.playerViewX = livingBase.prevRotationPitch + (livingBase.rotationPitch - livingBase.prevRotationPitch) * partialTicks;
+            this.playerViewY = p_147938_4_.prevRotationYaw + (p_147938_4_.rotationYaw - p_147938_4_.prevRotationYaw) * p_147938_7_;
+            this.playerViewX = p_147938_4_.prevRotationPitch + (p_147938_4_.rotationPitch - p_147938_4_.prevRotationPitch) * p_147938_7_;
         }
 
         if (p_147938_6_.thirdPersonView == 2)
@@ -240,65 +250,63 @@ public class RenderManager
             this.playerViewY += 180.0F;
         }
 
-        this.viewerPosX = livingBase.lastTickPosX + (livingBase.posX - livingBase.lastTickPosX) * (double)partialTicks;
-        this.viewerPosY = livingBase.lastTickPosY + (livingBase.posY - livingBase.lastTickPosY) * (double)partialTicks;
-        this.viewerPosZ = livingBase.lastTickPosZ + (livingBase.posZ - livingBase.lastTickPosZ) * (double)partialTicks;
+        this.viewerPosX = p_147938_4_.lastTickPosX + (p_147938_4_.posX - p_147938_4_.lastTickPosX) * (double)p_147938_7_;
+        this.viewerPosY = p_147938_4_.lastTickPosY + (p_147938_4_.posY - p_147938_4_.lastTickPosY) * (double)p_147938_7_;
+        this.viewerPosZ = p_147938_4_.lastTickPosZ + (p_147938_4_.posZ - p_147938_4_.lastTickPosZ) * (double)p_147938_7_;
     }
 
-    public boolean renderEntityStatic(Entity Entity, float partialTicks)
+    public boolean renderEntity(Entity p_147937_1_, float p_147937_2_)
     {
-        return this.renderEntityStatic(Entity, partialTicks, false);
+        return this.renderEntityStatic(p_147937_1_, p_147937_2_, false);
     }
 
-    public boolean renderEntityStatic(Entity entity, float partialTicks, boolean p_147936_3_)
+    public boolean renderEntityStatic(Entity p_147936_1_, float p_147936_2_, boolean p_147936_3_)
     {
-        if (entity.ticksExisted == 0)
+        if (p_147936_1_.ticksExisted == 0)
         {
-            entity.lastTickPosX = entity.posX;
-            entity.lastTickPosY = entity.posY;
-            entity.lastTickPosZ = entity.posZ;
+            p_147936_1_.lastTickPosX = p_147936_1_.posX;
+            p_147936_1_.lastTickPosY = p_147936_1_.posY;
+            p_147936_1_.lastTickPosZ = p_147936_1_.posZ;
         }
 
-        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)partialTicks;
-        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks;
-        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)partialTicks;
-        float yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
-        int var11 = entity.getBrightnessForRender(partialTicks);
+        double var4 = p_147936_1_.lastTickPosX + (p_147936_1_.posX - p_147936_1_.lastTickPosX) * (double)p_147936_2_;
+        double var6 = p_147936_1_.lastTickPosY + (p_147936_1_.posY - p_147936_1_.lastTickPosY) * (double)p_147936_2_;
+        double var8 = p_147936_1_.lastTickPosZ + (p_147936_1_.posZ - p_147936_1_.lastTickPosZ) * (double)p_147936_2_;
+        float var10 = p_147936_1_.prevRotationYaw + (p_147936_1_.rotationYaw - p_147936_1_.prevRotationYaw) * p_147936_2_;
+        int var11 = p_147936_1_.getBrightnessForRender(p_147936_2_);
 
-        if (entity.isBurning())
+        if (p_147936_1_.isBurning())
         {
             var11 = 15728880;
         }
 
         int var12 = var11 % 65536;
         int var13 = var11 / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var12, (float) var13);
-
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var12 / 1.0F, (float)var13 / 1.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-        return this.renderEntity(entity, x - renderPosX, y - renderPosY, z - renderPosZ, yaw, partialTicks, p_147936_3_);
+        return this.func_147939_a(p_147936_1_, var4 - renderPosX, var6 - renderPosY, var8 - renderPosZ, var10, p_147936_2_, p_147936_3_);
     }
 
     public boolean func_147940_a(Entity p_147940_1_, double p_147940_2_, double p_147940_4_, double p_147940_6_, float p_147940_8_, float p_147940_9_)
     {
-        return this.renderEntity(p_147940_1_, p_147940_2_, p_147940_4_, p_147940_6_, p_147940_8_, p_147940_9_, false);
+        return this.func_147939_a(p_147940_1_, p_147940_2_, p_147940_4_, p_147940_6_, p_147940_8_, p_147940_9_, false);
     }
 
-    public boolean renderEntity(Entity entity, double x, double y, double z, float yaw, float partialTicks, boolean p_147939_10_)
+    public boolean func_147939_a(Entity p_147939_1_, double p_147939_2_, double p_147939_4_, double p_147939_6_, float p_147939_8_, float p_147939_9_, boolean p_147939_10_)
     {
         Render var11 = null;
 
         try
         {
-            var11 = this.getEntityRenderObject(entity);
+            var11 = this.getEntityRenderObject(p_147939_1_);
 
             if (var11 != null && this.renderEngine != null)
             {
-                if (!var11.func_147905_a() || p_147939_10_)
+                if (!var11.isStaticEntity() || p_147939_10_)
                 {
                     try
                     {
-                        var11.doRender(entity, x, y, z, yaw, partialTicks);
+                        var11.doRender(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
                     }
                     catch (Throwable var18)
                     {
@@ -307,18 +315,18 @@ public class RenderManager
 
                     try
                     {
-                        var11.doRenderShadowAndFire(entity, x, y, z, yaw, partialTicks);
+                        var11.doRenderShadowAndFire(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
                     }
                     catch (Throwable var17)
                     {
                         throw new ReportedException(CrashReport.makeCrashReport(var17, "Post-rendering entity in world"));
                     }
 
-                    if (field_85095_o && !entity.isInvisible() && !p_147939_10_)
+                    if (field_85095_o && !p_147939_1_.isInvisible() && !p_147939_10_)
                     {
                         try
                         {
-                            this.func_85094_b(entity, x, y, z, yaw, partialTicks);
+                            this.func_85094_b(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
                         }
                         catch (Throwable var16)
                         {
@@ -338,12 +346,12 @@ public class RenderManager
         {
             CrashReport var13 = CrashReport.makeCrashReport(var19, "Rendering entity in world");
             CrashReportCategory var14 = var13.makeCategory("Entity being rendered");
-            entity.addEntityCrashInfo(var14);
+            p_147939_1_.addEntityCrashInfo(var14);
             CrashReportCategory var15 = var13.makeCategory("Renderer details");
             var15.addCrashSection("Assigned renderer", var11);
-            var15.addCrashSection("Location", CrashReportCategory.func_85074_a(x, y, z));
-            var15.addCrashSection("Rotation", Float.valueOf(yaw));
-            var15.addCrashSection("Delta", Float.valueOf(partialTicks));
+            var15.addCrashSection("Location", CrashReportCategory.func_85074_a(p_147939_2_, p_147939_4_, p_147939_6_));
+            var15.addCrashSection("Rotation", Float.valueOf(p_147939_8_));
+            var15.addCrashSection("Delta", Float.valueOf(p_147939_9_));
             throw new ReportedException(var13);
         }
     }
@@ -398,5 +406,15 @@ public class RenderManager
             Render var3 = (Render)var2.next();
             var3.updateIcons(par1IconRegister);
         }
+    }
+
+    public Map getEntityRenderMap()
+    {
+        return this.entityRenderMap;
+    }
+
+    public void setEntityRenderMap(Map entityRenderMap)
+    {
+        this.entityRenderMap = entityRenderMap;
     }
 }

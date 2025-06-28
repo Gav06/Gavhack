@@ -13,7 +13,6 @@ import net.minecraft.util.IIcon;
 public class BlockColored extends Block
 {
     private IIcon[] field_150033_a;
-    private static final String __OBFID = "CL_00000217";
 
     public BlockColored(Material p_i45398_1_)
     {
@@ -55,7 +54,7 @@ public class BlockColored extends Block
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150033_a = new IIcon[16];
 
@@ -65,8 +64,8 @@ public class BlockColored extends Block
         }
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
-        return MapColor.func_151644_a(color);
+        return MapColor.func_151644_a(p_149728_1_);
     }
 }

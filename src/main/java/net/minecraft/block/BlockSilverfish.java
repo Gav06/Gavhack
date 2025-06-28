@@ -16,7 +16,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 public class BlockSilverfish extends Block
 {
     public static final String[] field_150198_a = new String[] {"stone", "cobble", "brick", "mossybrick", "crackedbrick", "chiseledbrick"};
-    private static final String __OBFID = "CL_00000271";
 
     public BlockSilverfish()
     {
@@ -52,7 +51,7 @@ public class BlockSilverfish extends Block
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerIcons(IIconRegister p_149651_1_) {}
 
     public void onBlockDestroyedByPlayer(World p_149664_1_, int p_149664_2_, int p_149664_3_, int p_149664_4_, int p_149664_5_)
     {

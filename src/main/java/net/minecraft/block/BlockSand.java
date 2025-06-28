@@ -13,7 +13,6 @@ public class BlockSand extends BlockFalling
     public static final String[] field_149838_a = new String[] {"default", "red"};
     private static IIcon field_149837_b;
     private static IIcon field_149839_N;
-    private static final String __OBFID = "CL_00000303";
 
     /**
      * Gets the block's texture. Args: side, meta
@@ -23,7 +22,7 @@ public class BlockSand extends BlockFalling
         return p_149691_2_ == 1 ? field_149839_N : field_149837_b;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         field_149837_b = p_149651_1_.registerIcon("sand");
         field_149839_N = p_149651_1_.registerIcon("red_sand");
@@ -43,8 +42,8 @@ public class BlockSand extends BlockFalling
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 1));
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
-        return color == 1 ? MapColor.field_151664_l : MapColor.yellow;
+        return p_149728_1_ == 1 ? MapColor.field_151664_l : MapColor.field_151658_d;
     }
 }

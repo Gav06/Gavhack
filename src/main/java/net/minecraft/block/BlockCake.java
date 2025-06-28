@@ -16,7 +16,6 @@ public class BlockCake extends Block
     private IIcon field_150038_a;
     private IIcon field_150037_b;
     private IIcon field_150039_M;
-    private static final String __OBFID = "CL_00000211";
 
     protected BlockCake()
     {
@@ -76,7 +75,7 @@ public class BlockCake extends Block
         return p_149691_1_ == 1 ? this.field_150038_a : (p_149691_1_ == 0 ? this.field_150037_b : (p_149691_2_ > 0 && p_149691_1_ == 4 ? this.field_150039_M : this.blockIcon));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
         this.field_150039_M = p_149651_1_.registerIcon(this.getTextureName() + "_inner");
@@ -166,7 +165,7 @@ public class BlockCake extends Block
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.cake;
     }

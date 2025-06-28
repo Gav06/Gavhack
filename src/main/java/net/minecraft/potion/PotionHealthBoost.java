@@ -5,7 +5,6 @@ import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 
 public class PotionHealthBoost extends Potion
 {
-    private static final String __OBFID = "CL_00001526";
 
     public PotionHealthBoost(int par1, boolean par2, int par3)
     {

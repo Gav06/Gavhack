@@ -10,7 +10,6 @@ public class EntityTNTPrimed extends Entity
     /** How long the fuse is */
     public int fuse;
     private EntityLivingBase tntPlacedBy;
-    private static final String __OBFID = "CL_00001681";
 
     public EntityTNTPrimed(World par1World)
     {

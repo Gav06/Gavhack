@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 
 public class BlockTripWire extends Block
 {
-    private static final String __OBFID = "CL_00000328";
 
     public BlockTripWire()
     {
@@ -25,7 +24,7 @@ public class BlockTripWire extends Block
         this.setTickRandomly(true);
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 10;
     }
@@ -73,7 +72,7 @@ public class BlockTripWire extends Block
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.string;
     }
@@ -205,7 +204,7 @@ public class BlockTripWire extends Block
         int var5 = p_150140_1_.getBlockMetadata(p_150140_2_, p_150140_3_, p_150140_4_);
         boolean var6 = (var5 & 1) == 1;
         boolean var7 = false;
-        List var8 = p_150140_1_.getEntitiesWithinAABBExcludingEntity((Entity)null, AxisAlignedBB.getAABBPool().getAABB((double)p_150140_2_ + this.field_149759_B, (double)p_150140_3_ + this.field_149760_C, (double)p_150140_4_ + this.field_149754_D, (double)p_150140_2_ + this.field_149755_E, (double)p_150140_3_ + this.field_149756_F, (double)p_150140_4_ + this.field_149757_G));
+        List var8 = p_150140_1_.getEntitiesWithinAABBExcludingEntity((Entity)null, AxisAlignedBB.getAABBPool().getAABB((double)p_150140_2_ + this.minX, (double)p_150140_3_ + this.minY, (double)p_150140_4_ + this.minZ, (double)p_150140_2_ + this.maxX, (double)p_150140_3_ + this.maxY, (double)p_150140_4_ + this.maxZ));
 
         if (!var8.isEmpty())
         {
@@ -241,7 +240,7 @@ public class BlockTripWire extends Block
 
         if (var7)
         {
-            p_150140_1_.scheduleBlockUpdate(p_150140_2_, p_150140_3_, p_150140_4_, this, this.func_149738_a(p_150140_1_));
+            p_150140_1_.scheduleBlockUpdate(p_150140_2_, p_150140_3_, p_150140_4_, this, this.tickRate(p_150140_1_));
         }
     }
 

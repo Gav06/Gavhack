@@ -9,7 +9,6 @@ import net.minecraft.network.PacketBuffer;
 
 public class MerchantRecipeList extends ArrayList
 {
-    private static final String __OBFID = "CL_00000127";
 
     public MerchantRecipeList() {}
 

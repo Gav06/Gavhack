@@ -56,6 +56,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import shadersmod.client.Shaders;
 
 public class RenderBlocks {
 
@@ -139,17 +140,24 @@ public class RenderBlocks {
    public float field_147841_ay;
    public float field_147839_az;
    public float field_147833_aA;
-   public static final String __OBFID = "CL_00000940";
    public boolean aoLightValuesCalculated;
    public float aoLightValueOpaque = 0.2F;
    public boolean betterSnowEnabled = true;
+   private float lightLevel05 = 0.5F;
+   private float lightLevel06 = 0.6F;
+   private float lightLevel08 = 0.8F;
    private static RenderBlocks instance;
-   private static final String __OBFID = "CL_00000940";
 
    public RenderBlocks(IBlockAccess par1IBlockAccess) {
       this.field_147845_a = par1IBlockAccess;
       this.field_147877_p = Minecraft.func_71410_x();
       this.aoLightValueOpaque = 1.0F - Config.getAmbientOcclusionLevel() * 0.8F;
+      if(Config.isShaders()) {
+         this.lightLevel08 = Shaders.blockLightLevel08;
+         this.lightLevel06 = Shaders.blockLightLevel06;
+         this.lightLevel05 = Shaders.blockLightLevel05;
+      }
+
    }
 
    public RenderBlocks() {
@@ -234,106 +242,162 @@ public class RenderBlocks {
       if(i == -1) {
          return false;
       } else {
-         par1Block.func_149719_a(this.field_147845_a, par2, par3, par4);
-         if(Config.isBetterSnow() && par1Block == Blocks.field_150472_an && this.hasSnowNeighbours(par2, par3, par4)) {
-            this.renderSnow(par2, par3, par4, Blocks.field_150431_aC.func_149669_A());
-         }
-
-         this.func_147775_a(par1Block);
-         switch(i) {
-         case 0:
-            return this.func_147784_q(par1Block, par2, par3, par4);
-         case 1:
-            return this.func_147746_l(par1Block, par2, par3, par4);
-         case 2:
-            return this.func_147791_c(par1Block, par2, par3, par4);
-         case 3:
-            return this.func_147801_a((BlockFire)par1Block, par2, par3, par4);
-         case 4:
-            return this.func_147721_p(par1Block, par2, par3, par4);
-         case 5:
-            return this.func_147788_h(par1Block, par2, par3, par4);
-         case 6:
-            return this.func_147796_n(par1Block, par2, par3, par4);
-         case 7:
-            return this.func_147760_u(par1Block, par2, par3, par4);
-         case 8:
-            return this.func_147794_i(par1Block, par2, par3, par4);
-         case 9:
-            return this.func_147766_a((BlockRailBase)par1Block, par2, par3, par4);
-         case 10:
-            return this.func_147722_a((BlockStairs)par1Block, par2, par3, par4);
-         case 11:
-            return this.func_147735_a((BlockFence)par1Block, par2, par3, par4);
-         case 12:
-            return this.func_147790_e(par1Block, par2, par3, par4);
-         case 13:
-            return this.func_147755_t(par1Block, par2, par3, par4);
-         case 14:
-            return this.func_147773_v(par1Block, par2, par3, par4);
-         case 15:
-            return this.func_147759_a((BlockRedstoneRepeater)par1Block, par2, par3, par4);
-         case 16:
-            return this.func_147731_b(par1Block, par2, par3, par4, false);
-         case 17:
-            return this.func_147809_c(par1Block, par2, par3, par4, true);
-         case 18:
-            return this.func_147767_a((BlockPane)par1Block, par2, par3, par4);
-         case 19:
-            return this.func_147724_m(par1Block, par2, par3, par4);
-         case 20:
-            return this.func_147726_j(par1Block, par2, par3, par4);
-         case 21:
-            return this.func_147776_a((BlockFenceGate)par1Block, par2, par3, par4);
-         case 22:
-         default:
-            if(Reflector.ModLoader.exists()) {
-               return Reflector.callBoolean(Reflector.ModLoader_renderWorldBlock, new Object[]{this, this.field_147845_a, Integer.valueOf(par2), Integer.valueOf(par3), Integer.valueOf(par4), par1Block, Integer.valueOf(i)});
-            } else {
-               if(Reflector.FMLRenderAccessLibrary.exists()) {
-                  return Reflector.callBoolean(Reflector.FMLRenderAccessLibrary_renderWorldBlock, new Object[]{this, this.field_147845_a, Integer.valueOf(par2), Integer.valueOf(par3), Integer.valueOf(par4), par1Block, Integer.valueOf(i)});
-               }
-
-               return false;
+         try {
+            if(Config.isShaders()) {
+               Shaders.pushEntity(this, par1Block, par2, par3, par4);
             }
-         case 23:
-            return this.func_147783_o(par1Block, par2, par3, par4);
-         case 24:
-            return this.func_147785_a((BlockCauldron)par1Block, par2, par3, par4);
-         case 25:
-            return this.func_147741_a((BlockBrewingStand)par1Block, par2, par3, par4);
-         case 26:
-            return this.func_147743_a((BlockEndPortalFrame)par1Block, par2, par3, par4);
-         case 27:
-            return this.func_147802_a((BlockDragonEgg)par1Block, par2, par3, par4);
-         case 28:
-            return this.func_147772_a((BlockCocoa)par1Block, par2, par3, par4);
-         case 29:
-            return this.func_147723_f(par1Block, par2, par3, par4);
-         case 30:
-            return this.func_147756_g(par1Block, par2, par3, par4);
-         case 31:
-            return this.func_147742_r(par1Block, par2, par3, par4);
-         case 32:
-            return this.func_147807_a((BlockWall)par1Block, par2, par3, par4);
-         case 33:
-            return this.func_147752_a((BlockFlowerPot)par1Block, par2, par3, par4);
-         case 34:
-            return this.func_147797_a((BlockBeacon)par1Block, par2, par3, par4);
-         case 35:
-            return this.func_147725_a((BlockAnvil)par1Block, par2, par3, par4);
-         case 36:
-            return this.func_147748_a((BlockRedstoneDiode)par1Block, par2, par3, par4);
-         case 37:
-            return this.func_147781_a((BlockRedstoneComparator)par1Block, par2, par3, par4);
-         case 38:
-            return this.func_147803_a((BlockHopper)par1Block, par2, par3, par4);
-         case 39:
-            return this.func_147779_s(par1Block, par2, par3, par4);
-         case 40:
-            return this.func_147774_a((BlockDoublePlant)par1Block, par2, par3, par4);
-         case 41:
-            return this.func_147733_k(par1Block, par2, par3, par4);
+
+            par1Block.func_149719_a(this.field_147845_a, par2, par3, par4);
+            if(Config.isBetterSnow() && par1Block == Blocks.field_150472_an && this.hasSnowNeighbours(par2, par3, par4)) {
+               this.renderSnow(par2, par3, par4, Blocks.field_150431_aC.func_149669_A());
+            }
+
+            this.func_147775_a(par1Block);
+            boolean var6;
+            switch(i) {
+            case 0:
+               var6 = this.func_147784_q(par1Block, par2, par3, par4);
+               return var6;
+            case 1:
+               var6 = this.func_147746_l(par1Block, par2, par3, par4);
+               return var6;
+            case 2:
+               var6 = this.func_147791_c(par1Block, par2, par3, par4);
+               return var6;
+            case 3:
+               var6 = this.func_147801_a((BlockFire)par1Block, par2, par3, par4);
+               return var6;
+            case 4:
+               var6 = this.func_147721_p(par1Block, par2, par3, par4);
+               return var6;
+            case 5:
+               var6 = this.func_147788_h(par1Block, par2, par3, par4);
+               return var6;
+            case 6:
+               var6 = this.func_147796_n(par1Block, par2, par3, par4);
+               return var6;
+            case 7:
+               var6 = this.func_147760_u(par1Block, par2, par3, par4);
+               return var6;
+            case 8:
+               var6 = this.func_147794_i(par1Block, par2, par3, par4);
+               return var6;
+            case 9:
+               var6 = this.func_147766_a((BlockRailBase)par1Block, par2, par3, par4);
+               return var6;
+            case 10:
+               var6 = this.func_147722_a((BlockStairs)par1Block, par2, par3, par4);
+               return var6;
+            case 11:
+               var6 = this.func_147735_a((BlockFence)par1Block, par2, par3, par4);
+               return var6;
+            case 12:
+               var6 = this.func_147790_e(par1Block, par2, par3, par4);
+               return var6;
+            case 13:
+               var6 = this.func_147755_t(par1Block, par2, par3, par4);
+               return var6;
+            case 14:
+               var6 = this.func_147773_v(par1Block, par2, par3, par4);
+               return var6;
+            case 15:
+               var6 = this.func_147759_a((BlockRedstoneRepeater)par1Block, par2, par3, par4);
+               return var6;
+            case 16:
+               var6 = this.func_147731_b(par1Block, par2, par3, par4, false);
+               return var6;
+            case 17:
+               var6 = this.func_147809_c(par1Block, par2, par3, par4, true);
+               return var6;
+            case 18:
+               var6 = this.func_147767_a((BlockPane)par1Block, par2, par3, par4);
+               return var6;
+            case 19:
+               var6 = this.func_147724_m(par1Block, par2, par3, par4);
+               return var6;
+            case 20:
+               var6 = this.func_147726_j(par1Block, par2, par3, par4);
+               return var6;
+            case 21:
+               var6 = this.func_147776_a((BlockFenceGate)par1Block, par2, par3, par4);
+               return var6;
+            case 22:
+            default:
+               if(Reflector.ModLoader.exists()) {
+                  var6 = Reflector.callBoolean(Reflector.ModLoader_renderWorldBlock, new Object[]{this, this.field_147845_a, Integer.valueOf(par2), Integer.valueOf(par3), Integer.valueOf(par4), par1Block, Integer.valueOf(i)});
+                  return var6;
+               } else {
+                  if(Reflector.FMLRenderAccessLibrary.exists()) {
+                     var6 = Reflector.callBoolean(Reflector.FMLRenderAccessLibrary_renderWorldBlock, new Object[]{this, this.field_147845_a, Integer.valueOf(par2), Integer.valueOf(par3), Integer.valueOf(par4), par1Block, Integer.valueOf(i)});
+                     return var6;
+                  }
+
+                  var6 = false;
+                  return var6;
+               }
+            case 23:
+               var6 = this.func_147783_o(par1Block, par2, par3, par4);
+               return var6;
+            case 24:
+               var6 = this.func_147785_a((BlockCauldron)par1Block, par2, par3, par4);
+               return var6;
+            case 25:
+               var6 = this.func_147741_a((BlockBrewingStand)par1Block, par2, par3, par4);
+               return var6;
+            case 26:
+               var6 = this.func_147743_a((BlockEndPortalFrame)par1Block, par2, par3, par4);
+               return var6;
+            case 27:
+               var6 = this.func_147802_a((BlockDragonEgg)par1Block, par2, par3, par4);
+               return var6;
+            case 28:
+               var6 = this.func_147772_a((BlockCocoa)par1Block, par2, par3, par4);
+               return var6;
+            case 29:
+               var6 = this.func_147723_f(par1Block, par2, par3, par4);
+               return var6;
+            case 30:
+               var6 = this.func_147756_g(par1Block, par2, par3, par4);
+               return var6;
+            case 31:
+               var6 = this.func_147742_r(par1Block, par2, par3, par4);
+               return var6;
+            case 32:
+               var6 = this.func_147807_a((BlockWall)par1Block, par2, par3, par4);
+               return var6;
+            case 33:
+               var6 = this.func_147752_a((BlockFlowerPot)par1Block, par2, par3, par4);
+               return var6;
+            case 34:
+               var6 = this.func_147797_a((BlockBeacon)par1Block, par2, par3, par4);
+               return var6;
+            case 35:
+               var6 = this.func_147725_a((BlockAnvil)par1Block, par2, par3, par4);
+               return var6;
+            case 36:
+               var6 = this.func_147748_a((BlockRedstoneDiode)par1Block, par2, par3, par4);
+               return var6;
+            case 37:
+               var6 = this.func_147781_a((BlockRedstoneComparator)par1Block, par2, par3, par4);
+               return var6;
+            case 38:
+               var6 = this.func_147803_a((BlockHopper)par1Block, par2, par3, par4);
+               return var6;
+            case 39:
+               var6 = this.func_147779_s(par1Block, par2, par3, par4);
+               return var6;
+            case 40:
+               var6 = this.func_147774_a((BlockDoublePlant)par1Block, par2, par3, par4);
+               return var6;
+            case 41:
+               var6 = this.func_147733_k(par1Block, par2, par3, par4);
+               return var6;
+            }
+         } finally {
+            if(Config.isShaders()) {
+               Shaders.popEntity();
+            }
+
          }
       }
    }
@@ -385,6 +449,12 @@ public class RenderBlocks {
       float var10 = 1.0F;
       float var11 = 0.8F;
       float var12 = 0.6F;
+      if(Config.isShaders()) {
+         var9 = this.lightLevel05;
+         var11 = this.lightLevel08;
+         var12 = this.lightLevel06;
+      }
+
       int var25 = p_147773_1_.func_149677_c(this.field_147845_a, p_147773_2_, p_147773_3_, p_147773_4_);
       var5.func_78380_c(var25);
       var5.func_78386_a(var9, var9, var9);
@@ -617,6 +687,10 @@ public class RenderBlocks {
    }
 
    public boolean func_147752_a(BlockFlowerPot p_147752_1_, int p_147752_2_, int p_147752_3_, int p_147752_4_) {
+      if(Config.isShaders()) {
+         Shaders.pushEntity(this, p_147752_1_, p_147752_2_, p_147752_3_, p_147752_4_);
+      }
+
       this.func_147784_q(p_147752_1_, p_147752_2_, p_147752_3_, p_147752_4_);
       Tessellator var5 = Tessellator.field_78398_a;
       var5.func_78380_c(p_147752_1_.func_149677_c(this.field_147845_a, p_147752_2_, p_147752_3_, p_147752_4_));
@@ -648,6 +722,10 @@ public class RenderBlocks {
          int var14 = ((TileEntityFlowerPot)var211).func_145966_b();
          if(var221 instanceof ItemBlock) {
             Block var15 = Block.func_149634_a(var221);
+            if(Config.isShaders()) {
+               Shaders.pushEntity(var15);
+            }
+
             int var16 = var15.func_149645_b();
             float var17 = 0.0F;
             float var18 = 4.0F;
@@ -677,11 +755,18 @@ public class RenderBlocks {
             }
 
             var5.func_78372_c(-var17 / 16.0F, -var18 / 16.0F, -var19 / 16.0F);
+            if(Config.isShaders()) {
+               Shaders.popEntity();
+            }
          }
       }
 
       if(Config.isBetterSnow() && this.hasSnowNeighbours(p_147752_2_, p_147752_3_, p_147752_4_)) {
          this.renderSnow(p_147752_2_, p_147752_3_, p_147752_4_, Blocks.field_150431_aC.func_149669_A());
+      }
+
+      if(Config.isShaders()) {
+         Shaders.popEntity();
       }
 
       return true;
@@ -1174,27 +1259,27 @@ public class RenderBlocks {
          this.field_147869_t = 3;
          this.func_147782_a(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
          this.func_147784_q(p_147809_1_, p_147809_2_, p_147809_3_, p_147809_4_);
-         this.func_147763_a((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.25F), (double)((float)p_147809_3_ + 0.25F + var11), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.625F), 0.8F, var12);
-         this.func_147763_a((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.25F), (double)((float)p_147809_3_ + 0.25F + var11), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.375F), 0.8F, var12);
-         this.func_147763_a((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.25F), (double)((float)p_147809_3_ + 0.25F + var11), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), 0.6F, var12);
-         this.func_147763_a((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.25F), (double)((float)p_147809_3_ + 0.25F + var11), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), 0.6F, var12);
+         this.func_147763_a((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.25F), (double)((float)p_147809_3_ + 0.25F + var11), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.625F), this.lightLevel08, var12);
+         this.func_147763_a((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.25F), (double)((float)p_147809_3_ + 0.25F + var11), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.375F), this.lightLevel08, var12);
+         this.func_147763_a((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.25F), (double)((float)p_147809_3_ + 0.25F + var11), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), this.lightLevel06, var12);
+         this.func_147763_a((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.25F), (double)((float)p_147809_3_ + 0.25F + var11), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), this.lightLevel06, var12);
          break;
       case 1:
          this.func_147782_a(0.0D, 0.75D, 0.0D, 1.0D, 1.0D, 1.0D);
          this.func_147784_q(p_147809_1_, p_147809_2_, p_147809_3_, p_147809_4_);
-         this.func_147763_a((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ - 0.25F + 1.0F - var11), (double)((float)p_147809_3_ - 0.25F + 1.0F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.625F), 0.8F, var12);
-         this.func_147763_a((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ - 0.25F + 1.0F - var11), (double)((float)p_147809_3_ - 0.25F + 1.0F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.375F), 0.8F, var12);
-         this.func_147763_a((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ - 0.25F + 1.0F - var11), (double)((float)p_147809_3_ - 0.25F + 1.0F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), 0.6F, var12);
-         this.func_147763_a((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ - 0.25F + 1.0F - var11), (double)((float)p_147809_3_ - 0.25F + 1.0F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), 0.6F, var12);
+         this.func_147763_a((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ - 0.25F + 1.0F - var11), (double)((float)p_147809_3_ - 0.25F + 1.0F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.625F), this.lightLevel08, var12);
+         this.func_147763_a((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ - 0.25F + 1.0F - var11), (double)((float)p_147809_3_ - 0.25F + 1.0F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.375F), this.lightLevel08, var12);
+         this.func_147763_a((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ - 0.25F + 1.0F - var11), (double)((float)p_147809_3_ - 0.25F + 1.0F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), this.lightLevel06, var12);
+         this.func_147763_a((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ - 0.25F + 1.0F - var11), (double)((float)p_147809_3_ - 0.25F + 1.0F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), this.lightLevel06, var12);
          break;
       case 2:
          this.field_147871_s = 1;
          this.field_147869_t = 2;
          this.func_147782_a(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.25D);
          this.func_147784_q(p_147809_1_, p_147809_2_, p_147809_3_, p_147809_4_);
-         this.func_147789_b((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.25F), (double)((float)p_147809_4_ + 0.25F + var11), 0.6F, var12);
-         this.func_147789_b((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.25F), (double)((float)p_147809_4_ + 0.25F + var11), 0.6F, var12);
-         this.func_147789_b((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.25F), (double)((float)p_147809_4_ + 0.25F + var11), 0.5F, var12);
+         this.func_147789_b((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.25F), (double)((float)p_147809_4_ + 0.25F + var11), this.lightLevel06, var12);
+         this.func_147789_b((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.25F), (double)((float)p_147809_4_ + 0.25F + var11), this.lightLevel06, var12);
+         this.func_147789_b((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.25F), (double)((float)p_147809_4_ + 0.25F + var11), this.lightLevel05, var12);
          this.func_147789_b((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.25F), (double)((float)p_147809_4_ + 0.25F + var11), 1.0F, var12);
          break;
       case 3:
@@ -1204,9 +1289,9 @@ public class RenderBlocks {
          this.field_147865_v = 3;
          this.func_147782_a(0.0D, 0.0D, 0.75D, 1.0D, 1.0D, 1.0D);
          this.func_147784_q(p_147809_1_, p_147809_2_, p_147809_3_, p_147809_4_);
-         this.func_147789_b((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ - 0.25F + 1.0F - var11), (double)((float)p_147809_4_ - 0.25F + 1.0F), 0.6F, var12);
-         this.func_147789_b((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ - 0.25F + 1.0F - var11), (double)((float)p_147809_4_ - 0.25F + 1.0F), 0.6F, var12);
-         this.func_147789_b((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ - 0.25F + 1.0F - var11), (double)((float)p_147809_4_ - 0.25F + 1.0F), 0.5F, var12);
+         this.func_147789_b((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ - 0.25F + 1.0F - var11), (double)((float)p_147809_4_ - 0.25F + 1.0F), this.lightLevel06, var12);
+         this.func_147789_b((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ - 0.25F + 1.0F - var11), (double)((float)p_147809_4_ - 0.25F + 1.0F), this.lightLevel06, var12);
+         this.func_147789_b((double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ - 0.25F + 1.0F - var11), (double)((float)p_147809_4_ - 0.25F + 1.0F), this.lightLevel05, var12);
          this.func_147789_b((double)((float)p_147809_2_ + 0.625F), (double)((float)p_147809_2_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ - 0.25F + 1.0F - var11), (double)((float)p_147809_4_ - 0.25F + 1.0F), 1.0F, var12);
          break;
       case 4:
@@ -1216,10 +1301,10 @@ public class RenderBlocks {
          this.field_147865_v = 1;
          this.func_147782_a(0.0D, 0.0D, 0.0D, 0.25D, 1.0D, 1.0D);
          this.func_147784_q(p_147809_1_, p_147809_2_, p_147809_3_, p_147809_4_);
-         this.func_147738_c((double)((float)p_147809_2_ + 0.25F), (double)((float)p_147809_2_ + 0.25F + var11), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), 0.5F, var12);
+         this.func_147738_c((double)((float)p_147809_2_ + 0.25F), (double)((float)p_147809_2_ + 0.25F + var11), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), this.lightLevel05, var12);
          this.func_147738_c((double)((float)p_147809_2_ + 0.25F), (double)((float)p_147809_2_ + 0.25F + var11), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), 1.0F, var12);
-         this.func_147738_c((double)((float)p_147809_2_ + 0.25F), (double)((float)p_147809_2_ + 0.25F + var11), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.375F), 0.6F, var12);
-         this.func_147738_c((double)((float)p_147809_2_ + 0.25F), (double)((float)p_147809_2_ + 0.25F + var11), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.625F), 0.6F, var12);
+         this.func_147738_c((double)((float)p_147809_2_ + 0.25F), (double)((float)p_147809_2_ + 0.25F + var11), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.375F), this.lightLevel06, var12);
+         this.func_147738_c((double)((float)p_147809_2_ + 0.25F), (double)((float)p_147809_2_ + 0.25F + var11), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.625F), this.lightLevel06, var12);
          break;
       case 5:
          this.field_147875_q = 2;
@@ -1228,10 +1313,10 @@ public class RenderBlocks {
          this.field_147865_v = 2;
          this.func_147782_a(0.75D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
          this.func_147784_q(p_147809_1_, p_147809_2_, p_147809_3_, p_147809_4_);
-         this.func_147738_c((double)((float)p_147809_2_ - 0.25F + 1.0F - var11), (double)((float)p_147809_2_ - 0.25F + 1.0F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), 0.5F, var12);
+         this.func_147738_c((double)((float)p_147809_2_ - 0.25F + 1.0F - var11), (double)((float)p_147809_2_ - 0.25F + 1.0F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), this.lightLevel05, var12);
          this.func_147738_c((double)((float)p_147809_2_ - 0.25F + 1.0F - var11), (double)((float)p_147809_2_ - 0.25F + 1.0F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), 1.0F, var12);
-         this.func_147738_c((double)((float)p_147809_2_ - 0.25F + 1.0F - var11), (double)((float)p_147809_2_ - 0.25F + 1.0F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.375F), 0.6F, var12);
-         this.func_147738_c((double)((float)p_147809_2_ - 0.25F + 1.0F - var11), (double)((float)p_147809_2_ - 0.25F + 1.0F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.625F), 0.6F, var12);
+         this.func_147738_c((double)((float)p_147809_2_ - 0.25F + 1.0F - var11), (double)((float)p_147809_2_ - 0.25F + 1.0F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_4_ + 0.375F), (double)((float)p_147809_4_ + 0.375F), this.lightLevel06, var12);
+         this.func_147738_c((double)((float)p_147809_2_ - 0.25F + 1.0F - var11), (double)((float)p_147809_2_ - 0.25F + 1.0F), (double)((float)p_147809_3_ + 0.625F), (double)((float)p_147809_3_ + 0.375F), (double)((float)p_147809_4_ + 0.625F), (double)((float)p_147809_4_ + 0.625F), this.lightLevel06, var12);
       }
 
       this.field_147875_q = 0;
@@ -3695,6 +3780,12 @@ public class RenderBlocks {
          float var15 = 1.0F;
          float var16 = 0.8F;
          float var17 = 0.6F;
+         if(Config.isShaders()) {
+            var14 = this.lightLevel05;
+            var16 = this.lightLevel08;
+            var17 = this.lightLevel06;
+         }
+
          double var18 = 0.0D;
          double var20 = 1.0D;
          Material var22 = p_147721_1_.func_149688_o();
@@ -3875,6 +3966,12 @@ public class RenderBlocks {
       float var8 = 1.0F;
       float var9 = 0.8F;
       float var10 = 0.6F;
+      if(Config.isShaders()) {
+         var7 = this.lightLevel05;
+         var9 = this.lightLevel08;
+         var10 = this.lightLevel06;
+      }
+
       Tessellator var11 = Tessellator.field_78398_a;
       var11.func_78382_b();
       var11.func_78380_c(p_147749_1_.func_149677_c(p_147749_2_, p_147749_3_, p_147749_4_, p_147749_5_));
@@ -4065,13 +4162,13 @@ public class RenderBlocks {
          }
 
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * 0.5F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * 0.5F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * 0.5F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * this.lightLevel05;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * this.lightLevel05;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * this.lightLevel05;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.5F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.5F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.5F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel05;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel05;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel05;
          }
 
          this.field_147872_ap *= var9;
@@ -4269,13 +4366,13 @@ public class RenderBlocks {
          }
 
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * 0.8F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * 0.8F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * 0.8F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * this.lightLevel08;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * this.lightLevel08;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * this.lightLevel08;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.8F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.8F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.8F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel08;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel08;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel08;
          }
 
          this.field_147872_ap *= var9;
@@ -4395,13 +4492,13 @@ public class RenderBlocks {
          }
 
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * 0.8F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * 0.8F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * 0.8F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * this.lightLevel08;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * this.lightLevel08;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * this.lightLevel08;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.8F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.8F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.8F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel08;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel08;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel08;
          }
 
          this.field_147872_ap *= var9;
@@ -4521,13 +4618,13 @@ public class RenderBlocks {
          }
 
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * 0.6F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * 0.6F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * 0.6F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * this.lightLevel06;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * this.lightLevel06;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * this.lightLevel06;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.6F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.6F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.6F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel06;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel06;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel06;
          }
 
          this.field_147872_ap *= var9;
@@ -4647,13 +4744,13 @@ public class RenderBlocks {
          }
 
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * 0.6F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * 0.6F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * 0.6F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147751_5_ * this.lightLevel06;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147751_6_ * this.lightLevel06;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147751_7_ * this.lightLevel06;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.6F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.6F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.6F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel06;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel06;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel06;
          }
 
          this.field_147872_ap *= var9;
@@ -4788,13 +4885,13 @@ public class RenderBlocks {
          this.field_147876_an = this.func_147778_a(this.field_147825_U, this.field_147835_X, this.field_147827_W, var20);
          this.field_147874_am = this.func_147778_a(this.field_147831_S, this.field_147832_R, this.field_147825_U, var20);
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * 0.5F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * 0.5F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * 0.5F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * this.lightLevel05;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * this.lightLevel05;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * this.lightLevel05;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.5F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.5F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.5F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel05;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel05;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel05;
          }
 
          this.field_147872_ap *= var9;
@@ -4984,13 +5081,13 @@ public class RenderBlocks {
          this.field_147876_an = this.func_147727_a(var26, var27, var28, var29, this.field_147855_j * (1.0D - this.field_147861_i), this.field_147855_j * this.field_147861_i, (1.0D - this.field_147855_j) * this.field_147861_i, (1.0D - this.field_147855_j) * (1.0D - this.field_147861_i));
          this.field_147870_ao = this.func_147727_a(var26, var27, var28, var29, this.field_147855_j * (1.0D - this.field_147859_h), this.field_147855_j * this.field_147859_h, (1.0D - this.field_147855_j) * this.field_147859_h, (1.0D - this.field_147855_j) * (1.0D - this.field_147859_h));
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * 0.8F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * 0.8F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * 0.8F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * this.lightLevel08;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * this.lightLevel08;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * this.lightLevel08;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.8F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.8F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.8F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel08;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel08;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel08;
          }
 
          this.field_147872_ap *= var9;
@@ -5102,13 +5199,13 @@ public class RenderBlocks {
          this.field_147876_an = this.func_147727_a(var26, var29, var28, var27, this.field_147855_j * (1.0D - this.field_147861_i), (1.0D - this.field_147855_j) * (1.0D - this.field_147861_i), (1.0D - this.field_147855_j) * this.field_147861_i, this.field_147855_j * this.field_147861_i);
          this.field_147870_ao = this.func_147727_a(var26, var29, var28, var27, this.field_147857_k * (1.0D - this.field_147861_i), (1.0D - this.field_147857_k) * (1.0D - this.field_147861_i), (1.0D - this.field_147857_k) * this.field_147861_i, this.field_147857_k * this.field_147861_i);
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * 0.8F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * 0.8F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * 0.8F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * this.lightLevel08;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * this.lightLevel08;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * this.lightLevel08;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.8F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.8F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.8F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel08;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel08;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel08;
          }
 
          this.field_147872_ap *= var9;
@@ -5220,13 +5317,13 @@ public class RenderBlocks {
          this.field_147876_an = this.func_147727_a(var27, var28, var29, var26, this.field_147855_j * this.field_147851_l, this.field_147855_j * (1.0D - this.field_147851_l), (1.0D - this.field_147855_j) * (1.0D - this.field_147851_l), (1.0D - this.field_147855_j) * this.field_147851_l);
          this.field_147870_ao = this.func_147727_a(var27, var28, var29, var26, this.field_147855_j * this.field_147853_m, this.field_147855_j * (1.0D - this.field_147853_m), (1.0D - this.field_147855_j) * (1.0D - this.field_147853_m), (1.0D - this.field_147855_j) * this.field_147853_m);
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * 0.6F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * 0.6F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * 0.6F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * this.lightLevel06;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * this.lightLevel06;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * this.lightLevel06;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.6F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.6F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.6F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel06;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel06;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel06;
          }
 
          this.field_147872_ap *= var9;
@@ -5338,13 +5435,13 @@ public class RenderBlocks {
          this.field_147876_an = this.func_147727_a(var26, var29, var28, var27, (1.0D - this.field_147857_k) * this.field_147851_l, (1.0D - this.field_147857_k) * (1.0D - this.field_147851_l), this.field_147857_k * (1.0D - this.field_147851_l), this.field_147857_k * this.field_147851_l);
          this.field_147870_ao = this.func_147727_a(var26, var29, var28, var27, (1.0D - this.field_147857_k) * this.field_147853_m, (1.0D - this.field_147857_k) * (1.0D - this.field_147853_m), this.field_147857_k * (1.0D - this.field_147853_m), this.field_147857_k * this.field_147853_m);
          if(var13) {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * 0.6F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * 0.6F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * 0.6F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = p_147808_5_ * this.lightLevel06;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = p_147808_6_ * this.lightLevel06;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = p_147808_7_ * this.lightLevel06;
          } else {
-            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = 0.6F;
-            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = 0.6F;
-            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = 0.6F;
+            this.field_147872_ap = this.field_147852_aq = this.field_147850_ar = this.field_147848_as = this.lightLevel06;
+            this.field_147846_at = this.field_147860_au = this.field_147858_av = this.field_147856_aw = this.lightLevel06;
+            this.field_147854_ax = this.field_147841_ay = this.field_147839_az = this.field_147833_aA = this.lightLevel06;
          }
 
          this.field_147872_ap *= var9;
@@ -5422,7 +5519,7 @@ public class RenderBlocks {
             var26 = p_147736_1_.func_149677_c(this.field_147845_a, p_147736_2_, p_147736_3_, p_147736_4_);
          }
 
-         var27 = 0.5F;
+         var27 = this.lightLevel05;
          var13 = var27;
          var19 = var27;
          var22 = var27;
@@ -5460,7 +5557,7 @@ public class RenderBlocks {
             var26 = p_147736_1_.func_149677_c(this.field_147845_a, p_147736_2_, p_147736_3_, p_147736_4_);
          }
 
-         var13 = 0.8F;
+         var13 = this.lightLevel08;
          var19 = var13;
          var22 = var13;
          var25 = var13;
@@ -5500,7 +5597,7 @@ public class RenderBlocks {
             var26 = p_147736_1_.func_149677_c(this.field_147845_a, p_147736_2_, p_147736_3_, p_147736_4_);
          }
 
-         var13 = 0.8F;
+         var13 = this.lightLevel08;
          var19 = var13;
          var22 = var13;
          var25 = var13;
@@ -5540,7 +5637,7 @@ public class RenderBlocks {
             var26 = p_147736_1_.func_149677_c(this.field_147845_a, p_147736_2_, p_147736_3_, p_147736_4_);
          }
 
-         var13 = 0.6F;
+         var13 = this.lightLevel06;
          var19 = var13;
          var22 = var13;
          var25 = var13;
@@ -5580,7 +5677,7 @@ public class RenderBlocks {
             var26 = p_147736_1_.func_149677_c(this.field_147845_a, p_147736_2_, p_147736_3_, p_147736_4_);
          }
 
-         var13 = 0.6F;
+         var13 = this.lightLevel06;
          var19 = var13;
          var22 = var13;
          var25 = var13;
@@ -5803,6 +5900,12 @@ public class RenderBlocks {
       float var11 = 1.0F;
       float var12 = 0.8F;
       float var13 = 0.6F;
+      if(Config.isShaders()) {
+         var10 = this.lightLevel05;
+         var12 = this.lightLevel08;
+         var13 = this.lightLevel06;
+      }
+
       float var14 = var10 * p_147754_5_;
       float var15 = var11 * p_147754_5_;
       float var16 = var12 * p_147754_5_;
@@ -6420,6 +6523,12 @@ public class RenderBlocks {
       float var9 = 1.0F;
       float var10 = 0.8F;
       float var11 = 0.6F;
+      if(Config.isShaders()) {
+         var8 = this.lightLevel05;
+         var10 = this.lightLevel08;
+         var11 = this.lightLevel06;
+      }
+
       int var12 = p_147760_1_.func_149677_c(this.field_147845_a, p_147760_2_, p_147760_3_, p_147760_4_);
       var5.func_78380_c(this.field_147855_j > 0.0D?var12:p_147760_1_.func_149677_c(this.field_147845_a, p_147760_2_, p_147760_3_ - 1, p_147760_4_));
       var5.func_78386_a(var8, var8, var8);

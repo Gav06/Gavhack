@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 public class BlockPortal extends BlockBreakable
 {
     public static final int[][] field_150001_a = new int[][] {new int[0], {3, 1}, {2, 0}};
-    private static final String __OBFID = "CL_00000284";
 
     public BlockPortal()
     {
@@ -143,37 +142,37 @@ public class BlockPortal extends BlockBreakable
         }
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
         int var6 = 0;
 
-        if (blockAccess.getBlock(x, y, z) == this)
+        if (p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_) == this)
         {
-            var6 = func_149999_b(blockAccess.getBlockMetadata(x, y, z));
+            var6 = func_149999_b(p_149646_1_.getBlockMetadata(p_149646_2_, p_149646_3_, p_149646_4_));
 
             if (var6 == 0)
             {
                 return false;
             }
 
-            if (var6 == 2 && side != 5 && side != 4)
+            if (var6 == 2 && p_149646_5_ != 5 && p_149646_5_ != 4)
             {
                 return false;
             }
 
-            if (var6 == 1 && side != 3 && side != 2)
+            if (var6 == 1 && p_149646_5_ != 3 && p_149646_5_ != 2)
             {
                 return false;
             }
         }
 
-        boolean var7 = blockAccess.getBlock(x - 1, y, z) == this && blockAccess.getBlock(x - 2, y, z) != this;
-        boolean var8 = blockAccess.getBlock(x + 1, y, z) == this && blockAccess.getBlock(x + 2, y, z) != this;
-        boolean var9 = blockAccess.getBlock(x, y, z - 1) == this && blockAccess.getBlock(x, y, z - 2) != this;
-        boolean var10 = blockAccess.getBlock(x, y, z + 1) == this && blockAccess.getBlock(x, y, z + 2) != this;
+        boolean var7 = p_149646_1_.getBlock(p_149646_2_ - 1, p_149646_3_, p_149646_4_) == this && p_149646_1_.getBlock(p_149646_2_ - 2, p_149646_3_, p_149646_4_) != this;
+        boolean var8 = p_149646_1_.getBlock(p_149646_2_ + 1, p_149646_3_, p_149646_4_) == this && p_149646_1_.getBlock(p_149646_2_ + 2, p_149646_3_, p_149646_4_) != this;
+        boolean var9 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ - 1) == this && p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ - 2) != this;
+        boolean var10 = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ + 1) == this && p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_ + 2) != this;
         boolean var11 = var7 || var8 || var6 == 1;
         boolean var12 = var9 || var10 || var6 == 2;
-        return var11 && side == 4 ? true : (var11 && side == 5 ? true : (var12 && side == 2 ? true : var12 && side == 3));
+        return var11 && p_149646_5_ == 4 ? true : (var11 && p_149646_5_ == 5 ? true : (var12 && p_149646_5_ == 2 ? true : var12 && p_149646_5_ == 3));
     }
 
     /**
@@ -241,7 +240,7 @@ public class BlockPortal extends BlockBreakable
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemById(0);
     }
@@ -261,7 +260,6 @@ public class BlockPortal extends BlockBreakable
         private ChunkCoordinates field_150861_f;
         private int field_150862_g;
         private int field_150868_h;
-        private static final String __OBFID = "CL_00000285";
 
         public Size(World p_i45415_1_, int p_i45415_2_, int p_i45415_3_, int p_i45415_4_, int p_i45415_5_)
         {

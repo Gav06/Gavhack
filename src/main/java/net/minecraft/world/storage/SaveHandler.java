@@ -34,7 +34,6 @@ public class SaveHandler implements ISaveHandler, IPlayerFileData
 
     /** The directory name of the world */
     private final String saveDirectoryName;
-    private static final String __OBFID = "CL_00000585";
 
     public SaveHandler(File par1File, String par2Str, boolean par3)
     {

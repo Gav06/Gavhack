@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 public class EntityPainting extends EntityHanging
 {
     public EntityPainting.EnumArt art;
-    private static final String __OBFID = "CL_00001556";
 
     public EntityPainting(World par1World)
     {
@@ -166,7 +165,6 @@ public class EntityPainting extends EntityHanging
         public final int offsetY;
 
         private static final EntityPainting.EnumArt[] $VALUES = new EntityPainting.EnumArt[]{Kebab, Aztec, Alban, Aztec2, Bomb, Plant, Wasteland, Pool, Courbet, Sea, Sunset, Creebet, Wanderer, Graham, Match, Bust, Stage, Void, SkullAndRoses, Wither, Fighters, Pointer, Pigscene, BurningSkull, Skeleton, DonkeyKong};
-        private static final String __OBFID = "CL_00001557";
 
         private EnumArt(String par1Str, int par2, String par3Str, int par4, int par5, int par6, int par7)
         {

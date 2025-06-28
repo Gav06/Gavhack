@@ -7,7 +7,6 @@ import net.minecraft.util.ChunkCoordinates;
 public class PlayerPositionComparator implements Comparator
 {
     private final ChunkCoordinates theChunkCoordinates;
-    private static final String __OBFID = "CL_00001422";
 
     public PlayerPositionComparator(ChunkCoordinates par1ChunkCoordinates)
     {

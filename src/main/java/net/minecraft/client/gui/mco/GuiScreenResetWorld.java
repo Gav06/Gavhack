@@ -28,7 +28,6 @@ public class GuiScreenResetWorld extends ScreenWithCallback
     private static int field_146746_s = 3;
     private WorldTemplate field_146745_t;
     private GuiButton field_146744_u;
-    private static final String __OBFID = "CL_00000810";
 
     public GuiScreenResetWorld(GuiScreen par1GuiScreen, McoServer par2McoServer)
     {
@@ -53,7 +52,7 @@ public class GuiScreenResetWorld extends ScreenWithCallback
         this.buttonList.clear();
         this.buttonList.add(this.field_146744_u = new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, 97, 20, I18n.format("mco.configure.world.buttons.reset", new Object[0])));
         this.buttonList.add(new GuiButton(2, this.width / 2 + 5, this.height / 4 + 120 + 12, 97, 20, I18n.format("gui.cancel", new Object[0])));
-        this.field_146749_h = new GuiTextField(this.fontRendererObj, this.width / 2 - 100, 99, 200, 20);
+        this.field_146749_h = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 99, 200, 20);
         this.field_146749_h.setFocused(true);
         this.field_146749_h.func_146203_f(32);
         this.field_146749_h.setText("");
@@ -145,14 +144,14 @@ public class GuiScreenResetWorld extends ScreenWithCallback
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.reset.world.title", new Object[0]), this.width / 2, 17, 16777215);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.reset.world.warning", new Object[0]), this.width / 2, 56, 16711680);
-        this.drawString(this.fontRendererObj, I18n.format("mco.reset.world.seed", new Object[0]), this.width / 2 - 100, 86, 10526880);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.reset.world.title", new Object[0]), this.width / 2, 17, 16777215);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.reset.world.warning", new Object[0]), this.width / 2, 56, 16711680);
+        this.drawString(this.fontRenderer, I18n.format("mco.reset.world.seed", new Object[0]), this.width / 2 - 100, 86, 10526880);
         this.field_146749_h.drawTextBox();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 
     void func_146740_a(WorldTemplate p_146740_1_)
@@ -170,7 +169,6 @@ public class GuiScreenResetWorld extends ScreenWithCallback
         private final long field_148422_c;
         private final String field_148420_d;
         private final WorldTemplate field_148421_e;
-        private static final String __OBFID = "CL_00000811";
 
         public ResetWorldTask(long par2, String par4Str, WorldTemplate par5WorldTemplate)
         {

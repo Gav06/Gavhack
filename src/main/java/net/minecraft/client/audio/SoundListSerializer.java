@@ -11,7 +11,6 @@ import org.apache.commons.lang3.Validate;
 
 public class SoundListSerializer implements JsonDeserializer
 {
-    private static final String __OBFID = "CL_00001124";
 
     public SoundList deserialize(JsonElement p_148578_1_, Type p_148578_2_, JsonDeserializationContext p_148578_3_)
     {

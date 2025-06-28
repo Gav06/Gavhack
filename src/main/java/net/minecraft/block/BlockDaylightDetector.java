@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 public class BlockDaylightDetector extends BlockContainer
 {
     private IIcon[] field_149958_a = new IIcon[2];
-    private static final String __OBFID = "CL_00000223";
 
     public BlockDaylightDetector()
     {
@@ -113,7 +112,7 @@ public class BlockDaylightDetector extends BlockContainer
         return p_149691_1_ == 1 ? this.field_149958_a[0] : this.field_149958_a[1];
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149958_a[0] = p_149651_1_.registerIcon(this.getTextureName() + "_top");
         this.field_149958_a[1] = p_149651_1_.registerIcon(this.getTextureName() + "_side");

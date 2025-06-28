@@ -19,7 +19,6 @@ public class BlockGrass extends Block implements IGrowable
     private IIcon field_149991_b;
     private IIcon field_149993_M;
     private IIcon field_149994_N;
-    private static final String __OBFID = "CL_00000251";
 
     protected BlockGrass()
     {
@@ -36,7 +35,7 @@ public class BlockGrass extends Block implements IGrowable
         return p_149691_1_ == 1 ? this.field_149991_b : (p_149691_1_ == 0 ? Blocks.dirt.getBlockTextureFromSide(p_149691_1_) : this.blockIcon);
     }
 
-    public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
+    public IIcon getBlockTexture(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
     {
         if (p_149673_5_ == 1)
         {
@@ -53,7 +52,7 @@ public class BlockGrass extends Block implements IGrowable
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
         this.field_149991_b = p_149651_1_.registerIcon(this.getTextureName() + "_top");
@@ -134,7 +133,7 @@ public class BlockGrass extends Block implements IGrowable
         return Blocks.dirt.getItemDropped(0, p_149650_2_, p_149650_3_);
     }
 
-    public static IIcon func_149990_e()
+    public static IIcon getIconSideOverlay()
     {
         return Blocks.grass.field_149994_N;
     }

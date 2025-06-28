@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 
 public abstract class WorldGenAbstractTree extends WorldGenerator
 {
-    private static final String __OBFID = "CL_00000399";
 
     public WorldGenAbstractTree(boolean p_i45448_1_)
     {

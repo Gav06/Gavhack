@@ -21,11 +21,6 @@ import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.Queue;
 import javax.crypto.SecretKey;
-
-import me.gavin.gavhack.event.EventBus;
-import me.gavin.gavhack.event.events.PacketReadEvent;
-import me.gavin.gavhack.event.events.PacketSendEvent;
-import net.minecraft.network.play.client.C0CPacketInput;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.CryptManager;
 import net.minecraft.util.IChatComponent;
@@ -78,7 +73,6 @@ public class NetworkManager extends SimpleChannelInboundHandler
 
     /** A String indicating why the network has shutdown. */
     private IChatComponent terminationReason;
-    private static final String __OBFID = "CL_00001240";
 
     public NetworkManager(boolean p_i45147_1_)
     {
@@ -119,13 +113,13 @@ public class NetworkManager extends SimpleChannelInboundHandler
     {
         if (this.channel.isOpen())
         {
-            final PacketReadEvent event = new PacketReadEvent(p_150728_2_);
-            if (!EventBus.INSTANCE.post(event)) {
-                if (p_150728_2_.hasPriority()) {
-                    p_150728_2_.processPacket(this.netHandler);
-                } else {
-                    this.receivedPacketsQueue.add(p_150728_2_);
-                }
+            if (p_150728_2_.hasPriority())
+            {
+                p_150728_2_.processPacket(this.netHandler);
+            }
+            else
+            {
+                this.receivedPacketsQueue.add(p_150728_2_);
             }
         }
     }
@@ -145,20 +139,16 @@ public class NetworkManager extends SimpleChannelInboundHandler
      * Will flush the outbound queue and dispatch the supplied Packet if the channel is ready, otherwise it adds the
      * packet to the outbound queue and registers the GenericFutureListener to fire after transmission
      */
-    public void scheduleOutboundPacket(Packet packet, GenericFutureListener ... p_150725_2_)
+    public void scheduleOutboundPacket(Packet p_150725_1_, GenericFutureListener ... p_150725_2_)
     {
-        final PacketSendEvent event = new PacketSendEvent(packet);
-        if (EventBus.INSTANCE.post(event))
-            return;
-
         if (this.channel != null && this.channel.isOpen())
         {
             this.flushOutboundQueue();
-            this.dispatchPacket(packet, p_150725_2_);
+            this.dispatchPacket(p_150725_1_, p_150725_2_);
         }
         else
         {
-            this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(packet, p_150725_2_));
+            this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(p_150725_1_, p_150725_2_));
         }
     }
 
@@ -190,7 +180,6 @@ public class NetworkManager extends SimpleChannelInboundHandler
         {
             this.channel.eventLoop().execute(new Runnable()
             {
-                private static final String __OBFID = "CL_00001241";
                 public void run()
                 {
                     if (var3 != var4)
@@ -289,7 +278,6 @@ public class NetworkManager extends SimpleChannelInboundHandler
         final NetworkManager var2 = new NetworkManager(true);
         ((Bootstrap)((Bootstrap)((Bootstrap)(new Bootstrap()).group(eventLoops)).handler(new ChannelInitializer()
         {
-            private static final String __OBFID = "CL_00001242";
             protected void initChannel(Channel p_initChannel_1_)
             {
                 try
@@ -325,7 +313,6 @@ public class NetworkManager extends SimpleChannelInboundHandler
         final NetworkManager var1 = new NetworkManager(true);
         ((Bootstrap)((Bootstrap)((Bootstrap)(new Bootstrap()).group(eventLoops)).handler(new ChannelInitializer()
         {
-            private static final String __OBFID = "CL_00001243";
             protected void initChannel(Channel p_initChannel_1_)
             {
                 p_initChannel_1_.pipeline().addLast("packet_handler", var1);
@@ -384,7 +371,6 @@ public class NetworkManager extends SimpleChannelInboundHandler
     {
         private final Packet field_150774_a;
         private final GenericFutureListener[] field_150773_b;
-        private static final String __OBFID = "CL_00001244";
 
         public InboundHandlerTuplePacketListener(Packet p_i45146_1_, GenericFutureListener ... p_i45146_2_)
         {

@@ -6,7 +6,6 @@ public class GenLayerRiverMix extends GenLayer
 {
     private GenLayer biomePatternGeneratorChain;
     private GenLayer riverPatternGeneratorChain;
-    private static final String __OBFID = "CL_00000567";
 
     public GenLayerRiverMix(long par1, GenLayer par3GenLayer, GenLayer par4GenLayer)
     {

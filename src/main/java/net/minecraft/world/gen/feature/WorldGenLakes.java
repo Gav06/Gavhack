@@ -11,7 +11,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 public class WorldGenLakes extends WorldGenerator
 {
     private Block field_150556_a;
-    private static final String __OBFID = "CL_00000418";
 
     public WorldGenLakes(Block p_i45455_1_)
     {

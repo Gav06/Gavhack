@@ -5,10 +5,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import me.gavin.gavhack.event.EventBus;
-import me.gavin.gavhack.event.events.RenderOverlayEvent;
-import me.gavin.gavhack.module.impl.NoRender;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -72,7 +68,6 @@ public class GuiIngame extends Gui
 
     /** The ItemStack that is currently being highlighted */
     private ItemStack highlightingItemStack;
-    private static final String __OBFID = "CL_00000661";
 
     public GuiIngame(Minecraft par1Minecraft)
     {
@@ -331,11 +326,11 @@ public class GuiIngame extends Gui
             var22 = MathHelper.floor_double(this.mc.thePlayer.posX);
             var23 = MathHelper.floor_double(this.mc.thePlayer.posY);
             int var24 = MathHelper.floor_double(this.mc.thePlayer.posZ);
-            this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", this.mc.thePlayer.posX, var22, var22 >> 4, var22 & 15), 2, 64, 14737632);
-            this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", this.mc.thePlayer.boundingBox.minY, this.mc.thePlayer.posY), 2, 72, 14737632);
-            this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", this.mc.thePlayer.posZ, var24, var24 >> 4, var24 & 15), 2, 80, 14737632);
-            int directionInt = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-            this.drawString(var8, "f: " + directionInt + " (" + Direction.directions[directionInt] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
+            this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var22), Integer.valueOf(var22 >> 4), Integer.valueOf(var22 & 15)}), 2, 64, 14737632);
+            this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
+            this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var24), Integer.valueOf(var24 >> 4), Integer.valueOf(var24 & 15)}), 2, 80, 14737632);
+            int var25 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+            this.drawString(var8, "f: " + var25 + " (" + Direction.directions[var25] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
 
             if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var22, var23, var24))
             {
@@ -343,11 +338,11 @@ public class GuiIngame extends Gui
                 this.drawString(var8, "lc: " + (var26.getTopFilledSegment() + 15) + " b: " + var26.getBiomeGenForWorldCoords(var22 & 15, var24 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var26.getSavedLightValue(EnumSkyBlock.Block, var22 & 15, var23, var24 & 15) + " sl: " + var26.getSavedLightValue(EnumSkyBlock.Sky, var22 & 15, var23, var24 & 15) + " rl: " + var26.getBlockLightValue(var22 & 15, var23, var24 & 15, 0), 2, 96, 14737632);
             }
 
-            this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", this.mc.thePlayer.capabilities.getWalkSpeed(), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var22, var24))), 2, 104, 14737632);
+            this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var22, var24))}), 2, 104, 14737632);
 
             if (this.mc.entityRenderer != null && this.mc.entityRenderer.isShaderActive())
             {
-                this.drawString(var8, String.format("shader: %s", this.mc.entityRenderer.getShaderGroup().getShaderGroupName()), 2, 112, 14737632);
+                this.drawString(var8, String.format("shader: %s", new Object[] {this.mc.entityRenderer.getShaderGroup().getShaderGroupName()}), 2, 112, 14737632);
             }
 
             GL11.glPopMatrix();
@@ -399,7 +394,7 @@ public class GuiIngame extends Gui
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, (float)(var7 - 48), 0.0F);
         this.mc.mcProfiler.startSection("chat");
-        this.persistantChatGUI.renderChat(this.updateCounter);
+        this.persistantChatGUI.drawChat(this.updateCounter);
         this.mc.mcProfiler.endSection();
         GL11.glPopMatrix();
         var40 = this.mc.theWorld.getScoreboard().func_96539_a(0);
@@ -488,7 +483,7 @@ public class GuiIngame extends Gui
                     }
 
                     this.zLevel += 100.0F;
-                    this.drawTexturedModalRect(var22 + var46 - 12, var23, 0, 176 + var53 * 8, 10, 8);
+                    this.drawTexturedModalRect(var22 + var46 - 12, var23, 0 + var51 * 10, 176 + var53 * 8, 10, 8);
                     this.zLevel -= 100.0F;
                 }
             }
@@ -497,9 +492,6 @@ public class GuiIngame extends Gui
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
-
-        EventBus.INSTANCE.post(new RenderOverlayEvent(par1, mc.fontRenderer, var5));
-
     }
 
     private void func_96136_a(ScoreObjective par1ScoreObjective, int par2, int par3, FontRenderer par4FontRenderer)
@@ -916,9 +908,6 @@ public class GuiIngame extends Gui
 
     private void func_130015_b(float par1, int par2, int par3)
     {
-        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getPortal().getValue())
-            return;
-
         if (par1 < 1.0F)
         {
             par1 *= par1;
@@ -1029,7 +1018,7 @@ public class GuiIngame extends Gui
         this.recordIsPlaying = par2;
     }
 
-    public GuiNewChat getChatGUI()
+    public GuiNewChat getChatGui()
     {
         return this.persistantChatGUI;
     }

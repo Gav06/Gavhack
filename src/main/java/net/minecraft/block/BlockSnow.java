@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 
 public class BlockSnow extends Block
 {
-    private static final String __OBFID = "CL_00000309";
 
     protected BlockSnow()
     {
@@ -28,7 +27,7 @@ public class BlockSnow extends Block
         this.func_150154_b(0);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("snow");
     }
@@ -41,7 +40,7 @@ public class BlockSnow extends Block
     {
         int var5 = p_149668_1_.getBlockMetadata(p_149668_2_, p_149668_3_, p_149668_4_) & 7;
         float var6 = 0.125F;
-        return AxisAlignedBB.getAABBPool().getAABB((double)p_149668_2_ + this.field_149759_B, (double)p_149668_3_ + this.field_149760_C, (double)p_149668_4_ + this.field_149754_D, (double)p_149668_2_ + this.field_149755_E, (double)((float)p_149668_3_ + (float)var5 * var6), (double)p_149668_4_ + this.field_149757_G);
+        return AxisAlignedBB.getAABBPool().getAABB((double)p_149668_2_ + this.minX, (double)p_149668_3_ + this.minY, (double)p_149668_4_ + this.minZ, (double)p_149668_2_ + this.maxX, (double)((float)p_149668_3_ + (float)var5 * var6), (double)p_149668_4_ + this.maxZ);
     }
 
     public boolean isOpaqueCube()
@@ -132,8 +131,8 @@ public class BlockSnow extends Block
         }
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
-        return side == 1 ? true : super.shouldSideBeRendered(blockAccess, x, y, z, side);
+        return p_149646_5_ == 1 ? true : super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_);
     }
 }

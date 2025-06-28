@@ -10,7 +10,6 @@ public class EntityDragonPart extends Entity
     /** The dragon entity this dragon part belongs to */
     public final IEntityMultiPart entityDragonObj;
     public final String field_146032_b;
-    private static final String __OBFID = "CL_00001657";
 
     public EntityDragonPart(IEntityMultiPart par1IEntityMultiPart, String par2Str, float par3, float par4)
     {

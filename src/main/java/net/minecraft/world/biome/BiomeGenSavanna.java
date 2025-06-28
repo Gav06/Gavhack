@@ -11,7 +11,6 @@ import net.minecraft.world.gen.feature.WorldGenSavannaTree;
 public class BiomeGenSavanna extends BiomeGenBase
 {
     private static final WorldGenSavannaTree field_150627_aC = new WorldGenSavannaTree(false);
-    private static final String __OBFID = "CL_00000182";
 
     protected BiomeGenSavanna(int p_i45383_1_)
     {
@@ -53,7 +52,6 @@ public class BiomeGenSavanna extends BiomeGenBase
 
     public static class Mutated extends BiomeGenMutated
     {
-        private static final String __OBFID = "CL_00000183";
 
         public Mutated(int p_i45382_1_, BiomeGenBase p_i45382_2_)
         {

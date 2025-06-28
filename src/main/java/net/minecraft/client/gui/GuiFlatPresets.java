@@ -31,7 +31,6 @@ public class GuiFlatPresets extends GuiScreen
     private GuiFlatPresets.ListSlot field_146435_s;
     private GuiButton field_146434_t;
     private GuiTextField field_146433_u;
-    private static final String __OBFID = "CL_00000704";
 
     public GuiFlatPresets(GuiCreateFlatWorld par1GuiCreateFlatWorld)
     {
@@ -48,7 +47,7 @@ public class GuiFlatPresets extends GuiScreen
         this.field_146438_h = I18n.format("createWorld.customize.presets.title", new Object[0]);
         this.field_146439_i = I18n.format("createWorld.customize.presets.share", new Object[0]);
         this.field_146436_r = I18n.format("createWorld.customize.presets.list", new Object[0]);
-        this.field_146433_u = new GuiTextField(this.fontRendererObj, 50, 40, this.width - 100, 20);
+        this.field_146433_u = new GuiTextField(this.fontRenderer, 50, 40, this.width - 100, 20);
         this.field_146435_s = new GuiFlatPresets.ListSlot();
         this.field_146433_u.func_146203_f(1230);
         this.field_146433_u.setText(this.field_146432_g.func_146384_e());
@@ -101,15 +100,15 @@ public class GuiFlatPresets extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.field_146435_s.func_148128_a(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.field_146438_h, this.width / 2, 8, 16777215);
-        this.drawString(this.fontRendererObj, this.field_146439_i, 50, 30, 10526880);
-        this.drawString(this.fontRendererObj, this.field_146436_r, 50, 70, 10526880);
+        this.field_146435_s.drawScreen(par1, par2, par3);
+        this.drawCenteredString(this.fontRenderer, this.field_146438_h, this.width / 2, 8, 16777215);
+        this.drawString(this.fontRenderer, this.field_146439_i, 50, 30, 10526880);
+        this.drawString(this.fontRenderer, this.field_146436_r, 50, 70, 10526880);
         this.field_146433_u.drawTextBox();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 
     /**
@@ -180,7 +179,6 @@ public class GuiFlatPresets extends GuiScreen
         public Item field_148234_a;
         public String field_148232_b;
         public String field_148233_c;
-        private static final String __OBFID = "CL_00000705";
 
         public LayerItem(Item p_i45022_1_, String p_i45022_2_, String p_i45022_3_)
         {
@@ -193,7 +191,6 @@ public class GuiFlatPresets extends GuiScreen
     class ListSlot extends GuiSlot
     {
         public int field_148175_k = -1;
-        private static final String __OBFID = "CL_00000706";
 
         public ListSlot()
         {
@@ -205,7 +202,7 @@ public class GuiFlatPresets extends GuiScreen
             this.func_148173_e(p_148172_1_ + 1, p_148172_2_ + 1);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             RenderHelper.enableGUIStandardItemLighting();
-            GuiFlatPresets.field_146437_a.renderItemIntoGUI(GuiFlatPresets.this.fontRendererObj, GuiFlatPresets.this.mc.getTextureManager(), new ItemStack(p_148172_3_, 1, 0), p_148172_1_ + 2, p_148172_2_ + 2);
+            GuiFlatPresets.field_146437_a.renderItemIntoGUI(GuiFlatPresets.this.fontRenderer, GuiFlatPresets.this.mc.getTextureManager(), new ItemStack(p_148172_3_, 1, 0), p_148172_1_ + 2, p_148172_2_ + 2);
             RenderHelper.disableStandardItemLighting();
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         }
@@ -255,7 +252,7 @@ public class GuiFlatPresets extends GuiScreen
         {
             GuiFlatPresets.LayerItem var8 = (GuiFlatPresets.LayerItem)GuiFlatPresets.field_146431_f.get(p_148126_1_);
             this.func_148172_a(p_148126_2_, p_148126_3_, var8.field_148234_a);
-            GuiFlatPresets.this.fontRendererObj.drawString(var8.field_148232_b, p_148126_2_ + 18 + 5, p_148126_3_ + 6, 16777215);
+            GuiFlatPresets.this.fontRenderer.drawString(var8.field_148232_b, p_148126_2_ + 18 + 5, p_148126_3_ + 6, 16777215);
         }
     }
 }

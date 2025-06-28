@@ -11,7 +11,6 @@ import java.util.List;
 public class BackupList
 {
     public List theBackupList;
-    private static final String __OBFID = "CL_00001165";
 
     public static BackupList func_148796_a(String p_148796_0_)
     {

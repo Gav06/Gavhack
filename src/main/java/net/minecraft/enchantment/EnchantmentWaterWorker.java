@@ -2,7 +2,6 @@ package net.minecraft.enchantment;
 
 public class EnchantmentWaterWorker extends Enchantment
 {
-    private static final String __OBFID = "CL_00000124";
 
     public EnchantmentWaterWorker(int par1, int par2)
     {

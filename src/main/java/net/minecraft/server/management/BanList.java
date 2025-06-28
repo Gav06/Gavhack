@@ -19,7 +19,6 @@ public class BanList
 
     /** set to true if not singlePlayer */
     private boolean listActive = true;
-    private static final String __OBFID = "CL_00001396";
 
     public BanList(File par1File)
     {

@@ -11,7 +11,6 @@ public class RenderSheep extends RenderLiving
 {
     private static final ResourceLocation sheepTextures = new ResourceLocation("textures/entity/sheep/sheep_fur.png");
     private static final ResourceLocation shearedSheepTextures = new ResourceLocation("textures/entity/sheep/sheep.png");
-    private static final String __OBFID = "CL_00001021";
 
     public RenderSheep(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3)
     {

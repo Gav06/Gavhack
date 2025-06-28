@@ -13,7 +13,6 @@ public class RenderGiantZombie extends RenderLiving
 
     /** Scale of the model to use */
     private float scale;
-    private static final String __OBFID = "CL_00000998";
 
     public RenderGiantZombie(ModelBase par1ModelBase, float par2, float par3)
     {

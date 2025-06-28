@@ -17,7 +17,6 @@ public class LayeredTexture extends AbstractTexture
 {
     private static final Logger logger = LogManager.getLogger();
     public final List layeredTextureNames;
-    private static final String __OBFID = "CL_00001051";
 
     public LayeredTexture(String ... par1ArrayOfStr)
     {
@@ -26,7 +25,7 @@ public class LayeredTexture extends AbstractTexture
 
     public void loadTexture(IResourceManager par1ResourceManager) throws IOException
     {
-        this.func_147631_c();
+        this.deleteGlTexture();
         BufferedImage var2 = null;
 
         try

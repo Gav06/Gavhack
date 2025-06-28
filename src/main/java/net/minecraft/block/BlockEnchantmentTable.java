@@ -17,7 +17,6 @@ public class BlockEnchantmentTable extends BlockContainer
 {
     private IIcon field_149950_a;
     private IIcon field_149949_b;
-    private static final String __OBFID = "CL_00000235";
 
     protected BlockEnchantmentTable()
     {
@@ -118,7 +117,7 @@ public class BlockEnchantmentTable extends BlockContainer
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_" + "side");
         this.field_149950_a = p_149651_1_.registerIcon(this.getTextureName() + "_" + "top");

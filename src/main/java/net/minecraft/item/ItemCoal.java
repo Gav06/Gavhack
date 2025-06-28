@@ -8,7 +8,6 @@ import net.minecraft.util.IIcon;
 public class ItemCoal extends Item
 {
     private IIcon field_111220_a;
-    private static final String __OBFID = "CL_00000002";
 
     public ItemCoal()
     {

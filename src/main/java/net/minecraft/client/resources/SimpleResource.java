@@ -21,7 +21,6 @@ public class SimpleResource implements IResource
     private final IMetadataSerializer srMetadataSerializer;
     private boolean mcmetaJsonChecked;
     private JsonObject mcmetaJson;
-    private static final String __OBFID = "CL_00001093";
 
     public SimpleResource(ResourceLocation par1ResourceLocation, InputStream par2InputStream, InputStream par3InputStream, IMetadataSerializer par4MetadataSerializer)
     {

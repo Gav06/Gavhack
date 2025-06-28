@@ -26,7 +26,6 @@ public class GuiConnecting extends GuiScreen
     private NetworkManager field_146371_g;
     private boolean field_146373_h;
     private final GuiScreen field_146374_i;
-    private static final String __OBFID = "CL_00000685";
 
     public GuiConnecting(GuiScreen par1GuiScreen, Minecraft par2Minecraft, ServerData par3ServerData)
     {
@@ -51,7 +50,6 @@ public class GuiConnecting extends GuiScreen
         logger.info("Connecting to " + p_146367_1_ + ", " + p_146367_2_);
         (new Thread("Server Connector #" + field_146372_a.incrementAndGet())
         {
-            private static final String __OBFID = "CL_00000686";
             public void run()
             {
                 try
@@ -140,19 +138,19 @@ public class GuiConnecting extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
 
         if (this.field_146371_g == null)
         {
-            this.drawCenteredString(this.fontRendererObj, I18n.format("connect.connecting", new Object[0]), this.width / 2, this.height / 2 - 50, 16777215);
+            this.drawCenteredString(this.fontRenderer, I18n.format("connect.connecting", new Object[0]), this.width / 2, this.height / 2 - 50, 16777215);
         }
         else
         {
-            this.drawCenteredString(this.fontRendererObj, I18n.format("connect.authorizing", new Object[0]), this.width / 2, this.height / 2 - 50, 16777215);
+            this.drawCenteredString(this.fontRenderer, I18n.format("connect.authorizing", new Object[0]), this.width / 2, this.height / 2 - 50, 16777215);
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

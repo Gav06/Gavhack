@@ -10,7 +10,6 @@ import net.minecraft.util.IChatComponent;
 
 public class CommandBroadcast extends CommandBase
 {
-    private static final String __OBFID = "CL_00000191";
 
     public String getCommandName()
     {
@@ -35,7 +34,7 @@ public class CommandBroadcast extends CommandBase
         if (par2ArrayOfStr.length > 0 && par2ArrayOfStr[0].length() > 0)
         {
             IChatComponent var3 = func_147176_a(par1ICommandSender, par2ArrayOfStr, 0, true);
-            MinecraftServer.getServer().getConfigurationManager().func_148539_a(new ChatComponentTranslation("chat.type.announcement", new Object[] {par1ICommandSender.getCommandSenderName(), var3}));
+            MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("chat.type.announcement", new Object[] {par1ICommandSender.getCommandSenderName(), var3}));
         }
         else
         {

@@ -11,7 +11,6 @@ public class EntityAIFollowGolem extends EntityAIBase
     private EntityIronGolem theGolem;
     private int takeGolemRoseTick;
     private boolean tookGolemRose;
-    private static final String __OBFID = "CL_00001615";
 
     public EntityAIFollowGolem(EntityVillager par1EntityVillager)
     {

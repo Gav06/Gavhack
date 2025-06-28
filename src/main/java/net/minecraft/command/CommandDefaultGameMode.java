@@ -8,7 +8,6 @@ import net.minecraft.world.WorldSettings;
 
 public class CommandDefaultGameMode extends CommandGameMode
 {
-    private static final String __OBFID = "CL_00000296";
 
     public String getCommandName()
     {

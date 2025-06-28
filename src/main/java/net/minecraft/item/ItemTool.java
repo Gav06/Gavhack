@@ -19,7 +19,6 @@ public class ItemTool extends Item
 
     /** The material this tool is made from. */
     protected Item.ToolMaterial toolMaterial;
-    private static final String __OBFID = "CL_00000019";
 
     protected ItemTool(float p_i45333_1_, Item.ToolMaterial p_i45333_2_, Set p_i45333_3_)
     {
@@ -32,9 +31,9 @@ public class ItemTool extends Item
         this.setCreativeTab(CreativeTabs.tabTools);
     }
 
-    public float func_150893_a(ItemStack p_150893_1_, Block p_150893_2_)
+    public float func_150893_a(ItemStack stack, Block block)
     {
-        return this.field_150914_c.contains(p_150893_2_) ? this.efficiencyOnProperMaterial : 1.0F;
+        return this.field_150914_c.contains(block) ? this.efficiencyOnProperMaterial : 1.0F;
     }
 
     /**

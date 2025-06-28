@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 
 public class ResourcePackFileNotFoundException extends FileNotFoundException
 {
-    private static final String __OBFID = "CL_00001086";
 
     public ResourcePackFileNotFoundException(File par1File, String par2Str)
     {

@@ -18,14 +18,17 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemCloth;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ReportedException;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderItem extends Render
 {
     private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-    private RenderBlocks field_147913_i = new RenderBlocks();
+    private RenderBlocks renderBlocksRi = new RenderBlocks();
 
     /** The RNG used in RenderItem (for bobbing itemstacks on the ground) */
     private Random random = new Random();
@@ -34,7 +37,6 @@ public class RenderItem extends Render
     /** Defines the zLevel of rendering of item on GUI. */
     public float zLevel;
     public static boolean renderInFrame;
-    private static final String __OBFID = "CL_00001003";
 
     public RenderItem()
     {
@@ -128,7 +130,7 @@ public class RenderItem extends Render
                         GL11.glTranslatef(var18, var19, var20);
                     }
 
-                    this.field_147913_i.renderBlockAsItem(var22, var10.getItemDamage(), 1.0F);
+                    this.renderBlocksRi.renderBlockAsItem(var22, var10.getItemDamage(), 1.0F);
                     GL11.glPopMatrix();
                 }
 
@@ -406,9 +408,9 @@ public class RenderItem extends Render
             }
 
             GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-            this.field_147913_i.useInventoryTint = this.renderWithColor;
-            this.field_147913_i.renderBlockAsItem(var16, var6, 1.0F);
-            this.field_147913_i.useInventoryTint = true;
+            this.renderBlocksRi.useInventoryTint = this.renderWithColor;
+            this.renderBlocksRi.renderBlockAsItem(var16, var6, 1.0F);
+            this.renderBlocksRi.useInventoryTint = true;
             GL11.glPopMatrix();
         }
         else if (par3ItemStack.getItem().requiresMultipleRenderPasses())
@@ -451,7 +453,6 @@ public class RenderItem extends Render
                 this.renderIcon(par4, par5, var10, 16, 16);
             }
 
-//            GL11.glDisable(GL11.GL_BLEND);
             GL11.glDisable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_LIGHTING);
         }
@@ -500,17 +501,40 @@ public class RenderItem extends Render
             {
                 CrashReport var7 = CrashReport.makeCrashReport(var9, "Rendering item");
                 CrashReportCategory var8 = var7.makeCategory("Item being rendered");
-                var8.addCrashSectionCallable("Item Type", () -> String.valueOf(par3ItemStack.getItem()));
-                var8.addCrashSectionCallable("Item Aux", () -> String.valueOf(par3ItemStack.getItemDamage()));
-                var8.addCrashSectionCallable("Item NBT", () -> String.valueOf(par3ItemStack.getTagCompound()));
-                var8.addCrashSectionCallable("Item Foil", () -> String.valueOf(par3ItemStack.hasEffect()));
+                var8.addCrashSectionCallable("Item Type", new Callable()
+                {
+                    public String call()
+                    {
+                        return String.valueOf(par3ItemStack.getItem());
+                    }
+                });
+                var8.addCrashSectionCallable("Item Aux", new Callable()
+                {
+                    public String call()
+                    {
+                        return String.valueOf(par3ItemStack.getItemDamage());
+                    }
+                });
+                var8.addCrashSectionCallable("Item NBT", new Callable()
+                {
+                    public String call()
+                    {
+                        return String.valueOf(par3ItemStack.getTagCompound());
+                    }
+                });
+                var8.addCrashSectionCallable("Item Foil", new Callable()
+                {
+                    public String call()
+                    {
+                        return String.valueOf(par3ItemStack.hasEffect());
+                    }
+                });
                 throw new ReportedException(var7);
             }
 
             if (par3ItemStack.hasEffect())
             {
                 GL11.glDepthFunc(GL11.GL_EQUAL);
-
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDepthMask(false);
                 par2TextureManager.bindTexture(RES_ITEM_GLINT);
@@ -518,15 +542,10 @@ public class RenderItem extends Render
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);
                 this.renderGlint(par4 * 431278612 + par5 * 32178161, par4 - 2, par5 - 2, 20, 20);
-                GL11.glColor4f(1f, 1f, 1f, 1f);
                 GL11.glDepthMask(true);
                 GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GL11.glDisable(GL11.GL_BLEND);
                 GL11.glEnable(GL11.GL_LIGHTING);
-
                 GL11.glDepthFunc(GL11.GL_LEQUAL);
-                par2TextureManager.bindTexture(TextureMap.locationBlocksTexture);
-
             }
 
             this.zLevel -= 50.0F;
@@ -572,11 +591,9 @@ public class RenderItem extends Render
     {
         if (par3ItemStack != null)
         {
-            if (par3ItemStack.stackSize != 1 || par6Str != null)
+            if (par3ItemStack.stackSize > 1 || par6Str != null)
             {
-                String color = par3ItemStack.stackSize < 1 ? EnumChatFormatting.RED.toString() : "";
-
-                String var7 = (par6Str == null) ? (color + par3ItemStack.stackSize) : par6Str;
+                String var7 = par6Str == null ? String.valueOf(par3ItemStack.stackSize) : par6Str;
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_BLEND);
@@ -603,8 +620,6 @@ public class RenderItem extends Render
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_LIGHTING);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
-                GL11.glEnable(GL11.GL_ALPHA_TEST);
-                GL11.glEnable(GL11.GL_BLEND);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             }
         }

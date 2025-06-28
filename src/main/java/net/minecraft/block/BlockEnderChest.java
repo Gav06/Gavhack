@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 
 public class BlockEnderChest extends BlockContainer
 {
-    private static final String __OBFID = "CL_00000238";
 
     protected BlockEnderChest()
     {
@@ -158,7 +157,7 @@ public class BlockEnderChest extends BlockContainer
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("obsidian");
     }

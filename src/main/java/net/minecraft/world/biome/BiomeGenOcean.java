@@ -6,7 +6,6 @@ import net.minecraft.world.World;
 
 public class BiomeGenOcean extends BiomeGenBase
 {
-    private static final String __OBFID = "CL_00000179";
 
     public BiomeGenOcean(int par1)
     {

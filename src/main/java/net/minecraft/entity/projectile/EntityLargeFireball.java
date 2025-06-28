@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 public class EntityLargeFireball extends EntityFireball
 {
     public int field_92057_e = 1;
-    private static final String __OBFID = "CL_00001719";
 
     public EntityLargeFireball(World par1World)
     {
@@ -60,7 +59,7 @@ public class EntityLargeFireball extends EntityFireball
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.func_150297_b("ExplosionPower", 99))
+        if (par1NBTTagCompound.hasKey("ExplosionPower", 99))
         {
             this.field_92057_e = par1NBTTagCompound.getInteger("ExplosionPower");
         }

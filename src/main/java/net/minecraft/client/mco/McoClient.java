@@ -12,7 +12,6 @@ public class McoClient
     private final String field_148718_c;
     private final Proxy field_148715_d;
     private static String field_148716_e = "https://mcoapi.minecraft.net/";
-    private static final String __OBFID = "CL_00001156";
 
     public McoClient(String p_i45484_1_, String p_i45484_2_, String p_i45484_3_, Proxy p_i45484_4_)
     {

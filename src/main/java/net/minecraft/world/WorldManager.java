@@ -16,7 +16,6 @@ public class WorldManager implements IWorldAccess
 
     /** The WorldServer object. */
     private WorldServer theWorldServer;
-    private static final String __OBFID = "CL_00001433";
 
     public WorldManager(MinecraftServer par1MinecraftServer, WorldServer par2WorldServer)
     {
@@ -52,7 +51,7 @@ public class WorldManager implements IWorldAccess
      */
     public void playSound(String par1Str, double par2, double par4, double par6, float par8, float par9)
     {
-        this.mcServer.getConfigurationManager().func_148541_a(par2, par4, par6, par8 > 1.0F ? (double)(16.0F * par8) : 16.0D, this.theWorldServer.provider.dimensionId, new S29PacketSoundEffect(par1Str, par2, par4, par6, par8, par9));
+        this.mcServer.getConfigurationManager().sendToAllNear(par2, par4, par6, par8 > 1.0F ? (double)(16.0F * par8) : 16.0D, this.theWorldServer.provider.dimensionId, new S29PacketSoundEffect(par1Str, par2, par4, par6, par8, par9));
     }
 
     /**
@@ -60,7 +59,7 @@ public class WorldManager implements IWorldAccess
      */
     public void playSoundToNearExcept(EntityPlayer par1EntityPlayer, String par2Str, double par3, double par5, double par7, float par9, float par10)
     {
-        this.mcServer.getConfigurationManager().func_148543_a(par1EntityPlayer, par3, par5, par7, par9 > 1.0F ? (double)(16.0F * par9) : 16.0D, this.theWorldServer.provider.dimensionId, new S29PacketSoundEffect(par2Str, par3, par5, par7, par9, par10));
+        this.mcServer.getConfigurationManager().sendToAllNearExcept(par1EntityPlayer, par3, par5, par7, par9 > 1.0F ? (double)(16.0F * par9) : 16.0D, this.theWorldServer.provider.dimensionId, new S29PacketSoundEffect(par2Str, par3, par5, par7, par9, par10));
     }
 
     /**
@@ -75,7 +74,7 @@ public class WorldManager implements IWorldAccess
      */
     public void markBlockForUpdate(int p_147586_1_, int p_147586_2_, int p_147586_3_)
     {
-        this.theWorldServer.getPlayerManager().func_151250_a(p_147586_1_, p_147586_2_, p_147586_3_);
+        this.theWorldServer.getPlayerManager().markBlockForUpdate(p_147586_1_, p_147586_2_, p_147586_3_);
     }
 
     /**
@@ -93,12 +92,12 @@ public class WorldManager implements IWorldAccess
      */
     public void playAuxSFX(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6)
     {
-        this.mcServer.getConfigurationManager().func_148543_a(par1EntityPlayer, (double)par3, (double)par4, (double)par5, 64.0D, this.theWorldServer.provider.dimensionId, new S28PacketEffect(par2, par3, par4, par5, par6, false));
+        this.mcServer.getConfigurationManager().sendToAllNearExcept(par1EntityPlayer, (double)par3, (double)par4, (double)par5, 64.0D, this.theWorldServer.provider.dimensionId, new S28PacketEffect(par2, par3, par4, par5, par6, false));
     }
 
     public void broadcastSound(int par1, int par2, int par3, int par4, int par5)
     {
-        this.mcServer.getConfigurationManager().func_148540_a(new S28PacketEffect(par1, par2, par3, par4, par5, true));
+        this.mcServer.getConfigurationManager().sendPacketToAllPlayers(new S28PacketEffect(par1, par2, par3, par4, par5, true));
     }
 
     /**
@@ -121,7 +120,7 @@ public class WorldManager implements IWorldAccess
 
                 if (var8 * var8 + var10 * var10 + var12 * var12 < 1024.0D)
                 {
-                    var7.playerNetServerHandler.sendPacket(new S25PacketBlockBreakAnim(p_147587_1_, p_147587_2_, p_147587_3_, p_147587_4_, p_147587_5_));
+                    var7.playerNetServerHandler.sendPacketToPlayer(new S25PacketBlockBreakAnim(p_147587_1_, p_147587_2_, p_147587_3_, p_147587_4_, p_147587_5_));
                 }
             }
         }

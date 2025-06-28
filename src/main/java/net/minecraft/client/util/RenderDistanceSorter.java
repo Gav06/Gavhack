@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.RenderList;
 
 public class RenderDistanceSorter implements Comparator
 {
-    private static final String __OBFID = "CL_00000945";
 
     public int compare(RenderList p_147714_1_, RenderList p_147714_2_)
     {

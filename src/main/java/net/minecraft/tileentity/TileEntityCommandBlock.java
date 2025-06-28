@@ -12,10 +12,9 @@ public class TileEntityCommandBlock extends TileEntity
 {
     private final CommandBlockLogic field_145994_a = new CommandBlockLogic()
     {
-        private static final String __OBFID = "CL_00000348";
         public ChunkCoordinates getPlayerCoordinates()
         {
-            return new ChunkCoordinates(TileEntityCommandBlock.this.x, TileEntityCommandBlock.this.y, TileEntityCommandBlock.this.z);
+            return new ChunkCoordinates(TileEntityCommandBlock.this.xCoord, TileEntityCommandBlock.this.yCoord, TileEntityCommandBlock.this.zCoord);
         }
         public World getEntityWorld()
         {
@@ -28,7 +27,7 @@ public class TileEntityCommandBlock extends TileEntity
         }
         public void func_145756_e()
         {
-            TileEntityCommandBlock.this.getWorldObj().func_147471_g(TileEntityCommandBlock.this.x, TileEntityCommandBlock.this.y, TileEntityCommandBlock.this.z);
+            TileEntityCommandBlock.this.getWorldObj().func_147471_g(TileEntityCommandBlock.this.xCoord, TileEntityCommandBlock.this.yCoord, TileEntityCommandBlock.this.zCoord);
         }
         public int func_145751_f()
         {
@@ -36,23 +35,22 @@ public class TileEntityCommandBlock extends TileEntity
         }
         public void func_145757_a(ByteBuf p_145757_1_)
         {
-            p_145757_1_.writeInt(TileEntityCommandBlock.this.x);
-            p_145757_1_.writeInt(TileEntityCommandBlock.this.y);
-            p_145757_1_.writeInt(TileEntityCommandBlock.this.z);
+            p_145757_1_.writeInt(TileEntityCommandBlock.this.xCoord);
+            p_145757_1_.writeInt(TileEntityCommandBlock.this.yCoord);
+            p_145757_1_.writeInt(TileEntityCommandBlock.this.zCoord);
         }
     };
-    private static final String __OBFID = "CL_00000347";
 
-    public void writeToNBT(NBTTagCompound tag)
+    public void writeToNBT(NBTTagCompound p_145841_1_)
     {
-        super.writeToNBT(tag);
-        this.field_145994_a.func_145758_a(tag);
+        super.writeToNBT(p_145841_1_);
+        this.field_145994_a.func_145758_a(p_145841_1_);
     }
 
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(NBTTagCompound p_145839_1_)
     {
-        super.readFromNBT(tag);
-        this.field_145994_a.func_145759_b(tag);
+        super.readFromNBT(p_145839_1_);
+        this.field_145994_a.func_145759_b(p_145839_1_);
     }
 
     /**
@@ -62,7 +60,7 @@ public class TileEntityCommandBlock extends TileEntity
     {
         NBTTagCompound var1 = new NBTTagCompound();
         this.writeToNBT(var1);
-        return new S35PacketUpdateTileEntity(this.x, this.y, this.z, 2, var1);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 2, var1);
     }
 
     public CommandBlockLogic func_145993_a()

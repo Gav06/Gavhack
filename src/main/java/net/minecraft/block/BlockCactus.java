@@ -15,7 +15,6 @@ public class BlockCactus extends Block
 {
     private IIcon field_150041_a;
     private IIcon field_150040_b;
-    private static final String __OBFID = "CL_00000210";
 
     protected BlockCactus()
     {
@@ -147,7 +146,7 @@ public class BlockCactus extends Block
         p_149670_5_.attackEntityFrom(DamageSource.cactus, 1.0F);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
         this.field_150041_a = p_149651_1_.registerIcon(this.getTextureName() + "_top");

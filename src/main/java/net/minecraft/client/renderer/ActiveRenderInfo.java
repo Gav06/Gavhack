@@ -54,7 +54,6 @@ public class ActiveRenderInfo
      * The Y component (scaled along the X axis) of the entity's pitch rotation
      */
     public static float rotationXY;
-    private static final String __OBFID = "CL_00000626";
 
     /**
      * Updates the current render info and camera location based on entity look angles and 1st/3rd person view mode
@@ -85,13 +84,13 @@ public class ActiveRenderInfo
      */
     public static Vec3 projectViewFromEntity(EntityLivingBase par0EntityLivingBase, double par1)
     {
-        double lerpX = par0EntityLivingBase.prevPosX + (par0EntityLivingBase.posX - par0EntityLivingBase.prevPosX) * par1;
-        double lerpY = par0EntityLivingBase.prevPosY + (par0EntityLivingBase.posY - par0EntityLivingBase.prevPosY) * par1 + (double)par0EntityLivingBase.getEyeHeight();
-        double lerpZ = par0EntityLivingBase.prevPosZ + (par0EntityLivingBase.posZ - par0EntityLivingBase.prevPosZ) * par1;
-        double dX = lerpX + (double)(objectX);
-        double dY = lerpY + (double)(objectY);
-        double dZ = lerpZ + (double)(objectZ);
-        return Vec3.createVectorHelper(dX, dY, dZ);
+        double var3 = par0EntityLivingBase.prevPosX + (par0EntityLivingBase.posX - par0EntityLivingBase.prevPosX) * par1;
+        double var5 = par0EntityLivingBase.prevPosY + (par0EntityLivingBase.posY - par0EntityLivingBase.prevPosY) * par1 + (double)par0EntityLivingBase.getEyeHeight();
+        double var7 = par0EntityLivingBase.prevPosZ + (par0EntityLivingBase.posZ - par0EntityLivingBase.prevPosZ) * par1;
+        double var9 = var3 + (double)(objectX * 1.0F);
+        double var11 = var5 + (double)(objectY * 1.0F);
+        double var13 = var7 + (double)(objectZ * 1.0F);
+        return par0EntityLivingBase.worldObj.getWorldVec3Pool().getVecFromPool(var9, var11, var13);
     }
 
     public static Block getBlockAtEntityViewpoint(World p_151460_0_, EntityLivingBase p_151460_1_, float p_151460_2_)
@@ -102,7 +101,7 @@ public class ActiveRenderInfo
 
         if (var5.getMaterial().isLiquid())
         {
-            float var6 = BlockLiquid.func_149801_b(p_151460_0_.getBlockMetadata(var4.field_151329_a, var4.field_151327_b, var4.field_151328_c)) - 0.11111111F;
+            float var6 = BlockLiquid.getFluidHeightPercent(p_151460_0_.getBlockMetadata(var4.field_151329_a, var4.field_151327_b, var4.field_151328_c)) - 0.11111111F;
             float var7 = (float)(var4.field_151327_b + 1) - var6;
 
             if (var3.yCoord >= (double)var7)

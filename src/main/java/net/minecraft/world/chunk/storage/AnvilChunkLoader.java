@@ -36,7 +36,6 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 
     /** Save directory for chunks using the Anvil format */
     private final File chunkSaveLocation;
-    private static final String __OBFID = "CL_00000384";
 
     public AnvilChunkLoader(File par1File)
     {
@@ -87,12 +86,12 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
      */
     protected Chunk checkedReadChunkFromNBT(World par1World, int par2, int par3, NBTTagCompound par4NBTTagCompound)
     {
-        if (!par4NBTTagCompound.func_150297_b("Level", 10))
+        if (!par4NBTTagCompound.hasKey("Level", 10))
         {
             logger.error("Chunk file at " + par2 + "," + par3 + " is missing level data, skipping");
             return null;
         }
-        else if (!par4NBTTagCompound.getCompoundTag("Level").func_150297_b("Sections", 9))
+        else if (!par4NBTTagCompound.getCompoundTag("Level").hasKey("Sections", 9))
         {
             logger.error("Chunk file at " + par2 + "," + par3 + " is missing block data, skipping");
             return null;
@@ -357,7 +356,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
             ExtendedBlockStorage var13 = new ExtendedBlockStorage(var12 << 4, var9);
             var13.setBlockLSBArray(var11.getByteArray("Blocks"));
 
-            if (var11.func_150297_b("Add", 7))
+            if (var11.hasKey("Add", 7))
             {
                 var13.setBlockMSBArray(new NibbleArray(var11.getByteArray("Add"), 4));
             }
@@ -376,7 +375,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 
         var5.setStorageArrays(var8);
 
-        if (par2NBTTagCompound.func_150297_b("Biomes", 7))
+        if (par2NBTTagCompound.hasKey("Biomes", 7))
         {
             var5.setBiomeArray(par2NBTTagCompound.getByteArray("Biomes"));
         }
@@ -396,7 +395,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
                     var5.addEntity(var22);
                     Entity var14 = var22;
 
-                    for (NBTTagCompound var15 = var20; var15.func_150297_b("Riding", 10); var15 = var15.getCompoundTag("Riding"))
+                    for (NBTTagCompound var15 = var20; var15.hasKey("Riding", 10); var15 = var15.getCompoundTag("Riding"))
                     {
                         Entity var16 = EntityList.createEntityFromNBT(var15.getCompoundTag("Riding"), par1World);
 
@@ -428,7 +427,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
             }
         }
 
-        if (par2NBTTagCompound.func_150297_b("TileTicks", 9))
+        if (par2NBTTagCompound.hasKey("TileTicks", 9))
         {
             NBTTagList var23 = par2NBTTagCompound.getTagList("TileTicks", 10);
 
@@ -449,7 +448,6 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
     {
         public final ChunkCoordIntPair chunkCoordinate;
         public final NBTTagCompound nbtTags;
-        private static final String __OBFID = "CL_00000385";
 
         public PendingChunk(ChunkCoordIntPair par1ChunkCoordIntPair, NBTTagCompound par2NBTTagCompound)
         {

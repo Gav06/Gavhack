@@ -20,7 +20,6 @@ public class BlockTallGrass extends BlockBush implements IGrowable
 {
     private static final String[] field_149871_a = new String[] {"deadbush", "tallgrass", "fern"};
     private IIcon[] field_149870_b;
-    private static final String __OBFID = "CL_00000321";
 
     protected BlockTallGrass()
     {
@@ -117,7 +116,7 @@ public class BlockTallGrass extends BlockBush implements IGrowable
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149870_b = new IIcon[field_149871_a.length];
 

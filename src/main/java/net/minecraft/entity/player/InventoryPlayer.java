@@ -37,7 +37,6 @@ public class InventoryPlayer implements IInventory
      * it and reset the value.
      */
     public boolean inventoryChanged;
-    private static final String __OBFID = "CL_00001709";
 
     public InventoryPlayer(EntityPlayer par1EntityPlayer)
     {
@@ -433,7 +432,6 @@ public class InventoryPlayer implements IInventory
                 var4.addCrashSection("Item data", Integer.valueOf(par1ItemStack.getItemDamage()));
                 var4.addCrashSectionCallable("Item name", new Callable()
                 {
-                    private static final String __OBFID = "CL_00001710";
                     public String call()
                     {
                         return par1ItemStack.getDisplayName();

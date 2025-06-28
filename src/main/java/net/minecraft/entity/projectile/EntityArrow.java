@@ -44,7 +44,6 @@ public class EntityArrow extends Entity implements IProjectile
 
     /** The amount of knockback an arrow applies when it hits a mob. */
     private int knockbackStrength;
-    private static final String __OBFID = "CL_00001715";
 
     public EntityArrow(World par1World)
     {
@@ -349,7 +348,7 @@ public class EntityArrow extends Entity implements IProjectile
 
                             if (this.shootingEntity != null && var4.entityHit != this.shootingEntity && var4.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)
                             {
-                                ((EntityPlayerMP)this.shootingEntity).playerNetServerHandler.sendPacket(new S2BPacketChangeGameState(6, 0.0F));
+                                ((EntityPlayerMP)this.shootingEntity).playerNetServerHandler.sendPacketToPlayer(new S2BPacketChangeGameState(6, 0.0F));
                             }
                         }
 
@@ -491,16 +490,16 @@ public class EntityArrow extends Entity implements IProjectile
         this.arrowShake = par1NBTTagCompound.getByte("shake") & 255;
         this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
 
-        if (par1NBTTagCompound.func_150297_b("damage", 99))
+        if (par1NBTTagCompound.hasKey("damage", 99))
         {
             this.damage = par1NBTTagCompound.getDouble("damage");
         }
 
-        if (par1NBTTagCompound.func_150297_b("pickup", 99))
+        if (par1NBTTagCompound.hasKey("pickup", 99))
         {
             this.canBePickedUp = par1NBTTagCompound.getByte("pickup");
         }
-        else if (par1NBTTagCompound.func_150297_b("player", 99))
+        else if (par1NBTTagCompound.hasKey("player", 99))
         {
             this.canBePickedUp = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
         }

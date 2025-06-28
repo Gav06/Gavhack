@@ -6,7 +6,6 @@ import net.minecraft.world.WorldServer;
 
 public class CommandTime extends CommandBase
 {
-    private static final String __OBFID = "CL_00001183";
 
     public String getCommandName()
     {

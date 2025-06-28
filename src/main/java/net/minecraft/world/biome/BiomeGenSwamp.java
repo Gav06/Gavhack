@@ -11,7 +11,6 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
 public class BiomeGenSwamp extends BiomeGenBase
 {
-    private static final String __OBFID = "CL_00000185";
 
     protected BiomeGenSwamp(int par1)
     {

@@ -17,7 +17,6 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements IHo
     /** Whether this hopper minecart is being blocked by an activator rail. */
     private boolean isBlocked = true;
     private int transferTicker = -1;
-    private static final String __OBFID = "CL_00001676";
 
     public EntityMinecartHopper(World par1World)
     {

@@ -8,7 +8,6 @@ public class EntityEnchantmentTableParticleFX extends EntityFX
     private double field_70568_aq;
     private double field_70567_ar;
     private double field_70566_as;
-    private static final String __OBFID = "CL_00000902";
 
     public EntityEnchantmentTableParticleFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
     {

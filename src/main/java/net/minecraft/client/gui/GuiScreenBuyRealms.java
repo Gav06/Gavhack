@@ -15,7 +15,6 @@ public class GuiScreenBuyRealms extends GuiScreen
     private GuiScreen field_146817_f;
     private static int field_146818_g = 111;
     private volatile String field_146820_h = "";
-    private static final String __OBFID = "CL_00000770";
 
     public GuiScreenBuyRealms(GuiScreen p_i45035_1_)
     {
@@ -45,7 +44,6 @@ public class GuiScreenBuyRealms extends GuiScreen
         final McoClient var2 = new McoClient(var1.getSessionID(), var1.getUsername(), "1.7.2", Minecraft.getMinecraft().getProxy());
         (new Thread()
         {
-            private static final String __OBFID = "CL_00000771";
             public void run()
             {
                 try
@@ -95,10 +93,10 @@ public class GuiScreenBuyRealms extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.buy.realms.title", new Object[0]), this.width / 2, 11, 16777215);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.buy.realms.title", new Object[0]), this.width / 2, 11, 16777215);
         String[] var4 = this.field_146820_h.split("\n");
         int var5 = 52;
         String[] var6 = var4;
@@ -107,10 +105,10 @@ public class GuiScreenBuyRealms extends GuiScreen
         for (int var8 = 0; var8 < var7; ++var8)
         {
             String var9 = var6[var8];
-            this.drawCenteredString(this.fontRendererObj, var9, this.width / 2, var5, 10526880);
+            this.drawCenteredString(this.fontRenderer, var9, this.width / 2, var5, 10526880);
             var5 += 18;
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

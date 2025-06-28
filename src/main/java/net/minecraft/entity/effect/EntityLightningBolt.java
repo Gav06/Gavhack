@@ -26,7 +26,6 @@ public class EntityLightningBolt extends EntityWeatherEffect
      * Determines the time before the EntityLightningBolt is destroyed. It is a random integer decremented over time.
      */
     private int boltLivingTime;
-    private static final String __OBFID = "CL_00001666";
 
     public EntityLightningBolt(World par1World, double par2, double par4, double par6)
     {

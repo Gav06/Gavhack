@@ -114,7 +114,6 @@ public class Chunk
      * Contains the current round-robin relight check index, and is implied as the relight check location as well.
      */
     private int queuedLightChecks;
-    private static final String __OBFID = "CL_00000373";
 
     public Chunk(World par1World, int par2, int par3)
     {
@@ -598,7 +597,6 @@ public class Chunk
                     CrashReportCategory var8 = var7.makeCategory("Block being got");
                     var8.addCrashSectionCallable("Location", new Callable()
                     {
-                        private static final String __OBFID = "CL_00000374";
                         public String call()
                         {
                             return CrashReportCategory.getLocationInfo(p_150810_1_, p_150810_2_, p_150810_3_);
@@ -963,14 +961,14 @@ public class Chunk
 
     public void addTileEntity(TileEntity p_150813_1_)
     {
-        int var2 = p_150813_1_.x - this.xPosition * 16;
-        int var3 = p_150813_1_.y;
-        int var4 = p_150813_1_.z - this.zPosition * 16;
+        int var2 = p_150813_1_.xCoord - this.xPosition * 16;
+        int var3 = p_150813_1_.yCoord;
+        int var4 = p_150813_1_.zCoord - this.zPosition * 16;
         this.func_150812_a(var2, var3, var4, p_150813_1_);
 
         if (this.isChunkLoaded)
         {
-            this.worldObj.tileEntities.add(p_150813_1_);
+            this.worldObj.field_147482_g.add(p_150813_1_);
         }
     }
 
@@ -978,9 +976,9 @@ public class Chunk
     {
         ChunkPosition var5 = new ChunkPosition(p_150812_1_, p_150812_2_, p_150812_3_);
         p_150812_4_.setWorldObj(this.worldObj);
-        p_150812_4_.x = this.xPosition * 16 + p_150812_1_;
-        p_150812_4_.y = p_150812_2_;
-        p_150812_4_.z = this.zPosition * 16 + p_150812_3_;
+        p_150812_4_.xCoord = this.xPosition * 16 + p_150812_1_;
+        p_150812_4_.yCoord = p_150812_2_;
+        p_150812_4_.zCoord = this.zPosition * 16 + p_150812_3_;
 
         if (this.func_150810_a(p_150812_1_, p_150812_2_, p_150812_3_) instanceof ITileEntityProvider)
         {

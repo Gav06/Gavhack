@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 
 public class CommandSummon extends CommandBase
 {
-    private static final String __OBFID = "CL_00001158";
 
     public String getCommandName()
     {
@@ -103,7 +102,7 @@ public class CommandSummon extends CommandBase
                     var10.spawnEntityInWorld(var18);
                     Entity var19 = var18;
 
-                    for (NBTTagCompound var15 = var11; var15.func_150297_b("Riding", 10); var15 = var15.getCompoundTag("Riding"))
+                    for (NBTTagCompound var15 = var11; var15.hasKey("Riding", 10); var15 = var15.getCompoundTag("Riding"))
                     {
                         Entity var16 = EntityList.createEntityFromNBT(var15.getCompoundTag("Riding"), var10);
 

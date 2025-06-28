@@ -21,7 +21,6 @@ import net.minecraft.util.ReportedException;
 
 public class CompressedStreamTools
 {
-    private static final String __OBFID = "CL_00001226";
 
     /**
      * Load the gzipped compound from the inputstream.

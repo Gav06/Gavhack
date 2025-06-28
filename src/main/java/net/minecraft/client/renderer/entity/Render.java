@@ -1,7 +1,5 @@
 package net.minecraft.client.renderer.entity;
 
-import me.gavin.gavhack.module.impl.ESP;
-import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.FontRenderer;
@@ -13,12 +11,14 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
+import net.minecraft.src.Config;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
+import shadersmod.client.Shaders;
 
 public abstract class Render
 {
@@ -31,8 +31,7 @@ public abstract class Render
      * Determines the darkness of the object's shadow. Higher value makes a darker shadow.
      */
     protected float shadowOpaque = 1.0F;
-    private boolean field_147908_f = false;
-    private static final String __OBFID = "CL_00000992";
+    private boolean staticEntity = false;
 
     /**
      * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
@@ -47,9 +46,9 @@ public abstract class Render
      */
     protected abstract ResourceLocation getEntityTexture(Entity var1);
 
-    public boolean func_147905_a()
+    public boolean isStaticEntity()
     {
-        return this.field_147908_f;
+        return this.staticEntity;
     }
 
     protected void bindEntityTexture(Entity par1Entity)
@@ -68,8 +67,8 @@ public abstract class Render
     private void renderEntityOnFire(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
         GL11.glDisable(GL11.GL_LIGHTING);
-        IIcon var9 = Blocks.fire.func_149840_c(0);
-        IIcon var10 = Blocks.fire.func_149840_c(1);
+        IIcon var9 = Blocks.fire.getFireIcon(0);
+        IIcon var10 = Blocks.fire.getFireIcon(1);
         GL11.glPushMatrix();
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         float var11 = par1Entity.width * 1.4F;
@@ -115,7 +114,6 @@ public abstract class Render
 
         var12.draw();
         GL11.glPopMatrix();
-
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
@@ -125,62 +123,62 @@ public abstract class Render
      */
     private void renderShadow(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-        if (RenderUtils.INSTANCE.getShouldCancelShadows())
-            return;
-
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        this.renderManager.renderEngine.bindTexture(shadowTextures);
-        World var10 = this.getWorldFromRenderManager();
-        GL11.glDepthMask(false);
-        float var11 = this.shadowSize;
-
-        if (par1Entity instanceof EntityLiving)
+        if (!Config.isShaders() || !Shaders.shouldSkipDefaultShadow)
         {
-            EntityLiving var12 = (EntityLiving)par1Entity;
-            var11 *= var12.getRenderSizeModifier();
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            this.renderManager.renderEngine.bindTexture(shadowTextures);
+            World var10 = this.getWorldFromRenderManager();
+            GL11.glDepthMask(false);
+            float var11 = this.shadowSize;
 
-            if (var12.isChild())
+            if (par1Entity instanceof EntityLiving)
             {
-                var11 *= 0.5F;
-            }
-        }
+                EntityLiving var35 = (EntityLiving)par1Entity;
+                var11 *= var35.getRenderSizeModifier();
 
-        double var35 = par1Entity.lastTickPosX + (par1Entity.posX - par1Entity.lastTickPosX) * (double)par9;
-        double var14 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par9 + (double)par1Entity.getShadowSize();
-        double var16 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par9;
-        int var18 = MathHelper.floor_double(var35 - (double)var11);
-        int var19 = MathHelper.floor_double(var35 + (double)var11);
-        int var20 = MathHelper.floor_double(var14 - (double)var11);
-        int var21 = MathHelper.floor_double(var14);
-        int var22 = MathHelper.floor_double(var16 - (double)var11);
-        int var23 = MathHelper.floor_double(var16 + (double)var11);
-        double var24 = par2 - var35;
-        double var26 = par4 - var14;
-        double var28 = par6 - var16;
-        Tessellator var30 = Tessellator.instance;
-        var30.startDrawingQuads();
-
-        for (int var31 = var18; var31 <= var19; ++var31)
-        {
-            for (int var32 = var20; var32 <= var21; ++var32)
-            {
-                for (int var33 = var22; var33 <= var23; ++var33)
+                if (var35.isChild())
                 {
-                    Block var34 = var10.getBlock(var31, var32 - 1, var33);
+                    var11 *= 0.5F;
+                }
+            }
 
-                    if (var34.getMaterial() != Material.air && var10.getBlockLightValue(var31, var32, var33) > 3)
+            double var351 = par1Entity.lastTickPosX + (par1Entity.posX - par1Entity.lastTickPosX) * (double)par9;
+            double var14 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par9 + (double)par1Entity.getShadowSize();
+            double var16 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par9;
+            int var18 = MathHelper.floor_double(var351 - (double)var11);
+            int var19 = MathHelper.floor_double(var351 + (double)var11);
+            int var20 = MathHelper.floor_double(var14 - (double)var11);
+            int var21 = MathHelper.floor_double(var14);
+            int var22 = MathHelper.floor_double(var16 - (double)var11);
+            int var23 = MathHelper.floor_double(var16 + (double)var11);
+            double var24 = par2 - var351;
+            double var26 = par4 - var14;
+            double var28 = par6 - var16;
+            Tessellator var30 = Tessellator.instance;
+            var30.startDrawingQuads();
+
+            for (int var31 = var18; var31 <= var19; ++var31)
+            {
+                for (int var32 = var20; var32 <= var21; ++var32)
+                {
+                    for (int var33 = var22; var33 <= var23; ++var33)
                     {
-                        this.func_147907_a(var34, par2, par4 + (double)par1Entity.getShadowSize(), par6, var31, var32, var33, par8, var11, var24, var26 + (double)par1Entity.getShadowSize(), var28);
+                        Block var34 = var10.getBlock(var31, var32 - 1, var33);
+
+                        if (var34.getMaterial() != Material.air && var10.getBlockLightValue(var31, var32, var33) > 3)
+                        {
+                            this.func_147907_a(var34, par2, par4 + (double)par1Entity.getShadowSize(), par6, var31, var32, var33, par8, var11, var24, var26 + (double)par1Entity.getShadowSize(), var28);
+                        }
                     }
                 }
             }
-        }
 
-        var30.draw();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDepthMask(true);
+            var30.draw();
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glDepthMask(true);
+        }
     }
 
     /**
@@ -345,9 +343,6 @@ public abstract class Render
 
     protected void func_147906_a(Entity p_147906_1_, String p_147906_2_, double p_147906_3_, double p_147906_5_, double p_147906_7_, int p_147906_9_)
     {
-        if (RenderUtils.INSTANCE.getShouldCancelNameTagRender())
-            return;
-
         double var10 = p_147906_1_.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
         if (var10 <= (double)(p_147906_9_ * p_147906_9_))

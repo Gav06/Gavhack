@@ -50,7 +50,6 @@ public abstract class GuiContainer extends GuiScreen
     private int field_146992_L;
     private boolean field_146993_M;
     private ItemStack field_146994_N;
-    private static final String __OBFID = "CL_00000737";
 
     public GuiContainer(Container par1Container)
     {
@@ -72,17 +71,17 @@ public abstract class GuiContainer extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
         int var4 = this.field_147003_i;
         int var5 = this.field_147009_r;
-        this.func_146976_a(partialTicks, mouseX, mouseY);
+        this.func_146976_a(par3, par1, par2);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
         RenderHelper.enableGUIStandardItemLighting();
         GL11.glPushMatrix();
         GL11.glTranslatef((float)var4, (float)var5, 0.0F);
@@ -100,7 +99,7 @@ public abstract class GuiContainer extends GuiScreen
             Slot var9 = (Slot)this.field_147002_h.inventorySlots.get(var8);
             this.func_146977_a(var9);
 
-            if (this.func_146981_a(var9, mouseX, mouseY) && var9.func_111238_b())
+            if (this.func_146981_a(var9, par1, par2) && var9.func_111238_b())
             {
                 this.field_147006_u = var9;
                 GL11.glDisable(GL11.GL_LIGHTING);
@@ -115,7 +114,7 @@ public abstract class GuiContainer extends GuiScreen
             }
         }
 
-        this.func_146979_b(mouseX, mouseY);
+        this.func_146979_b(par1, par2);
         InventoryPlayer var15 = this.mc.thePlayer.inventory;
         ItemStack var16 = this.field_147012_x == null ? var15.getItemStack() : this.field_147012_x;
 
@@ -141,7 +140,7 @@ public abstract class GuiContainer extends GuiScreen
                 }
             }
 
-            this.func_146982_a(var16, mouseX - var4 - var17, mouseY - var5 - var11, var12);
+            this.func_146982_a(var16, par1 - var4 - var17, par2 - var5 - var11, var12);
         }
 
         if (this.field_146991_C != null)
@@ -166,7 +165,7 @@ public abstract class GuiContainer extends GuiScreen
         if (var15.getItemStack() == null && this.field_147006_u != null && this.field_147006_u.getHasStack())
         {
             ItemStack var19 = this.field_147006_u.getStack();
-            this.func_146285_a(var19, mouseX, mouseY);
+            this.func_146285_a(var19, par1, par2);
         }
 
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -178,11 +177,11 @@ public abstract class GuiContainer extends GuiScreen
     {
         GL11.glTranslatef(0.0F, 0.0F, 32.0F);
         this.zLevel = 200.0F;
-        itemRender.zLevel = 200.0F;
-        itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), p_146982_1_, p_146982_2_, p_146982_3_);
-        itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), p_146982_1_, p_146982_2_, p_146982_3_ - (this.field_147012_x == null ? 0 : 8), p_146982_4_);
+        renderItemGs.zLevel = 200.0F;
+        renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), p_146982_1_, p_146982_2_, p_146982_3_);
+        renderItemGs.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), p_146982_1_, p_146982_2_, p_146982_3_ - (this.field_147012_x == null ? 0 : 8), p_146982_4_);
         this.zLevel = 0.0F;
-        itemRender.zLevel = 0.0F;
+        renderItemGs.zLevel = 0.0F;
     }
 
     protected void func_146979_b(int p_146979_1_, int p_146979_2_) {}
@@ -237,7 +236,7 @@ public abstract class GuiContainer extends GuiScreen
         }
 
         this.zLevel = 100.0F;
-        itemRender.zLevel = 100.0F;
+        renderItemGs.zLevel = 100.0F;
 
         if (var4 == null)
         {
@@ -261,11 +260,11 @@ public abstract class GuiContainer extends GuiScreen
             }
 
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var4, var2, var3);
-            itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var4, var2, var3, var8);
+            renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var4, var2, var3);
+            renderItemGs.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var4, var2, var3, var8);
         }
 
-        itemRender.zLevel = 0.0F;
+        renderItemGs.zLevel = 0.0F;
         this.zLevel = 0.0F;
     }
 

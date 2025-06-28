@@ -13,6 +13,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.src.Config;
+import net.minecraft.src.Reflector;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import shadersmod.client.Shaders;
 
 public abstract class RendererLivingEntity extends Render
 {
@@ -29,7 +32,8 @@ public abstract class RendererLivingEntity extends Render
 
     /** The model to be used during the render passes. */
     protected ModelBase renderPassModel;
-    private static final String __OBFID = "CL_00001012";
+    public static float NAME_TAG_RANGE = 64.0F;
+    public static float NAME_TAG_RANGE_SNEAK = 32.0F;
 
     public RendererLivingEntity(ModelBase par1ModelBase, float par2)
     {
@@ -76,215 +80,286 @@ public abstract class RendererLivingEntity extends Render
      */
     public void doRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6, float par8, float par9)
     {
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        this.mainModel.onGround = this.renderSwingProgress(par1EntityLivingBase, par9);
-
-        if (this.renderPassModel != null)
+        if (!Reflector.RenderLivingEvent_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Pre_Constructor, new Object[] {par1EntityLivingBase, this, Double.valueOf(par2), Double.valueOf(par4), Double.valueOf(par6)}))
         {
-            this.renderPassModel.onGround = this.mainModel.onGround;
-        }
+            boolean isShaders = Config.isShaders();
+            float var25;
+            float var26;
+            float var14;
+            float var15;
+            float var16;
 
-        this.mainModel.isRiding = par1EntityLivingBase.isRiding();
-
-        if (this.renderPassModel != null)
-        {
-            this.renderPassModel.isRiding = this.mainModel.isRiding;
-        }
-
-        this.mainModel.isChild = par1EntityLivingBase.isChild();
-
-        if (this.renderPassModel != null)
-        {
-            this.renderPassModel.isChild = this.mainModel.isChild;
-        }
-
-        try
-        {
-            float var10 = this.interpolateRotation(par1EntityLivingBase.prevRenderYawOffset, par1EntityLivingBase.renderYawOffset, par9);
-            float var11 = this.interpolateRotation(par1EntityLivingBase.prevRotationYawHead, par1EntityLivingBase.rotationYawHead, par9);
-            float var13;
-
-            if (par1EntityLivingBase.isRiding() && par1EntityLivingBase.ridingEntity instanceof EntityLivingBase)
+            if (isShaders && Shaders.useEntityColor)
             {
-                EntityLivingBase var12 = (EntityLivingBase)par1EntityLivingBase.ridingEntity;
-                var10 = this.interpolateRotation(var12.prevRenderYawOffset, var12.renderYawOffset, par9);
-                var13 = MathHelper.wrapAngleTo180_float(var11 - var10);
-
-                if (var13 < -85.0F)
+                if (par1EntityLivingBase.hurtTime <= 0 && par1EntityLivingBase.deathTime <= 0)
                 {
-                    var13 = -85.0F;
-                }
+                    var25 = par1EntityLivingBase.getBrightness(par9);
+                    int var11 = this.getColorMultiplier(par1EntityLivingBase, var25, par9);
+                    boolean var13 = (var11 >> 24 & 255) > 0;
 
-                if (var13 >= 85.0F)
-                {
-                    var13 = 85.0F;
-                }
-
-                var10 = var11 - var13;
-
-                if (var13 * var13 > 2500.0F)
-                {
-                    var10 += var13 * 0.2F;
-                }
-            }
-
-            float var26 = par1EntityLivingBase.prevRotationPitch + (par1EntityLivingBase.rotationPitch - par1EntityLivingBase.prevRotationPitch) * par9;
-            this.renderLivingAt(par1EntityLivingBase, par2, par4, par6);
-            var13 = this.handleRotationFloat(par1EntityLivingBase, par9);
-            this.rotateCorpse(par1EntityLivingBase, var13, var10, par9);
-            float var14 = 0.0625F;
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            GL11.glScalef(-1.0F, -1.0F, 1.0F);
-            this.preRenderCallback(par1EntityLivingBase, par9);
-            GL11.glTranslatef(0.0F, -24.0F * var14 - 0.0078125F, 0.0F);
-            float var15 = par1EntityLivingBase.prevLimbSwingAmount + (par1EntityLivingBase.limbSwingAmount - par1EntityLivingBase.prevLimbSwingAmount) * par9;
-            float var16 = par1EntityLivingBase.limbSwing - par1EntityLivingBase.limbSwingAmount * (1.0F - par9);
-
-            if (par1EntityLivingBase.isChild())
-            {
-                var16 *= 3.0F;
-            }
-
-            if (var15 > 1.0F)
-            {
-                var15 = 1.0F;
-            }
-
-            GL11.glEnable(GL11.GL_ALPHA_TEST);
-            this.mainModel.setLivingAnimations(par1EntityLivingBase, var16, var15, par9);
-            this.renderModel(par1EntityLivingBase, var16, var15, var13, var11 - var10, var26, var14);
-            int var18;
-            float var19;
-            float var20;
-            float var22;
-
-            for (int var17 = 0; var17 < 4; ++var17)
-            {
-                var18 = this.shouldRenderPass(par1EntityLivingBase, var17, par9);
-
-                if (var18 > 0)
-                {
-                    this.renderPassModel.setLivingAnimations(par1EntityLivingBase, var16, var15, par9);
-                    this.renderPassModel.render(par1EntityLivingBase, var16, var15, var13, var11 - var10, var26, var14);
-
-                    if ((var18 & 240) == 16)
+                    if (var13)
                     {
-                        this.func_82408_c(par1EntityLivingBase, var17, par9);
-                        this.renderPassModel.render(par1EntityLivingBase, var16, var15, var13, var11 - var10, var26, var14);
+                        var26 = (float)(var11 >> 24 & 255) / 255.0F;
+                        var14 = (float)(var11 >> 16 & 255) / 255.0F;
+                        var15 = (float)(var11 >> 8 & 255) / 255.0F;
+                        var16 = (float)(var11 & 255) / 255.0F;
+                        Shaders.setEntityColor(var14, var15, var16, 1.0F - var26);
+                    }
+                }
+                else
+                {
+                    Shaders.setEntityColor(1.0F, 0.0F, 0.0F, 0.3F);
+                }
+            }
+
+            GL11.glPushMatrix();
+            GL11.glDisable(GL11.GL_CULL_FACE);
+            this.mainModel.onGround = this.renderSwingProgress(par1EntityLivingBase, par9);
+
+            if (this.renderPassModel != null)
+            {
+                this.renderPassModel.onGround = this.mainModel.onGround;
+            }
+
+            this.mainModel.isRiding = par1EntityLivingBase.isRiding();
+
+            if (this.renderPassModel != null)
+            {
+                this.renderPassModel.isRiding = this.mainModel.isRiding;
+            }
+
+            this.mainModel.isChild = par1EntityLivingBase.isChild();
+
+            if (this.renderPassModel != null)
+            {
+                this.renderPassModel.isChild = this.mainModel.isChild;
+            }
+
+            try
+            {
+                var25 = this.interpolateRotation(par1EntityLivingBase.prevRenderYawOffset, par1EntityLivingBase.renderYawOffset, par9);
+                float var28 = this.interpolateRotation(par1EntityLivingBase.prevRotationYawHead, par1EntityLivingBase.rotationYawHead, par9);
+                float var291;
+
+                if (par1EntityLivingBase.isRiding() && par1EntityLivingBase.ridingEntity instanceof EntityLivingBase)
+                {
+                    EntityLivingBase var301 = (EntityLivingBase)par1EntityLivingBase.ridingEntity;
+                    var25 = this.interpolateRotation(var301.prevRenderYawOffset, var301.renderYawOffset, par9);
+                    var291 = MathHelper.wrapAngleTo180_float(var28 - var25);
+
+                    if (var291 < -85.0F)
+                    {
+                        var291 = -85.0F;
                     }
 
-                    if ((var18 & 15) == 15)
+                    if (var291 >= 85.0F)
                     {
-                        var19 = (float)par1EntityLivingBase.ticksExisted + par9;
-                        this.bindTexture(RES_ITEM_GLINT);
-                        GL11.glEnable(GL11.GL_BLEND);
-                        var20 = 0.5F;
-                        GL11.glColor4f(var20, var20, var20, 1.0F);
-                        GL11.glDepthFunc(GL11.GL_EQUAL);
-                        GL11.glDepthMask(false);
+                        var291 = 85.0F;
+                    }
 
-                        for (int var21 = 0; var21 < 2; ++var21)
+                    var25 = var28 - var291;
+
+                    if (var291 * var291 > 2500.0F)
+                    {
+                        var25 += var291 * 0.2F;
+                    }
+                }
+
+                var26 = par1EntityLivingBase.prevRotationPitch + (par1EntityLivingBase.rotationPitch - par1EntityLivingBase.prevRotationPitch) * par9;
+                this.renderLivingAt(par1EntityLivingBase, par2, par4, par6);
+                var291 = this.handleRotationFloat(par1EntityLivingBase, par9);
+                this.rotateCorpse(par1EntityLivingBase, var291, var25, par9);
+                var14 = 0.0625F;
+                GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+                GL11.glScalef(-1.0F, -1.0F, 1.0F);
+                this.preRenderCallback(par1EntityLivingBase, par9);
+                GL11.glTranslatef(0.0F, -24.0F * var14 - 0.0078125F, 0.0F);
+                var15 = par1EntityLivingBase.prevLimbSwingAmount + (par1EntityLivingBase.limbSwingAmount - par1EntityLivingBase.prevLimbSwingAmount) * par9;
+                var16 = par1EntityLivingBase.limbSwing - par1EntityLivingBase.limbSwingAmount * (1.0F - par9);
+
+                if (par1EntityLivingBase.isChild())
+                {
+                    var16 *= 3.0F;
+                }
+
+                if (var15 > 1.0F)
+                {
+                    var15 = 1.0F;
+                }
+
+                GL11.glEnable(GL11.GL_ALPHA_TEST);
+                this.mainModel.setLivingAnimations(par1EntityLivingBase, var16, var15, par9);
+                this.renderModel(par1EntityLivingBase, var16, var15, var291, var28 - var25, var26, var14);
+                float var19;
+                int var18;
+                float var20;
+                float var22;
+                int var30;
+
+                for (int var27 = 0; var27 < 4; ++var27)
+                {
+                    var18 = this.shouldRenderPass(par1EntityLivingBase, var27, par9);
+
+                    if (var18 > 0)
+                    {
+                        this.renderPassModel.setLivingAnimations(par1EntityLivingBase, var16, var15, par9);
+                        this.renderPassModel.render(par1EntityLivingBase, var16, var15, var291, var28 - var25, var26, var14);
+
+                        if ((var18 & 240) == 16)
                         {
-                            GL11.glDisable(GL11.GL_LIGHTING);
-                            var22 = 0.76F;
-                            GL11.glColor4f(0.5F * var22, 0.25F * var22, 0.8F * var22, 1.0F);
-                            GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
-                            GL11.glMatrixMode(GL11.GL_TEXTURE);
-                            GL11.glLoadIdentity();
-                            float var23 = var19 * (0.001F + (float)var21 * 0.003F) * 20.0F;
-                            float var24 = 0.33333334F;
-                            GL11.glScalef(var24, var24, var24);
-                            GL11.glRotatef(30.0F - (float)var21 * 60.0F, 0.0F, 0.0F, 1.0F);
-                            GL11.glTranslatef(0.0F, var23, 0.0F);
-                            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                            this.renderPassModel.render(par1EntityLivingBase, var16, var15, var13, var11 - var10, var26, var14);
+                            this.func_82408_c(par1EntityLivingBase, var27, par9);
+                            this.renderPassModel.render(par1EntityLivingBase, var16, var15, var291, var28 - var25, var26, var14);
                         }
 
-                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                        GL11.glMatrixMode(GL11.GL_TEXTURE);
-                        GL11.glDepthMask(true);
-                        GL11.glLoadIdentity();
-                        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                        GL11.glEnable(GL11.GL_LIGHTING);
+                        if ((var18 & 15) == 15)
+                        {
+                            var19 = (float)par1EntityLivingBase.ticksExisted + par9;
+                            this.bindTexture(RES_ITEM_GLINT);
+                            GL11.glEnable(GL11.GL_BLEND);
+                            var20 = 0.5F;
+                            GL11.glColor4f(var20, var20, var20, 1.0F);
+                            GL11.glDepthFunc(GL11.GL_EQUAL);
+                            GL11.glDepthMask(false);
+
+                            for (var30 = 0; var30 < 2; ++var30)
+                            {
+                                GL11.glDisable(GL11.GL_LIGHTING);
+                                var22 = 0.76F;
+                                GL11.glColor4f(0.5F * var22, 0.25F * var22, 0.8F * var22, 1.0F);
+                                GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+                                GL11.glMatrixMode(GL11.GL_TEXTURE);
+                                GL11.glLoadIdentity();
+                                float var29 = var19 * (0.001F + (float)var30 * 0.003F) * 20.0F;
+                                float var24 = 0.33333334F;
+                                GL11.glScalef(var24, var24, var24);
+                                GL11.glRotatef(30.0F - (float)var30 * 60.0F, 0.0F, 0.0F, 1.0F);
+                                GL11.glTranslatef(0.0F, var29, 0.0F);
+                                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+                                this.renderPassModel.render(par1EntityLivingBase, var16, var15, var291, var28 - var25, var26, var14);
+                            }
+
+                            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                            GL11.glMatrixMode(GL11.GL_TEXTURE);
+                            GL11.glDepthMask(true);
+                            GL11.glLoadIdentity();
+                            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+                            GL11.glEnable(GL11.GL_LIGHTING);
+                            GL11.glDisable(GL11.GL_BLEND);
+                            GL11.glDepthFunc(GL11.GL_LEQUAL);
+                        }
+
                         GL11.glDisable(GL11.GL_BLEND);
-                        GL11.glDepthFunc(GL11.GL_LEQUAL);
+                        GL11.glEnable(GL11.GL_ALPHA_TEST);
+                    }
+                }
+
+                GL11.glDepthMask(true);
+
+                if (isShaders && Shaders.useEntityColor)
+                {
+                    Shaders.setEntityColor(0.0F, 0.0F, 0.0F, 0.0F);
+                }
+
+                this.renderEquippedItems(par1EntityLivingBase, par9);
+
+                if (!isShaders || !Shaders.useEntityColor)
+                {
+                    float var31 = par1EntityLivingBase.getBrightness(par9);
+                    var18 = this.getColorMultiplier(par1EntityLivingBase, var31, par9);
+                    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+                    GL11.glDisable(GL11.GL_TEXTURE_2D);
+                    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+
+                    if (isShaders)
+                    {
+                        Shaders.disableLightmap();
                     }
 
-                    GL11.glDisable(GL11.GL_BLEND);
-                    GL11.glEnable(GL11.GL_ALPHA_TEST);
+                    if ((var18 >> 24 & 255) > 0 || par1EntityLivingBase.hurtTime > 0 || par1EntityLivingBase.deathTime > 0)
+                    {
+                        GL11.glDisable(GL11.GL_TEXTURE_2D);
+                        GL11.glDisable(GL11.GL_ALPHA_TEST);
+                        GL11.glEnable(GL11.GL_BLEND);
+                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                        GL11.glDepthFunc(GL11.GL_EQUAL);
+
+                        if (isShaders)
+                        {
+                            Shaders.beginLivingDamage();
+                        }
+
+                        if (par1EntityLivingBase.hurtTime > 0 || par1EntityLivingBase.deathTime > 0)
+                        {
+                            GL11.glColor4f(var31, 0.0F, 0.0F, 0.4F);
+                            this.mainModel.render(par1EntityLivingBase, var16, var15, var291, var28 - var25, var26, var14);
+
+                            for (var30 = 0; var30 < 4; ++var30)
+                            {
+                                if (this.inheritRenderPass(par1EntityLivingBase, var30, par9) >= 0)
+                                {
+                                    GL11.glColor4f(var31, 0.0F, 0.0F, 0.4F);
+                                    this.renderPassModel.render(par1EntityLivingBase, var16, var15, var291, var28 - var25, var26, var14);
+                                }
+                            }
+                        }
+
+                        if ((var18 >> 24 & 255) > 0)
+                        {
+                            var19 = (float)(var18 >> 16 & 255) / 255.0F;
+                            var20 = (float)(var18 >> 8 & 255) / 255.0F;
+                            float var32 = (float)(var18 & 255) / 255.0F;
+                            var22 = (float)(var18 >> 24 & 255) / 255.0F;
+                            GL11.glColor4f(var19, var20, var32, var22);
+                            this.mainModel.render(par1EntityLivingBase, var16, var15, var291, var28 - var25, var26, var14);
+
+                            for (int var33 = 0; var33 < 4; ++var33)
+                            {
+                                if (this.inheritRenderPass(par1EntityLivingBase, var33, par9) >= 0)
+                                {
+                                    GL11.glColor4f(var19, var20, var32, var22);
+                                    this.renderPassModel.render(par1EntityLivingBase, var16, var15, var291, var28 - var25, var26, var14);
+                                }
+                            }
+                        }
+
+                        GL11.glDepthFunc(GL11.GL_LEQUAL);
+
+                        if (isShaders)
+                        {
+                            Shaders.endLivingDamage();
+                        }
+
+                        GL11.glDisable(GL11.GL_BLEND);
+                        GL11.glEnable(GL11.GL_ALPHA_TEST);
+                        GL11.glEnable(GL11.GL_TEXTURE_2D);
+                    }
                 }
+
+                GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            }
+            catch (Exception var271)
+            {
+                logger.error("Couldn\'t render entity", var271);
             }
 
-            GL11.glDepthMask(true);
-            this.renderEquippedItems(par1EntityLivingBase, par9);
-            float var27 = par1EntityLivingBase.getBrightness(par9);
-            var18 = this.getColorMultiplier(par1EntityLivingBase, var27, par9);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
 
-            if ((var18 >> 24 & 255) > 0 || par1EntityLivingBase.hurtTime > 0 || par1EntityLivingBase.deathTime > 0)
+            if (isShaders)
             {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glDisable(GL11.GL_ALPHA_TEST);
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GL11.glDepthFunc(GL11.GL_EQUAL);
-
-                if (par1EntityLivingBase.hurtTime > 0 || par1EntityLivingBase.deathTime > 0)
-                {
-                    GL11.glColor4f(var27, 0.0F, 0.0F, 0.4F);
-                    this.mainModel.render(par1EntityLivingBase, var16, var15, var13, var11 - var10, var26, var14);
-
-                    for (int var28 = 0; var28 < 4; ++var28)
-                    {
-                        if (this.inheritRenderPass(par1EntityLivingBase, var28, par9) >= 0)
-                        {
-                            GL11.glColor4f(var27, 0.0F, 0.0F, 0.4F);
-                            this.renderPassModel.render(par1EntityLivingBase, var16, var15, var13, var11 - var10, var26, var14);
-                        }
-                    }
-                }
-
-                if ((var18 >> 24 & 255) > 0)
-                {
-                    var19 = (float)(var18 >> 16 & 255) / 255.0F;
-                    var20 = (float)(var18 >> 8 & 255) / 255.0F;
-                    float var29 = (float)(var18 & 255) / 255.0F;
-                    var22 = (float)(var18 >> 24 & 255) / 255.0F;
-                    GL11.glColor4f(var19, var20, var29, var22);
-                    this.mainModel.render(par1EntityLivingBase, var16, var15, var13, var11 - var10, var26, var14);
-
-                    for (int var30 = 0; var30 < 4; ++var30)
-                    {
-                        if (this.inheritRenderPass(par1EntityLivingBase, var30, par9) >= 0)
-                        {
-                            GL11.glColor4f(var19, var20, var29, var22);
-                            this.renderPassModel.render(par1EntityLivingBase, var16, var15, var13, var11 - var10, var26, var14);
-                        }
-                    }
-                }
-
-                GL11.glDepthFunc(GL11.GL_LEQUAL);
-                GL11.glDisable(GL11.GL_BLEND);
-                GL11.glEnable(GL11.GL_ALPHA_TEST);
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                Shaders.enableLightmap();
             }
 
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        }
-        catch (Exception var25)
-        {
-            logger.error("Couldn\'t render entity", var25);
-        }
+            GL11.glEnable(GL11.GL_CULL_FACE);
+            GL11.glPopMatrix();
+            this.passSpecialRender(par1EntityLivingBase, par2, par4, par6);
 
-        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glPopMatrix();
-        this.passSpecialRender(par1EntityLivingBase, par2, par4, par6);
+            if (Reflector.RenderLivingEvent_Post_Constructor.exists())
+            {
+                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Post_Constructor, new Object[] {par1EntityLivingBase, this, Double.valueOf(par2), Double.valueOf(par4), Double.valueOf(par6)});
+            }
+        }
     }
 
     /**
@@ -332,21 +407,21 @@ public abstract class RendererLivingEntity extends Render
 
         if (par1EntityLivingBase.deathTime > 0)
         {
-            float var5 = ((float)par1EntityLivingBase.deathTime + par4 - 1.0F) / 20.0F * 1.6F;
-            var5 = MathHelper.sqrt_float(var5);
+            float var6 = ((float)par1EntityLivingBase.deathTime + par4 - 1.0F) / 20.0F * 1.6F;
+            var6 = MathHelper.sqrt_float(var6);
 
-            if (var5 > 1.0F)
+            if (var6 > 1.0F)
             {
-                var5 = 1.0F;
+                var6 = 1.0F;
             }
 
-            GL11.glRotatef(var5 * this.getDeathMaxRotation(par1EntityLivingBase), 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(var6 * this.getDeathMaxRotation(par1EntityLivingBase), 0.0F, 0.0F, 1.0F);
         }
         else
         {
-            String var6 = EnumChatFormatting.getTextWithoutFormattingCodes(par1EntityLivingBase.getCommandSenderName());
+            String var61 = EnumChatFormatting.getTextWithoutFormattingCodes(par1EntityLivingBase.getCommandSenderName());
 
-            if ((var6.equals("Dinnerbone") || var6.equals("Grumm")) && (!(par1EntityLivingBase instanceof EntityPlayer) || !((EntityPlayer)par1EntityLivingBase).getHideCape()))
+            if ((var61.equals("Dinnerbone") || var61.equals("Grumm")) && (!(par1EntityLivingBase instanceof EntityPlayer) || !((EntityPlayer)par1EntityLivingBase).getHideCape()))
             {
                 GL11.glTranslatef(0.0F, par1EntityLivingBase.height + 0.1F, 0.0F);
                 GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -455,55 +530,63 @@ public abstract class RendererLivingEntity extends Render
      */
     protected void passSpecialRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6)
     {
-        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-
-        if (this.func_110813_b(par1EntityLivingBase))
+        if (!Reflector.RenderLivingEvent_Specials_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Pre_Constructor, new Object[] {par1EntityLivingBase, this, Double.valueOf(par2), Double.valueOf(par4), Double.valueOf(par6)}))
         {
-            float var8 = 1.6F;
-            float var9 = 0.016666668F * var8;
-            double var10 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
-            float var12 = par1EntityLivingBase.isSneaking() ? 32.0F : 64.0F;
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 
-            if (var10 < (double)(var12 * var12))
+            if (this.func_110813_b(par1EntityLivingBase))
             {
-                String var13 = par1EntityLivingBase.func_145748_c_().getFormattedText();
+                float var8 = 1.6F;
+                float var9 = 0.016666668F * var8;
+                double var10 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
+                float var12 = par1EntityLivingBase.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
 
-                if (par1EntityLivingBase.isSneaking())
+                if (var10 < (double)(var12 * var12))
                 {
-                    FontRenderer var14 = this.getFontRendererFromRenderManager();
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + par1EntityLivingBase.height + 0.5F, (float)par6);
-                    GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-                    GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-                    GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-                    GL11.glScalef(-var9, -var9, var9);
-                    GL11.glDisable(GL11.GL_LIGHTING);
-                    GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
-                    GL11.glDepthMask(false);
-                    GL11.glEnable(GL11.GL_BLEND);
-                    OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-                    Tessellator var15 = Tessellator.instance;
-                    GL11.glDisable(GL11.GL_TEXTURE_2D);
-                    var15.startDrawingQuads();
-                    int var16 = var14.getStringWidth(var13) / 2;
-                    var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-                    var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
-                    var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
-                    var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
-                    var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
-                    var15.draw();
-                    GL11.glEnable(GL11.GL_TEXTURE_2D);
-                    GL11.glDepthMask(true);
-                    var14.drawString(var13, -var14.getStringWidth(var13) / 2, 0, 553648127);
-                    GL11.glEnable(GL11.GL_LIGHTING);
-                    GL11.glDisable(GL11.GL_BLEND);
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    GL11.glPopMatrix();
+                    String var13 = par1EntityLivingBase.func_145748_c_().getFormattedText();
+
+                    if (par1EntityLivingBase.isSneaking())
+                    {
+                        FontRenderer var14 = this.getFontRendererFromRenderManager();
+                        GL11.glPushMatrix();
+                        GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + par1EntityLivingBase.height + 0.5F, (float)par6);
+                        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+                        GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+                        GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+                        GL11.glScalef(-var9, -var9, var9);
+                        GL11.glDisable(GL11.GL_LIGHTING);
+                        GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
+                        GL11.glDepthMask(false);
+                        GL11.glEnable(GL11.GL_BLEND);
+                        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+                        Tessellator var15 = Tessellator.instance;
+                        GL11.glDisable(GL11.GL_TEXTURE_2D);
+                        var15.startDrawingQuads();
+                        int var16 = var14.getStringWidth(var13) / 2;
+                        var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+                        var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
+                        var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
+                        var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
+                        var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
+                        var15.draw();
+                        GL11.glEnable(GL11.GL_TEXTURE_2D);
+                        GL11.glDepthMask(true);
+                        var14.drawString(var13, -var14.getStringWidth(var13) / 2, 0, 553648127);
+                        GL11.glEnable(GL11.GL_LIGHTING);
+                        GL11.glDisable(GL11.GL_BLEND);
+                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                        GL11.glPopMatrix();
+                    }
+                    else
+                    {
+                        this.func_96449_a(par1EntityLivingBase, par2, par4, par6, var13, var9, var10);
+                    }
                 }
-                else
-                {
-                    this.func_96449_a(par1EntityLivingBase, par2, par4, par6, var13, var9, var10);
-                }
+            }
+
+            if (Reflector.RenderLivingEvent_Specials_Post_Constructor.exists())
+            {
+                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Post_Constructor, new Object[] {par1EntityLivingBase, this, Double.valueOf(par2), Double.valueOf(par4), Double.valueOf(par6)});
             }
         }
     }
@@ -534,5 +617,10 @@ public abstract class RendererLivingEntity extends Render
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
         this.doRender((EntityLivingBase)par1Entity, par2, par4, par6, par8, par9);
+    }
+
+    public ModelBase getMainModel()
+    {
+        return this.mainModel;
     }
 }

@@ -19,7 +19,6 @@ public class WorldGeneratorBonusChest extends WorldGenerator
      * Value of this int will determine how much items gonna generate in Bonus Chest.
      */
     private final int itemsToGenerateInBonusChest;
-    private static final String __OBFID = "CL_00000403";
 
     public WorldGeneratorBonusChest(WeightedRandomChestContent[] par1ArrayOfWeightedRandomChestContent, int par2)
     {

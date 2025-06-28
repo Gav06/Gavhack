@@ -9,9 +9,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import shadersmod.client.Shaders;
 
 public class RenderEnderman extends RenderLiving
 {
@@ -21,7 +23,6 @@ public class RenderEnderman extends RenderLiving
     /** The model of the enderman */
     private ModelEnderman endermanModel;
     private Random rnd = new Random();
-    private static final String __OBFID = "CL_00000989";
 
     public RenderEnderman()
     {
@@ -118,6 +119,12 @@ public class RenderEnderman extends RenderLiving
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var6 / 1.0F, (float)var7 / 1.0F);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, var4);
+
+            if (Config.isShaders())
+            {
+                Shaders.beginSpiderEyes();
+            }
+
             return 1;
         }
     }

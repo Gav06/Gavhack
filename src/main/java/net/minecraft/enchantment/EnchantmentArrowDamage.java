@@ -2,7 +2,6 @@ package net.minecraft.enchantment;
 
 public class EnchantmentArrowDamage extends Enchantment
 {
-    private static final String __OBFID = "CL_00000098";
 
     public EnchantmentArrowDamage(int par1, int par2)
     {

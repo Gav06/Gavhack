@@ -14,7 +14,6 @@ public class BanEntry
     private String bannedBy = "(Unknown)";
     private Date banEndDate;
     private String reason = "Banned by an operator.";
-    private static final String __OBFID = "CL_00001395";
 
     public BanEntry(String par1Str)
     {

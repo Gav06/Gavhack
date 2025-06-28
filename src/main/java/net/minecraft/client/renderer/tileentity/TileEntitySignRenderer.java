@@ -13,7 +13,6 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer
 {
     private static final ResourceLocation field_147513_b = new ResourceLocation("textures/entity/sign.png");
     private final ModelSign field_147514_c = new ModelSign();
-    private static final String __OBFID = "CL_00000970";
 
     public void renderTileEntityAt(TileEntitySign p_147512_1_, double p_147512_2_, double p_147512_4_, double p_147512_6_, float p_147512_8_)
     {
@@ -68,18 +67,18 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer
         GL11.glDepthMask(false);
         byte var13 = 0;
 
-        for (int var14 = 0; var14 < p_147512_1_.text.length; ++var14)
+        for (int var14 = 0; var14 < p_147512_1_.field_145915_a.length; ++var14)
         {
-            String var15 = p_147512_1_.text[var14];
+            String var15 = p_147512_1_.field_145915_a[var14];
 
             if (var14 == p_147512_1_.field_145918_i)
             {
                 var15 = "> " + var15 + " <";
-                var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - p_147512_1_.text.length * 5, var13);
+                var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - p_147512_1_.field_145915_a.length * 5, var13);
             }
             else
             {
-                var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - p_147512_1_.text.length * 5, var13);
+                var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - p_147512_1_.field_145915_a.length * 5, var13);
             }
         }
 

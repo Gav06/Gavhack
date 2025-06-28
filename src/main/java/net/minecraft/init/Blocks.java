@@ -201,5 +201,4 @@ public class Blocks
     public static final BlockDoublePlant double_plant = (BlockDoublePlant)Block.blockRegistry.getObject("double_plant");
     public static final BlockStainedGlass stained_glass = (BlockStainedGlass)Block.blockRegistry.getObject("stained_glass");
     public static final BlockStainedGlassPane stained_glass_pane = (BlockStainedGlassPane)Block.blockRegistry.getObject("stained_glass_pane");
-    private static final String __OBFID = "CL_00000204";
 }

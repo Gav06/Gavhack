@@ -10,6 +10,9 @@ import net.minecraft.client.multiplayer.ThreadLanServerPing;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.profiler.PlayerUsageSnooper;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.Reflector;
+import net.minecraft.src.WorldServerMultiOF;
+import net.minecraft.src.WorldServerOF;
 import net.minecraft.util.CryptManager;
 import net.minecraft.util.HttpUtil;
 import net.minecraft.world.EnumDifficulty;
@@ -19,10 +22,6 @@ import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.demo.DemoWorldServer;
 import net.minecraft.world.storage.ISaveHandler;
-import optifine.Reflector;
-import optifine.WorldServerMultiOF;
-import optifine.WorldServerOF;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +35,6 @@ public class IntegratedServer extends MinecraftServer
     private boolean isGamePaused;
     private boolean isPublic;
     private ThreadLanServerPing lanServerPing;
-    private static final String __OBFID = "CL_00001129";
 
     public IntegratedServer(Minecraft par1Minecraft, String par2Str, String par3Str, WorldSettings par4WorldSettings)
     {
@@ -177,7 +175,7 @@ public class IntegratedServer extends MinecraftServer
     public void tick()
     {
         boolean var1 = this.isGamePaused;
-        this.isGamePaused = Minecraft.getMinecraft().getNetHandler() != null && Minecraft.getMinecraft().func_147113_T();
+        this.isGamePaused = Minecraft.getMinecraft().getNetHandler() != null && Minecraft.getMinecraft().isGamePaused();
 
         if (!var1 && this.isGamePaused)
         {
@@ -239,38 +237,18 @@ public class IntegratedServer extends MinecraftServer
     public CrashReport addServerInfoToCrashReport(CrashReport par1CrashReport)
     {
         par1CrashReport = super.addServerInfoToCrashReport(par1CrashReport);
-        par1CrashReport.getCategory().addCrashSectionCallable("Type", new Callable()
-        {
-            private static final String __OBFID = "CL_00001130";
-            public String call1()
-            {
-                return "Integrated Server (map_client.txt)";
-            }
-            public Object call() throws Exception
-            {
-                return this.call1();
-            }
-        });
-        par1CrashReport.getCategory().addCrashSectionCallable("Is Modded", new Callable()
-        {
-            private static final String __OBFID = "CL_00001131";
-            public String call1()
-            {
-                String var1 = ClientBrandRetriever.getClientModName();
+        par1CrashReport.getCategory().addCrashSectionCallable("Type", () -> "Integrated Server (map_client.txt)");
+        par1CrashReport.getCategory().addCrashSectionCallable("Is Modded", () -> {
+            String var1 = ClientBrandRetriever.getClientModName();
 
-                if (!var1.equals("vanilla"))
-                {
-                    return "Definitely; Client brand changed to \'" + var1 + "\'";
-                }
-                else
-                {
-                    var1 = IntegratedServer.this.getServerModName();
-                    return !var1.equals("vanilla") ? "Definitely; Server brand changed to \'" + var1 + "\'" : (Minecraft.class.getSigners() == null ? "Very likely; Jar signature invalidated" : "Probably not. Jar signature remains and both client + server brands are untouched.");
-                }
-            }
-            public Object call() throws Exception
+            if (!var1.equals("vanilla"))
             {
-                return this.call1();
+                return "Definitely; Client brand changed to \'" + var1 + "\'";
+            }
+            else
+            {
+                var1 = IntegratedServer.this.getServerModName();
+                return !var1.equals("vanilla") ? "Definitely; Server brand changed to \'" + var1 + "\'" : (Minecraft.class.getSigners() == null ? "Very likely; Jar signature invalidated" : "Probably not. Jar signature remains and both client + server brands are untouched.");
             }
         });
         return par1CrashReport;

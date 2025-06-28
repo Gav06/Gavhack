@@ -35,7 +35,6 @@ public class GuiSelectWorld extends GuiScreen
     private GuiButton field_146641_z;
     private GuiButton field_146630_A;
     private GuiButton field_146631_B;
-    private static final String __OBFID = "CL_00000711";
 
     public GuiSelectWorld(GuiScreen par1GuiScreen)
     {
@@ -66,7 +65,7 @@ public class GuiSelectWorld extends GuiScreen
         this.field_146635_w[WorldSettings.GameType.CREATIVE.getID()] = I18n.format("gameMode.creative", new Object[0]);
         this.field_146635_w[WorldSettings.GameType.ADVENTURE.getID()] = I18n.format("gameMode.adventure", new Object[0]);
         this.field_146638_t = new GuiSelectWorld.List();
-        this.field_146638_t.func_148134_d(4, 5);
+        this.field_146638_t.registerScrollButtons(4, 5);
         this.func_146618_g();
     }
 
@@ -151,7 +150,7 @@ public class GuiSelectWorld extends GuiScreen
             }
             else
             {
-                this.field_146638_t.func_148147_a(p_146284_1_);
+                this.field_146638_t.actionPerformed(p_146284_1_);
             }
         }
     }
@@ -213,11 +212,11 @@ public class GuiSelectWorld extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
-        this.field_146638_t.func_148128_a(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, this.field_146628_f, this.width / 2, 20, 16777215);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.field_146638_t.drawScreen(par1, par2, par3);
+        this.drawCenteredString(this.fontRenderer, this.field_146628_f, this.width / 2, 20, 16777215);
+        super.drawScreen(par1, par2, par3);
     }
 
     public static GuiYesNo func_146623_a(GuiScreen p_146623_0_, String p_146623_1_, int p_146623_2_)
@@ -232,7 +231,6 @@ public class GuiSelectWorld extends GuiScreen
 
     class List extends GuiSlot
     {
-        private static final String __OBFID = "CL_00000712";
 
         public List()
         {
@@ -264,7 +262,7 @@ public class GuiSelectWorld extends GuiScreen
             return p_148131_1_ == GuiSelectWorld.this.field_146640_r;
         }
 
-        protected int func_148138_e()
+        protected int getContentHeight()
         {
             return GuiSelectWorld.this.field_146639_s.size() * 36;
         }
@@ -308,9 +306,9 @@ public class GuiSelectWorld extends GuiScreen
                 }
             }
 
-            GuiSelectWorld.this.drawString(GuiSelectWorld.this.fontRendererObj, var9, p_148126_2_ + 2, p_148126_3_ + 1, 16777215);
-            GuiSelectWorld.this.drawString(GuiSelectWorld.this.fontRendererObj, var10, p_148126_2_ + 2, p_148126_3_ + 12, 8421504);
-            GuiSelectWorld.this.drawString(GuiSelectWorld.this.fontRendererObj, var11, p_148126_2_ + 2, p_148126_3_ + 12 + 10, 8421504);
+            GuiSelectWorld.this.drawString(GuiSelectWorld.this.fontRenderer, var9, p_148126_2_ + 2, p_148126_3_ + 1, 16777215);
+            GuiSelectWorld.this.drawString(GuiSelectWorld.this.fontRenderer, var10, p_148126_2_ + 2, p_148126_3_ + 12, 8421504);
+            GuiSelectWorld.this.drawString(GuiSelectWorld.this.fontRenderer, var11, p_148126_2_ + 2, p_148126_3_ + 12 + 10, 8421504);
         }
     }
 }

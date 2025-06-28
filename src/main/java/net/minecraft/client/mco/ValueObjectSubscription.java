@@ -10,7 +10,6 @@ public class ValueObjectSubscription extends ValueObject
 {
     public long field_148790_a;
     public int field_148789_b;
-    private static final String __OBFID = "CL_00001172";
 
     public static ValueObjectSubscription func_148788_a(String p_148788_0_)
     {

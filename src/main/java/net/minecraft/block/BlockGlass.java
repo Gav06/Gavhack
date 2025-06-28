@@ -6,7 +6,6 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class BlockGlass extends BlockBreakable
 {
-    private static final String __OBFID = "CL_00000249";
 
     public BlockGlass(Material p_i45408_1_, boolean p_i45408_2_)
     {

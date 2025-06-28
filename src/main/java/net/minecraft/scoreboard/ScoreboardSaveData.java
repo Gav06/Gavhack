@@ -14,7 +14,6 @@ public class ScoreboardSaveData extends WorldSavedData
     private static final Logger logger = LogManager.getLogger();
     private Scoreboard theScoreboard;
     private NBTTagCompound field_96506_b;
-    private static final String __OBFID = "CL_00000620";
 
     public ScoreboardSaveData()
     {
@@ -50,12 +49,12 @@ public class ScoreboardSaveData extends WorldSavedData
             this.func_96501_b(par1NBTTagCompound.getTagList("Objectives", 10));
             this.func_96500_c(par1NBTTagCompound.getTagList("PlayerScores", 10));
 
-            if (par1NBTTagCompound.func_150297_b("DisplaySlots", 10))
+            if (par1NBTTagCompound.hasKey("DisplaySlots", 10))
             {
                 this.func_96504_c(par1NBTTagCompound.getCompoundTag("DisplaySlots"));
             }
 
-            if (par1NBTTagCompound.func_150297_b("Teams", 9))
+            if (par1NBTTagCompound.hasKey("Teams", 9))
             {
                 this.func_96498_a(par1NBTTagCompound.getTagList("Teams", 10));
             }
@@ -72,12 +71,12 @@ public class ScoreboardSaveData extends WorldSavedData
             var4.setNamePrefix(var3.getString("Prefix"));
             var4.setNameSuffix(var3.getString("Suffix"));
 
-            if (var3.func_150297_b("AllowFriendlyFire", 99))
+            if (var3.hasKey("AllowFriendlyFire", 99))
             {
                 var4.setAllowFriendlyFire(var3.getBoolean("AllowFriendlyFire"));
             }
 
-            if (var3.func_150297_b("SeeFriendlyInvisibles", 99))
+            if (var3.hasKey("SeeFriendlyInvisibles", 99))
             {
                 var4.setSeeFriendlyInvisiblesEnabled(var3.getBoolean("SeeFriendlyInvisibles"));
             }
@@ -98,7 +97,7 @@ public class ScoreboardSaveData extends WorldSavedData
     {
         for (int var2 = 0; var2 < 3; ++var2)
         {
-            if (par1NBTTagCompound.func_150297_b("slot_" + var2, 8))
+            if (par1NBTTagCompound.hasKey("slot_" + var2, 8))
             {
                 String var3 = par1NBTTagCompound.getString("slot_" + var2);
                 ScoreObjective var4 = this.theScoreboard.getObjective(var3);

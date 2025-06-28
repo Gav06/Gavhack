@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 
 public class CommandSetBlock extends CommandBase
 {
-    private static final String __OBFID = "CL_00000949";
 
     public String getCommandName()
     {

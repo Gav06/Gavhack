@@ -9,7 +9,6 @@ public class ContainerHorseInventory extends Container
 {
     private IInventory field_111243_a;
     private EntityHorse theHorse;
-    private static final String __OBFID = "CL_00001751";
 
     public ContainerHorseInventory(IInventory par1IInventory, final IInventory par2IInventory, final EntityHorse par3EntityHorse)
     {
@@ -20,7 +19,6 @@ public class ContainerHorseInventory extends Container
         int var5 = (var4 - 4) * 18;
         this.addSlotToContainer(new Slot(par2IInventory, 0, 8, 18)
         {
-            private static final String __OBFID = "CL_00001752";
             public boolean isItemValid(ItemStack par1ItemStack)
             {
                 return super.isItemValid(par1ItemStack) && par1ItemStack.getItem() == Items.saddle && !this.getHasStack();
@@ -28,7 +26,6 @@ public class ContainerHorseInventory extends Container
         });
         this.addSlotToContainer(new Slot(par2IInventory, 1, 8, 36)
         {
-            private static final String __OBFID = "CL_00001753";
             public boolean isItemValid(ItemStack par1ItemStack)
             {
                 return super.isItemValid(par1ItemStack) && par3EntityHorse.func_110259_cr() && EntityHorse.func_146085_a(par1ItemStack.getItem());

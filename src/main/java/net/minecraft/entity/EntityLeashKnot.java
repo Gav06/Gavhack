@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class EntityLeashKnot extends EntityHanging
 {
-    private static final String __OBFID = "CL_00001548";
 
     public EntityLeashKnot(World par1World)
     {

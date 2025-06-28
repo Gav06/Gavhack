@@ -1,7 +1,5 @@
 package net.minecraft.client.entity;
 
-import me.gavin.gavhack.event.EventBus;
-import me.gavin.gavhack.event.events.ChatMessageEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -54,7 +52,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP
     /** has the client player's health been set? */
     private boolean hasSetHealth;
     private String field_142022_ce;
-    private static final String __OBFID = "CL_00000887";
 
     public EntityClientPlayerMP(Minecraft p_i45064_1_, World p_i45064_2_, Session p_i45064_3_, NetHandlerPlayClient p_i45064_4_, StatFileWriter p_i45064_5_)
     {
@@ -79,13 +76,13 @@ public class EntityClientPlayerMP extends EntityPlayerSP
     /**
      * Called when a player mounts an entity. e.g. mounts a pig, mounts a boat.
      */
-    public void mountEntity(Entity entityIn)
+    public void mountEntity(Entity par1Entity)
     {
-        super.mountEntity(entityIn);
+        super.mountEntity(par1Entity);
 
-        if (entityIn instanceof EntityMinecart)
+        if (par1Entity instanceof EntityMinecart)
         {
-            this.mc.getSoundHandler().playSound(new MovingSoundMinecartRiding(this, (EntityMinecart) entityIn));
+            this.mc.getSoundHandler().playSound(new MovingSoundMinecartRiding(this, (EntityMinecart)par1Entity));
         }
     }
 
@@ -150,8 +147,8 @@ public class EntityClientPlayerMP extends EntityPlayerSP
         double var3 = this.posX - this.oldPosX;
         double var5 = this.boundingBox.minY - this.oldMinY;
         double var7 = this.posZ - this.oldPosZ;
-        double var9 = this.rotationYaw - this.oldRotationYaw;
-        double var11 = this.rotationPitch - this.oldRotationPitch;
+        double var9 = (double)(this.rotationYaw - this.oldRotationYaw);
+        double var11 = (double)(this.rotationPitch - this.oldRotationPitch);
         boolean var13 = var3 * var3 + var5 * var5 + var7 * var7 > 9.0E-4D || this.ticksSinceMovePacket >= 20;
         boolean var14 = var9 != 0.0D || var11 != 0.0D;
 
@@ -216,11 +213,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP
      */
     public void sendChatMessage(String par1Str)
     {
-        final ChatMessageEvent event = new ChatMessageEvent(par1Str);
-        EventBus.INSTANCE.post(event);
-        if (!event.getCancelled()) {
-            this.sendQueue.addToSendQueue(new C01PacketChatMessage(event.getMessage()));
-        }
+        this.sendQueue.addToSendQueue(new C01PacketChatMessage(par1Str));
     }
 
     /**
