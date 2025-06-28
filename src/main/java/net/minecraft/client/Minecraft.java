@@ -20,6 +20,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import javax.imageio.ImageIO;
+
+import me.gavin.gavhack.Gavhack;
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -588,6 +592,9 @@ public class Minecraft implements IPlayerUsage
         this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
+
+        // init gavhack
+        Gavhack.INSTANCE.init();
 
         if (this.serverName != null)
         {
@@ -1164,6 +1171,14 @@ public class Minecraft implements IPlayerUsage
         {
             if (!this.isTakingScreenshot)
             {
+                ScreenshotEvent event = new ScreenshotEvent(
+                        this.mcDataDir, this.displayWidth, this.displayHeight, this.framebufferMc
+                );
+
+                EventBus.INSTANCE.post(event);
+                if (event.getCancelled())
+                    return;
+
                 this.isTakingScreenshot = true;
                 this.ingameGUI.getChatGui().printChatMessage(ScreenShotHelper.saveScreenshot(this.mcDataDir, this.displayWidth, this.displayHeight, this.framebufferMc));
             }
@@ -1620,6 +1635,8 @@ public class Minecraft implements IPlayerUsage
      */
     public void runTick()
     {
+        EventBus.INSTANCE.post(new ClientTickEvent());
+
         if (this.rightClickDelayTimer > 0)
         {
             --this.rightClickDelayTimer;
@@ -1896,6 +1913,12 @@ public class Minecraft implements IPlayerUsage
                             {
                                 this.gameSettings.smoothCamera = !this.gameSettings.smoothCamera;
                             }
+
+                            EventBus.INSTANCE.post(new KeyPressEvent(
+                                    Keyboard.getEventKey(),
+                                    Keyboard.getEventKeyState(),
+                                    Keyboard.getEventCharacter()
+                            ));
                         }
 
                         if (this.gameSettings.showDebugInfo && this.gameSettings.showDebugProfilerChart)
@@ -2107,6 +2130,8 @@ public class Minecraft implements IPlayerUsage
 
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
+
+        EventBus.INSTANCE.post(new ClientTickEvent.Post());
     }
 
     /**
@@ -2194,6 +2219,8 @@ public class Minecraft implements IPlayerUsage
     {
         if (par1WorldClient == null)
         {
+            EventBus.INSTANCE.post(new WorldUnloadEvent());
+
             NetHandlerPlayClient var3 = this.getNetHandler();
 
             if (var3 != null)
@@ -2258,6 +2285,8 @@ public class Minecraft implements IPlayerUsage
             this.thePlayer.movementInput = new MovementInputFromOptions(this.gameSettings);
             this.playerController.setPlayerCapabilities(this.thePlayer);
             this.renderViewEntity = this.thePlayer;
+
+            EventBus.INSTANCE.post(new WorldLoadEvent(par1WorldClient));
         }
         else
         {

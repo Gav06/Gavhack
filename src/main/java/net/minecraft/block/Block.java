@@ -3,6 +3,8 @@ package net.minecraft.block;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import me.gavin.gavhack.module.impl.Xray;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -181,6 +183,10 @@ public class Block
 
     public int getLightValue()
     {
+        if (Xray.INSTANCE.isEnabled()) {
+            return 15;
+        }
+
         return this.lightValue;
     }
 
@@ -569,7 +575,17 @@ public class Block
 
     public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
-        return p_149646_5_ == 0 && this.minY > 0.0D ? true : (p_149646_5_ == 1 && this.maxY < 1.0D ? true : (p_149646_5_ == 2 && this.minZ > 0.0D ? true : (p_149646_5_ == 3 && this.maxZ < 1.0D ? true : (p_149646_5_ == 4 && this.minX > 0.0D ? true : (p_149646_5_ == 5 && this.maxX < 1.0D ? true : !p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_).isOpaqueCube())))));
+        if (Xray.INSTANCE.isEnabled()) {
+            return Xray.INSTANCE.getBlockIds().contains(getIdFromBlock(this));
+        }
+
+        return p_149646_5_ == 0 && this.minY > 0.0D
+                || (p_149646_5_ == 1 && this.maxY < 1.0D
+                || (p_149646_5_ == 2 && this.minZ > 0.0D
+                || (p_149646_5_ == 3 && this.maxZ < 1.0D
+                || (p_149646_5_ == 4 && this.minX > 0.0D
+                || (p_149646_5_ == 5 && this.maxX < 1.0D
+                || !p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_).isOpaqueCube())))));
     }
 
     public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_)

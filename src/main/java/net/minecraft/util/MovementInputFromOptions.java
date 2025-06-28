@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import me.gavin.gavhack.module.impl.Freecam;
 import net.minecraft.client.settings.GameSettings;
 
 public class MovementInputFromOptions extends MovementInput
@@ -37,7 +38,8 @@ public class MovementInputFromOptions extends MovementInput
         }
 
         this.jump = this.gameSettings.keyBindJump.getIsKeyPressed();
-        this.sneak = this.gameSettings.keyBindSneak.getIsKeyPressed();
+        // TODO: Change this to a movementInput event or something
+        this.sneak = this.gameSettings.keyBindSneak.getIsKeyPressed() && !Freecam.INSTANCE.isEnabled();
 
         if (this.sneak)
         {

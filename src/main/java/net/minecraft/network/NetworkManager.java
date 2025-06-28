@@ -21,6 +21,10 @@ import java.net.InetAddress;
 import java.net.SocketAddress;
 import java.util.Queue;
 import javax.crypto.SecretKey;
+
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.PacketReadEvent;
+import me.gavin.gavhack.event.events.PacketSendEvent;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.CryptManager;
 import net.minecraft.util.IChatComponent;
@@ -109,17 +113,18 @@ public class NetworkManager extends SimpleChannelInboundHandler
         this.closeChannel(new ChatComponentTranslation("disconnect.genericReason", new Object[] {"Internal Exception: " + p_exceptionCaught_2_}));
     }
 
-    protected void channelRead0(ChannelHandlerContext p_150728_1_, Packet p_150728_2_)
+    protected void channelRead0(ChannelHandlerContext handlerContext, Packet packet)
     {
         if (this.channel.isOpen())
         {
-            if (p_150728_2_.hasPriority())
-            {
-                p_150728_2_.processPacket(this.netHandler);
-            }
-            else
-            {
-                this.receivedPacketsQueue.add(p_150728_2_);
+            final PacketReadEvent event = new PacketReadEvent(packet);
+            if (!EventBus.INSTANCE.post(event)) {
+
+                if (packet.hasPriority()) {
+                    packet.processPacket(this.netHandler);
+                } else {
+                    this.receivedPacketsQueue.add(packet);
+                }
             }
         }
     }
@@ -139,16 +144,20 @@ public class NetworkManager extends SimpleChannelInboundHandler
      * Will flush the outbound queue and dispatch the supplied Packet if the channel is ready, otherwise it adds the
      * packet to the outbound queue and registers the GenericFutureListener to fire after transmission
      */
-    public void scheduleOutboundPacket(Packet p_150725_1_, GenericFutureListener ... p_150725_2_)
+    public void scheduleOutboundPacket(Packet packet, GenericFutureListener ... futureListeners)
     {
+        final PacketSendEvent event = new PacketSendEvent(packet);
+        if (EventBus.INSTANCE.post(event))
+            return;
+
         if (this.channel != null && this.channel.isOpen())
         {
             this.flushOutboundQueue();
-            this.dispatchPacket(p_150725_1_, p_150725_2_);
+            this.dispatchPacket(packet, futureListeners);
         }
         else
         {
-            this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(p_150725_1_, p_150725_2_));
+            this.outboundPacketsQueue.add(new NetworkManager.InboundHandlerTuplePacketListener(packet, futureListeners));
         }
     }
 
