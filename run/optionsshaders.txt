@@ -1,5 +1,5 @@
-#Sat Jun 28 16:06:14 EDT 2025
-shaderPack=Sildur's Vibrant Shaders v1.52 High.zip
+#Sat Jun 28 17:33:16 EDT 2025
+shaderPack=OFF
 antialiasingLevel=0
 normalMapEnabled=true
 specularMapEnabled=true

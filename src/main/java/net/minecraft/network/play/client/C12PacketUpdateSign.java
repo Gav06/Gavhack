@@ -11,7 +11,7 @@ public class C12PacketUpdateSign extends Packet
     private int field_149593_a;
     private int field_149591_b;
     private int field_149592_c;
-    private String[] field_149590_d;
+    public String[] text;
 
     public C12PacketUpdateSign() {}
 
@@ -20,7 +20,7 @@ public class C12PacketUpdateSign extends Packet
         this.field_149593_a = p_i45264_1_;
         this.field_149591_b = p_i45264_2_;
         this.field_149592_c = p_i45264_3_;
-        this.field_149590_d = new String[] {p_i45264_4_[0], p_i45264_4_[1], p_i45264_4_[2], p_i45264_4_[3]};
+        this.text = new String[] {p_i45264_4_[0], p_i45264_4_[1], p_i45264_4_[2], p_i45264_4_[3]};
     }
 
     /**
@@ -31,11 +31,11 @@ public class C12PacketUpdateSign extends Packet
         this.field_149593_a = p_148837_1_.readInt();
         this.field_149591_b = p_148837_1_.readShort();
         this.field_149592_c = p_148837_1_.readInt();
-        this.field_149590_d = new String[4];
+        this.text = new String[4];
 
         for (int var2 = 0; var2 < 4; ++var2)
         {
-            this.field_149590_d[var2] = p_148837_1_.readStringFromBuffer(15);
+            this.text[var2] = p_148837_1_.readStringFromBuffer(15);
         }
     }
 
@@ -50,7 +50,7 @@ public class C12PacketUpdateSign extends Packet
 
         for (int var2 = 0; var2 < 4; ++var2)
         {
-            p_148840_1_.writeStringToBuffer(this.field_149590_d[var2]);
+            p_148840_1_.writeStringToBuffer(this.text[var2]);
         }
     }
 
@@ -76,7 +76,7 @@ public class C12PacketUpdateSign extends Packet
 
     public String[] func_149589_f()
     {
-        return this.field_149590_d;
+        return this.text;
     }
 
     public void processPacket(INetHandler p_148833_1_)

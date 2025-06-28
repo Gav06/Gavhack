@@ -9,6 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.RenderHandEvent;
+import me.gavin.gavhack.event.events.RenderWorldLastEvent;
+import me.gavin.gavhack.event.events.ViewBobbingEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -73,6 +78,8 @@ import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.Project;
 import shadersmod.client.Shaders;
 import shadersmod.client.ShadersRender;
+
+import javax.swing.text.View;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {
@@ -672,6 +679,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         if (this.mc.renderViewEntity instanceof EntityPlayer)
         {
+            final ViewBobbingEvent event = new ViewBobbingEvent();
+            if (EventBus.INSTANCE.post(event)) {
+                return;
+            }
+
             EntityPlayer var2 = (EntityPlayer)this.mc.renderViewEntity;
             float var3 = var2.distanceWalkedModified - var2.prevDistanceWalkedModified;
             float var4 = -(var2.distanceWalkedModified + var3 * par1);
@@ -930,6 +942,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         if (this.debugViewDirection <= 0)
         {
+            final RenderHandEvent event = new RenderHandEvent();
+            if (EventBus.INSTANCE.post(event)) {
+                return;
+            }
+
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
             float var3 = 0.07F;
@@ -1880,6 +1897,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.mc.mcProfiler.endStartSection("FRenderLast");
                 Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {var5, Float.valueOf(par1)});
             }
+
+            EventBus.INSTANCE.post(new RenderWorldLastEvent(par1));
 
             this.mc.mcProfiler.endStartSection("hand");
             boolean renderFirstPersonHand = Reflector.callBoolean(Reflector.ForgeHooksClient_renderFirstPersonHand, new Object[] {this.mc.renderGlobal, Float.valueOf(par1), Integer.valueOf(var13)});

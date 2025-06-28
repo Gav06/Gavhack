@@ -19,7 +19,7 @@ public class GuiNewChat extends Gui
     private static final Logger loggerGnc = LogManager.getLogger();
     private final Minecraft mc;
     private final List sentMessages = new ArrayList();
-    private final List chatLines = new ArrayList();
+    private final List<ChatLine> chatLines = new ArrayList<>();
     private final List field_146253_i = new ArrayList();
     private int scrollPosition;
     private boolean field_146251_k;

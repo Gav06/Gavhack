@@ -42,7 +42,7 @@ public class MusicTicker implements IUpdatePlayerListBox
 
         if (this.field_147678_c == null && this.field_147676_d-- <= 0)
         {
-            this.field_147678_c = PositionedSoundRecord.func_147673_a(var1.func_148635_a());
+            this.field_147678_c = PositionedSoundRecord.getMasterRecord(var1.func_148635_a());
             this.field_147677_b.getSoundHandler().playSound(this.field_147678_c);
             this.field_147676_d = Integer.MAX_VALUE;
         }

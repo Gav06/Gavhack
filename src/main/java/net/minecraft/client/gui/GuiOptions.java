@@ -63,7 +63,7 @@ public class GuiOptions extends GuiScreen
 
                 if (var2 != null)
                 {
-                    p_146113_1_.playSound(PositionedSoundRecord.func_147674_a(var2.func_148729_c(), 0.5F));
+                    p_146113_1_.playSound(PositionedSoundRecord.getMasterRecord(var2.func_148729_c(), 0.5F));
                 }
             }
         });

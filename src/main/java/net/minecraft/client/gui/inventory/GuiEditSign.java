@@ -1,5 +1,6 @@
 package net.minecraft.client.gui.inventory;
 
+import me.gavin.gavhack.module.impl.SignColors;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,14 +16,14 @@ import org.lwjgl.opengl.GL11;
 public class GuiEditSign extends GuiScreen
 {
     protected String field_146850_a = "Edit sign message:";
-    private TileEntitySign field_146848_f;
+    private final TileEntitySign tileEntitySign;
     private int field_146849_g;
     private int field_146851_h;
     private GuiButton field_146852_i;
 
     public GuiEditSign(TileEntitySign par1TileEntitySign)
     {
-        this.field_146848_f = par1TileEntitySign;
+        this.tileEntitySign = par1TileEntitySign;
     }
 
     /**
@@ -33,7 +34,7 @@ public class GuiEditSign extends GuiScreen
         this.buttonList.clear();
         Keyboard.enableRepeatEvents(true);
         this.buttonList.add(this.field_146852_i = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
-        this.field_146848_f.func_145913_a(false);
+        this.tileEntitySign.func_145913_a(false);
     }
 
     /**
@@ -46,10 +47,16 @@ public class GuiEditSign extends GuiScreen
 
         if (var1 != null)
         {
-            var1.addToSendQueue(new C12PacketUpdateSign(this.field_146848_f.xCoord, this.field_146848_f.yCoord, this.field_146848_f.zCoord, this.field_146848_f.field_145915_a));
+            if (SignColors.INSTANCE.isEnabled()) {
+                for (int i = 0; i < tileEntitySign.text.length; i++) {
+                    this.tileEntitySign.text[i] = this.tileEntitySign.text[i].replaceAll("&", "\u00a7");
+                }
+            }
+
+            var1.addToSendQueue(new C12PacketUpdateSign(this.tileEntitySign.xCoord, this.tileEntitySign.yCoord, this.tileEntitySign.zCoord, this.tileEntitySign.text));
         }
 
-        this.field_146848_f.func_145913_a(true);
+        this.tileEntitySign.func_145913_a(true);
     }
 
     /**
@@ -66,7 +73,7 @@ public class GuiEditSign extends GuiScreen
         {
             if (p_146284_1_.id == 0)
             {
-                this.field_146848_f.onInventoryChanged();
+                this.tileEntitySign.onInventoryChanged();
                 this.mc.displayGuiScreen((GuiScreen)null);
             }
         }
@@ -87,14 +94,14 @@ public class GuiEditSign extends GuiScreen
             this.field_146851_h = this.field_146851_h + 1 & 3;
         }
 
-        if (par2 == 14 && this.field_146848_f.field_145915_a[this.field_146851_h].length() > 0)
+        if (par2 == 14 && this.tileEntitySign.text[this.field_146851_h].length() > 0)
         {
-            this.field_146848_f.field_145915_a[this.field_146851_h] = this.field_146848_f.field_145915_a[this.field_146851_h].substring(0, this.field_146848_f.field_145915_a[this.field_146851_h].length() - 1);
+            this.tileEntitySign.text[this.field_146851_h] = this.tileEntitySign.text[this.field_146851_h].substring(0, this.tileEntitySign.text[this.field_146851_h].length() - 1);
         }
 
-        if (ChatAllowedCharacters.isAllowedCharacter(par1) && this.field_146848_f.field_145915_a[this.field_146851_h].length() < 15)
+        if (ChatAllowedCharacters.isAllowedCharacter(par1) && this.tileEntitySign.text[this.field_146851_h].length() < 15)
         {
-            this.field_146848_f.field_145915_a[this.field_146851_h] = this.field_146848_f.field_145915_a[this.field_146851_h] + par1;
+            this.tileEntitySign.text[this.field_146851_h] = this.tileEntitySign.text[this.field_146851_h] + par1;
         }
 
         if (par2 == 1)
@@ -115,17 +122,17 @@ public class GuiEditSign extends GuiScreen
         float var4 = 93.75F;
         GL11.glScalef(-var4, -var4, -var4);
         GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-        Block var5 = this.field_146848_f.getBlockType();
+        Block var5 = this.tileEntitySign.getBlockType();
 
         if (var5 == Blocks.standing_sign)
         {
-            float var6 = (float)(this.field_146848_f.getBlockMetadata() * 360) / 16.0F;
+            float var6 = (float)(this.tileEntitySign.getBlockMetadata() * 360) / 16.0F;
             GL11.glRotatef(var6, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(0.0F, -1.0625F, 0.0F);
         }
         else
         {
-            int var8 = this.field_146848_f.getBlockMetadata();
+            int var8 = this.tileEntitySign.getBlockMetadata();
             float var7 = 0.0F;
 
             if (var8 == 2)
@@ -149,11 +156,11 @@ public class GuiEditSign extends GuiScreen
 
         if (this.field_146849_g / 6 % 2 == 0)
         {
-            this.field_146848_f.field_145918_i = this.field_146851_h;
+            this.tileEntitySign.field_145918_i = this.field_146851_h;
         }
 
-        TileEntityRendererDispatcher.instance.func_147549_a(this.field_146848_f, -0.5D, -0.75D, -0.5D, 0.0F);
-        this.field_146848_f.field_145918_i = -1;
+        TileEntityRendererDispatcher.instance.func_147549_a(this.tileEntitySign, -0.5D, -0.75D, -0.5D, 0.0F);
+        this.tileEntitySign.field_145918_i = -1;
         GL11.glPopMatrix();
         super.drawScreen(par1, par2, par3);
     }

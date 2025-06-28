@@ -3,6 +3,8 @@ package net.minecraft.client.renderer.tileentity;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderEnchantmentTable;
@@ -101,16 +103,16 @@ public class TileEntityRendererDispatcher
         this.field_147558_l = p_147542_4_.lastTickPosZ + (p_147542_4_.posZ - p_147542_4_.lastTickPosZ) * (double)p_147542_5_;
     }
 
-    public void renderTileEntity(TileEntity p_147544_1_, float p_147544_2_)
+    public void renderTileEntity(TileEntity tileEntity, float partialTicks)
     {
-        if (p_147544_1_.getDistanceFrom(this.field_147560_j, this.field_147561_k, this.field_147558_l) < p_147544_1_.getMaxRenderDistanceSquared())
+        if (RenderUtils.INSTANCE.getShouldCancelTileDistanceCheck() || tileEntity.getDistanceFrom(this.field_147560_j, this.field_147561_k, this.field_147558_l) < tileEntity.getMaxRenderDistanceSquared())
         {
-            int var3 = this.world.getLightBrightnessForSkyBlocks(p_147544_1_.xCoord, p_147544_1_.yCoord, p_147544_1_.zCoord, 0);
+            int var3 = this.world.getLightBrightnessForSkyBlocks(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0);
             int var4 = var3 % 65536;
             int var5 = var3 / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var4 / 1.0F, (float)var5 / 1.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var4, (float) var5);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.func_147549_a(p_147544_1_, (double)p_147544_1_.xCoord - staticPlayerX, (double)p_147544_1_.yCoord - staticPlayerY, (double)p_147544_1_.zCoord - staticPlayerZ, p_147544_2_);
+            this.func_147549_a(tileEntity, (double)tileEntity.xCoord - staticPlayerX, (double)tileEntity.yCoord - staticPlayerY, (double)tileEntity.zCoord - staticPlayerZ, partialTicks);
         }
     }
 

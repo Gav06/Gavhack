@@ -75,7 +75,7 @@ object Utils {
     fun clickSound() {
         val mc = Minecraft.getMinecraft()
         if (mc != null && mc.soundHandler != null) {
-            mc.soundHandler.playSound(PositionedSoundRecord.func_147674_a(ResourceLocation("gui.button.press"), 1.0f))
+            mc.soundHandler.playSound(PositionedSoundRecord.getMasterRecord(ResourceLocation("gui.button.press"), 1.0f))
         }
     }
 }

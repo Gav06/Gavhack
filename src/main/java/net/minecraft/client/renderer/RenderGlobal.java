@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.Callable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -2672,7 +2672,7 @@ public class RenderGlobal implements IWorldAccess
                 resource = new ResourceLocation(par1Str);
             }
 
-            PositionedSoundRecord var8 = PositionedSoundRecord.func_147675_a(resource, (float)par2, (float)par3, (float)par4);
+            PositionedSoundRecord var8 = PositionedSoundRecord.getMasterRecord(resource, (float)par2, (float)par3, (float)par4);
             this.mapSoundPositions.put(var5, var8);
             this.mc.getSoundHandler().playSound(var8);
         }

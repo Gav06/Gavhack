@@ -1235,7 +1235,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                 {
                     for (int var5 = 0; var5 < 4; ++var5)
                     {
-                        var4.field_145915_a[var5] = p_147248_1_.func_149347_f()[var5];
+                        var4.text[var5] = p_147248_1_.func_149347_f()[var5];
                     }
 
                     var4.onInventoryChanged();

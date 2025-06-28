@@ -7,7 +7,7 @@ import net.minecraft.network.play.server.S33PacketUpdateSign;
 
 public class TileEntitySign extends TileEntity
 {
-    public String[] field_145915_a = new String[] {"", "", "", ""};
+    public String[] text = new String[] {"", "", "", ""};
     public int field_145918_i = -1;
     private boolean field_145916_j = true;
     private EntityPlayer field_145917_k;
@@ -15,10 +15,10 @@ public class TileEntitySign extends TileEntity
     public void writeToNBT(NBTTagCompound p_145841_1_)
     {
         super.writeToNBT(p_145841_1_);
-        p_145841_1_.setString("Text1", this.field_145915_a[0]);
-        p_145841_1_.setString("Text2", this.field_145915_a[1]);
-        p_145841_1_.setString("Text3", this.field_145915_a[2]);
-        p_145841_1_.setString("Text4", this.field_145915_a[3]);
+        p_145841_1_.setString("Text1", this.text[0]);
+        p_145841_1_.setString("Text2", this.text[1]);
+        p_145841_1_.setString("Text3", this.text[2]);
+        p_145841_1_.setString("Text4", this.text[3]);
     }
 
     public void readFromNBT(NBTTagCompound p_145839_1_)
@@ -28,11 +28,11 @@ public class TileEntitySign extends TileEntity
 
         for (int var2 = 0; var2 < 4; ++var2)
         {
-            this.field_145915_a[var2] = p_145839_1_.getString("Text" + (var2 + 1));
+            this.text[var2] = p_145839_1_.getString("Text" + (var2 + 1));
 
-            if (this.field_145915_a[var2].length() > 15)
+            if (this.text[var2].length() > 15)
             {
-                this.field_145915_a[var2] = this.field_145915_a[var2].substring(0, 15);
+                this.text[var2] = this.text[var2].substring(0, 15);
             }
         }
     }
@@ -43,7 +43,7 @@ public class TileEntitySign extends TileEntity
     public Packet getDescriptionPacket()
     {
         String[] var1 = new String[4];
-        System.arraycopy(this.field_145915_a, 0, var1, 0, 4);
+        System.arraycopy(this.text, 0, var1, 0, 4);
         return new S33PacketUpdateSign(this.xCoord, this.yCoord, this.zCoord, var1);
     }
 

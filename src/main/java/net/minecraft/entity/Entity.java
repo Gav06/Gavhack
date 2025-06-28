@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.EntityCollisionEvent;
+import me.gavin.gavhack.event.events.WaterPushEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -1358,6 +1362,11 @@ public abstract class Entity
     {
         if (par1Entity.riddenByEntity != this && par1Entity.ridingEntity != this)
         {
+            final EntityCollisionEvent event = new EntityCollisionEvent(par1Entity);
+            if (EventBus.INSTANCE.post(event)) {
+                return;
+            }
+
             double var2 = par1Entity.posX - this.posX;
             double var4 = par1Entity.posZ - this.posZ;
             double var6 = MathHelper.abs_max(var2, var4);
@@ -2417,7 +2426,8 @@ public abstract class Entity
 
     public boolean isPushedByWater()
     {
-        return true;
+        final WaterPushEvent event = new WaterPushEvent(this);
+        return !EventBus.INSTANCE.post(event);
     }
 
     public IChatComponent func_145748_c_()

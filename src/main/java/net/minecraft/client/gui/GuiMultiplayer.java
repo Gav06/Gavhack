@@ -9,9 +9,11 @@ import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
 import net.minecraft.client.network.OldServerPinger;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.EnumChatFormatting;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 public class GuiMultiplayer extends GuiScreen
 {
@@ -358,6 +360,10 @@ public class GuiMultiplayer extends GuiScreen
         {
             this.drawTooltipBox(Lists.newArrayList(Splitter.on("\n").split(this.field_146812_y)), par1, par2);
         }
+
+        GL11.glDisable(GL11.GL_LIGHTING);
+        this.drawString(this.fontRenderer, EnumChatFormatting.GRAY + "Username: " + EnumChatFormatting.RED + mc.getSession().getUsername(), 2, 2, -1);
+        GL11.glEnable(GL11.GL_LIGHTING);
     }
 
     public void func_146796_h()
