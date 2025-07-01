@@ -22,7 +22,7 @@ public interface ISound
 
     ISound.AttenuationType func_147656_j();
 
-    public static enum AttenuationType
+    enum AttenuationType
     {
         NONE("NONE", 0, 0),
         LINEAR("LINEAR", 1, 2);

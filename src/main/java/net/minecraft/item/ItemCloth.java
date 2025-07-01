@@ -7,9 +7,9 @@ import net.minecraft.util.IIcon;
 public class ItemCloth extends ItemBlock
 {
 
-    public ItemCloth(Block p_i45358_1_)
+    public ItemCloth(Block blockIn)
     {
-        super(p_i45358_1_);
+        super(blockIn);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
     }
@@ -19,7 +19,7 @@ public class ItemCloth extends ItemBlock
      */
     public IIcon getIconFromDamage(int par1)
     {
-        return this.field_150939_a.func_149735_b(2, BlockColored.func_150032_b(par1));
+        return this.block.func_149735_b(2, BlockColored.func_150032_b(par1));
     }
 
     /**
@@ -36,6 +36,6 @@ public class ItemCloth extends ItemBlock
      */
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        return super.getUnlocalizedName() + "." + ItemDye.field_150923_a[BlockColored.func_150032_b(par1ItemStack.getItemDamage())];
+        return super.getUnlocalizedName() + "." + ItemDye.dyeNames[BlockColored.func_150032_b(par1ItemStack.getItemDamage())];
     }
 }

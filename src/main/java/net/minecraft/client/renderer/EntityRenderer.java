@@ -14,6 +14,8 @@ import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.RenderHandEvent;
 import me.gavin.gavhack.event.events.RenderWorldLastEvent;
 import me.gavin.gavhack.event.events.ViewBobbingEvent;
+import me.gavin.gavhack.module.impl.NoRender;
+import me.gavin.gavhack.module.impl.ViewClip;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -701,82 +703,88 @@ public class EntityRenderer implements IResourceManagerReloadListener
      */
     private void orientCamera(float par1)
     {
-        EntityLivingBase var2 = this.mc.renderViewEntity;
-        float var3 = var2.yOffset - 1.62F;
-        double var4 = var2.prevPosX + (var2.posX - var2.prevPosX) * (double)par1;
-        double var6 = var2.prevPosY + (var2.posY - var2.prevPosY) * (double)par1 - (double)var3;
-        double var8 = var2.prevPosZ + (var2.posZ - var2.prevPosZ) * (double)par1;
+        EntityLivingBase entity = this.mc.renderViewEntity;
+        float var3 = entity.yOffset - 1.62F;
+        double entityX = entity.prevPosX + (entity.posX - entity.prevPosX) * (double)par1;
+        double entityY = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)par1 - (double)var3;
+        double entityZ = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)par1;
         GL11.glRotatef(this.prevCamRoll + (this.camRoll - this.prevCamRoll) * par1, 0.0F, 0.0F, 1.0F);
 
-        if (var2.isPlayerSleeping())
+        if (entity.isPlayerSleeping())
         {
             var3 = (float)((double)var3 + 1.0D);
             GL11.glTranslatef(0.0F, 0.3F, 0.0F);
 
             if (!this.mc.gameSettings.debugCamEnable)
             {
-                Block var27 = this.mc.theWorld.getBlock(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
+                Block var27 = this.mc.theWorld.getBlock(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ));
 
                 if (Reflector.ForgeHooksClient_orientBedCamera.exists())
                 {
-                    Reflector.callVoid(Reflector.ForgeHooksClient_orientBedCamera, new Object[] {this.mc, var2});
+                    Reflector.callVoid(Reflector.ForgeHooksClient_orientBedCamera, new Object[] {this.mc, entity});
                 }
                 else if (var27 == Blocks.bed)
                 {
-                    int var11 = this.mc.theWorld.getBlockMetadata(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
+                    int var11 = this.mc.theWorld.getBlockMetadata(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ));
                     int var13 = var11 & 3;
                     GL11.glRotatef((float)(var13 * 90), 0.0F, 1.0F, 0.0F);
                 }
 
-                GL11.glRotatef(var2.prevRotationYaw + (var2.rotationYaw - var2.prevRotationYaw) * par1 + 180.0F, 0.0F, -1.0F, 0.0F);
-                GL11.glRotatef(var2.prevRotationPitch + (var2.rotationPitch - var2.prevRotationPitch) * par1, -1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par1 + 180.0F, 0.0F, -1.0F, 0.0F);
+                GL11.glRotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par1, -1.0F, 0.0F, 0.0F);
             }
         }
         else if (this.mc.gameSettings.thirdPersonView > 0)
         {
-            double var271 = (double)(this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * par1);
-            float var28;
-            float var281;
+            double distanceLerped = this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * par1;
+            float yaw;
+            float pitch;
 
             if (this.mc.gameSettings.debugCamEnable)
             {
-                var28 = this.prevDebugCamYaw + (this.debugCamYaw - this.prevDebugCamYaw) * par1;
-                var281 = this.prevDebugCamPitch + (this.debugCamPitch - this.prevDebugCamPitch) * par1;
-                GL11.glTranslatef(0.0F, 0.0F, (float)(-var271));
-                GL11.glRotatef(var281, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(var28, 0.0F, 1.0F, 0.0F);
+                yaw = this.prevDebugCamYaw + (this.debugCamYaw - this.prevDebugCamYaw) * par1;
+                pitch = this.prevDebugCamPitch + (this.debugCamPitch - this.prevDebugCamPitch) * par1;
+                GL11.glTranslatef(0.0F, 0.0F, (float)(-distanceLerped));
+                GL11.glRotatef(pitch, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(yaw, 0.0F, 1.0F, 0.0F);
             }
             else
             {
-                var28 = var2.rotationYaw;
-                var281 = var2.rotationPitch;
+                yaw = entity.rotationYaw;
+                pitch = entity.rotationPitch;
 
                 if (this.mc.gameSettings.thirdPersonView == 2)
                 {
-                    var281 += 180.0F;
+                    pitch += 180.0F;
                 }
 
-                double var14 = (double)(-MathHelper.sin(var28 / 180.0F * (float)Math.PI) * MathHelper.cos(var281 / 180.0F * (float)Math.PI)) * var271;
-                double var16 = (double)(MathHelper.cos(var28 / 180.0F * (float)Math.PI) * MathHelper.cos(var281 / 180.0F * (float)Math.PI)) * var271;
-                double var18 = (double)(-MathHelper.sin(var281 / 180.0F * (float)Math.PI)) * var271;
+                if (ViewClip.INSTANCE.isEnabled()) {
+                    distanceLerped = ViewClip.INSTANCE.getDistance().getValue();
+                } else {
+                    double camOffsetX = (double)(-MathHelper.sin(yaw / 180.0F * (float)Math.PI) * MathHelper.cos(pitch / 180.0F * (float)Math.PI)) * distanceLerped;
+                    double camOffsetZ = (double)(MathHelper.cos(yaw / 180.0F * (float)Math.PI) * MathHelper.cos(pitch / 180.0F * (float)Math.PI)) * distanceLerped;
+                    double camOffsetY = (double)(-MathHelper.sin(pitch / 180.0F * (float)Math.PI)) * distanceLerped;
 
-                for (int var20 = 0; var20 < 8; ++var20)
-                {
-                    float var21 = (float)((var20 & 1) * 2 - 1);
-                    float var22 = (float)((var20 >> 1 & 1) * 2 - 1);
-                    float var23 = (float)((var20 >> 2 & 1) * 2 - 1);
-                    var21 *= 0.1F;
-                    var22 *= 0.1F;
-                    var23 *= 0.1F;
-                    MovingObjectPosition var24 = this.mc.theWorld.rayTraceBlocks(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4 + (double)var21, var6 + (double)var22, var8 + (double)var23), this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4 - var14 + (double)var21 + (double)var23, var6 - var18 + (double)var22, var8 - var16 + (double)var23));
 
-                    if (var24 != null)
-                    {
-                        double var25 = var24.hitVec.distanceTo(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(var4, var6, var8));
+                    for (int var20 = 0; var20 < 8; ++var20) {
+                        float var21 = (float) ((var20 & 1) * 2 - 1);
+                        float var22 = (float) ((var20 >> 1 & 1) * 2 - 1);
+                        float var23 = (float) ((var20 >> 2 & 1) * 2 - 1);
+                        var21 *= 0.1F;
+                        var22 *= 0.1F;
+                        var23 *= 0.1F;
 
-                        if (var25 < var271)
-                        {
-                            var271 = var25;
+                        MovingObjectPosition raytrace = this.mc.theWorld.rayTraceBlocks(
+                                this.mc.theWorld.getWorldVec3Pool().getVecFromPool(entityX + (double) var21, entityY + (double) var22, entityZ + (double) var23),
+                                this.mc.theWorld.getWorldVec3Pool().getVecFromPool(entityX - camOffsetX + (double) var21 + (double) var23, entityY - camOffsetY + (double) var22, entityZ - camOffsetZ + (double) var23)
+                        );
+
+                        if (raytrace != null) {
+                            double blockDist = raytrace.hitVec.distanceTo(this.mc.theWorld.getWorldVec3Pool().getVecFromPool(entityX, entityY, entityZ));
+
+                            if (blockDist < distanceLerped) {
+                                distanceLerped = blockDist;
+                            }
                         }
                     }
                 }
@@ -786,11 +794,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
                 }
 
-                GL11.glRotatef(var2.rotationPitch - var281, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(var2.rotationYaw - var28, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslatef(0.0F, 0.0F, (float)(-var271));
-                GL11.glRotatef(var28 - var2.rotationYaw, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(var281 - var2.rotationPitch, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(entity.rotationPitch - pitch, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(entity.rotationYaw - yaw, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 0.0F, (float)(-distanceLerped));
+                GL11.glRotatef(yaw - entity.rotationYaw, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(pitch - entity.rotationPitch, 1.0F, 0.0F, 0.0F);
             }
         }
         else
@@ -800,15 +808,15 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (!this.mc.gameSettings.debugCamEnable)
         {
-            GL11.glRotatef(var2.prevRotationPitch + (var2.rotationPitch - var2.prevRotationPitch) * par1, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(var2.prevRotationYaw + (var2.rotationYaw - var2.prevRotationYaw) * par1 + 180.0F, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par1, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par1 + 180.0F, 0.0F, 1.0F, 0.0F);
         }
 
         GL11.glTranslatef(0.0F, var3, 0.0F);
-        var4 = var2.prevPosX + (var2.posX - var2.prevPosX) * (double)par1;
-        var6 = var2.prevPosY + (var2.posY - var2.prevPosY) * (double)par1 - (double)var3;
-        var8 = var2.prevPosZ + (var2.posZ - var2.prevPosZ) * (double)par1;
-        this.cloudFog = this.mc.renderGlobal.hasCloudFog(var4, var6, var8, par1);
+        entityX = entity.prevPosX + (entity.posX - entity.prevPosX) * (double)par1;
+        entityY = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)par1 - (double)var3;
+        entityZ = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)par1;
+        this.cloudFog = this.mc.renderGlobal.hasCloudFog(entityX, entityY, entityZ, par1);
     }
 
     /**
@@ -892,9 +900,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             float var6 = 5.0F / (var4 * var4 + 5.0F) - var4 * 0.04F;
             var6 *= var6;
-            GL11.glRotatef(((float)this.rendererUpdateCount + par1) * (float)var7, 0.0F, 1.0F, 1.0F);
-            GL11.glScalef(1.0F / var6, 1.0F, 1.0F);
-            GL11.glRotatef(-((float)this.rendererUpdateCount + par1) * (float)var7, 0.0F, 1.0F, 1.0F);
+
+            if (!(NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getNausea().getValue())) {
+                GL11.glRotatef(((float) this.rendererUpdateCount + par1) * (float) var7, 0.0F, 1.0F, 1.0F);
+                GL11.glScalef(1.0F / var6, 1.0F, 1.0F);
+                GL11.glRotatef(-((float) this.rendererUpdateCount + par1) * (float) var7, 0.0F, 1.0F, 1.0F);
+            }
         }
 
         this.orientCamera(par1);
@@ -2529,7 +2540,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 float var6;
 
-                if (var3.isPotionActive(Potion.blindness))
+                final boolean blindnessFlag = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getBlindness().getValue();
+                final boolean liquidFlag = NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getLiquidFog().getValue();
+
+                if (var3.isPotionActive(Potion.blindness) && !blindnessFlag)
                 {
                     var6 = 5.0F;
                     int var101 = var3.getActivePotionEffect(Potion.blindness).getDuration();
@@ -2584,7 +2598,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                     GL11.glFogf(GL11.GL_FOG_DENSITY, 0.1F);
                 }
-                else if (var5.getMaterial() == Material.water)
+                else if (var5.getMaterial() == Material.water && !liquidFlag)
                 {
                     if (Config.isShaders())
                     {
@@ -2609,7 +2623,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                         GL11.glFogf(GL11.GL_FOG_DENSITY, 0.02F);
                     }
                 }
-                else if (var5.getMaterial() == Material.lava)
+                else if (var5.getMaterial() == Material.lava && !liquidFlag)
                 {
                     if (Config.isShaders())
                     {

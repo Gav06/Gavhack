@@ -146,7 +146,7 @@ public class ItemFireworkCharge extends Item
                     if (var9 == ItemDye.field_150922_c[var11])
                     {
                         var10 = true;
-                        var5 = var5 + StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.field_150923_a[var11]);
+                        var5 = var5 + StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.dyeNames[var11]);
                         break;
                     }
                 }
@@ -187,7 +187,7 @@ public class ItemFireworkCharge extends Item
                     if (var18 == ItemDye.field_150922_c[var12])
                     {
                         var19 = true;
-                        var14 = var14 + StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.field_150923_a[var12]);
+                        var14 = var14 + StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.dyeNames[var12]);
                         break;
                     }
                 }

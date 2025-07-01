@@ -12,12 +12,12 @@ import net.minecraft.world.World;
 
 public class ItemBlock extends Item
 {
-    protected final Block field_150939_a;
+    protected final Block block;
     private IIcon field_150938_b;
 
     public ItemBlock(Block p_i45328_1_)
     {
-        this.field_150939_a = p_i45328_1_;
+        this.block = p_i45328_1_;
     }
 
     /**
@@ -34,7 +34,7 @@ public class ItemBlock extends Item
      */
     public int getSpriteNumber()
     {
-        return this.field_150939_a.getItemIconName() != null ? 1 : 0;
+        return this.block.getItemIconName() != null ? 1 : 0;
     }
 
     /**
@@ -42,7 +42,7 @@ public class ItemBlock extends Item
      */
     public IIcon getIconFromDamage(int par1)
     {
-        return this.field_150938_b != null ? this.field_150938_b : this.field_150939_a.getBlockTextureFromSide(1);
+        return this.field_150938_b != null ? this.field_150938_b : this.block.getBlockTextureFromSide(1);
     }
 
     /**
@@ -98,24 +98,24 @@ public class ItemBlock extends Item
         {
             return false;
         }
-        else if (par5 == 255 && this.field_150939_a.getMaterial().isSolid())
+        else if (par5 == 255 && this.block.getMaterial().isSolid())
         {
             return false;
         }
-        else if (world.canPlaceEntityOnSide(this.field_150939_a, par4, par5, par6, false, par7, player, stack))
+        else if (world.canPlaceEntityOnSide(this.block, par4, par5, par6, false, par7, player, stack))
         {
             int var12 = this.getMetadata(stack.getItemDamage());
-            int var13 = this.field_150939_a.onBlockPlaced(world, par4, par5, par6, par7, par8, par9, par10, var12);
+            int var13 = this.block.onBlockPlaced(world, par4, par5, par6, par7, par8, par9, par10, var12);
 
-            if (world.setBlock(par4, par5, par6, this.field_150939_a, var13, 3))
+            if (world.setBlock(par4, par5, par6, this.block, var13, 3))
             {
-                if (world.getBlock(par4, par5, par6) == this.field_150939_a)
+                if (world.getBlock(par4, par5, par6) == this.block)
                 {
-                    this.field_150939_a.onBlockPlacedBy(world, par4, par5, par6, player, stack);
-                    this.field_150939_a.onPostBlockPlaced(world, par4, par5, par6, var13);
+                    this.block.onBlockPlacedBy(world, par4, par5, par6, player, stack);
+                    this.block.onPostBlockPlaced(world, par4, par5, par6, var13);
                 }
 
-                world.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.field_150939_a.stepSound.func_150496_b(), (this.field_150939_a.stepSound.func_150497_c() + 1.0F) / 2.0F, this.field_150939_a.stepSound.func_150494_d() * 0.8F);
+                world.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.block.stepSound.func_150496_b(), (this.block.stepSound.func_150497_c() + 1.0F) / 2.0F, this.block.stepSound.func_150494_d() * 0.8F);
                 --stack.stackSize;
             }
 
@@ -168,7 +168,7 @@ public class ItemBlock extends Item
             }
         }
 
-        return p_150936_1_.canPlaceEntityOnSide(this.field_150939_a, p_150936_2_, p_150936_3_, p_150936_4_, false, p_150936_5_, (Entity)null, p_150936_7_);
+        return p_150936_1_.canPlaceEntityOnSide(this.block, p_150936_2_, p_150936_3_, p_150936_4_, false, p_150936_5_, (Entity)null, p_150936_7_);
     }
 
     /**
@@ -177,7 +177,7 @@ public class ItemBlock extends Item
      */
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        return this.field_150939_a.getUnlocalizedName();
+        return this.block.getUnlocalizedName();
     }
 
     /**
@@ -185,7 +185,7 @@ public class ItemBlock extends Item
      */
     public String getUnlocalizedName()
     {
-        return this.field_150939_a.getUnlocalizedName();
+        return this.block.getUnlocalizedName();
     }
 
     /**
@@ -193,7 +193,7 @@ public class ItemBlock extends Item
      */
     public CreativeTabs getCreativeTab()
     {
-        return this.field_150939_a.getCreativeTabToDisplayOn();
+        return this.block.getCreativeTabToDisplayOn();
     }
 
     /**
@@ -201,12 +201,12 @@ public class ItemBlock extends Item
      */
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_)
     {
-        this.field_150939_a.getSubBlocks(p_150895_1_, p_150895_2_, p_150895_3_);
+        this.block.getSubBlocks(p_150895_1_, p_150895_2_, p_150895_3_);
     }
 
     public void registerIcons(IIconRegister par1IconRegister)
     {
-        String var2 = this.field_150939_a.getItemIconName();
+        String var2 = this.block.getItemIconName();
 
         if (var2 != null)
         {

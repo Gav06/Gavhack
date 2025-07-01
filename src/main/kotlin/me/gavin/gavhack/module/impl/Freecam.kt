@@ -80,10 +80,10 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
         mc.thePlayer.capabilities.flySpeed = speed.getValue() / 100.0f
 
         if (Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode)) {
-            mc.thePlayer.motionY += speed.getValue() / 100.0f
+            mc.thePlayer.motionY += speed.getValue() / 50.0f
         }
         if (Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode)) {
-            mc.thePlayer.motionY -= speed.getValue() / 100.0f
+            mc.thePlayer.motionY -= speed.getValue() / 50.0f
         }
     }
 

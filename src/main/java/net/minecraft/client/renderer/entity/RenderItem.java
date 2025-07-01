@@ -18,10 +18,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemCloth;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -209,7 +206,7 @@ public class RenderItem extends Render
                         this.renderDroppedItem(par1EntityItem, var14, var13, par9, 1.0F, 1.0F, 1.0F);
                     }
 
-                    if (var10 != null && var10.getItem() instanceof ItemCloth)
+                    if (var10.getItem() instanceof ItemCloth)
                     {
                         GL11.glDisable(GL11.GL_BLEND);
                     }
@@ -587,13 +584,14 @@ public class RenderItem extends Render
         this.renderItemOverlayIntoGUI(par1FontRenderer, par2TextureManager, par3ItemStack, par4, par5, (String)null);
     }
 
-    public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, TextureManager par2TextureManager, ItemStack par3ItemStack, int par4, int par5, String par6Str)
+    public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, TextureManager par2TextureManager, ItemStack stack, int par4, int par5, String par6Str)
     {
-        if (par3ItemStack != null)
+        if (stack != null)
         {
-            if (par3ItemStack.stackSize > 1 || par6Str != null)
+            if (stack.stackSize != 1 || par6Str != null)
             {
-                String var7 = par6Str == null ? String.valueOf(par3ItemStack.stackSize) : par6Str;
+                String format = (stack.stackSize < 1 ? EnumChatFormatting.RED.toString() : "");
+                String var7 = format + (par6Str == null ? String.valueOf(stack.stackSize) : par6Str);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_BLEND);
@@ -602,10 +600,10 @@ public class RenderItem extends Render
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
             }
 
-            if (par3ItemStack.isItemDamaged())
+            if (stack.isItemDamaged())
             {
-                int var12 = (int)Math.round(13.0D - (double)par3ItemStack.getItemDamageForDisplay() * 13.0D / (double)par3ItemStack.getMaxDamage());
-                int var8 = (int)Math.round(255.0D - (double)par3ItemStack.getItemDamageForDisplay() * 255.0D / (double)par3ItemStack.getMaxDamage());
+                int var12 = (int)Math.round(13.0D - (double)stack.getItemDamageForDisplay() * 13.0D / (double)stack.getMaxDamage());
+                int var8 = (int)Math.round(255.0D - (double)stack.getItemDamageForDisplay() * 255.0D / (double)stack.getMaxDamage());
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_TEXTURE_2D);

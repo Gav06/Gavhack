@@ -2724,7 +2724,7 @@ public class RenderGlobal implements IWorldAccess
             double var15 = this.mc.renderViewEntity.posX - par2;
             double var17 = this.mc.renderViewEntity.posY - par4;
             double var19 = this.mc.renderViewEntity.posZ - par6;
-            Object var21 = null;
+            EntityFX var21 = null;
 
             if (par1Str.equals("hugeexplosion"))
             {
@@ -2747,7 +2747,7 @@ public class RenderGlobal implements IWorldAccess
 
             if (var21 != null)
             {
-                return (EntityFX)var21;
+                return var21;
             }
             else
             {
@@ -2772,7 +2772,7 @@ public class RenderGlobal implements IWorldAccess
                     if (par1Str.equals("bubble"))
                     {
                         var21 = new EntityBubbleFX(this.theWorld, par2, par4, par6, par8, par10, par12);
-                        CustomColorizer.updateWaterFX((EntityFX)var21, this.theWorld);
+                        CustomColorizer.updateWaterFX(var21, this.theWorld);
                     }
                     else if (par1Str.equals("suspended"))
                     {
@@ -2791,7 +2791,7 @@ public class RenderGlobal implements IWorldAccess
                     else if (par1Str.equals("townaura"))
                     {
                         var21 = new EntityAuraFX(this.theWorld, par2, par4, par6, par8, par10, par12);
-                        CustomColorizer.updateMyceliumFX((EntityFX)var21);
+                        CustomColorizer.updateMyceliumFX(var21);
                     }
                     else if (par1Str.equals("crit"))
                     {
@@ -2800,8 +2800,8 @@ public class RenderGlobal implements IWorldAccess
                     else if (par1Str.equals("magicCrit"))
                     {
                         var21 = new EntityCritFX(this.theWorld, par2, par4, par6, par8, par10, par12);
-                        ((EntityFX)var21).setRBGColorF(((EntityFX)var21).getRedColorF() * 0.3F, ((EntityFX)var21).getGreenColorF() * 0.8F, ((EntityFX)var21).getBlueColorF());
-                        ((EntityFX)var21).nextTextureIndexX();
+                        var21.setRBGColorF(var21.getRedColorF() * 0.3F, var21.getGreenColorF() * 0.8F, var21.getBlueColorF());
+                        var21.nextTextureIndexX();
                     }
                     else if (par1Str.equals("smoke"))
                     {
@@ -2815,7 +2815,7 @@ public class RenderGlobal implements IWorldAccess
                         if (Config.isPotionParticles())
                         {
                             var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-                            ((EntityFX)var21).setRBGColorF((float)par8, (float)par10, (float)par12);
+                            var21.setRBGColorF((float)par8, (float)par10, (float)par12);
                         }
                     }
                     else if (par1Str.equals("mobSpellAmbient"))
@@ -2823,8 +2823,8 @@ public class RenderGlobal implements IWorldAccess
                         if (Config.isPotionParticles())
                         {
                             var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-                            ((EntityFX)var21).setAlphaF(0.15F);
-                            ((EntityFX)var21).setRBGColorF((float)par8, (float)par10, (float)par12);
+                            var21.setAlphaF(0.15F);
+                            var21.setRBGColorF((float)par8, (float)par10, (float)par12);
                         }
                     }
                     else if (par1Str.equals("spell"))
@@ -2849,7 +2849,7 @@ public class RenderGlobal implements IWorldAccess
                             var21 = new EntitySpellParticleFX(this.theWorld, par2, par4, par6, par8, par10, par12);
                             ((EntitySpellParticleFX)var21).setBaseSpellTextureIndex(144);
                             float var26 = this.theWorld.rand.nextFloat() * 0.5F + 0.35F;
-                            ((EntityFX)var21).setRBGColorF(1.0F * var26, 0.0F * var26, 1.0F * var26);
+                            var21.setRBGColorF(1.0F * var26, 0.0F * var26, 1.0F * var26);
                         }
                     }
                     else if (par1Str.equals("note"))
@@ -2861,7 +2861,7 @@ public class RenderGlobal implements IWorldAccess
                         if (Config.isPortalParticles())
                         {
                             var21 = new EntityPortalFX(this.theWorld, par2, par4, par6, par8, par10, par12);
-                            CustomColorizer.updatePortalFX((EntityFX)var21);
+                            CustomColorizer.updatePortalFX(var21);
                         }
                     }
                     else if (par1Str.equals("enchantmenttable"))
@@ -2893,7 +2893,7 @@ public class RenderGlobal implements IWorldAccess
                     else if (par1Str.equals("splash"))
                     {
                         var21 = new EntitySplashFX(this.theWorld, par2, par4, par6, par8, par10, par12);
-                        CustomColorizer.updateWaterFX((EntityFX)var21, this.theWorld);
+                        CustomColorizer.updateWaterFX(var21, this.theWorld);
                     }
                     else if (par1Str.equals("wake"))
                     {
@@ -2915,7 +2915,7 @@ public class RenderGlobal implements IWorldAccess
                         if (Config.isAnimatedRedstone())
                         {
                             var21 = new EntityReddustFX(this.theWorld, par2, par4, par6, (float)par8, (float)par10, (float)par12);
-                            CustomColorizer.updateReddustFX((EntityFX)var21, this.theWorld, var15, var17, var19);
+                            CustomColorizer.updateReddustFX(var21, this.theWorld, var15, var17, var19);
                         }
                     }
                     else if (par1Str.equals("snowballpoof"))
@@ -2951,14 +2951,14 @@ public class RenderGlobal implements IWorldAccess
                     else if (par1Str.equals("angryVillager"))
                     {
                         var21 = new EntityHeartFX(this.theWorld, par2, par4 + 0.5D, par6, par8, par10, par12);
-                        ((EntityFX)var21).setParticleTextureIndex(81);
-                        ((EntityFX)var21).setRBGColorF(1.0F, 1.0F, 1.0F);
+                        var21.setParticleTextureIndex(81);
+                        var21.setRBGColorF(1.0F, 1.0F, 1.0F);
                     }
                     else if (par1Str.equals("happyVillager"))
                     {
                         var21 = new EntityAuraFX(this.theWorld, par2, par4, par6, par8, par10, par12);
-                        ((EntityFX)var21).setParticleTextureIndex(82);
-                        ((EntityFX)var21).setRBGColorF(1.0F, 1.0F, 1.0F);
+                        var21.setParticleTextureIndex(82);
+                        var21.setRBGColorF(1.0F, 1.0F, 1.0F);
                     }
                     else
                     {
@@ -3003,10 +3003,10 @@ public class RenderGlobal implements IWorldAccess
 
                     if (var21 != null)
                     {
-                        this.mc.effectRenderer.addEffect((EntityFX)var21);
+                        this.mc.effectRenderer.addEffect(var21);
                     }
 
-                    return (EntityFX)var21;
+                    return var21;
                 }
             }
         }
