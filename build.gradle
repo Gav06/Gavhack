@@ -1,10 +1,12 @@
+import org.gradle.api.internal.file.collections.FileTreeAdapter
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
 	id 'application'
 	id 'java'
-	id "org.jetbrains.kotlin.jvm" version "$kotlin_version"
+	id 'org.jetbrains.kotlin.jvm' version "$kotlin_version"
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 version = project.mod_version
@@ -12,28 +14,22 @@ group = project.maven_group
 
 repositories {
 	mavenCentral()
-
-}
-
-configurations {
-	implementation.extendsFrom(shadow)
 }
 
 dependencies {
-	implementation(fileTree('libs'))
+	compileOnly fileTree('libs') // Available for compilation but not included in shadowJar
 
-	// Use newer Log4J because of the RCE (requires java 8 however)
-	shadow 'org.apache.logging.log4j:log4j-api:2.17.1'
-	shadow 'org.apache.logging.log4j:log4j-core:2.17.1'
-	shadow 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1'
-	shadow 'com.google.code.gson:gson:2.11.0'
+	// Dependencies that WILL be included in shadowJar
+	implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
+	implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+	implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1'
+	implementation 'com.google.code.gson:gson:2.11.0'
 
 	// thanks kami blue :-)
-	shadow("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version") {
+	implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version") {
 		exclude module: 'kotlin-stdlib-common'
 		exclude module: 'annotations'
 	}
-
 }
 
 application {
@@ -45,7 +41,7 @@ tasks.register('runClient', JavaExec) {
 	description = 'Compiles and runs client'
 
 	mainClass = application.mainClass.get()
-	classpath = sourceSets.main.runtimeClasspath
+	classpath = sourceSets.main.runtimeClasspath + fileTree('libs') // Add libs back for runtime
 
 	workingDir = file("run")
 	jvmArgs = ["-Djava.library.path=../libs/1.7.2-natives"]
@@ -60,23 +56,21 @@ tasks.withType(KotlinJvmCompile).configureEach {
 	it.compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+tasks.register('sourcesJar', Jar) {
+	dependsOn classes
 	setArchiveClassifier('sources')
 	from sourceSets.main.allSource
 }
 
-artifacts {
-	archives sourcesJar
+tasks.build {
+	dependsOn(tasks.shadowJar)
 }
 
+shadowJar {
+	// Default behavior - will only include implementation dependencies
+	// compileOnly dependencies are automatically excluded
+}
 
-jar {
-	from {
-		configurations.shadow.collect {
-			exclude("META-INF/")
-			exclude("dummyThing")
-			it.isDirectory() ? it : zipTree(it)
-		}
-
-	}
+artifacts {
+	archives sourcesJar
 }
