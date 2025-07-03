@@ -37,8 +37,6 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
         if (mc.thePlayer != null && mc.theWorld != null) {
             stopFreecam()
         }
-
-
     }
 
     private fun startFreecam() {
@@ -78,7 +76,7 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
         mc.thePlayer.onGround = false
         mc.thePlayer.isSprinting = false
         mc.thePlayer.capabilities.flySpeed = speed.getValue() / 100.0f
-
+      
         if (mc.currentScreen != null) {
             return@Listener
         }

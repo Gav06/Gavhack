@@ -124,6 +124,7 @@ class Window(x: Int, y: Int, w: Int, h: Int,
     }
 
     override fun fromJsonObj(jsonObj: JsonObject) {
+        println("Loading window: $title from jsonObj: $jsonObj")
         if (jsonObj.has("x")) {
             this.handle.x = jsonObj.get("x").asInt
             this.handle.y = jsonObj.get("y").asInt

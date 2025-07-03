@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks
 
 object Xray: Module("Xray", "See ores and blocks through walls", ModCategory.RENDER) {
 
+    val blockSet = HashSet<Block>()
     val blockIds = HashSet<Int>();
 
     override fun onEnable() {
@@ -21,21 +22,23 @@ object Xray: Module("Xray", "See ores and blocks through walls", ModCategory.REN
         }
     }
 
+    private fun addBlock(block: Block) {
+        blockSet.add(block)
+        blockIds.add(Block.getIdFromBlock(block))
+    }
+
     init {
-        blockIds.add(Block.getIdFromBlock(Blocks.diamond_ore))
-        blockIds.add(Block.getIdFromBlock(Blocks.iron_ore))
-        blockIds.add(Block.getIdFromBlock(Blocks.gold_ore))
-        blockIds.add(Block.getIdFromBlock(Blocks.lapis_ore))
-        blockIds.add(Block.getIdFromBlock(Blocks.redstone_ore))
-        blockIds.add(Block.getIdFromBlock(Blocks.lit_redstone_ore))
-        blockIds.add(Block.getIdFromBlock(Blocks.coal_ore))
-        blockIds.add(Block.getIdFromBlock(Blocks.quartz_ore))
-
-        blockIds.add(Block.getIdFromBlock(Blocks.water))
-        blockIds.add(Block.getIdFromBlock(Blocks.flowing_water))
-        
-        blockIds.add(Block.getIdFromBlock(Blocks.lava))
-        blockIds.add(Block.getIdFromBlock(Blocks.flowing_lava))
-
+        addBlock(Blocks.diamond_ore)
+        addBlock(Blocks.iron_ore)
+        addBlock(Blocks.gold_ore)
+        addBlock(Blocks.lapis_ore)
+        addBlock(Blocks.redstone_ore)
+        addBlock(Blocks.lit_redstone_ore)
+        addBlock(Blocks.coal_ore)
+        addBlock(Blocks.quartz_ore)
+        addBlock(Blocks.water)
+        addBlock(Blocks.flowing_water)
+        addBlock(Blocks.lava)
+        addBlock(Blocks.flowing_lava)
     }
 }
