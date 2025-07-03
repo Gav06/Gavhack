@@ -16,17 +16,25 @@ repositories {
 	mavenCentral()
 }
 
-dependencies {
-	compileOnly fileTree('libs') // Available for compilation but not included in shadowJar
+// Create configurations
+configurations {
+	shadow // Only dependencies in this configuration will be included in shadowJar
+	compileClasspath.extendsFrom(shadow)
+	runtimeClasspath.extendsFrom(shadow)
+}
 
-	// Dependencies that WILL be included in shadowJar
-	implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
-	implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
-	implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1'
-	implementation 'com.google.code.gson:gson:2.11.0'
+dependencies {
+	// Local libs - available for compilation and runtime but NOT in shadowJar
+	implementation fileTree('libs')
+
+	// Dependencies that WILL be included in shadowJar - use 'shadow' configuration
+	shadow 'org.apache.logging.log4j:log4j-api:2.17.1'
+	shadow 'org.apache.logging.log4j:log4j-core:2.17.1'
+	shadow 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1'
+	shadow 'com.google.code.gson:gson:2.11.0'
 
 	// thanks kami blue :-)
-	implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version") {
+	shadow("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version") {
 		exclude module: 'kotlin-stdlib-common'
 		exclude module: 'annotations'
 	}
@@ -41,7 +49,7 @@ tasks.register('runClient', JavaExec) {
 	description = 'Compiles and runs client'
 
 	mainClass = application.mainClass.get()
-	classpath = sourceSets.main.runtimeClasspath + fileTree('libs') // Add libs back for runtime
+	classpath = sourceSets.main.runtimeClasspath // localLibs already included via runtimeClasspath
 
 	workingDir = file("run")
 	jvmArgs = ["-Djava.library.path=../libs/1.7.2-natives"]
@@ -67,8 +75,8 @@ tasks.build {
 }
 
 shadowJar {
-	// Default behavior - will only include implementation dependencies
-	// compileOnly dependencies are automatically excluded
+	// Only include dependencies from the 'shadow' configuration
+	configurations = [project.configurations.shadow]
 }
 
 artifacts {

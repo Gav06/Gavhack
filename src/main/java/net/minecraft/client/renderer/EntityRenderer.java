@@ -651,15 +651,19 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
     }
 
-    private void hurtCameraEffect(float par1)
+    private void hurtCameraEffect(float partialTicks)
     {
+        if (NoRender.INSTANCE.getEnabled() && NoRender.INSTANCE.getHurtCamera().getValue()) {
+            return;
+        }
+
         EntityLivingBase var2 = this.mc.renderViewEntity;
-        float var3 = (float)var2.hurtTime - par1;
+        float var3 = (float)var2.hurtTime - partialTicks;
         float var4;
 
         if (var2.getHealth() <= 0.0F)
         {
-            var4 = (float)var2.deathTime + par1;
+            var4 = (float)var2.deathTime + partialTicks;
             GL11.glRotatef(40.0F - 8000.0F / (var4 + 200.0F), 0.0F, 0.0F, 1.0F);
         }
 
@@ -677,7 +681,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     /**
      * Setups all the GL settings for view bobbing. Args: partialTickTime
      */
-    private void setupViewBobbing(float par1)
+    private void setupViewBobbing(float partialTicks)
     {
         if (this.mc.renderViewEntity instanceof EntityPlayer)
         {
@@ -688,9 +692,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             EntityPlayer var2 = (EntityPlayer)this.mc.renderViewEntity;
             float var3 = var2.distanceWalkedModified - var2.prevDistanceWalkedModified;
-            float var4 = -(var2.distanceWalkedModified + var3 * par1);
-            float var5 = var2.prevCameraYaw + (var2.cameraYaw - var2.prevCameraYaw) * par1;
-            float var6 = var2.prevCameraPitch + (var2.cameraPitch - var2.prevCameraPitch) * par1;
+            float var4 = -(var2.distanceWalkedModified + var3 * partialTicks);
+            float var5 = var2.prevCameraYaw + (var2.cameraYaw - var2.prevCameraYaw) * partialTicks;
+            float var6 = var2.prevCameraPitch + (var2.cameraPitch - var2.prevCameraPitch) * partialTicks;
             GL11.glTranslatef(MathHelper.sin(var4 * (float)Math.PI) * var5 * 0.5F, -Math.abs(MathHelper.cos(var4 * (float)Math.PI) * var5), 0.0F);
             GL11.glRotatef(MathHelper.sin(var4 * (float)Math.PI) * var5 * 3.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(Math.abs(MathHelper.cos(var4 * (float)Math.PI - 0.2F) * var5) * 5.0F, 1.0F, 0.0F, 0.0F);

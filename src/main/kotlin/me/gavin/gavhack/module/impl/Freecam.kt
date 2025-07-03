@@ -72,12 +72,17 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
     }
 
     private val tickListener = Listener<PlayerLivingTickEvent> {
+
         mc.thePlayer.capabilities.allowFlying = true
         mc.thePlayer.capabilities.isFlying = true
         mc.thePlayer.noClip = true
         mc.thePlayer.onGround = false
         mc.thePlayer.isSprinting = false
         mc.thePlayer.capabilities.flySpeed = speed.getValue() / 100.0f
+
+        if (mc.currentScreen != null) {
+            return@Listener
+        }
 
         if (Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode)) {
             mc.thePlayer.motionY += speed.getValue() / 50.0f

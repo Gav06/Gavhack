@@ -138,9 +138,13 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
         val uniform = colorFramebuffer.shader.getUniform("rgb")
 
         for (e in mc.theWorld.loadedEntityList) {
-            if (!frustum.isBoundingBoxInFrustum(e.getBoundingBox())) continue
+            if (!frustum.isBoundingBoxInFrustum(e.boundingBox)) {
+                continue
+            }
 
-            if ((e == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) || !entityCheck(e)) continue
+            if ((e == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) || !entityCheck(e)) {
+                continue
+            }
 
             val color = entityColor(e)
             GL20.glUniform3f(uniform, color.x, color.y, color.z)

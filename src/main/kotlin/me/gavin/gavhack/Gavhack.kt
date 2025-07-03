@@ -2,11 +2,10 @@ package me.gavin.gavhack
 
 import me.gavin.gavhack.command.CommandManager
 import me.gavin.gavhack.config.ConfigManager
-import me.gavin.gavhack.macro.MacroManager
-import me.gavin.gavhack.module.ModuleManager
 import me.gavin.gavhack.gui.click.ClickGUI
 import me.gavin.gavhack.gui.hud.HUDEditor
-import me.gavin.gavhack.module.impl.Freecam
+import me.gavin.gavhack.macro.MacroManager
+import me.gavin.gavhack.module.ModuleManager
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.lwjgl.opengl.GL11
@@ -29,7 +28,7 @@ object Gavhack {
 
         // Disable JNDI lookups (no more Log4Shell)
         System.setProperty("log4j2.formatMsgNoLookups", "true")
-        log.info("log4j2.formatMsgNoLookups set to TRUE, to disable lookups")
+        log.info("System property 'log4j2.formatMsgNoLookups' set to TRUE, to disable JNDI lookups")
 
         ModuleManager
         log.info("Modules initialized")

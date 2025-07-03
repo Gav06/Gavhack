@@ -29,10 +29,6 @@ public class Frustum implements ICamera
      */
     public boolean isBoundingBoxInFrustum(AxisAlignedBB aabb)
     {
-        if (aabb == null) {
-            return true;
-        }
-
         return this.isBoxInFrustum(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
     }
 

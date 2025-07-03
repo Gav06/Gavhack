@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import me.gavin.gavhack.module.impl.Xray;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockBeacon;
@@ -284,6 +285,10 @@ public class RenderBlocks
 
     public boolean renderBlockByRenderType(Block par1Block, int par2, int par3, int par4)
     {
+        if (Xray.INSTANCE.isEnabled() && !Xray.INSTANCE.getBlockIds().contains(Block.getIdFromBlock(par1Block))) {
+            return false;
+        }
+
         int i = par1Block.getRenderType();
 
         if (i == -1)
