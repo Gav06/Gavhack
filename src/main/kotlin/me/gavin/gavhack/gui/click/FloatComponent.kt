@@ -55,7 +55,7 @@ class FloatComponent(override val setting: FloatSetting, w: Int, h: Int) : Setti
                 setting.setValue(setting.minValue)
             } else {
                 val value = ((max - min) * normal) + min
-                val round = MathUtils.roundToPlacef(value, 1)
+                val round = MathUtils.roundToPlacef(value, setting.decimalPlaces)
                 setting.setValue(round)
             }
         }

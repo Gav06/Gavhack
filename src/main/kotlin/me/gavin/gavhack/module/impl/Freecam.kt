@@ -72,7 +72,6 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
     }
 
     private val tickListener = Listener<PlayerLivingTickEvent> {
-
         mc.thePlayer.capabilities.allowFlying = true
         mc.thePlayer.capabilities.isFlying = true
         mc.thePlayer.noClip = true

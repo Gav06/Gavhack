@@ -1,6 +1,8 @@
 package net.minecraft.block;
 
 import java.util.Random;
+
+import me.gavin.gavhack.module.impl.IceSpeed;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,6 +16,14 @@ import net.minecraft.world.World;
 
 public class BlockIce extends BlockBreakable
 {
+    @Override
+    public float getSlipperiness() {
+        if (IceSpeed.INSTANCE.isEnabled()) {
+            return IceSpeed.INSTANCE.getSpeed().getValue();
+        }
+
+        return this.slipperiness;
+    }
 
     public BlockIce()
     {

@@ -1608,7 +1608,7 @@ public abstract class EntityLivingBase extends Entity
 
             if (this.onGround)
             {
-                var3 = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ)).slipperiness * 0.91F;
+                var3 = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ)).getSlipperiness() * 0.91F;
             }
 
             float var4 = 0.16277136F / (var3 * var3 * var3);

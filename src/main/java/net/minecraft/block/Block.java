@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import me.gavin.gavhack.module.impl.IceSpeed;
 import me.gavin.gavhack.module.impl.Xray;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -32,6 +33,11 @@ import net.minecraft.world.World;
 
 public class Block
 {
+    // lil gavhack thing
+    public float getSlipperiness() {
+        return this.slipperiness;
+    }
+
     public static final RegistryNamespaced blockRegistry = new RegistryNamespacedDefaultedByKey("air");
     private CreativeTabs displayOnCreativeTab;
     protected String textureName;

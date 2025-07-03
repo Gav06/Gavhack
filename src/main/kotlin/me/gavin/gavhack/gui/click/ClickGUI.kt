@@ -23,7 +23,13 @@ object ClickGUI: GuiScreen() {
 
     private val windows = CopyOnWriteArrayList<Window>()
 
+    private var currMouseX = 0
+    private var currMouseY = 0
+
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
+        currMouseX = mouseX
+        currMouseY = mouseY
+
         if (mc.theWorld == null)
             drawDefaultBackground()
         else if (GUI.drawBackground.value) {
@@ -103,6 +109,7 @@ object ClickGUI: GuiScreen() {
      * We use a FBO for the vertical pass, just so we don't draw 2 quads to the mc frame buffer,
      * when we only need one
      */
+    @Deprecated("This will be removed because the gaussian blur was too expensive for the method I was using.")
     private fun drawBackgroundShader() {
         val res = ScaledResolution(mc)
 
@@ -133,6 +140,20 @@ object ClickGUI: GuiScreen() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0)
         GL11.glDisable(GL11.GL_TEXTURE_2D)
         GL11.glPopMatrix()
+    }
+
+    // Quick loop through all the slider components to make sure they don't stay
+    // in a "dragging" state even while the GUI is closed.
+    override fun onGuiClosed() {
+        for (comp in windows) {
+            comp.components.forEach { comp ->
+                comp.subComponents
+                    .filter { it is IntComponent || it is FloatComponent }
+                    .forEach { it.onRelease(currMouseX, currMouseY, 0) }
+            }
+        }
+
+        super.onGuiClosed()
     }
 
     private fun addSettingComponents(button: WindowButton, module: Module) {
