@@ -15,7 +15,7 @@ import net.minecraft.client.gui.GuiScreen
 
 object HUDEditor: GuiScreen() {
 
-    private val window = Window(4, 4, 100, 0, "Components", ModCategory.HUD)
+    private val window: Window = Window(4, 4, 100, 0, "Components", ModCategory.HUD)
     private val hudMods = ModuleManager.getCategoryMods(ModCategory.HUD).filterIsInstance<HUDModule>()
 
     private val overlayListener = Listener<RenderOverlayEvent> { (it as RenderOverlayEvent)

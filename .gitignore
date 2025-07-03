@@ -49,3 +49,5 @@ run/crash-reports
 /.kotlin
 run/servers.dat
 run/gavhack/*
+
+run/optionsshaders.txt
