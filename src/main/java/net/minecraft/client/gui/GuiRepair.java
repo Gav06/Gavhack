@@ -23,7 +23,6 @@ public class GuiRepair extends GuiContainer implements ICrafting
     private ContainerRepair field_147092_v;
     private GuiTextField field_147091_w;
     private InventoryPlayer field_147094_x;
-    private static final String __OBFID = "CL_00000738";
 
     public GuiRepair(InventoryPlayer par1InventoryPlayer, World par2World, int par3, int par4, int par5)
     {
@@ -41,7 +40,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
         Keyboard.enableRepeatEvents(true);
         int var1 = (this.width - this.field_146999_f) / 2;
         int var2 = (this.height - this.field_147000_g) / 2;
-        this.field_147091_w = new GuiTextField(this.fontRendererObj, var1 + 62, var2 + 24, 103, 12);
+        this.field_147091_w = new GuiTextField(this.fontRenderer, var1 + 62, var2 + 24, 103, 12);
         this.field_147091_w.func_146193_g(-1);
         this.field_147091_w.func_146204_h(-1);
         this.field_147091_w.func_146185_a(false);
@@ -64,7 +63,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
     {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
-        this.fontRendererObj.drawString(I18n.format("container.repair", new Object[0]), 60, 6, 4210752);
+        this.fontRenderer.drawString(I18n.format("container.repair", new Object[0]), 60, 6, 4210752);
 
         if (this.field_147092_v.maximumCost > 0)
         {
@@ -89,22 +88,22 @@ public class GuiRepair extends GuiContainer implements ICrafting
             if (var4)
             {
                 int var6 = -16777216 | (var3 & 16579836) >> 2 | var3 & -16777216;
-                int var7 = this.field_146999_f - 8 - this.fontRendererObj.getStringWidth(var5);
+                int var7 = this.field_146999_f - 8 - this.fontRenderer.getStringWidth(var5);
                 byte var8 = 67;
 
-                if (this.fontRendererObj.getUnicodeFlag())
+                if (this.fontRenderer.getUnicodeFlag())
                 {
                     drawRect(var7 - 3, var8 - 2, this.field_146999_f - 7, var8 + 10, -16777216);
                     drawRect(var7 - 2, var8 - 1, this.field_146999_f - 8, var8 + 9, -12895429);
                 }
                 else
                 {
-                    this.fontRendererObj.drawString(var5, var7, var8 + 1, var6);
-                    this.fontRendererObj.drawString(var5, var7 + 1, var8, var6);
-                    this.fontRendererObj.drawString(var5, var7 + 1, var8 + 1, var6);
+                    this.fontRenderer.drawString(var5, var7, var8 + 1, var6);
+                    this.fontRenderer.drawString(var5, var7 + 1, var8, var6);
+                    this.fontRenderer.drawString(var5, var7 + 1, var8 + 1, var6);
                 }
 
-                this.fontRendererObj.drawString(var5, var7, var8, var3);
+                this.fontRenderer.drawString(var5, var7, var8, var3);
             }
         }
 
@@ -152,9 +151,9 @@ public class GuiRepair extends GuiContainer implements ICrafting
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);
         this.field_147091_w.drawTextBox();

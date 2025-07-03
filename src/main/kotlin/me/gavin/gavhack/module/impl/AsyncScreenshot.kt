@@ -55,7 +55,7 @@ object AsyncScreenshot: Module("AsyncScreenshot", "Make screenshots multi-thread
         }
 
         pixelBuffer.get(pixelValues)
-        TextureUtil.arrayFlipVertical(pixelValues, width, height)
+        TextureUtil.imgDataFlipVertical(pixelValues, width, height)
         return pixelValues
     }
 
@@ -88,7 +88,7 @@ object AsyncScreenshot: Module("AsyncScreenshot", "Make screenshots multi-thread
         val chatComponent = ChatComponentText(pngFile.name)
         chatComponent.chatStyle.setChatClickEvent(ClickEvent(ClickEvent.Action.OPEN_FILE, pngFile.canonicalPath))
         chatComponent.chatStyle.setUnderlined(true)
-        mc.ingameGUI.chatGUI.addChatMessage(ChatComponentTranslation("screenshot.success", chatComponent))
+        mc.ingameGUI.chatGui.printChatMessage(ChatComponentTranslation("screenshot.success", chatComponent))
     }
 
     private val screenshotListener = Listener<ScreenshotEvent> { (it as ScreenshotEvent)

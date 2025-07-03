@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class BlockOre extends Block
 {
-    private static final String __OBFID = "CL_00000282";
 
     public BlockOre()
     {

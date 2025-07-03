@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 public class BlockJukebox extends BlockContainer
 {
     private IIcon field_149927_a;
-    private static final String __OBFID = "CL_00000260";
 
     protected BlockJukebox()
     {
@@ -116,7 +115,7 @@ public class BlockJukebox extends BlockContainer
         return new BlockJukebox.TileEntityJukebox();
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
         this.field_149927_a = p_149651_1_.registerIcon(this.getTextureName() + "_top");
@@ -136,30 +135,29 @@ public class BlockJukebox extends BlockContainer
     public static class TileEntityJukebox extends TileEntity
     {
         private ItemStack field_145858_a;
-        private static final String __OBFID = "CL_00000261";
 
-        public void readFromNBT(NBTTagCompound tag)
+        public void readFromNBT(NBTTagCompound p_145839_1_)
         {
-            super.readFromNBT(tag);
+            super.readFromNBT(p_145839_1_);
 
-            if (tag.func_150297_b("RecordItem", 10))
+            if (p_145839_1_.hasKey("RecordItem", 10))
             {
-                this.func_145857_a(ItemStack.loadItemStackFromNBT(tag.getCompoundTag("RecordItem")));
+                this.func_145857_a(ItemStack.loadItemStackFromNBT(p_145839_1_.getCompoundTag("RecordItem")));
             }
-            else if (tag.getInteger("Record") > 0)
+            else if (p_145839_1_.getInteger("Record") > 0)
             {
-                this.func_145857_a(new ItemStack(Item.getItemById(tag.getInteger("Record")), 1, 0));
+                this.func_145857_a(new ItemStack(Item.getItemById(p_145839_1_.getInteger("Record")), 1, 0));
             }
         }
 
-        public void writeToNBT(NBTTagCompound tag)
+        public void writeToNBT(NBTTagCompound p_145841_1_)
         {
-            super.writeToNBT(tag);
+            super.writeToNBT(p_145841_1_);
 
             if (this.func_145856_a() != null)
             {
-                tag.setTag("RecordItem", this.func_145856_a().writeToNBT(new NBTTagCompound()));
-                tag.setInteger("Record", Item.getIdFromItem(this.func_145856_a().getItem()));
+                p_145841_1_.setTag("RecordItem", this.func_145856_a().writeToNBT(new NBTTagCompound()));
+                p_145841_1_.setInteger("Record", Item.getIdFromItem(this.func_145856_a().getItem()));
             }
         }
 

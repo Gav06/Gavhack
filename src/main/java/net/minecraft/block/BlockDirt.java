@@ -16,7 +16,6 @@ public class BlockDirt extends Block
     public static final String[] field_150009_a = new String[] {"default", "default", "podzol"};
     private IIcon field_150008_b;
     private IIcon field_150010_M;
-    private static final String __OBFID = "CL_00000228";
 
     protected BlockDirt()
     {
@@ -45,7 +44,7 @@ public class BlockDirt extends Block
         return this.blockIcon;
     }
 
-    public IIcon getIcon(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
+    public IIcon getBlockTexture(IBlockAccess p_149673_1_, int p_149673_2_, int p_149673_3_, int p_149673_4_, int p_149673_5_)
     {
         int var6 = p_149673_1_.getBlockMetadata(p_149673_2_, p_149673_3_, p_149673_4_);
 
@@ -62,7 +61,7 @@ public class BlockDirt extends Block
 
                 if (var7 == Material.field_151597_y || var7 == Material.craftedSnow)
                 {
-                    return Blocks.grass.getIcon(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_, p_149673_5_);
+                    return Blocks.grass.getBlockTexture(p_149673_1_, p_149673_2_, p_149673_3_, p_149673_4_, p_149673_5_);
                 }
 
                 Block var8 = p_149673_1_.getBlock(p_149673_2_, p_149673_3_ + 1, p_149673_4_);
@@ -105,9 +104,9 @@ public class BlockDirt extends Block
         p_149666_3_.add(new ItemStack(this, 1, 2));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
-        super.registerBlockIcons(p_149651_1_);
+        super.registerIcons(p_149651_1_);
         this.field_150008_b = p_149651_1_.registerIcon(this.getTextureName() + "_" + "podzol_top");
         this.field_150010_M = p_149651_1_.registerIcon(this.getTextureName() + "_" + "podzol_side");
     }

@@ -17,11 +17,10 @@ import org.lwjgl.opengl.GL11;
 public class TileEntityRendererPiston extends TileEntitySpecialRenderer
 {
     private RenderBlocks field_147516_b;
-    private static final String __OBFID = "CL_00000969";
 
     public void renderTileEntityAt(TileEntityPiston p_147515_1_, double p_147515_2_, double p_147515_4_, double p_147515_6_, float p_147515_8_)
     {
-        Block var9 = p_147515_1_.func_145861_a();
+        Block var9 = p_147515_1_.getStoredBlockID();
 
         if (var9.getMaterial() != Material.air && p_147515_1_.func_145860_a(p_147515_8_) < 1.0F)
         {
@@ -42,24 +41,24 @@ public class TileEntityRendererPiston extends TileEntitySpecialRenderer
             }
 
             var10.startDrawingQuads();
-            var10.setTranslation((double)((float)p_147515_2_ - (float)p_147515_1_.x + p_147515_1_.func_145865_b(p_147515_8_)), (double)((float)p_147515_4_ - (float)p_147515_1_.y + p_147515_1_.func_145862_c(p_147515_8_)), (double)((float)p_147515_6_ - (float)p_147515_1_.z + p_147515_1_.func_145859_d(p_147515_8_)));
+            var10.setTranslation((double)((float)p_147515_2_ - (float)p_147515_1_.xCoord + p_147515_1_.func_145865_b(p_147515_8_)), (double)((float)p_147515_4_ - (float)p_147515_1_.yCoord + p_147515_1_.func_145862_c(p_147515_8_)), (double)((float)p_147515_6_ - (float)p_147515_1_.zCoord + p_147515_1_.func_145859_d(p_147515_8_)));
             var10.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
             if (var9 == Blocks.piston_head && p_147515_1_.func_145860_a(p_147515_8_) < 0.5F)
             {
-                this.field_147516_b.renderPistonExtensionAllFaces(var9, p_147515_1_.x, p_147515_1_.y, p_147515_1_.z, false);
+                this.field_147516_b.renderPistonExtensionAllFaces(var9, p_147515_1_.xCoord, p_147515_1_.yCoord, p_147515_1_.zCoord, false);
             }
-            else if (p_147515_1_.func_145867_d() && !p_147515_1_.func_145868_b())
+            else if (p_147515_1_.func_145867_d() && !p_147515_1_.isExtending())
             {
-                Blocks.piston_head.func_150086_a(((BlockPistonBase)var9).func_150073_e());
-                this.field_147516_b.renderPistonExtensionAllFaces(Blocks.piston_head, p_147515_1_.x, p_147515_1_.y, p_147515_1_.z, p_147515_1_.func_145860_a(p_147515_8_) < 0.5F);
+                Blocks.piston_head.func_150086_a(((BlockPistonBase)var9).getPistonExtensionTexture());
+                this.field_147516_b.renderPistonExtensionAllFaces(Blocks.piston_head, p_147515_1_.xCoord, p_147515_1_.yCoord, p_147515_1_.zCoord, p_147515_1_.func_145860_a(p_147515_8_) < 0.5F);
                 Blocks.piston_head.func_150087_e();
-                var10.setTranslation((double)((float)p_147515_2_ - (float)p_147515_1_.x), (double)((float)p_147515_4_ - (float)p_147515_1_.y), (double)((float)p_147515_6_ - (float)p_147515_1_.z));
-                this.field_147516_b.renderPistonBaseAllFaces(var9, p_147515_1_.x, p_147515_1_.y, p_147515_1_.z);
+                var10.setTranslation((double)((float)p_147515_2_ - (float)p_147515_1_.xCoord), (double)((float)p_147515_4_ - (float)p_147515_1_.yCoord), (double)((float)p_147515_6_ - (float)p_147515_1_.zCoord));
+                this.field_147516_b.renderPistonBaseAllFaces(var9, p_147515_1_.xCoord, p_147515_1_.yCoord, p_147515_1_.zCoord);
             }
             else
             {
-                this.field_147516_b.renderBlockAllFaces(var9, p_147515_1_.x, p_147515_1_.y, p_147515_1_.z);
+                this.field_147516_b.renderBlockAllFaces(var9, p_147515_1_.xCoord, p_147515_1_.yCoord, p_147515_1_.zCoord);
             }
 
             var10.setTranslation(0.0D, 0.0D, 0.0D);

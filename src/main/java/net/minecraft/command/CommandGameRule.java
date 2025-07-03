@@ -7,7 +7,6 @@ import net.minecraft.world.GameRules;
 
 public class CommandGameRule extends CommandBase
 {
-    private static final String __OBFID = "CL_00000475";
 
     public String getCommandName()
     {

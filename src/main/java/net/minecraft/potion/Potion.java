@@ -91,7 +91,6 @@ public class Potion
     private int statusIconIndex = -1;
     private double effectiveness;
     private boolean usable;
-    private static final String __OBFID = "CL_00001528";
 
     protected Potion(int par1, boolean par2, int par3)
     {

@@ -12,7 +12,6 @@ public class BlockWorkbench extends Block
 {
     private IIcon field_150035_a;
     private IIcon field_150034_b;
-    private static final String __OBFID = "CL_00000221";
 
     protected BlockWorkbench()
     {
@@ -28,7 +27,7 @@ public class BlockWorkbench extends Block
         return p_149691_1_ == 1 ? this.field_150035_a : (p_149691_1_ == 0 ? Blocks.planks.getBlockTextureFromSide(p_149691_1_) : (p_149691_1_ != 2 && p_149691_1_ != 4 ? this.blockIcon : this.field_150034_b));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
         this.field_150035_a = p_149651_1_.registerIcon(this.getTextureName() + "_top");

@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 
 public class CommandTestForBlock extends CommandBase
 {
-    private static final String __OBFID = "CL_00001181";
 
     public String getCommandName()
     {

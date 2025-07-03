@@ -10,7 +10,6 @@ public class CombatEntry
     private final float field_94565_d;
     private final String field_94566_e;
     private final float field_94564_f;
-    private static final String __OBFID = "CL_00001519";
 
     public CombatEntry(DamageSource par1DamageSource, int par2, float par3, float par4, String par5Str, float par6)
     {

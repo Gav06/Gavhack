@@ -6,7 +6,6 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class BlockNetherrack extends Block
 {
-    private static final String __OBFID = "CL_00000275";
 
     public BlockNetherrack()
     {
@@ -14,7 +13,7 @@ public class BlockNetherrack extends Block
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
         return MapColor.field_151655_K;
     }

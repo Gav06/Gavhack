@@ -34,7 +34,6 @@ public class GuiScreenConfigureWorld extends GuiScreen
     private GuiButton field_146887_B;
     private GuiButton field_146888_C;
     private boolean field_146883_D;
-    private static final String __OBFID = "CL_00000773";
 
     public GuiScreenConfigureWorld(GuiScreen par1GuiScreen, McoServer par2McoServer)
     {
@@ -265,19 +264,19 @@ public class GuiScreenConfigureWorld extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.field_146890_h.func_148446_a(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.configure.world.title", new Object[0]), this.width / 2, 17, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.name", new Object[0]), this.field_146891_i, this.func_146873_a(1), 10526880);
-        this.drawString(this.fontRendererObj, this.field_146885_g.func_148801_b(), this.field_146891_i, this.func_146873_a(2), 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.description", new Object[0]), this.field_146891_i, this.func_146873_a(4), 10526880);
-        this.drawString(this.fontRendererObj, this.field_146885_g.func_148800_a(), this.field_146891_i, this.func_146873_a(5), 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.status", new Object[0]), this.field_146891_i, this.func_146873_a(7), 10526880);
-        this.drawString(this.fontRendererObj, this.func_146870_p(), this.field_146891_i, this.func_146873_a(8), 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.invited", new Object[0]), this.field_146896_s, this.func_146873_a(1), 10526880);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.field_146890_h.func_148446_a(par1, par2, par3);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.configure.world.title", new Object[0]), this.width / 2, 17, 16777215);
+        this.drawString(this.fontRenderer, I18n.format("mco.configure.world.name", new Object[0]), this.field_146891_i, this.func_146873_a(1), 10526880);
+        this.drawString(this.fontRenderer, this.field_146885_g.func_148801_b(), this.field_146891_i, this.func_146873_a(2), 16777215);
+        this.drawString(this.fontRenderer, I18n.format("mco.configure.world.description", new Object[0]), this.field_146891_i, this.func_146873_a(4), 10526880);
+        this.drawString(this.fontRenderer, this.field_146885_g.func_148800_a(), this.field_146891_i, this.func_146873_a(5), 16777215);
+        this.drawString(this.fontRenderer, I18n.format("mco.configure.world.status", new Object[0]), this.field_146891_i, this.func_146873_a(7), 10526880);
+        this.drawString(this.fontRenderer, this.func_146870_p(), this.field_146891_i, this.func_146873_a(8), 16777215);
+        this.drawString(this.fontRenderer, I18n.format("mco.configure.world.invited", new Object[0]), this.field_146896_s, this.func_146873_a(1), 10526880);
+        super.drawScreen(par1, par2, par3);
     }
 
     private String func_146870_p()
@@ -295,7 +294,6 @@ public class GuiScreenConfigureWorld extends GuiScreen
 
     class SelectionListInvited extends SelectionListBase
     {
-        private static final String __OBFID = "CL_00000775";
 
         public SelectionListInvited()
         {
@@ -338,7 +336,7 @@ public class GuiScreenConfigureWorld extends GuiScreen
         private void func_148463_b(int p_148463_1_, int p_148463_2_, int p_148463_3_, int p_148463_4_, Tessellator p_148463_5_)
         {
             String var6 = (String)GuiScreenConfigureWorld.this.field_146885_g.field_148806_f.get(p_148463_1_);
-            GuiScreenConfigureWorld.this.drawString(GuiScreenConfigureWorld.this.fontRendererObj, var6, p_148463_2_ + 2, p_148463_3_ + 1, 16777215);
+            GuiScreenConfigureWorld.this.drawString(GuiScreenConfigureWorld.this.fontRenderer, var6, p_148463_2_ + 2, p_148463_3_ + 1, 16777215);
         }
     }
 }

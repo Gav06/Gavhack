@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 
 public abstract class EntityMob extends EntityCreature implements IMob
 {
-    private static final String __OBFID = "CL_00001692";
 
     public EntityMob(World par1World)
     {

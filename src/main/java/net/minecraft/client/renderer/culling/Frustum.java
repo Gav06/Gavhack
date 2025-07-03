@@ -8,7 +8,6 @@ public class Frustum implements ICamera
     private double xPosition;
     private double yPosition;
     private double zPosition;
-    private static final String __OBFID = "CL_00000976";
 
     public void setPosition(double par1, double par3, double par5)
     {
@@ -28,9 +27,9 @@ public class Frustum implements ICamera
     /**
      * Returns true if the bounding box is inside all 6 clipping planes, otherwise returns false.
      */
-    public boolean isBoundingBoxInFrustum(AxisAlignedBB par1AxisAlignedBB)
+    public boolean isBoundingBoxInFrustum(AxisAlignedBB aabb)
     {
-        return this.isBoxInFrustum(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ, par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+        return this.isBoxInFrustum(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
     }
 
     public boolean isBoxInFrustumFully(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)

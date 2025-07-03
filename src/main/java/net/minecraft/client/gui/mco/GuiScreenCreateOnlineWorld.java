@@ -31,7 +31,6 @@ public class GuiScreenCreateOnlineWorld extends ScreenWithCallback
     private boolean field_146762_t;
     private String field_146761_u = "You must enter a name!";
     private WorldTemplate field_146759_v;
-    private static final String __OBFID = "CL_00000776";
 
     public GuiScreenCreateOnlineWorld(GuiScreen par1GuiScreen)
     {
@@ -57,7 +56,7 @@ public class GuiScreenCreateOnlineWorld extends ScreenWithCallback
         this.buttonList.clear();
         this.buttonList.add(new GuiButton(field_146767_i, this.width / 2 - 100, this.height / 4 + 120 + 17, 97, 20, I18n.format("mco.create.world", new Object[0])));
         this.buttonList.add(new GuiButton(field_146764_r, this.width / 2 + 5, this.height / 4 + 120 + 17, 95, 20, I18n.format("gui.cancel", new Object[0])));
-        this.field_146760_g = new GuiTextField(this.fontRendererObj, this.width / 2 - 100, 65, 200, 20);
+        this.field_146760_g = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 65, 200, 20);
         this.field_146760_g.setFocused(true);
 
         if (this.field_146766_h != null)
@@ -149,19 +148,19 @@ public class GuiScreenCreateOnlineWorld extends ScreenWithCallback
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.selectServer.create", new Object[0]), this.width / 2, 11, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.name", new Object[0]), this.width / 2 - 100, 52, 10526880);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.selectServer.create", new Object[0]), this.width / 2, 11, 16777215);
+        this.drawString(this.fontRenderer, I18n.format("mco.configure.world.name", new Object[0]), this.width / 2 - 100, 52, 10526880);
 
         if (this.field_146762_t)
         {
-            this.drawCenteredString(this.fontRendererObj, this.field_146761_u, this.width / 2, 167, 16711680);
+            this.drawCenteredString(this.fontRenderer, this.field_146761_u, this.width / 2, 167, 16711680);
         }
 
         this.field_146760_g.drawTextBox();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 
     public void func_146735_a(WorldTemplate p_146756_1_)
@@ -178,7 +177,6 @@ public class GuiScreenCreateOnlineWorld extends ScreenWithCallback
     {
         private final String field_148427_c;
         private final WorldTemplate field_148426_d;
-        private static final String __OBFID = "CL_00000777";
 
         public TaskWorldCreation(String p_i45036_2_, WorldTemplate p_i45036_3_)
         {
@@ -206,15 +204,10 @@ public class GuiScreenCreateOnlineWorld extends ScreenWithCallback
 
                 GuiScreenCreateOnlineWorld.this.mc.displayGuiScreen(GuiScreenCreateOnlineWorld.this.field_146758_f);
             }
-            catch (ExceptionMcoService var5)
+            catch (ExceptionMcoService | UnsupportedEncodingException var5)
             {
-                GuiScreenCreateOnlineWorld.logger.error("Couldn\'t create world");
+                GuiScreenCreateOnlineWorld.logger.error("Couldn't create world");
                 this.func_148416_a(var5.toString());
-            }
-            catch (UnsupportedEncodingException var6)
-            {
-                GuiScreenCreateOnlineWorld.logger.error("Couldn\'t create world");
-                this.func_148416_a(var6.getLocalizedMessage());
             } catch (Exception var8)
             {
                 GuiScreenCreateOnlineWorld.logger.error("Could not create world");

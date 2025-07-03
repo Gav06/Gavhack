@@ -10,7 +10,6 @@ public class JsonException extends IOException
 {
     private final List field_151383_a = Lists.newArrayList();
     private final String field_151382_b;
-    private static final String __OBFID = "CL_00001414";
 
     public JsonException(String p_i45279_1_)
     {
@@ -64,7 +63,6 @@ public class JsonException extends IOException
     {
         private String field_151376_a;
         private final List field_151375_b;
-        private static final String __OBFID = "CL_00001416";
 
         private Entry()
         {

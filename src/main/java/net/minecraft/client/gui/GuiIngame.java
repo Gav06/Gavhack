@@ -41,6 +41,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.chunk.Chunk;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -72,7 +73,6 @@ public class GuiIngame extends Gui
 
     /** The ItemStack that is currently being highlighted */
     private ItemStack highlightingItemStack;
-    private static final String __OBFID = "CL_00000661";
 
     public GuiIngame(Minecraft par1Minecraft)
     {
@@ -83,18 +83,18 @@ public class GuiIngame extends Gui
     /**
      * Render the ingame overlay with quick icon bar, ...
      */
-    public void renderGameOverlay(float par1, boolean par2, int par3, int par4)
+    public void renderGameOverlay(float partialTicks, boolean par2, int par3, int par4)
     {
-        ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-        int var6 = var5.getScaledWidth();
-        int var7 = var5.getScaledHeight();
+        ScaledResolution scaledResolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+        int var6 = scaledResolution.getScaledWidth();
+        int var7 = scaledResolution.getScaledHeight();
         FontRenderer var8 = this.mc.fontRenderer;
         this.mc.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
 
         if (Minecraft.isFancyGraphicsEnabled())
         {
-            this.renderVignette(this.mc.thePlayer.getBrightness(par1), var6, var7);
+            this.renderVignette(this.mc.thePlayer.getBrightness(partialTicks), var6, var7);
         }
         else
         {
@@ -110,7 +110,7 @@ public class GuiIngame extends Gui
 
         if (!this.mc.thePlayer.isPotionActive(Potion.confusion))
         {
-            float var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * par1;
+            float var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * partialTicks;
 
             if (var10 > 0.0F)
             {
@@ -152,7 +152,7 @@ public class GuiIngame extends Gui
             {
                 var12 = var6 / 2 - 90 + var11 * 20 + 2;
                 var13 = var7 - 16 - 3;
-                this.renderInventorySlot(var11, var12, var13, par1);
+                this.renderInventorySlot(var11, var12, var13, partialTicks);
             }
 
             RenderHelper.disableStandardItemLighting();
@@ -331,11 +331,11 @@ public class GuiIngame extends Gui
             var22 = MathHelper.floor_double(this.mc.thePlayer.posX);
             var23 = MathHelper.floor_double(this.mc.thePlayer.posY);
             int var24 = MathHelper.floor_double(this.mc.thePlayer.posZ);
-            this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", this.mc.thePlayer.posX, var22, var22 >> 4, var22 & 15), 2, 64, 14737632);
-            this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", this.mc.thePlayer.boundingBox.minY, this.mc.thePlayer.posY), 2, 72, 14737632);
-            this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", this.mc.thePlayer.posZ, var24, var24 >> 4, var24 & 15), 2, 80, 14737632);
-            int directionInt = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-            this.drawString(var8, "f: " + directionInt + " (" + Direction.directions[directionInt] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
+            this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var22), Integer.valueOf(var22 >> 4), Integer.valueOf(var22 & 15)}), 2, 64, 14737632);
+            this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
+            this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var24), Integer.valueOf(var24 >> 4), Integer.valueOf(var24 & 15)}), 2, 80, 14737632);
+            int var25 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+            this.drawString(var8, "f: " + var25 + " (" + Direction.directions[var25] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
 
             if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var22, var23, var24))
             {
@@ -343,11 +343,11 @@ public class GuiIngame extends Gui
                 this.drawString(var8, "lc: " + (var26.getTopFilledSegment() + 15) + " b: " + var26.getBiomeGenForWorldCoords(var22 & 15, var24 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var26.getSavedLightValue(EnumSkyBlock.Block, var22 & 15, var23, var24 & 15) + " sl: " + var26.getSavedLightValue(EnumSkyBlock.Sky, var22 & 15, var23, var24 & 15) + " rl: " + var26.getBlockLightValue(var22 & 15, var23, var24 & 15, 0), 2, 96, 14737632);
             }
 
-            this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", this.mc.thePlayer.capabilities.getWalkSpeed(), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var22, var24))), 2, 104, 14737632);
+            this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var22, var24))}), 2, 104, 14737632);
 
             if (this.mc.entityRenderer != null && this.mc.entityRenderer.isShaderActive())
             {
-                this.drawString(var8, String.format("shader: %s", this.mc.entityRenderer.getShaderGroup().getShaderGroupName()), 2, 112, 14737632);
+                this.drawString(var8, String.format("shader: %s", new Object[] {this.mc.entityRenderer.getShaderGroup().getShaderGroupName()}), 2, 112, 14737632);
             }
 
             GL11.glPopMatrix();
@@ -357,7 +357,7 @@ public class GuiIngame extends Gui
         if (this.recordPlayingUpFor > 0)
         {
             this.mc.mcProfiler.startSection("overlayMessage");
-            var34 = (float)this.recordPlayingUpFor - par1;
+            var34 = (float)this.recordPlayingUpFor - partialTicks;
             var13 = (int)(var34 * 255.0F / 20.0F);
 
             if (var13 > 255)
@@ -399,7 +399,7 @@ public class GuiIngame extends Gui
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, (float)(var7 - 48), 0.0F);
         this.mc.mcProfiler.startSection("chat");
-        this.persistantChatGUI.renderChat(this.updateCounter);
+        this.persistantChatGUI.drawChat(this.updateCounter);
         this.mc.mcProfiler.endSection();
         GL11.glPopMatrix();
         var40 = this.mc.theWorld.getScoreboard().func_96539_a(0);
@@ -498,8 +498,7 @@ public class GuiIngame extends Gui
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        EventBus.INSTANCE.post(new RenderOverlayEvent(par1, mc.fontRenderer, var5));
-
+        EventBus.INSTANCE.post(new RenderOverlayEvent(partialTicks, mc.fontRenderer, scaledResolution));
     }
 
     private void func_96136_a(ScoreObjective par1ScoreObjective, int par2, int par3, FontRenderer par4FontRenderer)
@@ -914,11 +913,13 @@ public class GuiIngame extends Gui
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
     }
 
+    // draws portal overlay
     private void func_130015_b(float par1, int par2, int par3)
     {
-        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getPortal().getValue())
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getPortal().getValue()) {
             return;
-
+        }
+        
         if (par1 < 1.0F)
         {
             par1 *= par1;
@@ -933,21 +934,26 @@ public class GuiIngame extends Gui
         GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
         IIcon var4 = Blocks.portal.getBlockTextureFromSide(1);
         this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        Tessellator var9 = getTessellator(par2, par3, var4);
+        var9.draw();
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    private static @NotNull Tessellator getTessellator(double par2, double par3, IIcon var4) {
         float var5 = var4.getMinU();
         float var6 = var4.getMinV();
         float var7 = var4.getMaxU();
         float var8 = var4.getMaxV();
         Tessellator var9 = Tessellator.instance;
         var9.startDrawingQuads();
-        var9.addVertexWithUV(0.0D, (double)par3, -90.0D, (double)var5, (double)var8);
-        var9.addVertexWithUV((double)par2, (double)par3, -90.0D, (double)var7, (double)var8);
-        var9.addVertexWithUV((double)par2, 0.0D, -90.0D, (double)var7, (double)var6);
-        var9.addVertexWithUV(0.0D, 0.0D, -90.0D, (double)var5, (double)var6);
-        var9.draw();
-        GL11.glDepthMask(true);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        var9.addVertexWithUV(0.0D, par3, -90.0D, var5, var8);
+        var9.addVertexWithUV(par2, par3, -90.0D, var7, var8);
+        var9.addVertexWithUV(par2, 0.0D, -90.0D, var7, var6);
+        var9.addVertexWithUV(0.0D, 0.0D, -90.0D, var5, var6);
+        return var9;
     }
 
     /**
@@ -1029,7 +1035,7 @@ public class GuiIngame extends Gui
         this.recordIsPlaying = par2;
     }
 
-    public GuiNewChat getChatGUI()
+    public GuiNewChat getChatGui()
     {
         return this.persistantChatGUI;
     }

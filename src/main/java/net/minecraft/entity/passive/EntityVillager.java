@@ -77,7 +77,6 @@ public class EntityVillager extends EntityAgeable implements IMerchant, INpc
 
     /** Selling list of Blacksmith items. */
     private static final Map blacksmithSellingList = new HashMap();
-    private static final String __OBFID = "CL_00001707";
 
     public EntityVillager(World par1World)
     {
@@ -244,7 +243,7 @@ public class EntityVillager extends EntityAgeable implements IMerchant, INpc
         this.setProfession(par1NBTTagCompound.getInteger("Profession"));
         this.wealth = par1NBTTagCompound.getInteger("Riches");
 
-        if (par1NBTTagCompound.func_150297_b("Offers", 10))
+        if (par1NBTTagCompound.hasKey("Offers", 10))
         {
             NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Offers");
             this.buyingList = new MerchantRecipeList(var2);

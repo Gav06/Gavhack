@@ -21,7 +21,6 @@ public class EntityAITasks
     private final Profiler theProfiler;
     private int tickCount;
     private int tickRate = 3;
-    private static final String __OBFID = "CL_00001588";
 
     public EntityAITasks(Profiler par1Profiler)
     {
@@ -189,7 +188,6 @@ public class EntityAITasks
     {
         public EntityAIBase action;
         public int priority;
-        private static final String __OBFID = "CL_00001589";
 
         public EntityAITaskEntry(int par2, EntityAIBase par3EntityAIBase)
         {

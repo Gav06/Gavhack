@@ -15,7 +15,6 @@ public class ItemSword extends Item
 {
     private float field_150934_a;
     private final Item.ToolMaterial field_150933_b;
-    private static final String __OBFID = "CL_00000072";
 
     public ItemSword(Item.ToolMaterial p_i45356_1_)
     {
@@ -31,15 +30,15 @@ public class ItemSword extends Item
         return this.field_150933_b.getDamageVsEntity();
     }
 
-    public float func_150893_a(ItemStack p_150893_1_, Block p_150893_2_)
+    public float func_150893_a(ItemStack stack, Block block)
     {
-        if (p_150893_2_ == Blocks.web)
+        if (block == Blocks.web)
         {
             return 15.0F;
         }
         else
         {
-            Material var3 = p_150893_2_.getMaterial();
+            Material var3 = block.getMaterial();
             return var3 != Material.plants && var3 != Material.vine && var3 != Material.coral && var3 != Material.leaves && var3 != Material.field_151572_C ? 1.0F : 1.5F;
         }
     }

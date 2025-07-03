@@ -81,6 +81,7 @@ import net.minecraft.src.CompactArrayList;
 import net.minecraft.src.Config;
 import net.minecraft.src.CustomColorizer;
 import net.minecraft.src.CustomSky;
+import net.minecraft.src.DynamicLights;
 import net.minecraft.src.EntitySorterFast;
 import net.minecraft.src.RandomMobs;
 import net.minecraft.src.Reflector;
@@ -102,9 +103,11 @@ import net.minecraft.world.WorldProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
+import shadersmod.client.Shaders;
 
 public class RenderGlobal implements IWorldAccess {
 
@@ -118,7 +121,7 @@ public class RenderGlobal implements IWorldAccess {
    public final TextureManager field_72770_i;
    public CompactArrayList field_72767_j = new CompactArrayList(100, 0.8F);
    private WorldRenderer[] field_72768_k;
-   private WorldRenderer[] field_72765_l;
+   public WorldRenderer[] field_72765_l;
    private int field_72766_m;
    private int field_72763_n;
    private int field_72764_o;
@@ -167,7 +170,6 @@ public class RenderGlobal implements IWorldAccess {
    int field_147600_j = -999;
    int field_147601_k = -999;
    int field_72757_g;
-   private static final String __OBFID = "CL_00000954";
    private IntBuffer glListBuffer = BufferUtils.createIntBuffer(65536);
    double prevReposX;
    double prevReposY;
@@ -188,7 +190,6 @@ public class RenderGlobal implements IWorldAccess {
    private long lastMovedTime = System.currentTimeMillis();
    private long lastActionTime = System.currentTimeMillis();
    private static AxisAlignedBB AABB_INFINITE = AxisAlignedBB.func_72330_a(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-   private static final String __OBFID = "CL_00000954";
 
    public RenderGlobal(Minecraft par1Minecraft) {
       this.glListClouds = GLAllocation.func_74526_a(1);
@@ -320,6 +321,10 @@ public class RenderGlobal implements IWorldAccess {
       RenderManager.field_78727_a.func_78717_a(par1WorldClient);
       this.field_72769_h = par1WorldClient;
       this.field_147592_B = new RenderBlocks(par1WorldClient);
+      if(Config.isDynamicLights()) {
+         DynamicLights.clear();
+      }
+
       if(par1WorldClient != null) {
          par1WorldClient.func_72954_a(this);
          this.func_72712_a();
@@ -338,6 +343,10 @@ public class RenderGlobal implements IWorldAccess {
             for(numChunks = 0; numChunks < this.field_72765_l.length; ++numChunks) {
                this.field_72765_l[numChunks].func_78911_c();
             }
+         }
+
+         if(Config.isDynamicLights()) {
+            DynamicLights.clear();
          }
 
          numChunks = this.field_72777_q.field_71474_y.field_151451_c;
@@ -459,11 +468,11 @@ public class RenderGlobal implements IWorldAccess {
             this.countTileEntitiesRendered = 0;
             EntityLivingBase var17 = this.field_72777_q.field_71451_h;
             double var19 = var17.field_70142_S + (var17.field_70165_t - var17.field_70142_S) * (double)p_147589_3_;
-            double oldFancyGraphics = var17.field_70137_T + (var17.field_70163_u - var17.field_70137_T) * (double)p_147589_3_;
-            double aabb = var17.field_70136_U + (var17.field_70161_v - var17.field_70136_U) * (double)p_147589_3_;
+            double isShaders = var17.field_70137_T + (var17.field_70163_u - var17.field_70137_T) * (double)p_147589_3_;
+            double te = var17.field_70136_U + (var17.field_70161_v - var17.field_70136_U) * (double)p_147589_3_;
             TileEntityRendererDispatcher.field_147554_b = var19;
-            TileEntityRendererDispatcher.field_147555_c = oldFancyGraphics;
-            TileEntityRendererDispatcher.field_147552_d = aabb;
+            TileEntityRendererDispatcher.field_147555_c = isShaders;
+            TileEntityRendererDispatcher.field_147552_d = te;
             this.field_72769_h.field_72984_F.func_76318_c("staticentities");
             if(this.field_147595_R) {
                RenderManager.field_78725_b = 0.0D;
@@ -474,19 +483,19 @@ public class RenderGlobal implements IWorldAccess {
 
             GL11.glMatrixMode(5888);
             GL11.glPushMatrix();
-            GL11.glTranslated(-var19, -oldFancyGraphics, -aabb);
+            GL11.glTranslated(-var19, -isShaders, -te);
             GL11.glCallList(this.field_147594_S);
             GL11.glPopMatrix();
             RenderManager.field_78725_b = var19;
-            RenderManager.field_78726_c = oldFancyGraphics;
-            RenderManager.field_78723_d = aabb;
+            RenderManager.field_78726_c = isShaders;
+            RenderManager.field_78723_d = te;
          }
 
          this.field_72777_q.field_71460_t.func_78463_b((double)p_147589_3_);
          this.field_72769_h.field_72984_F.func_76318_c("global");
-         List var24 = this.field_72769_h.func_72910_y();
+         List var25 = this.field_72769_h.func_72910_y();
          if(pass == 0) {
-            this.field_72748_H = var24.size();
+            this.field_72748_H = var25.size();
          }
 
          if(Config.isFogOff() && this.field_72777_q.field_71460_t.fogStandard) {
@@ -494,83 +503,109 @@ public class RenderGlobal implements IWorldAccess {
          }
 
          int var18;
-         Entity var25;
+         Entity var26;
          for(var18 = 0; var18 < this.field_72769_h.field_73007_j.size(); ++var18) {
-            var25 = (Entity)this.field_72769_h.field_73007_j.get(var18);
-            if(!hasEntityShouldRenderInPass || Reflector.callBoolean(var25, Reflector.ForgeEntity_shouldRenderInPass, new Object[]{Integer.valueOf(pass)})) {
+            var26 = (Entity)this.field_72769_h.field_73007_j.get(var18);
+            if(!hasEntityShouldRenderInPass || Reflector.callBoolean(var26, Reflector.ForgeEntity_shouldRenderInPass, new Object[]{Integer.valueOf(pass)})) {
                ++this.field_72749_I;
-               if(var25.func_145770_h(var4, var6, var8)) {
-                  RenderManager.field_78727_a.func_147937_a(var25, p_147589_3_);
+               if(var26.func_145770_h(var4, var6, var8)) {
+                  RenderManager.field_78727_a.func_147937_a(var26, p_147589_3_);
                }
             }
          }
 
          this.field_72769_h.field_72984_F.func_76318_c("entities");
-         boolean var26 = this.field_72777_q.field_71474_y.field_74347_j;
+         boolean var27 = Config.isShaders();
+         if(var27) {
+            Shaders.beginEntities();
+         }
+
+         boolean oldFancyGraphics = this.field_72777_q.field_71474_y.field_74347_j;
          this.field_72777_q.field_71474_y.field_74347_j = Config.isDroppedItemsFancy();
 
-         for(var18 = 0; var18 < var24.size(); ++var18) {
-            var25 = (Entity)var24.get(var18);
-            if(!hasEntityShouldRenderInPass || Reflector.callBoolean(var25, Reflector.ForgeEntity_shouldRenderInPass, new Object[]{Integer.valueOf(pass)})) {
-               boolean te = var25.func_145770_h(var4, var6, var8) && (var25.field_70158_ak || p_147589_2_.func_78546_a(var25.field_70121_D) || var25.field_70153_n == this.field_72777_q.field_71439_g);
-               if(!te && var25 instanceof EntityLiving) {
-                  EntityLiving var28 = (EntityLiving)var25;
-                  if(var28.func_110167_bD() && var28.func_110166_bE() != null) {
-                     Entity teClass = var28.func_110166_bE();
-                     te = p_147589_2_.func_78546_a(teClass.field_70121_D);
+         for(var18 = 0; var18 < var25.size(); ++var18) {
+            var26 = (Entity)var25.get(var18);
+            if(!hasEntityShouldRenderInPass || Reflector.callBoolean(var26, Reflector.ForgeEntity_shouldRenderInPass, new Object[]{Integer.valueOf(pass)})) {
+               boolean var28 = var26.func_145770_h(var4, var6, var8) && (var26.field_70158_ak || p_147589_2_.func_78546_a(var26.field_70121_D) || var26.field_70153_n == this.field_72777_q.field_71439_g);
+               if(!var28 && var26 instanceof EntityLiving) {
+                  EntityLiving aabb = (EntityLiving)var26;
+                  if(aabb.func_110167_bD() && aabb.func_110166_bE() != null) {
+                     Entity teClass = aabb.func_110166_bE();
+                     var28 = p_147589_2_.func_78546_a(teClass.field_70121_D);
                   }
                }
 
-               if(te && (var25 != this.field_72777_q.field_71451_h || this.field_72777_q.field_71474_y.field_74320_O != 0 || this.field_72777_q.field_71451_h.func_70608_bn()) && this.field_72769_h.func_72899_e(MathHelper.func_76128_c(var25.field_70165_t), 0, MathHelper.func_76128_c(var25.field_70161_v))) {
+               if(var28 && (var26 != this.field_72777_q.field_71451_h || this.field_72777_q.field_71474_y.field_74320_O != 0 || this.field_72777_q.field_71451_h.func_70608_bn()) && this.field_72769_h.func_72899_e(MathHelper.func_76128_c(var26.field_70165_t), 0, MathHelper.func_76128_c(var26.field_70161_v))) {
                   ++this.field_72749_I;
-                  if(var25.getClass() == EntityItemFrame.class) {
-                     var25.field_70155_l = 0.06D;
+                  if(var26.getClass() == EntityItemFrame.class) {
+                     var26.field_70155_l = 0.06D;
                   }
 
-                  this.renderedEntity = var25;
-                  RenderManager.field_78727_a.func_147937_a(var25, p_147589_3_);
+                  this.renderedEntity = var26;
+                  if(var27) {
+                     Shaders.nextEntity(var26);
+                  }
+
+                  RenderManager.field_78727_a.func_147937_a(var26, p_147589_3_);
                   this.renderedEntity = null;
                }
             }
          }
 
-         this.field_72777_q.field_71474_y.field_74347_j = var26;
+         this.field_72777_q.field_71474_y.field_74347_j = oldFancyGraphics;
          this.field_72769_h.field_72984_F.func_76318_c("blockentities");
+         if(var27) {
+            Shaders.endEntities();
+            Shaders.beginBlockEntities();
+         }
+
          RenderHelper.func_74519_b();
 
          for(var18 = 0; var18 < this.field_147598_a.size(); ++var18) {
-            TileEntity var27 = (TileEntity)this.field_147598_a.get(var18);
-            if(!hasTileEntityShouldRenderInPass || Reflector.callBoolean(var27, Reflector.ForgeTileEntity_shouldRenderInPass, new Object[]{Integer.valueOf(pass)})) {
-               AxisAlignedBB var29 = this.getTileEntityBoundingBox(var27);
-               if(var29 == AABB_INFINITE || p_147589_2_.func_78546_a(var29)) {
-                  Class var30 = var27.getClass();
-                  if(var30 == TileEntitySign.class && !Config.zoomMode) {
+            TileEntity var29 = (TileEntity)this.field_147598_a.get(var18);
+            if(!hasTileEntityShouldRenderInPass || Reflector.callBoolean(var29, Reflector.ForgeTileEntity_shouldRenderInPass, new Object[]{Integer.valueOf(pass)})) {
+               AxisAlignedBB var30 = this.getTileEntityBoundingBox(var29);
+               if(var30 == AABB_INFINITE || p_147589_2_.func_78546_a(var30)) {
+                  Class var31 = var29.getClass();
+                  if(var31 == TileEntitySign.class && !Config.zoomMode) {
                      EntityClientPlayerMP block = this.field_72777_q.field_71439_g;
-                     double distSq = var27.func_145835_a(block.field_70165_t, block.field_70163_u, block.field_70161_v);
+                     double distSq = var29.func_145835_a(block.field_70165_t, block.field_70163_u, block.field_70161_v);
                      if(distSq > 256.0D) {
                         FontRenderer fr = TileEntityRendererDispatcher.field_147556_a.func_147548_a();
                         fr.enabled = false;
-                        TileEntityRendererDispatcher.field_147556_a.func_147544_a(var27, p_147589_3_);
+                        if(Config.isShaders()) {
+                           Shaders.nextBlockEntity(var29);
+                        }
+
+                        TileEntityRendererDispatcher.field_147556_a.func_147544_a(var29, p_147589_3_);
                         ++this.countTileEntitiesRendered;
                         fr.enabled = true;
                         continue;
                      }
                   }
 
-                  if(var30 == TileEntityChest.class) {
-                     Block var31 = this.field_72769_h.func_147439_a(var27.field_145851_c, var27.field_145848_d, var27.field_145849_e);
-                     if(!(var31 instanceof BlockChest)) {
+                  if(var31 == TileEntityChest.class) {
+                     Block var32 = this.field_72769_h.func_147439_a(var29.field_145851_c, var29.field_145848_d, var29.field_145849_e);
+                     if(!(var32 instanceof BlockChest)) {
                         continue;
                      }
                   }
 
-                  TileEntityRendererDispatcher.field_147556_a.func_147544_a(var27, p_147589_3_);
+                  if(Config.isShaders()) {
+                     Shaders.nextBlockEntity(var29);
+                  }
+
+                  TileEntityRendererDispatcher.field_147556_a.func_147544_a(var29, p_147589_3_);
                   ++this.countTileEntitiesRendered;
                }
             }
          }
 
          this.field_72777_q.field_71460_t.func_78483_a((double)p_147589_3_);
+         if(var27) {
+            Shaders.endBlockEntities();
+         }
+
          this.field_72769_h.field_72984_F.func_76319_b();
       }
 
@@ -581,7 +616,7 @@ public class RenderGlobal implements IWorldAccess {
    }
 
    public String func_72723_d() {
-      return "E: " + this.field_72749_I + "/" + this.field_72748_H + ". B: " + this.field_72750_J + ", I: " + (this.field_72748_H - this.field_72750_J - this.field_72749_I) + ", " + Config.getVersion();
+      return "E: " + this.field_72749_I + "/" + this.field_72748_H + ". B: " + this.field_72750_J + ", I: " + (this.field_72748_H - this.field_72750_J - this.field_72749_I) + ", " + Config.getVersionDebug();
    }
 
    public void func_147584_b() {
@@ -678,6 +713,10 @@ public class RenderGlobal implements IWorldAccess {
 
    public int func_72719_a(EntityLivingBase player, int renderPass, double partialTicks) {
       this.renderViewEntity = player;
+      if(Config.isDynamicLights()) {
+         DynamicLights.update(this);
+      }
+
       Profiler profiler = this.field_72769_h.field_72984_F;
       profiler.func_76320_a("sortchunks");
       int num;
@@ -835,9 +874,17 @@ public class RenderGlobal implements IWorldAccess {
             }
 
             GL11.glDisable(3553);
+            if(Config.isShaders()) {
+               Shaders.disableTexture2D();
+            }
+
             GL11.glDisable(2896);
             GL11.glDisable(3008);
             GL11.glDisable(2912);
+            if(Config.isShaders()) {
+               Shaders.disableFog();
+            }
+
             GL11.glColorMask(false, false, false, false);
             GL11.glDepthMask(false);
             profiler.func_76320_a("check");
@@ -914,8 +961,16 @@ public class RenderGlobal implements IWorldAccess {
 
             GL11.glDepthMask(true);
             GL11.glEnable(3553);
+            if(Config.isShaders()) {
+               Shaders.enableTexture2D();
+            }
+
             GL11.glEnable(3008);
             GL11.glEnable(2912);
+            if(Config.isShaders()) {
+               Shaders.enableFog();
+            }
+
             profiler.func_76318_c("render");
          }
       } else {
@@ -1106,6 +1161,11 @@ public class RenderGlobal implements IWorldAccess {
    }
 
    public void func_72734_e() {
+      if(Config.isShaders() && Keyboard.isKeyDown(61) && Keyboard.isKeyDown(19)) {
+         Shaders.uninit();
+         Shaders.loadShaderPack();
+      }
+
       ++this.field_72773_u;
       if(this.field_72773_u % 20 == 0) {
          Iterator var1 = this.field_72738_E.values().iterator();
@@ -1137,6 +1197,10 @@ public class RenderGlobal implements IWorldAccess {
          }
 
          GL11.glDisable(2912);
+         if(Config.isShaders()) {
+            Shaders.disableFog();
+         }
+
          GL11.glDisable(3008);
          GL11.glEnable(3042);
          OpenGlHelper.func_148821_a(770, 771, 1, 0);
@@ -1179,11 +1243,24 @@ public class RenderGlobal implements IWorldAccess {
 
          GL11.glDepthMask(true);
          GL11.glEnable(3553);
+         if(Config.isShaders()) {
+            Shaders.enableTexture2D();
+         }
+
          GL11.glEnable(3008);
+         GL11.glDisable(3042);
       } else if(this.field_72777_q.field_71441_e.field_73011_w.func_76569_d()) {
          GL11.glDisable(3553);
+         if(Config.isShaders()) {
+            Shaders.disableTexture2D();
+         }
+
          Vec3 var21 = this.field_72769_h.func_72833_a(this.field_72777_q.field_71451_h, par1);
          var21 = CustomColorizer.getSkyColor(var21, this.field_72777_q.field_71441_e, this.field_72777_q.field_71451_h.field_70165_t, this.field_72777_q.field_71451_h.field_70163_u + 1.0D, this.field_72777_q.field_71451_h.field_70161_v);
+         if(Config.isShaders()) {
+            Shaders.setSkyColor(var21);
+         }
+
          float var231 = (float)var21.field_72450_a;
          float var4 = (float)var21.field_72448_b;
          float var5 = (float)var21.field_72449_c;
@@ -1201,12 +1278,24 @@ public class RenderGlobal implements IWorldAccess {
          Tessellator var241 = Tessellator.field_78398_a;
          GL11.glDepthMask(false);
          GL11.glEnable(2912);
+         if(Config.isShaders()) {
+            Shaders.enableFog();
+         }
+
          GL11.glColor3f(var231, var4, var5);
+         if(Config.isShaders()) {
+            Shaders.preSkyList();
+         }
+
          if(Config.isSkyEnabled()) {
             GL11.glCallList(this.field_72771_w);
          }
 
          GL11.glDisable(2912);
+         if(Config.isShaders()) {
+            Shaders.disableFog();
+         }
+
          GL11.glDisable(3008);
          GL11.glEnable(3042);
          OpenGlHelper.func_148821_a(770, 771, 1, 0);
@@ -1222,6 +1311,10 @@ public class RenderGlobal implements IWorldAccess {
          float var17;
          if(var251 != null && Config.isSunMoonEnabled()) {
             GL11.glDisable(3553);
+            if(Config.isShaders()) {
+               Shaders.disableTexture2D();
+            }
+
             GL11.glShadeModel(7425);
             GL11.glPushMatrix();
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
@@ -1258,6 +1351,10 @@ public class RenderGlobal implements IWorldAccess {
          }
 
          GL11.glEnable(3553);
+         if(Config.isShaders()) {
+            Shaders.enableTexture2D();
+         }
+
          OpenGlHelper.func_148821_a(770, 1, 1, 0);
          GL11.glPushMatrix();
          var8 = 1.0F - this.field_72769_h.func_72867_j(par1);
@@ -1267,10 +1364,18 @@ public class RenderGlobal implements IWorldAccess {
          GL11.glColor4f(1.0F, 1.0F, 1.0F, var8);
          GL11.glTranslatef(var9, var10, var11);
          GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-         CustomSky.renderSky(this.field_72769_h, this.field_72770_i, this.field_72769_h.func_72826_c(par1), var8);
+         CustomSky.renderSky(this.field_72769_h, this.field_72770_i, par1);
+         if(Config.isShaders()) {
+            Shaders.preCelestialRotate();
+         }
+
          GL11.glRotatef(this.field_72769_h.func_72826_c(par1) * 360.0F, 1.0F, 0.0F, 0.0F);
-         if(Config.isSunMoonEnabled()) {
-            var12 = 30.0F;
+         if(Config.isShaders()) {
+            Shaders.postCelestialRotate();
+         }
+
+         var12 = 30.0F;
+         if(Config.isSunTexture()) {
             this.field_72770_i.func_110577_a(field_110928_i);
             var241.func_78382_b();
             var241.func_78374_a((double)(-var12), 100.0D, (double)(-var12), 0.0D, 0.0D);
@@ -1278,7 +1383,10 @@ public class RenderGlobal implements IWorldAccess {
             var241.func_78374_a((double)var12, 100.0D, (double)var12, 1.0D, 1.0D);
             var241.func_78374_a((double)(-var12), 100.0D, (double)var12, 0.0D, 1.0D);
             var241.func_78381_a();
-            var12 = 20.0F;
+         }
+
+         var12 = 20.0F;
+         if(Config.isMoonTexture()) {
             this.field_72770_i.func_110577_a(field_110927_h);
             int var26 = this.field_72769_h.func_72853_d();
             int var27 = var26 % 4;
@@ -1296,6 +1404,10 @@ public class RenderGlobal implements IWorldAccess {
          }
 
          GL11.glDisable(3553);
+         if(Config.isShaders()) {
+            Shaders.disableTexture2D();
+         }
+
          var20 = this.field_72769_h.func_72880_h(par1) * var8;
          if(var20 > 0.0F && Config.isStarsEnabled() && !CustomSky.hasSkyLayers(this.field_72769_h)) {
             GL11.glColor4f(var20, var20, var20, var20);
@@ -1306,8 +1418,16 @@ public class RenderGlobal implements IWorldAccess {
          GL11.glDisable(3042);
          GL11.glEnable(3008);
          GL11.glEnable(2912);
+         if(Config.isShaders()) {
+            Shaders.enableFog();
+         }
+
          GL11.glPopMatrix();
          GL11.glDisable(3553);
+         if(Config.isShaders()) {
+            Shaders.disableTexture2D();
+         }
+
          GL11.glColor3f(0.0F, 0.0F, 0.0F);
          double var28 = this.field_72777_q.field_71439_g.func_70666_h(par1).field_72448_b - this.field_72769_h.func_72919_O();
          if(var28 < 0.0D) {
@@ -1361,6 +1481,10 @@ public class RenderGlobal implements IWorldAccess {
 
          GL11.glPopMatrix();
          GL11.glEnable(3553);
+         if(Config.isShaders()) {
+            Shaders.enableTexture2D();
+         }
+
          GL11.glDepthMask(true);
       }
 
@@ -1737,6 +1861,10 @@ public class RenderGlobal implements IWorldAccess {
          GL11.glPolygonOffset(-3.0F, -3.0F);
          GL11.glEnable('\u8037');
          GL11.glEnable(3008);
+         if(Config.isShaders()) {
+            Shaders.beginBlockDestroyProgress();
+         }
+
          par1Tessellator.func_78382_b();
          par1Tessellator.func_78373_b(-var4, -var6, -var8);
          par1Tessellator.func_78383_c();
@@ -1759,6 +1887,10 @@ public class RenderGlobal implements IWorldAccess {
 
          par1Tessellator.func_78381_a();
          par1Tessellator.func_78373_b(0.0D, 0.0D, 0.0D);
+         if(Config.isShaders()) {
+            Shaders.endBlockDestroyProgress();
+         }
+
          GL11.glDisable(3008);
          GL11.glPolygonOffset(0.0F, 0.0F);
          GL11.glDisable('\u8037');
@@ -1776,6 +1908,10 @@ public class RenderGlobal implements IWorldAccess {
          GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);
          GL11.glLineWidth(2.0F);
          GL11.glDisable(3553);
+         if(Config.isShaders()) {
+            Shaders.disableTexture2D();
+         }
+
          GL11.glDepthMask(false);
          float var5 = 0.002F;
          Block var6 = this.field_72769_h.func_147439_a(par2MovingObjectPosition.field_72311_b, par2MovingObjectPosition.field_72312_c, par2MovingObjectPosition.field_72309_d);
@@ -1789,6 +1925,10 @@ public class RenderGlobal implements IWorldAccess {
 
          GL11.glDepthMask(true);
          GL11.glEnable(3553);
+         if(Config.isShaders()) {
+            Shaders.enableTexture2D();
+         }
+
          GL11.glDisable(3042);
       }
 
@@ -1944,8 +2084,6 @@ public class RenderGlobal implements IWorldAccess {
          var16.func_71507_a("Name", par1Str);
          var16.func_71500_a("Position", new Callable() {
 
-            private static final String __OBFID = "CL_00000955";
-            private static final String __OBFID = "CL_00000955";
 
             public String call() {
                return CrashReportCategory.func_85074_a(par2, par4, par6);
@@ -2151,9 +2289,18 @@ public class RenderGlobal implements IWorldAccess {
 
    public void func_72703_a(Entity par1Entity) {
       RandomMobs.entityLoaded(par1Entity, this.field_72769_h);
+      if(Config.isDynamicLights()) {
+         DynamicLights.entityAdded(par1Entity, this);
+      }
+
    }
 
-   public void func_72709_b(Entity par1Entity) {}
+   public void func_72709_b(Entity par1Entity) {
+      if(Config.isDynamicLights()) {
+         DynamicLights.entityRemoved(par1Entity, this);
+      }
+
+   }
 
    public void func_72728_f() {
       GLAllocation.func_74523_b(this.field_72778_p);

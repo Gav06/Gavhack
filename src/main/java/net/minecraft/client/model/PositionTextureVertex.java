@@ -7,7 +7,6 @@ public class PositionTextureVertex
     public Vec3 vector3D;
     public float texturePositionX;
     public float texturePositionY;
-    private static final String __OBFID = "CL_00000862";
 
     public PositionTextureVertex(float par1, float par2, float par3, float par4, float par5)
     {

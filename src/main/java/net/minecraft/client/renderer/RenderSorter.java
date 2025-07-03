@@ -7,7 +7,6 @@ public class RenderSorter implements Comparator
 {
     /** The entity (usually the player) that the camera is inside. */
     private EntityLivingBase baseEntity;
-    private static final String __OBFID = "CL_00000943";
 
     public RenderSorter(EntityLivingBase par1EntityLivingBase)
     {

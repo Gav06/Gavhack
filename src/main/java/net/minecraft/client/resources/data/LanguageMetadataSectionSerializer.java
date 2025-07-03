@@ -14,7 +14,6 @@ import net.minecraft.util.JsonUtils;
 
 public class LanguageMetadataSectionSerializer extends BaseMetadataSectionSerializer
 {
-    private static final String __OBFID = "CL_00001111";
 
     public LanguageMetadataSection deserialize(JsonElement par1JsonElement, Type par2Type, JsonDeserializationContext par3JsonDeserializationContext)
     {

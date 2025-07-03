@@ -26,6 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
+import shadersmod.client.ShadersTex;
 
 public class TextureManager implements ITickable, IResourceManagerReloadListener {
 
@@ -35,8 +36,6 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
    private final List field_110583_b = Lists.newArrayList();
    private final Map field_110584_c = Maps.newHashMap();
    private IResourceManager field_110582_d;
-   private static final String __OBFID = "CL_00001064";
-   private static final String __OBFID = "CL_00001064";
 
    public TextureManager(IResourceManager par1ResourceManager) {
       this.field_110582_d = par1ResourceManager;
@@ -53,7 +52,12 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
          this.func_110579_a(par1ResourceLocation, (ITextureObject)var2);
       }
 
-      TextureUtil.func_94277_a(((ITextureObject)var2).func_110552_b());
+      if(Config.isShaders()) {
+         ShadersTex.bindTexture((ITextureObject)var2);
+      } else {
+         TextureUtil.func_94277_a(((ITextureObject)var2).func_110552_b());
+      }
+
    }
 
    public ResourceLocation func_130087_a(int par1) {
@@ -95,8 +99,6 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
          var6.func_71507_a("Resource location", par1ResourceLocation);
          var6.func_71500_a("Texture object class", new Callable() {
 
-            private static final String __OBFID = "CL_00001065";
-            private static final String __OBFID = "CL_00001065";
 
             public String call() {
                return par2TextureObject.getClass().getName();
@@ -149,6 +151,7 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
    public void func_147645_c(ResourceLocation p_147645_1_) {
       ITextureObject var2 = this.func_110581_b(p_147645_1_);
       if(var2 != null) {
+         this.field_110585_a.remove(p_147645_1_);
          TextureUtil.func_147942_a(var2.func_110552_b());
       }
 
@@ -161,9 +164,10 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
 
       while(it.hasNext()) {
          ResourceLocation var2 = (ResourceLocation)it.next();
-         if(var2.func_110623_a().startsWith("mcpatcher/")) {
-            ITextureObject var3 = (ITextureObject)this.field_110585_a.get(var2);
-            int glTexId = var3.func_110552_b();
+         String var3 = var2.func_110623_a();
+         if(var3.startsWith("mcpatcher/") || var3.startsWith("optifine/")) {
+            ITextureObject tex = (ITextureObject)this.field_110585_a.get(var2);
+            int glTexId = tex.func_110552_b();
             if(glTexId > 0) {
                GL11.glDeleteTextures(glTexId);
             }

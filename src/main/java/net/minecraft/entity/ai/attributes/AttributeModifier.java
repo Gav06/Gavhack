@@ -14,7 +14,6 @@ public class AttributeModifier
      * If false, this modifier is not saved in NBT. Used for "natural" modifiers like speed boost from sprinting
      */
     private boolean isSaved;
-    private static final String __OBFID = "CL_00001564";
 
     public AttributeModifier(String par1Str, double par2, int par4)
     {

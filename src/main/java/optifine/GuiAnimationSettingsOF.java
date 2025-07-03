@@ -8,6 +8,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 
+import java.util.Objects;
+
 public class GuiAnimationSettingsOF extends GuiScreen
 {
     private GuiScreen prevScreen;
@@ -59,8 +61,8 @@ public class GuiAnimationSettingsOF extends GuiScreen
         {
             if (guibutton.id < 200 && guibutton instanceof GuiOptionButton)
             {
-                this.settings.setOptionValue(((GuiOptionButton)guibutton).func_146136_c(), 1);
-                guibutton.displayString = this.settings.getKeyBinding(GameSettings.Options.getEnumOptions(guibutton.id));
+                this.settings.setOptionValue(((GuiOptionButton)guibutton).returnEnumOptions(), 1);
+                guibutton.displayString = this.settings.getKeyBinding(Objects.requireNonNull(GameSettings.Options.getEnumOptions(guibutton.id)));
             }
 
             if (guibutton.id == 200)
@@ -95,7 +97,7 @@ public class GuiAnimationSettingsOF extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRenderer, this.title, this.width / 2, 20, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

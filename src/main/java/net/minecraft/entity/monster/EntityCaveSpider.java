@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class EntityCaveSpider extends EntitySpider
 {
-    private static final String __OBFID = "CL_00001683";
 
     public EntityCaveSpider(World par1World)
     {

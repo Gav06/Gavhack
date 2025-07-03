@@ -14,7 +14,6 @@ public class BlockStoneSlab extends BlockSlab
 {
     public static final String[] field_150006_b = new String[] {"stone", "sand", "wood", "cobble", "brick", "smoothStoneBrick", "netherBrick", "quartz"};
     private IIcon field_150007_M;
-    private static final String __OBFID = "CL_00000320";
 
     public BlockStoneSlab(boolean p_i45431_1_)
     {
@@ -37,7 +36,7 @@ public class BlockStoneSlab extends BlockSlab
         return var3 == 0 ? (p_149691_1_ != 1 && p_149691_1_ != 0 ? this.field_150007_M : this.blockIcon) : (var3 == 1 ? Blocks.sandstone.getBlockTextureFromSide(p_149691_1_) : (var3 == 2 ? Blocks.planks.getBlockTextureFromSide(p_149691_1_) : (var3 == 3 ? Blocks.cobblestone.getBlockTextureFromSide(p_149691_1_) : (var3 == 4 ? Blocks.brick_block.getBlockTextureFromSide(p_149691_1_) : (var3 == 5 ? Blocks.stonebrick.getIcon(p_149691_1_, 0) : (var3 == 6 ? Blocks.nether_brick.getBlockTextureFromSide(1) : (var3 == 7 ? Blocks.quartz_block.getBlockTextureFromSide(p_149691_1_) : this.blockIcon)))))));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("stone_slab_top");
         this.field_150007_M = p_149651_1_.registerIcon("stone_slab_side");

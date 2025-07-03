@@ -20,7 +20,6 @@ public class BlockPane extends Block
     private final boolean field_150099_b;
     private final String field_150101_M;
     private IIcon field_150102_N;
-    private static final String __OBFID = "CL_00000322";
 
     protected BlockPane(String p_i45432_1_, String p_i45432_2_, Material p_i45432_3_, boolean p_i45432_4_)
     {
@@ -54,17 +53,17 @@ public class BlockPane extends Block
         return this.blockMaterial == Material.glass ? 41 : 18;
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
-        return blockAccess.getBlock(x, y, z) == this ? false : super.shouldSideBeRendered(blockAccess, x, y, z, side);
+        return p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_) == this ? false : super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_);
     }
 
     public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_)
     {
-        boolean var8 = this.func_150098_a(p_149743_1_.getBlock(p_149743_2_, p_149743_3_, p_149743_4_ - 1));
-        boolean var9 = this.func_150098_a(p_149743_1_.getBlock(p_149743_2_, p_149743_3_, p_149743_4_ + 1));
-        boolean var10 = this.func_150098_a(p_149743_1_.getBlock(p_149743_2_ - 1, p_149743_3_, p_149743_4_));
-        boolean var11 = this.func_150098_a(p_149743_1_.getBlock(p_149743_2_ + 1, p_149743_3_, p_149743_4_));
+        boolean var8 = this.canPaneConnectToBlock(p_149743_1_.getBlock(p_149743_2_, p_149743_3_, p_149743_4_ - 1));
+        boolean var9 = this.canPaneConnectToBlock(p_149743_1_.getBlock(p_149743_2_, p_149743_3_, p_149743_4_ + 1));
+        boolean var10 = this.canPaneConnectToBlock(p_149743_1_.getBlock(p_149743_2_ - 1, p_149743_3_, p_149743_4_));
+        boolean var11 = this.canPaneConnectToBlock(p_149743_1_.getBlock(p_149743_2_ + 1, p_149743_3_, p_149743_4_));
 
         if ((!var10 || !var11) && (var10 || var11 || var8 || var9))
         {
@@ -119,10 +118,10 @@ public class BlockPane extends Block
         float var6 = 0.5625F;
         float var7 = 0.4375F;
         float var8 = 0.5625F;
-        boolean var9 = this.func_150098_a(p_149719_1_.getBlock(p_149719_2_, p_149719_3_, p_149719_4_ - 1));
-        boolean var10 = this.func_150098_a(p_149719_1_.getBlock(p_149719_2_, p_149719_3_, p_149719_4_ + 1));
-        boolean var11 = this.func_150098_a(p_149719_1_.getBlock(p_149719_2_ - 1, p_149719_3_, p_149719_4_));
-        boolean var12 = this.func_150098_a(p_149719_1_.getBlock(p_149719_2_ + 1, p_149719_3_, p_149719_4_));
+        boolean var9 = this.canPaneConnectToBlock(p_149719_1_.getBlock(p_149719_2_, p_149719_3_, p_149719_4_ - 1));
+        boolean var10 = this.canPaneConnectToBlock(p_149719_1_.getBlock(p_149719_2_, p_149719_3_, p_149719_4_ + 1));
+        boolean var11 = this.canPaneConnectToBlock(p_149719_1_.getBlock(p_149719_2_ - 1, p_149719_3_, p_149719_4_));
+        boolean var12 = this.canPaneConnectToBlock(p_149719_1_.getBlock(p_149719_2_ + 1, p_149719_3_, p_149719_4_));
 
         if ((!var11 || !var12) && (var11 || var12 || var9 || var10))
         {
@@ -166,7 +165,7 @@ public class BlockPane extends Block
         return this.field_150102_N;
     }
 
-    public final boolean func_150098_a(Block p_150098_1_)
+    public final boolean canPaneConnectToBlock(Block p_150098_1_)
     {
         return p_150098_1_.func_149730_j() || p_150098_1_ == this || p_150098_1_ == Blocks.glass || p_150098_1_ == Blocks.stained_glass || p_150098_1_ == Blocks.stained_glass_pane || p_150098_1_ instanceof BlockPane;
     }
@@ -185,7 +184,7 @@ public class BlockPane extends Block
         return new ItemStack(Item.getItemFromBlock(this), 1, p_149644_1_);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.field_150101_M);
         this.field_150102_N = p_149651_1_.registerIcon(this.field_150100_a);

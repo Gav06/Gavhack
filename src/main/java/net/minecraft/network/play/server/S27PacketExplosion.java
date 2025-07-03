@@ -21,36 +21,35 @@ public class S27PacketExplosion extends Packet
     public float motionX;
     public float motionY;
     public float motionZ;
-    private static final String __OBFID = "CL_00001300";
 
     public S27PacketExplosion() {}
 
-    public S27PacketExplosion(double p_i45193_1_, double p_i45193_3_, double p_i45193_5_, float p_i45193_7_, List p_i45193_8_, Vec3 p_i45193_9_)
+    public S27PacketExplosion(double x, double y, double z, float size, List p_i45193_8_, Vec3 knockbackVec)
     {
-        this.field_149158_a = p_i45193_1_;
-        this.field_149156_b = p_i45193_3_;
-        this.field_149157_c = p_i45193_5_;
-        this.field_149154_d = p_i45193_7_;
+        this.field_149158_a = x;
+        this.field_149156_b = y;
+        this.field_149157_c = z;
+        this.field_149154_d = size;
         this.field_149155_e = new ArrayList(p_i45193_8_);
 
-        if (p_i45193_9_ != null)
+        if (knockbackVec != null)
         {
-            this.motionX = (float)p_i45193_9_.xCoord;
-            this.motionY = (float)p_i45193_9_.yCoord;
-            this.motionZ = (float)p_i45193_9_.zCoord;
+            this.motionX = (float)knockbackVec.xCoord;
+            this.motionY = (float)knockbackVec.yCoord;
+            this.motionZ = (float)knockbackVec.zCoord;
         }
     }
 
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer p_148837_1_) throws IOException
+    public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.field_149158_a = (double)p_148837_1_.readFloat();
-        this.field_149156_b = (double)p_148837_1_.readFloat();
-        this.field_149157_c = (double)p_148837_1_.readFloat();
-        this.field_149154_d = p_148837_1_.readFloat();
-        int var2 = p_148837_1_.readInt();
+        this.field_149158_a = buf.readFloat();
+        this.field_149156_b = buf.readFloat();
+        this.field_149157_c = buf.readFloat();
+        this.field_149154_d = buf.readFloat();
+        int var2 = buf.readInt();
         this.field_149155_e = new ArrayList(var2);
         int var3 = (int)this.field_149158_a;
         int var4 = (int)this.field_149156_b;
@@ -58,46 +57,46 @@ public class S27PacketExplosion extends Packet
 
         for (int var6 = 0; var6 < var2; ++var6)
         {
-            int var7 = p_148837_1_.readByte() + var3;
-            int var8 = p_148837_1_.readByte() + var4;
-            int var9 = p_148837_1_.readByte() + var5;
+            int var7 = buf.readByte() + var3;
+            int var8 = buf.readByte() + var4;
+            int var9 = buf.readByte() + var5;
             this.field_149155_e.add(new ChunkPosition(var7, var8, var9));
         }
 
-        this.motionX = p_148837_1_.readFloat();
-        this.motionY = p_148837_1_.readFloat();
-        this.motionZ = p_148837_1_.readFloat();
+        this.motionX = buf.readFloat();
+        this.motionY = buf.readFloat();
+        this.motionZ = buf.readFloat();
     }
 
     /**
      * Writes the raw packet data to the data stream.
      */
-    public void writePacketData(PacketBuffer p_148840_1_) throws IOException
+    public void writePacketData(PacketBuffer buf) throws IOException
     {
-        p_148840_1_.writeFloat((float)this.field_149158_a);
-        p_148840_1_.writeFloat((float)this.field_149156_b);
-        p_148840_1_.writeFloat((float)this.field_149157_c);
-        p_148840_1_.writeFloat(this.field_149154_d);
-        p_148840_1_.writeInt(this.field_149155_e.size());
+        buf.writeFloat((float)this.field_149158_a);
+        buf.writeFloat((float)this.field_149156_b);
+        buf.writeFloat((float)this.field_149157_c);
+        buf.writeFloat(this.field_149154_d);
+        buf.writeInt(this.field_149155_e.size());
         int var2 = (int)this.field_149158_a;
         int var3 = (int)this.field_149156_b;
         int var4 = (int)this.field_149157_c;
-        Iterator it = this.field_149155_e.iterator();
+        Iterator var5 = this.field_149155_e.iterator();
 
-        while (it.hasNext())
+        while (var5.hasNext())
         {
-            ChunkPosition var6 = (ChunkPosition)it.next();
+            ChunkPosition var6 = (ChunkPosition)var5.next();
             int var7 = var6.field_151329_a - var2;
             int var8 = var6.field_151327_b - var3;
             int var9 = var6.field_151328_c - var4;
-            p_148840_1_.writeByte(var7);
-            p_148840_1_.writeByte(var8);
-            p_148840_1_.writeByte(var9);
+            buf.writeByte(var7);
+            buf.writeByte(var8);
+            buf.writeByte(var9);
         }
 
-        p_148840_1_.writeFloat(this.motionX);
-        p_148840_1_.writeFloat(this.motionY);
-        p_148840_1_.writeFloat(this.motionZ);
+        buf.writeFloat(this.motionX);
+        buf.writeFloat(this.motionY);
+        buf.writeFloat(this.motionZ);
     }
 
     public void processPacket(INetHandlerPlayClient p_149151_1_)
@@ -105,17 +104,17 @@ public class S27PacketExplosion extends Packet
         p_149151_1_.handleExplosion(this);
     }
 
-    public float getMotionX()
+    public float func_149149_c()
     {
         return this.motionX;
     }
 
-    public float getMotionY()
+    public float func_149144_d()
     {
         return this.motionY;
     }
 
-    public float getMotionZ()
+    public float func_149147_e()
     {
         return this.motionZ;
     }

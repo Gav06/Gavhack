@@ -18,7 +18,6 @@ public class ServerStatusResponse
     private ServerStatusResponse.PlayerCountData field_151324_b;
     private ServerStatusResponse.MinecraftProtocolVersionIdentifier field_151325_c;
     private String field_151323_d;
-    private static final String __OBFID = "CL_00001385";
 
     public IChatComponent func_151317_a()
     {
@@ -64,7 +63,6 @@ public class ServerStatusResponse
     {
         private final String field_151306_a;
         private final int field_151305_b;
-        private static final String __OBFID = "CL_00001389";
 
         public MinecraftProtocolVersionIdentifier(String p_i45275_1_, int p_i45275_2_)
         {
@@ -84,7 +82,6 @@ public class ServerStatusResponse
 
         public static class Serializer implements JsonDeserializer, JsonSerializer
         {
-            private static final String __OBFID = "CL_00001390";
 
             public ServerStatusResponse.MinecraftProtocolVersionIdentifier deserialize(JsonElement p_151309_1_, Type p_151309_2_, JsonDeserializationContext p_151309_3_)
             {
@@ -109,7 +106,6 @@ public class ServerStatusResponse
 
     public static class Serializer implements JsonDeserializer, JsonSerializer
     {
-        private static final String __OBFID = "CL_00001388";
 
         public ServerStatusResponse deserialize(JsonElement p_151314_1_, Type p_151314_2_, JsonDeserializationContext p_151314_3_)
         {
@@ -177,7 +173,6 @@ public class ServerStatusResponse
         private final int field_151336_a;
         private final int field_151334_b;
         private GameProfile[] field_151335_c;
-        private static final String __OBFID = "CL_00001386";
 
         public PlayerCountData(int p_i45274_1_, int p_i45274_2_)
         {
@@ -207,7 +202,6 @@ public class ServerStatusResponse
 
         public static class Serializer implements JsonDeserializer, JsonSerializer
         {
-            private static final String __OBFID = "CL_00001387";
 
             public ServerStatusResponse.PlayerCountData deserialize(JsonElement p_151311_1_, Type p_151311_2_, JsonDeserializationContext p_151311_3_)
             {

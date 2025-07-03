@@ -10,7 +10,6 @@ import net.minecraft.network.login.INetHandlerLoginServer;
 public class C00PacketLoginStart extends Packet
 {
     private GameProfile field_149305_a;
-    private static final String __OBFID = "CL_00001379";
 
     public C00PacketLoginStart() {}
 

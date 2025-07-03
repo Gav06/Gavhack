@@ -12,7 +12,6 @@ public class EntityDropParticleFX extends EntityFX
 
     /** The height of the current bob */
     private int bobTimer;
-    private static final String __OBFID = "CL_00000901";
 
     public EntityDropParticleFX(World par1World, double par2, double par4, double par6, Material par8Material)
     {
@@ -120,7 +119,7 @@ public class EntityDropParticleFX extends EntityFX
 
         if (var1.isLiquid() || var1.isSolid())
         {
-            double var2 = (double)((float)(MathHelper.floor_double(this.posY) + 1) - BlockLiquid.func_149801_b(this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))));
+            double var2 = (double)((float)(MathHelper.floor_double(this.posY) + 1) - BlockLiquid.getFluidHeightPercent(this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))));
 
             if (this.posY < var2)
             {

@@ -45,13 +45,12 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     private Slot field_147064_C;
     private boolean field_147057_D;
     private CreativeCrafting field_147059_E;
-    private static final String __OBFID = "CL_00000752";
 
     public GuiContainerCreative(EntityPlayer par1EntityPlayer)
     {
         super(new GuiContainerCreative.ContainerCreative(par1EntityPlayer));
         par1EntityPlayer.openContainer = this.field_147002_h;
-        this.field_146291_p = true;
+        this.allowUserInput = true;
         this.field_147000_g = 136;
         this.field_146999_f = 195;
     }
@@ -253,7 +252,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
             super.initGui();
             this.buttonList.clear();
             Keyboard.enableRepeatEvents(true);
-            this.field_147062_A = new GuiTextField(this.fontRendererObj, this.field_147003_i + 82, this.field_147009_r + 6, 89, this.fontRendererObj.FONT_HEIGHT);
+            this.field_147062_A = new GuiTextField(this.fontRenderer, this.field_147003_i + 82, this.field_147009_r + 6, 89, this.fontRenderer.FONT_HEIGHT);
             this.field_147062_A.func_146203_f(15);
             this.field_147062_A.func_146185_a(false);
             this.field_147062_A.func_146189_e(false);
@@ -395,7 +394,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         if (var3.drawInForegroundOfTab())
         {
             GL11.glDisable(GL11.GL_BLEND);
-            this.fontRendererObj.drawString(I18n.format(var3.getTranslatedTabLabel(), new Object[0]), 8, 6, 4210752);
+            this.fontRenderer.drawString(I18n.format(var3.getTranslatedTabLabel(), new Object[0]), 8, 6, 4210752);
         }
     }
 
@@ -585,7 +584,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         boolean var4 = Mouse.isButtonDown(0);
         int var5 = this.field_147003_i;
@@ -595,7 +594,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         int var9 = var7 + 14;
         int var10 = var8 + 112;
 
-        if (!this.field_147065_z && var4 && mouseX >= var7 && mouseY >= var8 && mouseX < var9 && mouseY < var10)
+        if (!this.field_147065_z && var4 && par1 >= var7 && par2 >= var8 && par1 < var9 && par2 < var10)
         {
             this.field_147066_y = this.func_147055_p();
         }
@@ -609,7 +608,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
         if (this.field_147066_y)
         {
-            this.field_147067_x = ((float)(mouseY - var8) - 7.5F) / ((float)(var10 - var8) - 15.0F);
+            this.field_147067_x = ((float)(par2 - var8) - 7.5F) / ((float)(var10 - var8) - 15.0F);
 
             if (this.field_147067_x < 0.0F)
             {
@@ -624,7 +623,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
             ((GuiContainerCreative.ContainerCreative)this.field_147002_h).func_148329_a(this.field_147067_x);
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
         CreativeTabs[] var11 = CreativeTabs.creativeTabArray;
         int var12 = var11.length;
 
@@ -632,15 +631,15 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         {
             CreativeTabs var14 = var11[var13];
 
-            if (this.func_147052_b(var14, mouseX, mouseY))
+            if (this.func_147052_b(var14, par1, par2))
             {
                 break;
             }
         }
 
-        if (this.field_147064_C != null && field_147058_w == CreativeTabs.tabInventory.getTabIndex() && this.func_146978_c(this.field_147064_C.xDisplayPosition, this.field_147064_C.yDisplayPosition, 16, 16, mouseX, mouseY))
+        if (this.field_147064_C != null && field_147058_w == CreativeTabs.tabInventory.getTabIndex() && this.func_146978_c(this.field_147064_C.xDisplayPosition, this.field_147064_C.yDisplayPosition, 16, 16, par1, par2))
         {
-            this.func_146279_a(I18n.format("inventory.binSlot", new Object[0]), mouseX, mouseY);
+            this.func_146279_a(I18n.format("inventory.binSlot", new Object[0]), par1, par2);
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -694,7 +693,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
                 }
             }
 
-            this.drawToolTipBox(var4, p_146285_2_, p_146285_3_);
+            this.drawTooltipBox(var4, p_146285_2_, p_146285_3_);
         }
         else
         {
@@ -740,7 +739,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
 
         if (var4 == CreativeTabs.tabInventory)
         {
-            GuiInventory.drawEntityInGui(this.field_147003_i + 43, this.field_147009_r + 45, 20, (float)(this.field_147003_i + 43 - p_146976_2_), (float)(this.field_147009_r + 45 - 30 - p_146976_3_), this.mc.thePlayer);
+            GuiInventory.func_147046_a(this.field_147003_i + 43, this.field_147009_r + 45, 20, (float)(this.field_147003_i + 43 - p_146976_2_), (float)(this.field_147009_r + 45 - 30 - p_146976_3_), this.mc.thePlayer);
         }
     }
 
@@ -848,16 +847,16 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         GL11.glDisable(GL11.GL_LIGHTING);
         this.drawTexturedModalRect(var7, var8, var5, var6, 28, var9);
         this.zLevel = 100.0F;
-        itemRender.zLevel = 100.0F;
+        renderItemGs.zLevel = 100.0F;
         var7 += 6;
         var8 += 8 + (var3 ? 1 : -1);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         ItemStack var10 = p_147051_1_.getIconItemStack();
-        itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var10, var7, var8);
-        itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var10, var7, var8);
+        renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var10, var7, var8);
+        renderItemGs.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var10, var7, var8);
         GL11.glDisable(GL11.GL_LIGHTING);
-        itemRender.zLevel = 0.0F;
+        renderItemGs.zLevel = 0.0F;
         this.zLevel = 0.0F;
     }
 
@@ -882,7 +881,6 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     static class ContainerCreative extends Container
     {
         public List field_148330_a = new ArrayList();
-        private static final String __OBFID = "CL_00000753";
 
         public ContainerCreative(EntityPlayer par1EntityPlayer)
         {
@@ -974,7 +972,6 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     class CreativeSlot extends Slot
     {
         private final Slot field_148332_b;
-        private static final String __OBFID = "CL_00000754";
 
         public CreativeSlot(Slot par2Slot, int par3)
         {

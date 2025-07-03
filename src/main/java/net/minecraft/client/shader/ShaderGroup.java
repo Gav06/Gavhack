@@ -32,7 +32,6 @@ public class ShaderGroup
     private int mainFramebufferHeight;
     private float field_148036_j;
     private float field_148037_k;
-    private static final String __OBFID = "CL_00001041";
 
     public ShaderGroup(IResourceManager p_i45088_1_, Framebuffer p_i45088_2_, ResourceLocation p_i45088_3_) throws JsonException
     {

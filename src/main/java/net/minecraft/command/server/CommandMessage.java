@@ -15,7 +15,6 @@ import net.minecraft.util.IChatComponent;
 
 public class CommandMessage extends CommandBase
 {
-    private static final String __OBFID = "CL_00000641";
 
     public List getCommandAliases()
     {

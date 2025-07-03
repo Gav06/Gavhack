@@ -12,13 +12,12 @@ public class C0BPacketEntityAction extends Packet
     private int field_149517_a;
     private int field_149515_b;
     private int field_149516_c;
-    private static final String __OBFID = "CL_00001366";
 
     public C0BPacketEntityAction() {}
 
-    public C0BPacketEntityAction(Entity entity, int action)
+    public C0BPacketEntityAction(Entity p_i45259_1_, int p_i45259_2_)
     {
-        this(entity, action, 0);
+        this(p_i45259_1_, p_i45259_2_, 0);
     }
 
     public C0BPacketEntityAction(Entity p_i45260_1_, int p_i45260_2_, int p_i45260_3_)

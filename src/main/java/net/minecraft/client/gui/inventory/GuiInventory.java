@@ -17,12 +17,11 @@ public class GuiInventory extends InventoryEffectRenderer
 {
     private float field_147048_u;
     private float field_147047_v;
-    private static final String __OBFID = "CL_00000761";
 
     public GuiInventory(EntityPlayer par1EntityPlayer)
     {
         super(par1EntityPlayer.inventoryContainer);
-        this.field_146291_p = true;
+        this.allowUserInput = true;
     }
 
     /**
@@ -55,17 +54,17 @@ public class GuiInventory extends InventoryEffectRenderer
 
     protected void func_146979_b(int p_146979_1_, int p_146979_2_)
     {
-        this.fontRendererObj.drawString(I18n.format("container.crafting"), 86, 16, 4210752);
+        this.fontRenderer.drawString(I18n.format("container.crafting", new Object[0]), 86, 16, 4210752);
     }
 
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.field_147048_u = (float) mouseX;
-        this.field_147047_v = (float) mouseY;
+        super.drawScreen(par1, par2, par3);
+        this.field_147048_u = (float)par1;
+        this.field_147047_v = (float)par2;
     }
 
     protected void func_146976_a(float p_146976_1_, int p_146976_2_, int p_146976_3_)
@@ -75,38 +74,38 @@ public class GuiInventory extends InventoryEffectRenderer
         int var4 = this.field_147003_i;
         int var5 = this.field_147009_r;
         this.drawTexturedModalRect(var4, var5, 0, 0, this.field_146999_f, this.field_147000_g);
-        drawEntityInGui(var4 + 51, var5 + 75, 30, (float)(var4 + 51) - this.field_147048_u, (float)(var5 + 75 - 50) - this.field_147047_v, this.mc.thePlayer);
+        func_147046_a(var4 + 51, var5 + 75, 30, (float)(var4 + 51) - this.field_147048_u, (float)(var5 + 75 - 50) - this.field_147047_v, this.mc.thePlayer);
     }
 
-    public static void drawEntityInGui(int x, int y, int scale, float yaw, float pitch, EntityLivingBase entity)
+    public static void func_147046_a(int p_147046_0_, int p_147046_1_, int p_147046_2_, float p_147046_3_, float p_147046_4_, EntityLivingBase p_147046_5_)
     {
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)x, (float)y, 50.0F);
-        GL11.glScalef((float)(-scale), (float)scale, (float)scale);
+        GL11.glTranslatef((float)p_147046_0_, (float)p_147046_1_, 50.0F);
+        GL11.glScalef((float)(-p_147046_2_), (float)p_147046_2_, (float)p_147046_2_);
         GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-        float var6 = entity.renderYawOffset;
-        float var7 = entity.rotationYaw;
-        float var8 = entity.rotationPitch;
-        float var9 = entity.prevRotationYawHead;
-        float var10 = entity.rotationYawHead;
+        float var6 = p_147046_5_.renderYawOffset;
+        float var7 = p_147046_5_.rotationYaw;
+        float var8 = p_147046_5_.rotationPitch;
+        float var9 = p_147046_5_.prevRotationYawHead;
+        float var10 = p_147046_5_.rotationYawHead;
         GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(-((float)Math.atan((double)(pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
-        entity.renderYawOffset = (float)Math.atan((double)(yaw / 40.0F)) * 20.0F;
-        entity.rotationYaw = (float)Math.atan((double)(yaw / 40.0F)) * 40.0F;
-        entity.rotationPitch = -((float)Math.atan((double)(pitch / 40.0F))) * 20.0F;
-        entity.rotationYawHead = entity.rotationYaw;
-        entity.prevRotationYawHead = entity.rotationYaw;
-        GL11.glTranslatef(0.0F, entity.yOffset, 0.0F);
+        GL11.glRotatef(-((float)Math.atan((double)(p_147046_4_ / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
+        p_147046_5_.renderYawOffset = (float)Math.atan((double)(p_147046_3_ / 40.0F)) * 20.0F;
+        p_147046_5_.rotationYaw = (float)Math.atan((double)(p_147046_3_ / 40.0F)) * 40.0F;
+        p_147046_5_.rotationPitch = -((float)Math.atan((double)(p_147046_4_ / 40.0F))) * 20.0F;
+        p_147046_5_.rotationYawHead = p_147046_5_.rotationYaw;
+        p_147046_5_.prevRotationYawHead = p_147046_5_.rotationYaw;
+        GL11.glTranslatef(0.0F, p_147046_5_.yOffset, 0.0F);
         RenderManager.instance.playerViewY = 180.0F;
-        RenderManager.instance.func_147940_a(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        entity.renderYawOffset = var6;
-        entity.rotationYaw = var7;
-        entity.rotationPitch = var8;
-        entity.prevRotationYawHead = var9;
-        entity.rotationYawHead = var10;
+        RenderManager.instance.func_147940_a(p_147046_5_, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        p_147046_5_.renderYawOffset = var6;
+        p_147046_5_.rotationYaw = var7;
+        p_147046_5_.rotationPitch = var8;
+        p_147046_5_.prevRotationYawHead = var9;
+        p_147046_5_.rotationYawHead = var10;
         GL11.glPopMatrix();
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);

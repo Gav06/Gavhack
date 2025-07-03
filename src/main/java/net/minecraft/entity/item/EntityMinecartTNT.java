@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 public class EntityMinecartTNT extends EntityMinecart
 {
     private int minecartTNTFuse = -1;
-    private static final String __OBFID = "CL_00001680";
 
     public EntityMinecartTNT(World par1World)
     {
@@ -178,7 +177,7 @@ public class EntityMinecartTNT extends EntityMinecart
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.func_150297_b("TNTFuse", 99))
+        if (par1NBTTagCompound.hasKey("TNTFuse", 99))
         {
             this.minecartTNTFuse = par1NBTTagCompound.getInteger("TNTFuse");
         }

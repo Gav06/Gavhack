@@ -12,7 +12,6 @@ import net.minecraft.util.JsonUtils;
 
 public class TextureMetadataSectionSerializer extends BaseMetadataSectionSerializer
 {
-    private static final String __OBFID = "CL_00001115";
 
     public TextureMetadataSection deserialize(JsonElement par1JsonElement, Type par2Type, JsonDeserializationContext par3JsonDeserializationContext)
     {

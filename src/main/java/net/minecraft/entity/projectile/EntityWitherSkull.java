@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 
 public class EntityWitherSkull extends EntityFireball
 {
-    private static final String __OBFID = "CL_00001728";
 
     public EntityWitherSkull(World par1World)
     {

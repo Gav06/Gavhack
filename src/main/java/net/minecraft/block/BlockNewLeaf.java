@@ -13,7 +13,6 @@ public class BlockNewLeaf extends BlockLeaves
 {
     public static final String[][] field_150132_N = new String[][] {{"leaves_acacia", "leaves_big_oak"}, {"leaves_acacia_opaque", "leaves_big_oak_opaque"}};
     public static final String[] field_150133_O = new String[] {"acacia", "big_oak"};
-    private static final String __OBFID = "CL_00000276";
 
     protected void func_150124_c(World p_150124_1_, int p_150124_2_, int p_150124_3_, int p_150124_4_, int p_150124_5_, int p_150124_6_)
     {
@@ -53,7 +52,7 @@ public class BlockNewLeaf extends BlockLeaves
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 1));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         for (int var2 = 0; var2 < field_150132_N.length; ++var2)
         {

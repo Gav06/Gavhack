@@ -11,7 +11,6 @@ import net.minecraft.world.storage.WorldInfo;
 
 public class AnvilSaveHandler extends SaveHandler
 {
-    private static final String __OBFID = "CL_00000581";
 
     public AnvilSaveHandler(File par1File, String par2Str, boolean par3)
     {

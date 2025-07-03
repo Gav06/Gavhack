@@ -10,7 +10,6 @@ public class Backup extends ValueObject
     public String field_148780_a;
     public Date field_148778_b;
     public long field_148779_c;
-    private static final String __OBFID = "CL_00001164";
 
     public static Backup func_148777_a(JsonElement p_148777_0_)
     {

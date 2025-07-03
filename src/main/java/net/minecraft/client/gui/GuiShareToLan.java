@@ -13,7 +13,6 @@ public class GuiShareToLan extends GuiScreen
     private GuiButton field_146597_g;
     private String field_146599_h = "survival";
     private boolean field_146600_i;
-    private static final String __OBFID = "CL_00000713";
 
     public GuiShareToLan(GuiScreen par1GuiScreen)
     {
@@ -91,18 +90,18 @@ public class GuiShareToLan extends GuiScreen
                 var3 = new ChatComponentText("commands.publish.failed");
             }
 
-            this.mc.ingameGUI.getChatGUI().addChatMessage((IChatComponent)var3);
+            this.mc.ingameGUI.getChatGui().printChatMessage((IChatComponent)var3);
         }
     }
 
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("lanServer.title", new Object[0]), this.width / 2, 50, 16777215);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("lanServer.otherPlayers", new Object[0]), this.width / 2, 82, 16777215);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.drawCenteredString(this.fontRenderer, I18n.format("lanServer.title", new Object[0]), this.width / 2, 50, 16777215);
+        this.drawCenteredString(this.fontRenderer, I18n.format("lanServer.otherPlayers", new Object[0]), this.width / 2, 82, 16777215);
+        super.drawScreen(par1, par2, par3);
     }
 }

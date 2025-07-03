@@ -101,7 +101,6 @@ public abstract class Enchantment
 
     /** Used in localisation and stats. */
     protected String name;
-    private static final String __OBFID = "CL_00000105";
 
     protected Enchantment(int par1, int par2, EnumEnchantmentType par3EnumEnchantmentType)
     {

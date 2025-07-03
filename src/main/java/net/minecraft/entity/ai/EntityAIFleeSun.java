@@ -14,7 +14,6 @@ public class EntityAIFleeSun extends EntityAIBase
     private double shelterZ;
     private double movementSpeed;
     private World theWorld;
-    private static final String __OBFID = "CL_00001583";
 
     public EntityAIFleeSun(EntityCreature par1EntityCreature, double par2)
     {

@@ -17,7 +17,6 @@ public class GuiCommandBlock extends GuiScreen
     private final CommandBlockLogic field_146489_h;
     private GuiButton field_146490_i;
     private GuiButton field_146487_r;
-    private static final String __OBFID = "CL_00000748";
 
     public GuiCommandBlock(CommandBlockLogic p_i45032_1_)
     {
@@ -41,11 +40,11 @@ public class GuiCommandBlock extends GuiScreen
         this.buttonList.clear();
         this.buttonList.add(this.field_146490_i = new GuiButton(0, this.width / 2 - 4 - 150, this.height / 4 + 120 + 12, 150, 20, I18n.format("gui.done", new Object[0])));
         this.buttonList.add(this.field_146487_r = new GuiButton(1, this.width / 2 + 4, this.height / 4 + 120 + 12, 150, 20, I18n.format("gui.cancel", new Object[0])));
-        this.field_146485_f = new GuiTextField(this.fontRendererObj, this.width / 2 - 150, 50, 300, 20);
+        this.field_146485_f = new GuiTextField(this.fontRenderer, this.width / 2 - 150, 50, 300, 20);
         this.field_146485_f.func_146203_f(32767);
         this.field_146485_f.setFocused(true);
         this.field_146485_f.setText(this.field_146489_h.func_145753_i());
-        this.field_146486_g = new GuiTextField(this.fontRendererObj, this.width / 2 - 150, 135, 300, 20);
+        this.field_146486_g = new GuiTextField(this.fontRenderer, this.width / 2 - 150, 135, 300, 20);
         this.field_146486_g.func_146203_f(32767);
         this.field_146486_g.func_146184_c(false);
         this.field_146486_g.setText(this.field_146489_h.func_145753_i());
@@ -134,29 +133,29 @@ public class GuiCommandBlock extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("advMode.setCommand", new Object[0]), this.width / 2, 20, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("advMode.command", new Object[0]), this.width / 2 - 150, 37, 10526880);
+        this.drawCenteredString(this.fontRenderer, I18n.format("advMode.setCommand", new Object[0]), this.width / 2, 20, 16777215);
+        this.drawString(this.fontRenderer, I18n.format("advMode.command", new Object[0]), this.width / 2 - 150, 37, 10526880);
         this.field_146485_f.drawTextBox();
         byte var4 = 75;
         byte var5 = 0;
-        FontRenderer var10001 = this.fontRendererObj;
+        FontRenderer var10001 = this.fontRenderer;
         String var10002 = I18n.format("advMode.nearestPlayer", new Object[0]);
         int var10003 = this.width / 2 - 150;
         int var8 = var5 + 1;
-        this.drawString(var10001, var10002, var10003, var4 + var5 * this.fontRendererObj.FONT_HEIGHT, 10526880);
-        this.drawString(this.fontRendererObj, I18n.format("advMode.randomPlayer", new Object[0]), this.width / 2 - 150, var4 + var8++ * this.fontRendererObj.FONT_HEIGHT, 10526880);
-        this.drawString(this.fontRendererObj, I18n.format("advMode.allPlayers", new Object[0]), this.width / 2 - 150, var4 + var8++ * this.fontRendererObj.FONT_HEIGHT, 10526880);
+        this.drawString(var10001, var10002, var10003, var4 + var5 * this.fontRenderer.FONT_HEIGHT, 10526880);
+        this.drawString(this.fontRenderer, I18n.format("advMode.randomPlayer", new Object[0]), this.width / 2 - 150, var4 + var8++ * this.fontRenderer.FONT_HEIGHT, 10526880);
+        this.drawString(this.fontRenderer, I18n.format("advMode.allPlayers", new Object[0]), this.width / 2 - 150, var4 + var8++ * this.fontRenderer.FONT_HEIGHT, 10526880);
 
         if (this.field_146486_g.getText().length() > 0)
         {
-            int var7 = var4 + var8 * this.fontRendererObj.FONT_HEIGHT + 20;
-            this.drawString(this.fontRendererObj, I18n.format("advMode.previousOutput", new Object[0]), this.width / 2 - 150, var7, 10526880);
+            int var7 = var4 + var8 * this.fontRenderer.FONT_HEIGHT + 20;
+            this.drawString(this.fontRenderer, I18n.format("advMode.previousOutput", new Object[0]), this.width / 2 - 150, var7, 10526880);
             this.field_146486_g.drawTextBox();
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

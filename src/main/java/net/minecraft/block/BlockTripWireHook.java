@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class BlockTripWireHook extends Block
 {
-    private static final String __OBFID = "CL_00000329";
 
     public BlockTripWireHook()
     {
@@ -47,7 +46,7 @@ public class BlockTripWireHook extends Block
         return 29;
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 10;
     }
@@ -191,7 +190,7 @@ public class BlockTripWireHook extends Block
 
                 if (var20 == p_150136_8_)
                 {
-                    p_150136_1_.scheduleBlockUpdate(p_150136_2_, p_150136_3_, p_150136_4_, this, this.func_149738_a(p_150136_1_));
+                    p_150136_1_.scheduleBlockUpdate(p_150136_2_, p_150136_3_, p_150136_4_, this, this.tickRate(p_150136_1_));
                     var13 &= var25;
                 }
             }

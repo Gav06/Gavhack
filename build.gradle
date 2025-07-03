@@ -1,10 +1,12 @@
+import org.gradle.api.internal.file.collections.FileTreeAdapter
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
 	id 'application'
 	id 'java'
-	id "org.jetbrains.kotlin.jvm" version "$kotlin_version"
+	id 'org.jetbrains.kotlin.jvm' version "$kotlin_version"
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 version = project.mod_version
@@ -12,17 +14,20 @@ group = project.maven_group
 
 repositories {
 	mavenCentral()
-
 }
 
+// Create configurations
 configurations {
-	implementation.extendsFrom(shadow)
+	shadow // Only dependencies in this configuration will be included in shadowJar
+	compileClasspath.extendsFrom(shadow)
+	runtimeClasspath.extendsFrom(shadow)
 }
 
 dependencies {
-	implementation(fileTree('libs'))
+	// Local libs - available for compilation and runtime but NOT in shadowJar
+	implementation fileTree('libs')
 
-	// Use newer Log4J because of the RCE (requires java 8 however)
+	// Dependencies that WILL be included in shadowJar - use 'shadow' configuration
 	shadow 'org.apache.logging.log4j:log4j-api:2.17.1'
 	shadow 'org.apache.logging.log4j:log4j-core:2.17.1'
 	shadow 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1'
@@ -33,7 +38,6 @@ dependencies {
 		exclude module: 'kotlin-stdlib-common'
 		exclude module: 'annotations'
 	}
-
 }
 
 application {
@@ -45,7 +49,7 @@ tasks.register('runClient', JavaExec) {
 	description = 'Compiles and runs client'
 
 	mainClass = application.mainClass.get()
-	classpath = sourceSets.main.runtimeClasspath
+	classpath = sourceSets.main.runtimeClasspath // localLibs already included via runtimeClasspath
 
 	workingDir = file("run")
 	jvmArgs = ["-Djava.library.path=../libs/1.7.2-natives"]
@@ -60,23 +64,21 @@ tasks.withType(KotlinJvmCompile).configureEach {
 	it.compilerOptions.jvmTarget.set(JvmTarget.JVM_1_8)
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+tasks.register('sourcesJar', Jar) {
+	dependsOn classes
 	setArchiveClassifier('sources')
 	from sourceSets.main.allSource
 }
 
-artifacts {
-	archives sourcesJar
+tasks.build {
+	dependsOn(tasks.shadowJar)
 }
 
+shadowJar {
+	// Only include dependencies from the 'shadow' configuration
+	configurations = [project.configurations.shadow]
+}
 
-jar {
-	from {
-		configurations.shadow.collect {
-			exclude("META-INF/")
-			exclude("dummyThing")
-			it.isDirectory() ? it : zipTree(it)
-		}
-
-	}
+artifacts {
+	archives sourcesJar
 }

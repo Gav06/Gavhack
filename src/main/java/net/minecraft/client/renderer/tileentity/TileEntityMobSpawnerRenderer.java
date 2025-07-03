@@ -9,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 
 public class TileEntityMobSpawnerRenderer extends TileEntitySpecialRenderer
 {
-    private static final String __OBFID = "CL_00000968";
 
     public void renderTileEntityAt(TileEntityMobSpawner p_147518_1_, double p_147518_2_, double p_147518_4_, double p_147518_6_, float p_147518_8_)
     {

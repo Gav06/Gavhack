@@ -7,7 +7,6 @@ public class TextureOffset
 
     /** The y coordinate offset of the texture */
     public final int textureOffsetY;
-    private static final String __OBFID = "CL_00000875";
 
     public TextureOffset(int par1, int par2)
     {

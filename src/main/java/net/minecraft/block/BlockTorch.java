@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class BlockTorch extends Block
 {
-    private static final String __OBFID = "CL_00000325";
 
     protected BlockTorch()
     {

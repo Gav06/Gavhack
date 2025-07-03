@@ -18,7 +18,6 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer
     private double otherPlayerMPZ;
     private double otherPlayerMPYaw;
     private double otherPlayerMPPitch;
-    private static final String __OBFID = "CL_00000939";
 
     public EntityOtherPlayerMP(World p_i45075_1_, GameProfile p_i45075_2_)
     {
@@ -181,7 +180,7 @@ public class EntityOtherPlayerMP extends AbstractClientPlayer
      */
     public void addChatMessage(IChatComponent p_145747_1_)
     {
-        Minecraft.getMinecraft().ingameGUI.getChatGUI().addChatMessage(p_145747_1_);
+        Minecraft.getMinecraft().ingameGUI.getChatGui().printChatMessage(p_145747_1_);
     }
 
     /**

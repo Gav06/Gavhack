@@ -6,7 +6,6 @@ public class Language implements Comparable
     private final String region;
     private final String name;
     private final boolean bidirectional;
-    private static final String __OBFID = "CL_00001095";
 
     public Language(String par1Str, String par2Str, String par3Str, boolean par4)
     {

@@ -16,7 +16,6 @@ public class RenderSnowball extends Render
 {
     private Item field_94151_a;
     private int field_94150_f;
-    private static final String __OBFID = "CL_00001008";
 
     public RenderSnowball(Item par1Item, int par2)
     {

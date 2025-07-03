@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 public class BlockNetherWart extends BlockBush
 {
     private IIcon[] field_149883_a;
-    private static final String __OBFID = "CL_00000274";
 
     protected BlockNetherWart()
     {
@@ -110,12 +109,12 @@ public class BlockNetherWart extends BlockBush
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.nether_wart;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149883_a = new IIcon[3];
 

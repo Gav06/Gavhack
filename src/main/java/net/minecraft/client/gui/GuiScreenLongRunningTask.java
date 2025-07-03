@@ -21,7 +21,6 @@ public class GuiScreenLongRunningTask extends GuiScreen
     private TaskLongRunning field_146918_x;
     private int field_146916_y = 212;
     public static final String[] field_146915_a = new String[] {"\u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583", "_ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584", "_ _ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585", "_ _ _ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586", "_ _ _ _ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587", "_ _ _ _ _ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588", "_ _ _ _ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587", "_ _ _ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586", "_ _ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585", "_ \u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584", "\u2583 \u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583", "\u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _", "\u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _ _", "\u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _ _ _", "\u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _ _ _ _", "\u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _ _ _ _ _", "\u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _ _ _ _", "\u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _ _ _", "\u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _ _", "\u2584 \u2585 \u2586 \u2587 \u2588 \u2587 \u2586 \u2585 \u2584 \u2583 _"};
-    private static final String __OBFID = "CL_00000783";
 
     public GuiScreenLongRunningTask(Minecraft par1Minecraft, GuiScreen par2GuiScreen, TaskLongRunning par3TaskLongRunning)
     {
@@ -76,23 +75,23 @@ public class GuiScreenLongRunningTask extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.field_146913_s, this.width / 2, this.height / 2 - 50, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "", this.width / 2, this.height / 2 - 10, 16777215);
+        this.drawCenteredString(this.fontRenderer, this.field_146913_s, this.width / 2, this.height / 2 - 50, 16777215);
+        this.drawCenteredString(this.fontRenderer, "", this.width / 2, this.height / 2 - 10, 16777215);
 
         if (!this.field_146912_t)
         {
-            this.drawCenteredString(this.fontRendererObj, field_146915_a[this.field_146907_w % field_146915_a.length], this.width / 2, this.height / 2 + 15, 8421504);
+            this.drawCenteredString(this.fontRenderer, field_146915_a[this.field_146907_w % field_146915_a.length], this.width / 2, this.height / 2 + 15, 8421504);
         }
 
         if (this.field_146912_t)
         {
-            this.drawCenteredString(this.fontRendererObj, this.field_146911_u, this.width / 2, this.height / 2 + 15, 16711680);
+            this.drawCenteredString(this.fontRenderer, this.field_146911_u, this.width / 2, this.height / 2 + 15, 16711680);
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 
     public void func_146905_a(String p_146905_1_)

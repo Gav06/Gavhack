@@ -8,12 +8,10 @@ import net.minecraft.inventory.Container;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 public abstract class InventoryEffectRenderer extends GuiContainer
 {
     private boolean field_147045_u;
-    private static final String __OBFID = "CL_00000755";
 
     public InventoryEffectRenderer(Container par1Container)
     {
@@ -37,9 +35,9 @@ public abstract class InventoryEffectRenderer extends GuiContainer
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
 
         if (this.field_147045_u)
         {
@@ -49,7 +47,6 @@ public abstract class InventoryEffectRenderer extends GuiContainer
 
     private void func_147044_g()
     {
-
         int var1 = this.field_147003_i - 124;
         int var2 = this.field_147009_r;
         boolean var3 = true;
@@ -59,7 +56,6 @@ public abstract class InventoryEffectRenderer extends GuiContainer
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_BLEND);
             int var5 = 33;
 
             if (var4.size() > 5)
@@ -78,7 +74,7 @@ public abstract class InventoryEffectRenderer extends GuiContainer
                 if (var8.hasStatusIcon())
                 {
                     int var9 = var8.getStatusIconIndex();
-                    this.drawTexturedModalRect(var1 + 6, var2 + 7, var9 % 8 * 18, 198 + var9 / 8 * 18, 18, 18);
+                    this.drawTexturedModalRect(var1 + 6, var2 + 7, 0 + var9 % 8 * 18, 198 + var9 / 8 * 18, 18, 18);
                 }
 
                 String var11 = I18n.format(var8.getName(), new Object[0]);
@@ -96,9 +92,9 @@ public abstract class InventoryEffectRenderer extends GuiContainer
                     var11 = var11 + " IV";
                 }
 
-                this.fontRendererObj.drawStringWithShadow(var11, var1 + 10 + 18, var2 + 6, 16777215);
+                this.fontRenderer.drawStringWithShadow(var11, var1 + 10 + 18, var2 + 6, 16777215);
                 String var10 = Potion.getDurationString(var7);
-                this.fontRendererObj.drawStringWithShadow(var10, var1 + 10 + 18, var2 + 6 + 10, 8355711);
+                this.fontRenderer.drawStringWithShadow(var10, var1 + 10 + 18, var2 + 6 + 10, 8355711);
             }
         }
     }

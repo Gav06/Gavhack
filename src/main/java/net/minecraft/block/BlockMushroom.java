@@ -7,7 +7,6 @@ import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 
 public class BlockMushroom extends BlockBush implements IGrowable
 {
-    private static final String __OBFID = "CL_00000272";
 
     protected BlockMushroom()
     {

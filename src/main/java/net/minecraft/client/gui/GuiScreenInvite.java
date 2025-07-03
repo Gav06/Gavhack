@@ -23,7 +23,6 @@ public class GuiScreenInvite extends GuiScreen
     private String field_146925_t = "Could not invite the provided name";
     private String field_146924_u;
     private boolean field_146922_v;
-    private static final String __OBFID = "CL_00000780";
 
     public GuiScreenInvite(GuiScreen par1GuiScreen, GuiScreenConfigureWorld par2GuiScreenConfigureWorld, McoServer par3McoServer)
     {
@@ -49,7 +48,7 @@ public class GuiScreenInvite extends GuiScreen
         this.buttonList.clear();
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, I18n.format("mco.configure.world.buttons.invite", new Object[0])));
         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.format("gui.cancel", new Object[0])));
-        this.field_146921_f = new GuiTextField(this.fontRendererObj, this.width / 2 - 100, 66, 200, 20);
+        this.field_146921_f = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 66, 200, 20);
         this.field_146921_f.setFocused(true);
     }
 
@@ -150,17 +149,17 @@ public class GuiScreenInvite extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.invite.profile.name", new Object[0]), this.width / 2 - 100, 53, 10526880);
+        this.drawString(this.fontRenderer, I18n.format("mco.configure.world.invite.profile.name", new Object[0]), this.width / 2 - 100, 53, 10526880);
 
         if (this.field_146922_v)
         {
-            this.drawCenteredString(this.fontRendererObj, this.field_146924_u, this.width / 2, 100, 16711680);
+            this.drawCenteredString(this.fontRenderer, this.field_146924_u, this.width / 2, 100, 16711680);
         }
 
         this.field_146921_f.drawTextBox();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

@@ -7,11 +7,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import net.minecraft.src.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import optifine.Config;
 
 public class Profiler
 {
@@ -31,7 +29,6 @@ public class Profiler
 
     /** Profiling map */
     private final Map profilingMap = new HashMap();
-    private static final String __OBFID = "CL_00001497";
     public boolean profilerGlobalEnabled = true;
     private boolean profilerLocalEnabled;
     private long startTickNano;
@@ -247,7 +244,6 @@ public class Profiler
         public double field_76332_a;
         public double field_76330_b;
         public String field_76331_c;
-        private static final String __OBFID = "CL_00001498";
 
         public Result(String par1Str, double par2, double par4)
         {

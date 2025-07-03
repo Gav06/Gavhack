@@ -40,7 +40,6 @@ public abstract class EntityMinecart extends Entity
     private double velocityX;
     private double velocityY;
     private double velocityZ;
-    private static final String __OBFID = "CL_00001670";
 
     public EntityMinecart(World par1World)
     {
@@ -468,7 +467,7 @@ public abstract class EntityMinecart extends Entity
             var12 = !var11;
         }
 
-        if (((BlockRailBase)p_145821_8_).func_150050_e())
+        if (((BlockRailBase)p_145821_8_).isPowered())
         {
             p_145821_9_ &= 7;
         }
@@ -730,7 +729,7 @@ public abstract class EntityMinecart extends Entity
         {
             int var13 = this.worldObj.getBlockMetadata(var9, var10, var11);
 
-            if (((BlockRailBase)var12).func_150050_e())
+            if (((BlockRailBase)var12).isPowered())
             {
                 var13 &= 7;
             }
@@ -782,7 +781,7 @@ public abstract class EntityMinecart extends Entity
             int var11 = this.worldObj.getBlockMetadata(var7, var8, var9);
             par3 = (double)var8;
 
-            if (((BlockRailBase)var10).func_150050_e())
+            if (((BlockRailBase)var10).isPowered())
             {
                 var11 &= 7;
             }
@@ -855,7 +854,7 @@ public abstract class EntityMinecart extends Entity
             this.setDisplayTileOffset(par1NBTTagCompound.getInteger("DisplayOffset"));
         }
 
-        if (par1NBTTagCompound.func_150297_b("CustomName", 8) && par1NBTTagCompound.getString("CustomName").length() > 0)
+        if (par1NBTTagCompound.hasKey("CustomName", 8) && par1NBTTagCompound.getString("CustomName").length() > 0)
         {
             this.entityName = par1NBTTagCompound.getString("CustomName");
         }

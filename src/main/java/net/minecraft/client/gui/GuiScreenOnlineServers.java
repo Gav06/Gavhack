@@ -47,7 +47,6 @@ public class GuiScreenOnlineServers extends GuiScreen
     private List field_146700_C = Lists.newArrayList();
     private volatile int field_146694_D = 0;
     private int field_146696_E;
-    private static final String __OBFID = "CL_00000792";
 
     public GuiScreenOnlineServers(GuiScreen par1GuiScreen)
     {
@@ -249,7 +248,6 @@ public class GuiScreenOnlineServers extends GuiScreen
         {
             (new Thread("MCO Configure Requester #" + field_146701_a.incrementAndGet())
             {
-                private static final String __OBFID = "CL_00000793";
                 public void run()
                 {
                     try
@@ -355,20 +353,20 @@ public class GuiScreenOnlineServers extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.field_146698_A = null;
         this.drawDefaultBackground();
-        this.field_146706_u.func_148350_a(mouseX, mouseY, partialTicks);
+        this.field_146706_u.func_148350_a(par1, par2, par3);
         this.func_146665_b(this.width / 2 - 50, 7);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
 
         if (this.field_146698_A != null)
         {
-            this.func_146658_b(this.field_146698_A, mouseX, mouseY);
+            this.func_146658_b(this.field_146698_A, par1, par2);
         }
 
-        this.func_146659_c(mouseX, mouseY);
+        this.func_146659_c(par1, par2);
     }
 
     private void func_146665_b(int p_146665_1_, int p_146665_2_)
@@ -434,9 +432,9 @@ public class GuiScreenOnlineServers extends GuiScreen
                 var7 = I18n.format("mco.invites.nopending", new Object[0]);
             }
 
-            int var8 = this.fontRendererObj.getStringWidth(var7);
+            int var8 = this.fontRenderer.getStringWidth(var7);
             this.drawGradientRect(var5 - 3, var6 - 3, var5 + var8 + 3, var6 + 8 + 3, -1073741824, -1073741824);
-            this.fontRendererObj.drawStringWithShadow(var7, var5, var6, -1);
+            this.fontRenderer.drawStringWithShadow(var7, var5, var6, -1);
         }
     }
 
@@ -557,15 +555,14 @@ public class GuiScreenOnlineServers extends GuiScreen
         {
             int var4 = p_146658_2_ + 12;
             int var5 = p_146658_3_ - 12;
-            int var6 = this.fontRendererObj.getStringWidth(p_146658_1_);
+            int var6 = this.fontRenderer.getStringWidth(p_146658_1_);
             this.drawGradientRect(var4 - 3, var5 - 3, var4 + var6 + 3, var5 + 8 + 3, -1073741824, -1073741824);
-            this.fontRendererObj.drawStringWithShadow(p_146658_1_, var4, var5, -1);
+            this.fontRenderer.drawStringWithShadow(p_146658_1_, var4, var5, -1);
         }
     }
 
     class OnlineServerList extends GuiScreenSelectLocation
     {
-        private static final String __OBFID = "CL_00000794";
 
         public OnlineServerList()
         {
@@ -647,7 +644,6 @@ public class GuiScreenOnlineServers extends GuiScreen
                 var6.field_148814_o = true;
                 GuiScreenOnlineServers.field_146708_s.submit(new Runnable()
                 {
-                    private static final String __OBFID = "CL_00000795";
                     public void run()
                     {
                         try
@@ -662,7 +658,7 @@ public class GuiScreenOnlineServers extends GuiScreen
                 });
             }
 
-            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, var6.func_148801_b(), p_148390_2_ + 2, p_148390_3_ + 1, 16777215);
+            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRenderer, var6.func_148801_b(), p_148390_2_ + 2, p_148390_3_ + 1, 16777215);
             short var7 = 207;
             byte var8 = 1;
 
@@ -689,9 +685,9 @@ public class GuiScreenOnlineServers extends GuiScreen
                 GuiScreenOnlineServers.this.func_146666_f(p_148390_2_ + var7, p_148390_3_ + var8, this.field_148365_e, this.field_148362_f);
             }
 
-            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, var6.field_148813_n, p_148390_2_ + 200 - GuiScreenOnlineServers.this.fontRendererObj.getStringWidth(var6.field_148813_n), p_148390_3_ + 1, 8421504);
-            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, var6.func_148800_a(), p_148390_2_ + 2, p_148390_3_ + 12, 7105644);
-            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, var6.field_148809_e, p_148390_2_ + 2, p_148390_3_ + 12 + 11, 5000268);
+            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRenderer, var6.field_148813_n, p_148390_2_ + 200 - GuiScreenOnlineServers.this.fontRenderer.getStringWidth(var6.field_148813_n), p_148390_3_ + 1, 8421504);
+            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRenderer, var6.func_148800_a(), p_148390_2_ + 2, p_148390_3_ + 12, 7105644);
+            GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRenderer, var6.field_148809_e, p_148390_2_ + 2, p_148390_3_ + 12 + 11, 5000268);
         }
 
         private void func_148389_a(int p_148389_1_, int p_148389_2_, int p_148389_3_, McoServer p_148389_4_)
@@ -700,7 +696,7 @@ public class GuiScreenOnlineServers extends GuiScreen
             {
                 if (p_148389_4_.field_148816_m != null)
                 {
-                    GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRendererObj, p_148389_4_.field_148816_m, p_148389_2_ + 215 - GuiScreenOnlineServers.this.fontRendererObj.getStringWidth(p_148389_4_.field_148816_m), p_148389_3_ + 1, 8421504);
+                    GuiScreenOnlineServers.this.drawString(GuiScreenOnlineServers.this.fontRenderer, p_148389_4_.field_148816_m, p_148389_2_ + 215 - GuiScreenOnlineServers.this.fontRenderer.getStringWidth(p_148389_4_.field_148816_m), p_148389_3_ + 1, 8421504);
                 }
 
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

@@ -13,7 +13,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 public class MapGenNetherBridge extends MapGenStructure
 {
     private List spawnList = new ArrayList();
-    private static final String __OBFID = "CL_00000451";
 
     public MapGenNetherBridge()
     {
@@ -49,7 +48,6 @@ public class MapGenNetherBridge extends MapGenStructure
 
     public static class Start extends StructureStart
     {
-        private static final String __OBFID = "CL_00000452";
 
         public Start() {}
 

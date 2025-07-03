@@ -7,7 +7,6 @@ public class Score
 {
     public static final Comparator field_96658_a = new Comparator()
     {
-        private static final String __OBFID = "CL_00000618";
         public int compare(Score par1Score, Score par2Score)
         {
             return par1Score.getScorePoints() > par2Score.getScorePoints() ? 1 : (par1Score.getScorePoints() < par2Score.getScorePoints() ? -1 : 0);
@@ -21,7 +20,6 @@ public class Score
     private final ScoreObjective theScoreObjective;
     private final String field_96654_d;
     private int field_96655_e;
-    private static final String __OBFID = "CL_00000617";
 
     public Score(Scoreboard par1Scoreboard, ScoreObjective par2ScoreObjective, String par3Str)
     {

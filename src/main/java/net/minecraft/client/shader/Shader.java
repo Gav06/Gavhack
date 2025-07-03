@@ -20,13 +20,12 @@ public class Shader
     private final List listAuxWidths = Lists.newArrayList();
     private final List listAuxHeights = Lists.newArrayList();
     private Matrix4f projectionMatrix;
-    private static final String __OBFID = "CL_00001042";
 
-    public Shader(IResourceManager resourceManager, String p_i45089_2_, Framebuffer framebufferIn, Framebuffer frameBufferOut) throws JsonException
+    public Shader(IResourceManager p_i45089_1_, String p_i45089_2_, Framebuffer p_i45089_3_, Framebuffer p_i45089_4_) throws JsonException
     {
-        this.manager = new ShaderManager(resourceManager, p_i45089_2_);
-        this.framebufferIn = framebufferIn;
-        this.framebufferOut = frameBufferOut;
+        this.manager = new ShaderManager(p_i45089_1_, p_i45089_2_);
+        this.framebufferIn = p_i45089_3_;
+        this.framebufferOut = p_i45089_4_;
     }
 
     public void deleteShader()

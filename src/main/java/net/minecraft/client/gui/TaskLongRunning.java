@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 public abstract class TaskLongRunning implements Runnable
 {
     protected GuiScreenLongRunningTask field_148419_b;
-    private static final String __OBFID = "CL_00000784";
 
     public void func_148412_a(GuiScreenLongRunningTask p_148412_1_)
     {

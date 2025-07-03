@@ -15,7 +15,6 @@ import net.minecraft.stats.StatList;
 public class S37PacketStatistics extends Packet
 {
     private Map field_148976_a;
-    private static final String __OBFID = "CL_00001283";
 
     public S37PacketStatistics() {}
 

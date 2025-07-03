@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 public class ItemFishFood extends ItemFood
 {
     private final boolean field_150907_b;
-    private static final String __OBFID = "CL_00000032";
 
     public ItemFishFood(boolean p_i45338_1_)
     {
@@ -122,7 +121,6 @@ public class ItemFishFood extends ItemFood
         private boolean field_150987_n = false;
 
         private static final ItemFishFood.FishType[] $VALUES = new ItemFishFood.FishType[]{COD, SALMON, CLOWNFISH, PUFFERFISH};
-        private static final String __OBFID = "CL_00000033";
 
         private FishType(String p_i45336_1_, int p_i45336_2_, int p_i45336_3_, String p_i45336_4_, int p_i45336_5_, float p_i45336_6_, int p_i45336_7_, float p_i45336_8_)
         {

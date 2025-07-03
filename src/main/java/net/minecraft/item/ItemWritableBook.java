@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 
 public class ItemWritableBook extends Item
 {
-    private static final String __OBFID = "CL_00000076";
 
     public ItemWritableBook()
     {
@@ -37,7 +36,7 @@ public class ItemWritableBook extends Item
         {
             return false;
         }
-        else if (!p_150930_0_.func_150297_b("pages", 9))
+        else if (!p_150930_0_.hasKey("pages", 9))
         {
             return false;
         }

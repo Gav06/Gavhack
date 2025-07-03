@@ -26,7 +26,6 @@ public abstract class StructureComponent
 
     /** The type ID of this component. */
     protected int componentType;
-    private static final String __OBFID = "CL_00000511";
 
     public StructureComponent() {}
 
@@ -831,7 +830,6 @@ public abstract class StructureComponent
     {
         protected Block field_151562_a;
         protected int selectedBlockMetaData;
-        private static final String __OBFID = "CL_00000512";
 
         protected BlockSelector()
         {

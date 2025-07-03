@@ -1,6 +1,5 @@
 package net.minecraft.client.renderer;
 
-import me.gavin.gavhack.module.impl.ESP;
 import me.gavin.gavhack.module.impl.NoRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -47,7 +46,6 @@ public class ItemRenderer
 
     /** The index of the currently held item (0-8, or -1 if not yet updated) */
     private int equippedItemSlot = -1;
-    private static final String __OBFID = "CL_00000953";
 
     public ItemRenderer(Minecraft par1Minecraft)
     {
@@ -263,7 +261,7 @@ public class ItemRenderer
         int var9 = this.mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ), 0);
         int var10 = var9 % 65536;
         int var11 = var9 / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var10, (float) var11);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var10 / 1.0F, (float)var11 / 1.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         float var13;
         float var14;
@@ -607,8 +605,9 @@ public class ItemRenderer
      */
     private void renderWarpedTextureOverlay(float par1)
     {
-        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getWater().getValue())
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getWater().getValue()) {
             return;
+        }
 
         this.mc.getTextureManager().bindTexture(RES_UNDERWATER_OVERLAY);
         Tessellator var2 = Tessellator.instance;
@@ -641,8 +640,9 @@ public class ItemRenderer
      */
     private void renderFireInFirstPerson(float par1)
     {
-        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getFire().getValue())
+        if (NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.getFire().getValue()) {
             return;
+        }
 
         Tessellator var2 = Tessellator.instance;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
@@ -653,7 +653,7 @@ public class ItemRenderer
         for (int var4 = 0; var4 < 2; ++var4)
         {
             GL11.glPushMatrix();
-            IIcon var5 = Blocks.fire.func_149840_c(1);
+            IIcon var5 = Blocks.fire.getFireIcon(1);
             this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
             float var6 = var5.getMinU();
             float var7 = var5.getMaxU();

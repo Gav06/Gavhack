@@ -76,7 +76,6 @@ public class GuiMainMenu extends GuiScreen
     private int field_92019_w;
     private ResourceLocation field_110351_G;
     private GuiButton minecraftRealmsButton;
-    private static final String __OBFID = "CL_00001154";
 
     public GuiMainMenu()
     {
@@ -207,21 +206,22 @@ public class GuiMainMenu extends GuiScreen
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, var3 + 72 + 12, 98, 20, I18n.format("menu.options", new Object[0])));
         this.buttonList.add(new GuiButton(4, this.width / 2 + 2, var3 + 72 + 12, 98, 20, I18n.format("menu.quit", new Object[0])));
         this.buttonList.add(new GuiButtonLanguage(5, this.width / 2 - 124, var3 + 72 + 12));
+
+        final int buttonHeight = (this.height / 4 + 96);
+        this.buttonList.add(new GuiButton(69, this.width / 2 - 100, buttonHeight, 200, 20, "Gavhack Menu"));
+
         Object var4 = this.field_104025_t;
 
         synchronized (this.field_104025_t)
         {
-            this.field_92023_s = this.fontRendererObj.getStringWidth(this.field_92025_p);
-            this.field_92024_r = this.fontRendererObj.getStringWidth(this.field_146972_A);
+            this.field_92023_s = this.fontRenderer.getStringWidth(this.field_92025_p);
+            this.field_92024_r = this.fontRenderer.getStringWidth(this.field_146972_A);
             int var5 = Math.max(this.field_92023_s, this.field_92024_r);
             this.field_92022_t = (this.width - var5) / 2;
-            this.field_92021_u = ((GuiButton)this.buttonList.get(0)).y - 24;
+            this.field_92021_u = ((GuiButton)this.buttonList.get(0)).yPosition - 24;
             this.field_92020_v = this.field_92022_t + var5;
             this.field_92019_w = this.field_92021_u + 24;
         }
-
-        final int buttonHeight = (this.height / 4 + 96);
-        this.buttonList.add(new GuiButton(69, this.width / 2 - 100, buttonHeight, 200, 20, "Gavhack GUI"));
     }
 
     private void func_130020_g()
@@ -233,7 +233,6 @@ public class GuiMainMenu extends GuiScreen
                 field_96140_r = true;
                 (new Thread("MCO Availability Checker #" + field_146973_f.incrementAndGet())
                 {
-                    private static final String __OBFID = "CL_00001155";
                     public void run()
                     {
                         Session var1 = GuiMainMenu.this.mc.getSession();
@@ -292,7 +291,7 @@ public class GuiMainMenu extends GuiScreen
 
     private void func_130022_h()
     {
-        this.minecraftRealmsButton.field_146125_m = true;
+        this.minecraftRealmsButton.drawButton = true;
     }
 
     /**
@@ -301,9 +300,9 @@ public class GuiMainMenu extends GuiScreen
     private void addSingleplayerMultiplayerButtons(int par1, int par2)
     {
         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, par1, I18n.format("menu.singleplayer", new Object[0])));
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, par1 + par2, I18n.format("menu.multiplayer", new Object[0])));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, par1 + par2 * 1, I18n.format("menu.multiplayer", new Object[0])));
         this.buttonList.add(this.minecraftRealmsButton = new GuiButton(14, this.width / 2 - 100, par1 + par2 * 2, I18n.format("menu.online", new Object[0])));
-        this.minecraftRealmsButton.field_146125_m = false;
+        this.minecraftRealmsButton.drawButton = false;
     }
 
     /**
@@ -344,7 +343,7 @@ public class GuiMainMenu extends GuiScreen
             this.mc.displayGuiScreen(new GuiMultiplayer(this));
         }
 
-        if (button.id == 14 && this.minecraftRealmsButton.field_146125_m)
+        if (button.id == 14 && this.minecraftRealmsButton.drawButton)
         {
             this.func_140005_i();
         }
@@ -589,10 +588,10 @@ public class GuiMainMenu extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        this.renderSkybox(mouseX, mouseY, partialTicks);
+        this.renderSkybox(par1, par2, par3);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         Tessellator var4 = Tessellator.instance;
         short var5 = 274;
@@ -602,7 +601,6 @@ public class GuiMainMenu extends GuiScreen
         this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
         this.mc.getTextureManager().bindTexture(minecraftTitleTextures);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
 
         if ((double)this.updateCounter < 1.0E-4D)
         {
@@ -618,15 +616,14 @@ public class GuiMainMenu extends GuiScreen
             this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
         }
 
-
         var4.setColorOpaque_I(-1);
         GL11.glPushMatrix();
         GL11.glTranslatef((float)(this.width / 2 + 90), 70.0F, 0.0F);
         GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
         float var8 = 1.8F - MathHelper.abs(MathHelper.sin((float)(Minecraft.getSystemTime() % 1000L) / 1000.0F * (float)Math.PI * 2.0F) * 0.1F);
-        var8 = var8 * 100.0F / (float)(this.fontRendererObj.getStringWidth(this.splashText) + 32);
+        var8 = var8 * 100.0F / (float)(this.fontRenderer.getStringWidth(this.splashText) + 32);
         GL11.glScalef(var8, var8, var8);
-        this.drawCenteredString(this.fontRendererObj, this.splashText, 0, -8, -256);
+        this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, -256);
         GL11.glPopMatrix();
         String var9 = "Minecraft 1.7.2";
 
@@ -635,18 +632,18 @@ public class GuiMainMenu extends GuiScreen
             var9 = var9 + " Demo";
         }
 
-        this.drawString(this.fontRendererObj, var9, 2, this.height - 10, -1);
+        this.drawString(this.fontRenderer, var9, 2, this.height - 10, -1);
         String var10 = "Copyright Mojang AB. Do not distribute!";
-        this.drawString(this.fontRendererObj, var10, this.width - this.fontRendererObj.getStringWidth(var10) - 2, this.height - 10, -1);
+        this.drawString(this.fontRenderer, var10, this.width - this.fontRenderer.getStringWidth(var10) - 2, this.height - 10, -1);
 
-        if (this.field_92025_p != null && !this.field_92025_p.isEmpty())
+        if (this.field_92025_p != null && this.field_92025_p.length() > 0)
         {
             drawRect(this.field_92022_t - 2, this.field_92021_u - 2, this.field_92020_v + 2, this.field_92019_w - 1, 1428160512);
-            this.drawString(this.fontRendererObj, this.field_92025_p, this.field_92022_t, this.field_92021_u, -1);
-            this.drawString(this.fontRendererObj, this.field_146972_A, (this.width - this.field_92024_r) / 2, ((GuiButton)this.buttonList.get(0)).y - 12, -1);
+            this.drawString(this.fontRenderer, this.field_92025_p, this.field_92022_t, this.field_92021_u, -1);
+            this.drawString(this.fontRenderer, this.field_146972_A, (this.width - this.field_92024_r) / 2, ((GuiButton)this.buttonList.get(0)).yPosition - 12, -1);
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 
     /**

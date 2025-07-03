@@ -29,7 +29,6 @@ public class GuiMerchant extends GuiContainer
     private GuiMerchant.MerchantButton field_147042_y;
     private int field_147041_z;
     private String field_147040_A;
-    private static final String __OBFID = "CL_00000762";
 
     public GuiMerchant(InventoryPlayer par1InventoryPlayer, IMerchant par2IMerchant, World par3World, String par4Str)
     {
@@ -54,8 +53,8 @@ public class GuiMerchant extends GuiContainer
 
     protected void func_146979_b(int p_146979_1_, int p_146979_2_)
     {
-        this.fontRendererObj.drawString(this.field_147040_A, this.field_146999_f / 2 - this.fontRendererObj.getStringWidth(this.field_147040_A) / 2, 6, 4210752);
-        this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.field_147000_g - 96 + 2, 4210752);
+        this.fontRenderer.drawString(this.field_147040_A, this.field_146999_f / 2 - this.fontRenderer.getStringWidth(this.field_147040_A) / 2, 6, 4210752);
+        this.fontRenderer.drawString(I18n.format("container.inventory", new Object[0]), 8, this.field_147000_g - 96 + 2, 4210752);
     }
 
     /**
@@ -137,9 +136,9 @@ public class GuiMerchant extends GuiContainer
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
         MerchantRecipeList var4 = this.field_147037_w.getRecipes(this.mc.thePlayer);
 
         if (var4 != null && !var4.isEmpty())
@@ -157,32 +156,32 @@ public class GuiMerchant extends GuiContainer
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glEnable(GL11.GL_COLOR_MATERIAL);
             GL11.glEnable(GL11.GL_LIGHTING);
-            itemRender.zLevel = 100.0F;
-            itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var9, var5 + 36, var6 + 24);
-            itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var9, var5 + 36, var6 + 24);
+            renderItemGs.zLevel = 100.0F;
+            renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var9, var5 + 36, var6 + 24);
+            renderItemGs.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var9, var5 + 36, var6 + 24);
 
             if (var10 != null)
             {
-                itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var10, var5 + 62, var6 + 24);
-                itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var10, var5 + 62, var6 + 24);
+                renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var10, var5 + 62, var6 + 24);
+                renderItemGs.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var10, var5 + 62, var6 + 24);
             }
 
-            itemRender.renderItemAndEffectIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var11, var5 + 120, var6 + 24);
-            itemRender.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.getTextureManager(), var11, var5 + 120, var6 + 24);
-            itemRender.zLevel = 0.0F;
+            renderItemGs.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var11, var5 + 120, var6 + 24);
+            renderItemGs.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), var11, var5 + 120, var6 + 24);
+            renderItemGs.zLevel = 0.0F;
             GL11.glDisable(GL11.GL_LIGHTING);
 
-            if (this.func_146978_c(36, 24, 16, 16, mouseX, mouseY))
+            if (this.func_146978_c(36, 24, 16, 16, par1, par2))
             {
-                this.func_146285_a(var9, mouseX, mouseY);
+                this.func_146285_a(var9, par1, par2);
             }
-            else if (var10 != null && this.func_146978_c(62, 24, 16, 16, mouseX, mouseY))
+            else if (var10 != null && this.func_146978_c(62, 24, 16, 16, par1, par2))
             {
-                this.func_146285_a(var10, mouseX, mouseY);
+                this.func_146285_a(var10, par1, par2);
             }
-            else if (this.func_146978_c(120, 24, 16, 16, mouseX, mouseY))
+            else if (this.func_146978_c(120, 24, 16, 16, par1, par2))
             {
-                this.func_146285_a(var11, mouseX, mouseY);
+                this.func_146285_a(var11, par1, par2);
             }
 
             GL11.glPopMatrix();
@@ -200,7 +199,6 @@ public class GuiMerchant extends GuiContainer
     static class MerchantButton extends GuiButton
     {
         private final boolean field_146157_o;
-        private static final String __OBFID = "CL_00000763";
 
         public MerchantButton(int par1, int par2, int par3, boolean par4)
         {
@@ -210,11 +208,11 @@ public class GuiMerchant extends GuiContainer
 
         public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_)
         {
-            if (this.field_146125_m)
+            if (this.drawButton)
             {
                 p_146112_1_.getTextureManager().bindTexture(GuiMerchant.field_147038_v);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                boolean var4 = p_146112_2_ >= this.x && p_146112_3_ >= this.y && p_146112_2_ < this.x + this.width && p_146112_3_ < this.y + this.height;
+                boolean var4 = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
                 int var5 = 0;
                 int var6 = 176;
 
@@ -232,7 +230,7 @@ public class GuiMerchant extends GuiContainer
                     var5 += this.height;
                 }
 
-                this.drawTexturedModalRect(this.x, this.y, var6, var5, this.width, this.height);
+                this.drawTexturedModalRect(this.xPosition, this.yPosition, var6, var5, this.width, this.height);
             }
         }
     }

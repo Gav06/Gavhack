@@ -15,7 +15,6 @@ public class BlockRedstoneTorch extends BlockTorch
 {
     private boolean field_150113_a;
     private static Map field_150112_b = new HashMap();
-    private static final String __OBFID = "CL_00000298";
 
     private boolean func_150111_a(World p_150111_1_, int p_150111_2_, int p_150111_3_, int p_150111_4_, boolean p_150111_5_)
     {
@@ -58,7 +57,7 @@ public class BlockRedstoneTorch extends BlockTorch
         this.setCreativeTab((CreativeTabs)null);
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 2;
     }
@@ -160,7 +159,7 @@ public class BlockRedstoneTorch extends BlockTorch
 
             if (this.field_150113_a && var6 || !this.field_150113_a && !var6)
             {
-                p_149695_1_.scheduleBlockUpdate(p_149695_2_, p_149695_3_, p_149695_4_, this, this.func_149738_a(p_149695_1_));
+                p_149695_1_.scheduleBlockUpdate(p_149695_2_, p_149695_3_, p_149695_4_, this, this.tickRate(p_149695_1_));
             }
         }
     }
@@ -223,12 +222,12 @@ public class BlockRedstoneTorch extends BlockTorch
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemFromBlock(Blocks.redstone_torch);
     }
 
-    public boolean func_149667_c(Block p_149667_1_)
+    public boolean isAssociatedBlock(Block p_149667_1_)
     {
         return p_149667_1_ == Blocks.unlit_redstone_torch || p_149667_1_ == Blocks.redstone_torch;
     }
@@ -239,7 +238,6 @@ public class BlockRedstoneTorch extends BlockTorch
         int field_150845_b;
         int field_150846_c;
         long field_150844_d;
-        private static final String __OBFID = "CL_00000299";
 
         public Toggle(int p_i45422_1_, int p_i45422_2_, int p_i45422_3_, long p_i45422_4_)
         {

@@ -26,7 +26,6 @@ public class McoServerList
     private boolean field_148492_h;
     private Session field_148493_i;
     private int field_148491_j;
-    private static final String __OBFID = "CL_00000803";
 
     public McoServerList()
     {
@@ -117,7 +116,6 @@ public class McoServerList
     class UpdateTask extends TimerTask
     {
         private McoClient field_148498_b;
-        private static final String __OBFID = "CL_00000805";
 
         private UpdateTask() {}
 
@@ -203,7 +201,6 @@ public class McoServerList
         class Comparator implements java.util.Comparator
         {
             private final String field_148504_b;
-            private static final String __OBFID = "CL_00000806";
 
             private Comparator(String par2Str)
             {

@@ -10,7 +10,6 @@ public class GuiGameOver extends GuiScreen
 {
     private int field_146347_a;
     private boolean field_146346_f = false;
-    private static final String __OBFID = "CL_00000690";
 
     /**
      * Adds the buttons (and other controls) to the screen in question.
@@ -88,23 +87,23 @@ public class GuiGameOver extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawGradientRect(0, 0, this.width, this.height, 1615855616, -1602211792);
         GL11.glPushMatrix();
         GL11.glScalef(2.0F, 2.0F, 2.0F);
         boolean var4 = this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled();
         String var5 = var4 ? I18n.format("deathScreen.title.hardcore", new Object[0]) : I18n.format("deathScreen.title", new Object[0]);
-        this.drawCenteredString(this.fontRendererObj, var5, this.width / 2 / 2, 30, 16777215);
+        this.drawCenteredString(this.fontRenderer, var5, this.width / 2 / 2, 30, 16777215);
         GL11.glPopMatrix();
 
         if (var4)
         {
-            this.drawCenteredString(this.fontRendererObj, I18n.format("deathScreen.hardcoreInfo", new Object[0]), this.width / 2, 144, 16777215);
+            this.drawCenteredString(this.fontRenderer, I18n.format("deathScreen.hardcoreInfo", new Object[0]), this.width / 2, 144, 16777215);
         }
 
-        this.drawCenteredString(this.fontRendererObj, I18n.format("deathScreen.score", new Object[0]) + ": " + EnumChatFormatting.YELLOW + this.mc.thePlayer.getScore(), this.width / 2, 100, 16777215);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.drawCenteredString(this.fontRenderer, I18n.format("deathScreen.score", new Object[0]) + ": " + EnumChatFormatting.YELLOW + this.mc.thePlayer.getScore(), this.width / 2, 100, 16777215);
+        super.drawScreen(par1, par2, par3);
     }
 
     /**

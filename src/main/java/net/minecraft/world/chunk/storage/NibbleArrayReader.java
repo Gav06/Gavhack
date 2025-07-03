@@ -5,7 +5,6 @@ public class NibbleArrayReader
     public final byte[] data;
     private final int depthBits;
     private final int depthBitsPlusFour;
-    private static final String __OBFID = "CL_00000376";
 
     public NibbleArrayReader(byte[] par1ArrayOfByte, int par2)
     {

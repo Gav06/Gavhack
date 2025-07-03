@@ -47,7 +47,6 @@ public class EntityWolf extends EntityTameable
      */
     private float timeWolfIsShaking;
     private float prevTimeWolfIsShaking;
-    private static final String __OBFID = "CL_00001654";
 
     public EntityWolf(World par1World)
     {
@@ -150,7 +149,7 @@ public class EntityWolf extends EntityTameable
         super.readEntityFromNBT(par1NBTTagCompound);
         this.setAngry(par1NBTTagCompound.getBoolean("Angry"));
 
-        if (par1NBTTagCompound.func_150297_b("CollarColor", 99))
+        if (par1NBTTagCompound.hasKey("CollarColor", 99))
         {
             this.setCollarColor(par1NBTTagCompound.getByte("CollarColor"));
         }

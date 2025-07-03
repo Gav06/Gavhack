@@ -1,5 +1,6 @@
 package net.minecraft.util;
 
+import me.gavin.gavhack.module.impl.TimerMod;
 import net.minecraft.client.Minecraft;
 
 public class Timer
@@ -49,7 +50,6 @@ public class Timer
      * A ratio used to sync the high-resolution clock to the system clock, updated once per second
      */
     private double timeSyncAdjustment = 1.0D;
-    private static final String __OBFID = "CL_00000658";
 
     public Timer(float par1)
     {
@@ -105,7 +105,19 @@ public class Timer
             var13 = 1.0D;
         }
 
-        this.elapsedPartialTicks = (float)((double)this.elapsedPartialTicks + var13 * (double)this.timerSpeed * (double)this.ticksPerSecond);
+        float adjustedSpeed = this.timerSpeed;
+
+        if (TimerMod.INSTANCE.isEnabled()) {
+            boolean inGameOnly = TimerMod.INSTANCE.getInGameOnly().getValue();
+            boolean isInGame = Minecraft.getMinecraft().currentScreen == null;
+
+            if (!inGameOnly || isInGame) {
+                adjustedSpeed = TimerMod.INSTANCE.getTicksPerSecond().getValue();
+            }
+        }
+
+
+        this.elapsedPartialTicks = (float)((double)this.elapsedPartialTicks + var13 * (double)adjustedSpeed * (double)this.ticksPerSecond);
         this.elapsedTicks = (int)this.elapsedPartialTicks;
         this.elapsedPartialTicks -= (float)this.elapsedTicks;
 

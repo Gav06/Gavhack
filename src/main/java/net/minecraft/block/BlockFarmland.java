@@ -15,7 +15,6 @@ public class BlockFarmland extends Block
 {
     private IIcon field_149824_a;
     private IIcon field_149823_b;
-    private static final String __OBFID = "CL_00000241";
 
     protected BlockFarmland()
     {
@@ -150,12 +149,12 @@ public class BlockFarmland extends Block
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemFromBlock(Blocks.dirt);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_149824_a = p_149651_1_.registerIcon(this.getTextureName() + "_wet");
         this.field_149823_b = p_149651_1_.registerIcon(this.getTextureName() + "_dry");

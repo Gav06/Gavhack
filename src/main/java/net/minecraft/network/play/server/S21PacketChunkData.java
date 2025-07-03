@@ -23,7 +23,6 @@ public class S21PacketChunkData extends Packet
     private boolean field_149279_g;
     private int field_149285_h;
     private static byte[] field_149286_i = new byte[196864];
-    private static final String __OBFID = "CL_00001304";
 
     public S21PacketChunkData() {}
 
@@ -273,6 +272,5 @@ public class S21PacketChunkData extends Packet
         public byte[] field_150282_a;
         public int field_150280_b;
         public int field_150281_c;
-        private static final String __OBFID = "CL_00001305";
     }
 }

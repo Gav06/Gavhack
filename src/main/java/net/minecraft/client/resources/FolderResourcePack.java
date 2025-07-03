@@ -12,7 +12,6 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 public class FolderResourcePack extends AbstractResourcePack
 {
-    private static final String __OBFID = "CL_00001076";
 
     public FolderResourcePack(File par1File)
     {

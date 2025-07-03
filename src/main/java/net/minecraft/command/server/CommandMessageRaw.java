@@ -13,7 +13,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 public class CommandMessageRaw extends CommandBase
 {
-    private static final String __OBFID = "CL_00000667";
 
     public String getCommandName()
     {

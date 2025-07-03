@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 public class CreativeCrafting implements ICrafting
 {
     private final Minecraft field_146109_a;
-    private static final String __OBFID = "CL_00000751";
 
     public CreativeCrafting(Minecraft par1Minecraft)
     {

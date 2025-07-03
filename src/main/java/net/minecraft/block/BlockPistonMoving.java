@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 
 public class BlockPistonMoving extends BlockContainer
 {
-    private static final String __OBFID = "CL_00000368";
 
     public BlockPistonMoving()
     {
@@ -38,7 +37,7 @@ public class BlockPistonMoving extends BlockContainer
 
         if (var7 instanceof TileEntityPiston)
         {
-            ((TileEntityPiston)var7).func_145866_f();
+            ((TileEntityPiston)var7).clearPistonTileEntity();
         }
         else
         {
@@ -109,7 +108,7 @@ public class BlockPistonMoving extends BlockContainer
 
             if (var8 != null)
             {
-                var8.func_145861_a().dropBlockAsItem(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_, var8.getBlockMetadata(), 0);
+                var8.getStoredBlockID().dropBlockAsItem(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_, var8.getBlockMetadata(), 0);
             }
         }
     }
@@ -122,7 +121,7 @@ public class BlockPistonMoving extends BlockContainer
         }
     }
 
-    public static TileEntity func_149962_a(Block p_149962_0_, int p_149962_1_, int p_149962_2_, boolean p_149962_3_, boolean p_149962_4_)
+    public static TileEntity getTileEntity(Block p_149962_0_, int p_149962_1_, int p_149962_2_, boolean p_149962_3_, boolean p_149962_4_)
     {
         return new TileEntityPiston(p_149962_0_, p_149962_1_, p_149962_2_, p_149962_3_, p_149962_4_);
     }
@@ -143,12 +142,12 @@ public class BlockPistonMoving extends BlockContainer
         {
             float var6 = var5.func_145860_a(0.0F);
 
-            if (var5.func_145868_b())
+            if (var5.isExtending())
             {
                 var6 = 1.0F - var6;
             }
 
-            return this.func_149964_a(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_, var5.func_145861_a(), var6, var5.func_145864_c());
+            return this.func_149964_a(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_, var5.getStoredBlockID(), var6, var5.getPistonOrientation());
         }
     }
 
@@ -158,7 +157,7 @@ public class BlockPistonMoving extends BlockContainer
 
         if (var5 != null)
         {
-            Block var6 = var5.func_145861_a();
+            Block var6 = var5.getStoredBlockID();
 
             if (var6 == this || var6.getMaterial() == Material.air)
             {
@@ -168,18 +167,18 @@ public class BlockPistonMoving extends BlockContainer
             var6.setBlockBoundsBasedOnState(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_);
             float var7 = var5.func_145860_a(0.0F);
 
-            if (var5.func_145868_b())
+            if (var5.isExtending())
             {
                 var7 = 1.0F - var7;
             }
 
-            int var8 = var5.func_145864_c();
-            this.field_149759_B = var6.getBlockBoundsMinX() - (double)((float)Facing.offsetsXForSide[var8] * var7);
-            this.field_149760_C = var6.getBlockBoundsMinY() - (double)((float)Facing.offsetsYForSide[var8] * var7);
-            this.field_149754_D = var6.getBlockBoundsMinZ() - (double)((float)Facing.offsetsZForSide[var8] * var7);
-            this.field_149755_E = var6.getBlockBoundsMaxX() - (double)((float)Facing.offsetsXForSide[var8] * var7);
-            this.field_149756_F = var6.getBlockBoundsMaxY() - (double)((float)Facing.offsetsYForSide[var8] * var7);
-            this.field_149757_G = var6.getBlockBoundsMaxZ() - (double)((float)Facing.offsetsZForSide[var8] * var7);
+            int var8 = var5.getPistonOrientation();
+            this.minX = var6.getBlockBoundsMinX() - (double)((float)Facing.offsetsXForSide[var8] * var7);
+            this.minY = var6.getBlockBoundsMinY() - (double)((float)Facing.offsetsYForSide[var8] * var7);
+            this.minZ = var6.getBlockBoundsMinZ() - (double)((float)Facing.offsetsZForSide[var8] * var7);
+            this.maxX = var6.getBlockBoundsMaxX() - (double)((float)Facing.offsetsXForSide[var8] * var7);
+            this.maxY = var6.getBlockBoundsMaxY() - (double)((float)Facing.offsetsYForSide[var8] * var7);
+            this.maxZ = var6.getBlockBoundsMaxZ() - (double)((float)Facing.offsetsZForSide[var8] * var7);
         }
     }
 
@@ -240,12 +239,12 @@ public class BlockPistonMoving extends BlockContainer
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemById(0);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("piston_top_normal");
     }

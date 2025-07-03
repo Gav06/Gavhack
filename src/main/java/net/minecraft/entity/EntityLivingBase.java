@@ -183,7 +183,6 @@ public abstract class EntityLivingBase extends Entity
     /** Number of ticks since last jump */
     private int jumpTicks;
     private float field_110151_bq;
-    private static final String __OBFID = "CL_00001549";
 
     public EntityLivingBase(World par1World)
     {
@@ -562,12 +561,12 @@ public abstract class EntityLivingBase extends Entity
     {
         this.setAbsorptionAmount(par1NBTTagCompound.getFloat("AbsorptionAmount"));
 
-        if (par1NBTTagCompound.func_150297_b("Attributes", 9) && this.worldObj != null && !this.worldObj.isClient)
+        if (par1NBTTagCompound.hasKey("Attributes", 9) && this.worldObj != null && !this.worldObj.isClient)
         {
             SharedMonsterAttributes.func_151475_a(this.getAttributeMap(), par1NBTTagCompound.getTagList("Attributes", 10));
         }
 
-        if (par1NBTTagCompound.func_150297_b("ActiveEffects", 9))
+        if (par1NBTTagCompound.hasKey("ActiveEffects", 9))
         {
             NBTTagList var2 = par1NBTTagCompound.getTagList("ActiveEffects", 10);
 
@@ -583,7 +582,7 @@ public abstract class EntityLivingBase extends Entity
             }
         }
 
-        if (par1NBTTagCompound.func_150297_b("HealF", 99))
+        if (par1NBTTagCompound.hasKey("HealF", 99))
         {
             this.setHealth(par1NBTTagCompound.getFloat("HealF"));
         }
@@ -1609,11 +1608,10 @@ public abstract class EntityLivingBase extends Entity
 
             if (this.onGround)
             {
-                var3 = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ)).slipperiness * 0.91F;
+                var3 = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ)).getSlipperiness() * 0.91F;
             }
 
             float var4 = 0.16277136F / (var3 * var3 * var3);
-//            var4 = 1.0f;
             float var5;
 
             if (this.onGround)
@@ -1639,22 +1637,22 @@ public abstract class EntityLivingBase extends Entity
 
                 if (this.motionX < (double)(-var6))
                 {
-                    this.motionX = -var6;
+                    this.motionX = (double)(-var6);
                 }
 
                 if (this.motionX > (double)var6)
                 {
-                    this.motionX = var6;
+                    this.motionX = (double)var6;
                 }
 
                 if (this.motionZ < (double)(-var6))
                 {
-                    this.motionZ = -var6;
+                    this.motionZ = (double)(-var6);
                 }
 
                 if (this.motionZ > (double)var6)
                 {
-                    this.motionZ = var6;
+                    this.motionZ = (double)var6;
                 }
 
                 this.fallDistance = 0.0F;
@@ -1696,8 +1694,8 @@ public abstract class EntityLivingBase extends Entity
             }
 
             this.motionY *= 0.9800000190734863D;
-            this.motionX *= var3;
-            this.motionZ *= var3;
+            this.motionX *= (double)var3;
+            this.motionZ *= (double)var3;
         }
 
         this.prevLimbSwingAmount = this.limbSwingAmount;

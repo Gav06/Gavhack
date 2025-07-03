@@ -27,14 +27,14 @@ import net.minecraft.nbt.NBTTagFloat;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.server.S1BPacketEntityAttach;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.src.BlockPos;
+import net.minecraft.src.Reflector;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
-import optifine.BlockPos;
-import optifine.Reflector;
 
 public abstract class EntityLiving extends EntityLivingBase
 {
@@ -78,7 +78,6 @@ public abstract class EntityLiving extends EntityLivingBase
     private boolean isLeashed;
     private Entity leashedToEntity;
     private NBTTagCompound field_110170_bx;
-    private static final String __OBFID = "CL_00001550";
     public int randomMobsId = 0;
     public BiomeGenBase spawnBiome = null;
     public BlockPos spawnPosition = null;
@@ -384,7 +383,7 @@ public abstract class EntityLiving extends EntityLivingBase
         this.setCanPickUpLoot(par1NBTTagCompound.getBoolean("CanPickUpLoot"));
         this.persistenceRequired = par1NBTTagCompound.getBoolean("PersistenceRequired");
 
-        if (par1NBTTagCompound.func_150297_b("CustomName", 8) && par1NBTTagCompound.getString("CustomName").length() > 0)
+        if (par1NBTTagCompound.hasKey("CustomName", 8) && par1NBTTagCompound.getString("CustomName").length() > 0)
         {
             this.setCustomNameTag(par1NBTTagCompound.getString("CustomName"));
         }
@@ -393,7 +392,7 @@ public abstract class EntityLiving extends EntityLivingBase
         NBTTagList var2;
         int var3;
 
-        if (par1NBTTagCompound.func_150297_b("Equipment", 9))
+        if (par1NBTTagCompound.hasKey("Equipment", 9))
         {
             var2 = par1NBTTagCompound.getTagList("Equipment", 10);
 
@@ -403,7 +402,7 @@ public abstract class EntityLiving extends EntityLivingBase
             }
         }
 
-        if (par1NBTTagCompound.func_150297_b("DropChances", 9))
+        if (par1NBTTagCompound.hasKey("DropChances", 9))
         {
             var2 = par1NBTTagCompound.getTagList("DropChances", 5);
 
@@ -415,7 +414,7 @@ public abstract class EntityLiving extends EntityLivingBase
 
         this.isLeashed = par1NBTTagCompound.getBoolean("Leashed");
 
-        if (this.isLeashed && par1NBTTagCompound.func_150297_b("Leash", 10))
+        if (this.isLeashed && par1NBTTagCompound.hasKey("Leash", 10))
         {
             this.field_110170_bx = par1NBTTagCompound.getCompoundTag("Leash");
         }
@@ -1261,7 +1260,7 @@ public abstract class EntityLiving extends EntityLivingBase
     {
         if (this.isLeashed && this.field_110170_bx != null)
         {
-            if (this.field_110170_bx.func_150297_b("UUIDMost", 4) && this.field_110170_bx.func_150297_b("UUIDLeast", 4))
+            if (this.field_110170_bx.hasKey("UUIDMost", 4) && this.field_110170_bx.hasKey("UUIDLeast", 4))
             {
                 UUID var11 = new UUID(this.field_110170_bx.getLong("UUIDMost"), this.field_110170_bx.getLong("UUIDLeast"));
                 List var21 = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, this.boundingBox.expand(10.0D, 10.0D, 10.0D));
@@ -1278,7 +1277,7 @@ public abstract class EntityLiving extends EntityLivingBase
                     }
                 }
             }
-            else if (this.field_110170_bx.func_150297_b("X", 99) && this.field_110170_bx.func_150297_b("Y", 99) && this.field_110170_bx.func_150297_b("Z", 99))
+            else if (this.field_110170_bx.hasKey("X", 99) && this.field_110170_bx.hasKey("Y", 99) && this.field_110170_bx.hasKey("Z", 99))
             {
                 int var1 = this.field_110170_bx.getInteger("X");
                 int var2 = this.field_110170_bx.getInteger("Y");

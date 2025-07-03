@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import me.gavin.gavhack.module.impl.ESP;
 import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -43,7 +42,6 @@ public class TileEntityRendererDispatcher
     public double field_147560_j;
     public double field_147561_k;
     public double field_147558_l;
-    private static final String __OBFID = "CL_00000963";
 
     private TileEntityRendererDispatcher()
     {
@@ -88,7 +86,7 @@ public class TileEntityRendererDispatcher
         return p_147547_1_ == null ? null : this.getSpecialRendererByClass(p_147547_1_.getClass());
     }
 
-    public void func_147542_a(World p_147542_1_, TextureManager p_147542_2_, FontRenderer p_147542_3_, EntityLivingBase p_147542_4_, float p_147542_5_)
+    public void cacheActiveRenderInfo(World p_147542_1_, TextureManager p_147542_2_, FontRenderer p_147542_3_, EntityLivingBase p_147542_4_, float p_147542_5_)
     {
         if (this.world != p_147542_1_)
         {
@@ -105,17 +103,16 @@ public class TileEntityRendererDispatcher
         this.field_147558_l = p_147542_4_.lastTickPosZ + (p_147542_4_.posZ - p_147542_4_.lastTickPosZ) * (double)p_147542_5_;
     }
 
-    // formerly func_147544_a
-    public void renderTileEntity(TileEntity tile, float partialTicks)
+    public void renderTileEntity(TileEntity tileEntity, float partialTicks)
     {
-        if (RenderUtils.INSTANCE.getShouldCancelTileDistanceCheck() || tile.getDistanceFrom(this.field_147560_j, this.field_147561_k, this.field_147558_l) < tile.getMaxRenderDistanceSquared())
+        if (RenderUtils.INSTANCE.getShouldCancelTileDistanceCheck() || tileEntity.getDistanceFrom(this.field_147560_j, this.field_147561_k, this.field_147558_l) < tileEntity.getMaxRenderDistanceSquared())
         {
-            int var3 = this.world.getLightBrightnessForSkyBlocks(tile.x, tile.y, tile.z, 0);
+            int var3 = this.world.getLightBrightnessForSkyBlocks(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0);
             int var4 = var3 % 65536;
             int var5 = var3 / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var4, (float) var5);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.func_147549_a(tile, (double)tile.x - staticPlayerX, (double)tile.y - staticPlayerY, (double)tile.z - staticPlayerZ, partialTicks);
+            this.func_147549_a(tileEntity, (double)tileEntity.xCoord - staticPlayerX, (double)tileEntity.yCoord - staticPlayerY, (double)tileEntity.zCoord - staticPlayerZ, partialTicks);
         }
     }
 
@@ -139,20 +136,23 @@ public class TileEntityRendererDispatcher
         }
     }
 
-    public void func_147543_a(World worldIn)
+    public void func_147543_a(World p_147543_1_)
     {
-        this.world = worldIn;
+        this.world = p_147543_1_;
+        Iterator var2 = this.mapSpecialRenderers.values().iterator();
 
-        for (Object o : this.mapSpecialRenderers.values()) {
-            TileEntitySpecialRenderer tileEntitySpecialRenderer = (TileEntitySpecialRenderer) o;
+        while (var2.hasNext())
+        {
+            TileEntitySpecialRenderer var3 = (TileEntitySpecialRenderer)var2.next();
 
-            if (tileEntitySpecialRenderer != null) {
-                tileEntitySpecialRenderer.func_147496_a(worldIn);
+            if (var3 != null)
+            {
+                var3.func_147496_a(p_147543_1_);
             }
         }
     }
 
-    public FontRenderer func_147548_a()
+    public FontRenderer getFontRenderer()
     {
         return this.field_147557_n;
     }

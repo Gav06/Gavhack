@@ -7,7 +7,6 @@ public class ClickEvent
 {
     private final ClickEvent.Action action;
     private final String value;
-    private static final String __OBFID = "CL_00001260";
 
     public ClickEvent(ClickEvent.Action p_i45156_1_, String p_i45156_2_)
     {
@@ -92,7 +91,6 @@ public class ClickEvent
         private final String canonicalName;
 
         private static final ClickEvent.Action[] $VALUES = new ClickEvent.Action[]{OPEN_URL, OPEN_FILE, RUN_COMMAND, SUGGEST_COMMAND};
-        private static final String __OBFID = "CL_00001261";
 
         private Action(String p_i45155_1_, int p_i45155_2_, String p_i45155_3_, boolean p_i45155_4_)
         {

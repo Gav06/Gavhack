@@ -31,7 +31,6 @@ public class EntityGhast extends EntityFlying implements IMob
 
     /** The explosion radius of spawned fireballs. */
     private int explosionStrength = 1;
-    private static final String __OBFID = "CL_00001689";
 
     public EntityGhast(World par1World)
     {
@@ -306,7 +305,7 @@ public class EntityGhast extends EntityFlying implements IMob
     {
         super.readEntityFromNBT(par1NBTTagCompound);
 
-        if (par1NBTTagCompound.func_150297_b("ExplosionPower", 99))
+        if (par1NBTTagCompound.hasKey("ExplosionPower", 99))
         {
             this.explosionStrength = par1NBTTagCompound.getInteger("ExplosionPower");
         }

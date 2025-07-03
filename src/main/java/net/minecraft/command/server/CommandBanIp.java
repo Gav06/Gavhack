@@ -16,7 +16,6 @@ import net.minecraft.util.IChatComponent;
 public class CommandBanIp extends CommandBase
 {
     public static final Pattern field_147211_a = Pattern.compile("^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
-    private static final String __OBFID = "CL_00000139";
 
     public String getCommandName()
     {

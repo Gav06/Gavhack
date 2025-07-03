@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 
 public class WorldGenGlowStone2 extends WorldGenerator
 {
-    private static final String __OBFID = "CL_00000413";
 
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {

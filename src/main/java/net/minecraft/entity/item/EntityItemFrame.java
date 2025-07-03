@@ -15,7 +15,6 @@ public class EntityItemFrame extends EntityHanging
 {
     /** Chance for this item frame's item to drop from the frame. */
     private float itemDropChance = 1.0F;
-    private static final String __OBFID = "CL_00001547";
 
     public EntityItemFrame(World par1World)
     {
@@ -191,7 +190,7 @@ public class EntityItemFrame extends EntityHanging
             this.setDisplayedItem(ItemStack.loadItemStackFromNBT(var2));
             this.setItemRotation(par1NBTTagCompound.getByte("ItemRotation"));
 
-            if (par1NBTTagCompound.func_150297_b("ItemDropChance", 99))
+            if (par1NBTTagCompound.hasKey("ItemDropChance", 99))
             {
                 this.itemDropChance = par1NBTTagCompound.getFloat("ItemDropChance");
             }

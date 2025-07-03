@@ -10,7 +10,6 @@ public class Util
      * case letters.
      */
     private static final Pattern uuidPattern = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}");
-    private static final String __OBFID = "CL_00001633";
 
     public static Util.EnumOS getOSType()
     {
@@ -64,7 +63,6 @@ public class Util
         UNKNOWN("UNKNOWN", 4);
 
         private static final Util.EnumOS[] $VALUES = new Util.EnumOS[]{LINUX, SOLARIS, WINDOWS, MACOS, UNKNOWN};
-        private static final String __OBFID = "CL_00001660";
 
         private EnumOS(String par1Str, int par2) {}
     }

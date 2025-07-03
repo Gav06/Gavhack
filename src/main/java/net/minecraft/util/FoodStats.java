@@ -20,7 +20,6 @@ public class FoodStats
     /** The player's food timer value. */
     private int foodTimer;
     private int prevFoodLevel = 20;
-    private static final String __OBFID = "CL_00001729";
 
     /**
      * Args: int foodLevel, float foodSaturationModifier
@@ -94,7 +93,7 @@ public class FoodStats
      */
     public void readNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if (par1NBTTagCompound.func_150297_b("foodLevel", 99))
+        if (par1NBTTagCompound.hasKey("foodLevel", 99))
         {
             this.foodLevel = par1NBTTagCompound.getInteger("foodLevel");
             this.foodTimer = par1NBTTagCompound.getInteger("foodTickTimer");

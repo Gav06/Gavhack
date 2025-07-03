@@ -23,7 +23,13 @@ object ClickGUI: GuiScreen() {
 
     private val windows = CopyOnWriteArrayList<Window>()
 
+    private var currMouseX = 0
+    private var currMouseY = 0
+
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
+        currMouseX = mouseX
+        currMouseY = mouseY
+
         if (mc.theWorld == null)
             drawDefaultBackground()
         else if (GUI.drawBackground.value) {
@@ -33,7 +39,7 @@ object ClickGUI: GuiScreen() {
         super.drawScreen(mouseX, mouseY, partialTicks)
 
         if (mc.theWorld == null) {
-            fontRendererObj.drawStringWithShadow(EnumChatFormatting.RED.toString() + "Press ESCAPE to go back", 2, height - 11, -1)
+            fontRenderer.drawStringWithShadow(EnumChatFormatting.RED.toString() + "Press ESCAPE to go back", 2, height - 11, -1)
         }
 
         // draw each window in reverse order so the window at the front of the list is drawn last, or in front.
@@ -52,7 +58,7 @@ object ClickGUI: GuiScreen() {
                     continue
 
                 val desc = button.module.desc
-                this.drawToolTipBox(listOf(desc), mouseX + 5, mouseY + 5)
+                this.drawTooltipBox(listOf(desc), mouseX + 5, mouseY + 5)
                 return
             }
         }
@@ -103,6 +109,7 @@ object ClickGUI: GuiScreen() {
      * We use a FBO for the vertical pass, just so we don't draw 2 quads to the mc frame buffer,
      * when we only need one
      */
+    @Deprecated("This will be removed because the gaussian blur was too expensive for the method I was using.")
     private fun drawBackgroundShader() {
         val res = ScaledResolution(mc)
 
@@ -133,6 +140,20 @@ object ClickGUI: GuiScreen() {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0)
         GL11.glDisable(GL11.GL_TEXTURE_2D)
         GL11.glPopMatrix()
+    }
+
+    // Quick loop through all the slider components to make sure they don't stay
+    // in a "dragging" state even while the GUI is closed.
+    override fun onGuiClosed() {
+        for (comp in windows) {
+            comp.components.forEach { comp ->
+                comp.subComponents
+                    .filter { it is IntComponent || it is FloatComponent }
+                    .forEach { it.onRelease(currMouseX, currMouseY, 0) }
+            }
+        }
+
+        super.onGuiClosed()
     }
 
     private fun addSettingComponents(button: WindowButton, module: Module) {

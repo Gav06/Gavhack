@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 
 public class BlockTrapDoor extends Block
 {
-    private static final String __OBFID = "CL_00000327";
 
     protected BlockTrapDoor(Material p_i45434_1_)
     {
@@ -33,9 +32,9 @@ public class BlockTrapDoor extends Block
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
     {
-        return !func_150118_d(access.getBlockMetadata(x, y, z));
+        return !func_150118_d(p_149655_1_.getBlockMetadata(p_149655_2_, p_149655_3_, p_149655_4_));
     }
 
     /**

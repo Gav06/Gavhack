@@ -61,7 +61,7 @@ public class GuiQualitySettingsOF extends GuiScreen
         {
             if (guibutton.id < 200 && guibutton instanceof GuiOptionButton)
             {
-                this.settings.setOptionValue(((GuiOptionButton)guibutton).func_146136_c(), 1);
+                this.settings.setOptionValue(((GuiOptionButton)guibutton).returnEnumOptions(), 1);
                 guibutton.displayString = this.settings.getKeyBinding(GameSettings.Options.getEnumOptions(guibutton.id));
             }
 
@@ -87,7 +87,7 @@ public class GuiQualitySettingsOF extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRenderer, this.title, this.width / 2, 20, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (Math.abs(mouseX - this.lastMouseX) <= 5 && Math.abs(mouseY - this.lastMouseY) <= 5)
@@ -130,7 +130,7 @@ public class GuiQualitySettingsOF extends GuiScreen
                             col = 16719904;
                         }
 
-                        this.fontRendererObj.drawStringWithShadow(line, x1 + 5, y1 + 5 + i * 11, col);
+                        this.fontRenderer.drawStringWithShadow(line, x1 + 5, y1 + 5 + i * 11, col);
                     }
                 }
             }
@@ -156,15 +156,13 @@ public class GuiQualitySettingsOF extends GuiScreen
 
     private GuiButton getSelectedButton(int i, int j)
     {
-        for (int k = 0; k < this.buttonList.size(); ++k)
-        {
-            GuiButton btn = (GuiButton)this.buttonList.get(k);
+        for (Object o : this.buttonList) {
+            GuiButton btn = (GuiButton) o;
             int btnWidth = GuiVideoSettings.getButtonWidth(btn);
             int btnHeight = GuiVideoSettings.getButtonHeight(btn);
-            boolean flag = i >= btn.x && j >= btn.y && i < btn.x + btnWidth && j < btn.y + btnHeight;
+            boolean flag = i >= btn.xPosition && j >= btn.yPosition && i < btn.xPosition + btnWidth && j < btn.yPosition + btnHeight;
 
-            if (flag)
-            {
+            if (flag) {
                 return btn;
             }
         }

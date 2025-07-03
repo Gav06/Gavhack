@@ -29,7 +29,6 @@ public class GuiScreenRealmsPinger
 {
     private static final Logger logger = LogManager.getLogger();
     private final List field_148509_b = Collections.synchronizedList(new ArrayList());
-    private static final String __OBFID = "CL_00000807";
 
     public void func_148506_a(final McoServer p_148506_1_) throws UnknownHostException
     {
@@ -41,7 +40,6 @@ public class GuiScreenRealmsPinger
             var3.setNetHandler(new INetHandlerStatusClient()
             {
                 private boolean field_147399_d = false;
-                private static final String __OBFID = "CL_00000808";
                 public void handleServerInfo(S00PacketServerInfo p_147397_1_)
                 {
                     ServerStatusResponse var2 = p_147397_1_.func_149294_c();

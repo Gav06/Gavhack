@@ -27,7 +27,6 @@ public class RenderBiped extends RenderLiving
 
     /** List of armor texture filenames. */
     private static final String[] bipedArmorFilenamePrefix = new String[] {"leather", "chainmail", "iron", "diamond", "gold"};
-    private static final String __OBFID = "CL_00001001";
 
     public RenderBiped(ModelBiped par1ModelBiped, float par2)
     {
@@ -213,7 +212,7 @@ public class RenderBiped extends RenderLiving
                 GL11.glScalef(var6, -var6, -var6);
                 String var7 = "";
 
-                if (var4.hasTagCompound() && var4.getTagCompound().func_150297_b("SkullOwner", 8))
+                if (var4.hasTagCompound() && var4.getTagCompound().hasKey("SkullOwner", 8))
                 {
                     var7 = var4.getTagCompound().getString("SkullOwner");
                 }

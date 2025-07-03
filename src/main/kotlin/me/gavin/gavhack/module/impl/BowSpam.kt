@@ -12,7 +12,6 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement
 import net.minecraft.util.EnumFacing
 
-
 object BowSpam: Module("BowSpam", "Spam arrows quickly", ModCategory.COMBAT) {
 
     private val mode = addSetting(EnumSetting("Mode", Mode.NORMAL))
@@ -65,7 +64,7 @@ object BowSpam: Module("BowSpam", "Spam arrows quickly", ModCategory.COMBAT) {
     }
 
     init {
-        EventBus.addListener(updateListener, PlayerLivingTickEvent::class)
+        addEventListener(updateListener, PlayerLivingTickEvent::class)
     }
 
     enum class Mode {

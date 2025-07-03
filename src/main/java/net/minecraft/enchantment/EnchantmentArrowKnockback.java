@@ -2,7 +2,6 @@ package net.minecraft.enchantment;
 
 public class EnchantmentArrowKnockback extends Enchantment
 {
-    private static final String __OBFID = "CL_00000101";
 
     public EnchantmentArrowKnockback(int par1, int par2)
     {

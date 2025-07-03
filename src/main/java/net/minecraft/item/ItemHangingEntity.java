@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 public class ItemHangingEntity extends Item
 {
     private final Class hangingEntityClass;
-    private static final String __OBFID = "CL_00000038";
 
     public ItemHangingEntity(Class p_i45342_1_)
     {
@@ -23,7 +22,7 @@ public class ItemHangingEntity extends Item
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (par7 == 0)
         {
@@ -36,9 +35,9 @@ public class ItemHangingEntity extends Item
         else
         {
             int var11 = Direction.facingToDirection[par7];
-            EntityHanging var12 = this.createHangingEntity(par3World, par4, par5, par6, var11);
+            EntityHanging var12 = this.createHangingEntity(world, par4, par5, par6, var11);
 
-            if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
+            if (!player.canPlayerEdit(par4, par5, par6, par7, stack))
             {
                 return false;
             }
@@ -46,12 +45,12 @@ public class ItemHangingEntity extends Item
             {
                 if (var12 != null && var12.onValidSurface())
                 {
-                    if (!par3World.isClient)
+                    if (!world.isClient)
                     {
-                        par3World.spawnEntityInWorld(var12);
+                        world.spawnEntityInWorld(var12);
                     }
 
-                    --par1ItemStack.stackSize;
+                    --stack.stackSize;
                 }
 
                 return true;

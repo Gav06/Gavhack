@@ -11,25 +11,24 @@ public class TileEntitySign extends TileEntity
     public int field_145918_i = -1;
     private boolean field_145916_j = true;
     private EntityPlayer field_145917_k;
-    private static final String __OBFID = "CL_00000363";
 
-    public void writeToNBT(NBTTagCompound tag)
+    public void writeToNBT(NBTTagCompound p_145841_1_)
     {
-        super.writeToNBT(tag);
-        tag.setString("Text1", this.text[0]);
-        tag.setString("Text2", this.text[1]);
-        tag.setString("Text3", this.text[2]);
-        tag.setString("Text4", this.text[3]);
+        super.writeToNBT(p_145841_1_);
+        p_145841_1_.setString("Text1", this.text[0]);
+        p_145841_1_.setString("Text2", this.text[1]);
+        p_145841_1_.setString("Text3", this.text[2]);
+        p_145841_1_.setString("Text4", this.text[3]);
     }
 
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(NBTTagCompound p_145839_1_)
     {
         this.field_145916_j = false;
-        super.readFromNBT(tag);
+        super.readFromNBT(p_145839_1_);
 
         for (int var2 = 0; var2 < 4; ++var2)
         {
-            this.text[var2] = tag.getString("Text" + (var2 + 1));
+            this.text[var2] = p_145839_1_.getString("Text" + (var2 + 1));
 
             if (this.text[var2].length() > 15)
             {
@@ -45,7 +44,7 @@ public class TileEntitySign extends TileEntity
     {
         String[] var1 = new String[4];
         System.arraycopy(this.text, 0, var1, 0, 4);
-        return new S33PacketUpdateSign(this.x, this.y, this.z, var1);
+        return new S33PacketUpdateSign(this.xCoord, this.yCoord, this.zCoord, var1);
     }
 
     public boolean func_145914_a()

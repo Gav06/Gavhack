@@ -9,7 +9,6 @@ public class EntityAIHurtByTarget extends EntityAITarget
 {
     boolean entityCallsForHelp;
     private int field_142052_b;
-    private static final String __OBFID = "CL_00001619";
 
     public EntityAIHurtByTarget(EntityCreature par1EntityCreature, boolean par2)
     {

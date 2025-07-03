@@ -5,7 +5,6 @@ import net.minecraft.network.play.server.S29PacketSoundEffect;
 
 public class CommandPlaySound extends CommandBase
 {
-    private static final String __OBFID = "CL_00000774";
 
     public String getCommandName()
     {
@@ -99,11 +98,11 @@ public class CommandPlaySound extends CommandBase
                     var34 += var26 / var28 * 2.0D;
                 }
 
-                var5.playerNetServerHandler.sendPacket(new S29PacketSoundEffect(var4, var30, var32, var34, (float)var16, (float)var14));
+                var5.playerNetServerHandler.sendPacketToPlayer(new S29PacketSoundEffect(var4, var30, var32, var34, (float)var16, (float)var14));
             }
             else
             {
-                var5.playerNetServerHandler.sendPacket(new S29PacketSoundEffect(var4, var6, var8, var10, (float)var12, (float)var14));
+                var5.playerNetServerHandler.sendPacketToPlayer(new S29PacketSoundEffect(var4, var6, var8, var10, (float)var12, (float)var14));
             }
 
             notifyAdmins(par1ICommandSender, "commands.playsound.success", new Object[] {var4, var5.getCommandSenderName()});

@@ -16,7 +16,6 @@ public class ScorePlayerTeam extends Team
     private String colorSuffix = "";
     private boolean allowFriendlyFire = true;
     private boolean canSeeFriendlyInvisibles = true;
-    private static final String __OBFID = "CL_00000616";
 
     public ScorePlayerTeam(Scoreboard par1Scoreboard, String par2Str)
     {

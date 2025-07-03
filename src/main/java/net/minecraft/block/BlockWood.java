@@ -12,7 +12,6 @@ public class BlockWood extends Block
 {
     public static final String[] field_150096_a = new String[] {"oak", "spruce", "birch", "jungle", "acacia", "big_oak"};
     private IIcon[] field_150095_b;
-    private static final String __OBFID = "CL_00000335";
 
     public BlockWood()
     {
@@ -51,7 +50,7 @@ public class BlockWood extends Block
         p_149666_3_.add(new ItemStack(p_149666_1_, 1, 5));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150095_b = new IIcon[field_150096_a.length];
 

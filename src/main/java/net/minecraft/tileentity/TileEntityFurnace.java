@@ -27,7 +27,6 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory
     public int field_145963_i;
     public int field_145961_j;
     private String field_145958_o;
-    private static final String __OBFID = "CL_00000357";
 
     /**
      * Returns the number of slots in the inventory.
@@ -131,10 +130,10 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory
         this.field_145958_o = p_145951_1_;
     }
 
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(NBTTagCompound p_145839_1_)
     {
-        super.readFromNBT(tag);
-        NBTTagList var2 = tag.getTagList("Items", 10);
+        super.readFromNBT(p_145839_1_);
+        NBTTagList var2 = p_145839_1_.getTagList("Items", 10);
         this.field_145957_n = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -148,21 +147,21 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory
             }
         }
 
-        this.field_145956_a = tag.getShort("BurnTime");
-        this.field_145961_j = tag.getShort("CookTime");
+        this.field_145956_a = p_145839_1_.getShort("BurnTime");
+        this.field_145961_j = p_145839_1_.getShort("CookTime");
         this.field_145963_i = func_145952_a(this.field_145957_n[1]);
 
-        if (tag.func_150297_b("CustomName", 8))
+        if (p_145839_1_.hasKey("CustomName", 8))
         {
-            this.field_145958_o = tag.getString("CustomName");
+            this.field_145958_o = p_145839_1_.getString("CustomName");
         }
     }
 
-    public void writeToNBT(NBTTagCompound tag)
+    public void writeToNBT(NBTTagCompound p_145841_1_)
     {
-        super.writeToNBT(tag);
-        tag.setShort("BurnTime", (short)this.field_145956_a);
-        tag.setShort("CookTime", (short)this.field_145961_j);
+        super.writeToNBT(p_145841_1_);
+        p_145841_1_.setShort("BurnTime", (short)this.field_145956_a);
+        p_145841_1_.setShort("CookTime", (short)this.field_145961_j);
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.field_145957_n.length; ++var3)
@@ -176,11 +175,11 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory
             }
         }
 
-        tag.setTag("Items", var2);
+        p_145841_1_.setTag("Items", var2);
 
         if (this.isInventoryNameLocalized())
         {
-            tag.setString("CustomName", this.field_145958_o);
+            p_145841_1_.setString("CustomName", this.field_145958_o);
         }
     }
 
@@ -264,7 +263,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory
             if (var1 != this.field_145956_a > 0)
             {
                 var2 = true;
-                BlockFurnace.func_149931_a(this.field_145956_a > 0, this.worldObj, this.x, this.y, this.z);
+                BlockFurnace.func_149931_a(this.field_145956_a > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
             }
         }
 
@@ -355,7 +354,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory
      */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.x, this.y, this.z) != this ? false : par1EntityPlayer.getDistanceSq((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
     }
 
     public void openInventory() {}

@@ -8,7 +8,6 @@ import net.minecraft.world.ColorizerGrass;
 public class GrassColorReloadListener implements IResourceManagerReloadListener
 {
     private static final ResourceLocation field_130078_a = new ResourceLocation("textures/colormap/grass.png");
-    private static final String __OBFID = "CL_00001078";
 
     public void onResourceManagerReload(IResourceManager par1ResourceManager)
     {

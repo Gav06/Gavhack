@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 public class BlockRedstoneOre extends Block
 {
     private boolean field_150187_a;
-    private static final String __OBFID = "CL_00000294";
 
     public BlockRedstoneOre(boolean p_i45420_1_)
     {
@@ -27,7 +26,7 @@ public class BlockRedstoneOre extends Block
         this.field_150187_a = p_i45420_1_;
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 30;
     }

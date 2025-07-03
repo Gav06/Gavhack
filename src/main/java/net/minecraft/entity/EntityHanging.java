@@ -17,7 +17,6 @@ public abstract class EntityHanging extends Entity
     public int field_146063_b;
     public int field_146064_c;
     public int field_146062_d;
-    private static final String __OBFID = "CL_00001546";
 
     public EntityHanging(World par1World)
     {
@@ -260,9 +259,9 @@ public abstract class EntityHanging extends Entity
     /**
      * Tries to moves the entity by the passed in displacement. Args: x, y, z
      */
-    public void moveEntity(double x, double y, double z)
+    public void moveEntity(double par1, double par3, double par5)
     {
-        if (!this.worldObj.isClient && !this.isDead && x * x + y * y + z * z > 0.0D)
+        if (!this.worldObj.isClient && !this.isDead && par1 * par1 + par3 * par3 + par5 * par5 > 0.0D)
         {
             this.setDead();
             this.onBroken((Entity)null);
@@ -315,7 +314,7 @@ public abstract class EntityHanging extends Entity
      */
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
-        if (par1NBTTagCompound.func_150297_b("Direction", 99))
+        if (par1NBTTagCompound.hasKey("Direction", 99))
         {
             this.hangingDirection = par1NBTTagCompound.getByte("Direction");
         }

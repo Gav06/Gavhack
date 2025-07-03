@@ -7,7 +7,6 @@ import net.minecraft.util.IIcon;
 
 public class BlockHay extends BlockRotatedPillar
 {
-    private static final String __OBFID = "CL_00000256";
 
     public BlockHay()
     {
@@ -20,7 +19,7 @@ public class BlockHay extends BlockRotatedPillar
         return this.blockIcon;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150164_N = p_149651_1_.registerIcon(this.getTextureName() + "_top");
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");

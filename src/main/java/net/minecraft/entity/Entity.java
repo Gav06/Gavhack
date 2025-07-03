@@ -5,15 +5,12 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import me.gavin.gavhack.event.Event;
 import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.EntityCollisionEvent;
 import me.gavin.gavhack.event.events.WaterPushEvent;
-import me.gavin.gavhack.module.impl.SafeWalk;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.enchantment.EnchantmentProtection;
@@ -45,7 +42,7 @@ import net.minecraft.world.WorldServer;
 public abstract class Entity
 {
     private static int nextEntityID;
-    private int field_145783_c;
+    private int entityId;
     public double renderDistanceWeight;
 
     /**
@@ -224,21 +221,20 @@ public abstract class Entity
     private boolean invulnerable;
     protected UUID entityUniqueID;
     public Entity.EnumEntitySize myEntitySize;
-    private static final String __OBFID = "CL_00001533";
 
     public int getEntityId()
     {
-        return this.field_145783_c;
+        return this.entityId;
     }
 
     public void setEntityId(int p_145769_1_)
     {
-        this.field_145783_c = p_145769_1_;
+        this.entityId = p_145769_1_;
     }
 
     public Entity(World par1World)
     {
-        this.field_145783_c = nextEntityID++;
+        this.entityId = nextEntityID++;
         this.renderDistanceWeight = 1.0D;
         this.boundingBox = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
         this.field_70135_K = true;
@@ -273,12 +269,12 @@ public abstract class Entity
 
     public boolean equals(Object par1Obj)
     {
-        return par1Obj instanceof Entity ? ((Entity)par1Obj).field_145783_c == this.field_145783_c : false;
+        return par1Obj instanceof Entity ? ((Entity)par1Obj).entityId == this.entityId : false;
     }
 
     public int hashCode()
     {
-        return this.field_145783_c;
+        return this.entityId;
     }
 
     /**
@@ -609,17 +605,17 @@ public abstract class Entity
     {
         AxisAlignedBB var7 = this.boundingBox.getOffsetBoundingBox(par1, par3, par5);
         List var8 = this.worldObj.getCollidingBoundingBoxes(this, var7);
-        return var8.isEmpty() && !this.worldObj.isAnyLiquid(var7);
+        return !var8.isEmpty() ? false : !this.worldObj.isAnyLiquid(var7);
     }
 
     /**
      * Tries to moves the entity by the passed in displacement. Args: x, y, z
      */
-    public void moveEntity(double x, double y, double z)
+    public void moveEntity(double par1, double par3, double par5)
     {
         if (this.noClip)
         {
-            this.boundingBox.offset(x, y, z);
+            this.boundingBox.offset(par1, par3, par5);
             this.posX = (this.boundingBox.minX + this.boundingBox.maxX) / 2.0D;
             this.posY = this.boundingBox.minY + (double)this.yOffset - (double)this.ySize;
             this.posZ = (this.boundingBox.minZ + this.boundingBox.maxZ) / 2.0D;
@@ -635,134 +631,134 @@ public abstract class Entity
             if (this.isInWeb)
             {
                 this.isInWeb = false;
-                x *= 0.25D;
-                y *= 0.05000000074505806D;
-                z *= 0.25D;
+                par1 *= 0.25D;
+                par3 *= 0.05000000074505806D;
+                par5 *= 0.25D;
                 this.motionX = 0.0D;
                 this.motionY = 0.0D;
                 this.motionZ = 0.0D;
             }
 
-            double var13 = x;
-            double var15 = y;
-            double var17 = z;
-            AxisAlignedBB bb = this.boundingBox.copy();
-
-            boolean var20 = this.onGround && (SafeWalk.INSTANCE.isEnabled() || this.isSneaking()) && this instanceof EntityPlayer;
+            double var13 = par1;
+            double var15 = par3;
+            double var17 = par5;
+            AxisAlignedBB var19 = this.boundingBox.copy();
+            boolean var20 = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
 
             if (var20)
             {
                 double var21;
 
-                for (var21 = 0.05D; x != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(x, -1.0D, 0.0D)).isEmpty(); var13 = x)
+                for (var21 = 0.05D; par1 != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(par1, -1.0D, 0.0D)).isEmpty(); var13 = par1)
                 {
-                    if (x < var21 && x >= -var21)
+                    if (par1 < var21 && par1 >= -var21)
                     {
-                        x = 0.0D;
+                        par1 = 0.0D;
                     }
-                    else if (x > 0.0D)
+                    else if (par1 > 0.0D)
                     {
-                        x -= var21;
+                        par1 -= var21;
                     }
                     else
                     {
-                        x += var21;
+                        par1 += var21;
                     }
                 }
 
-                for (; z != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(0.0D, -1.0D, z)).isEmpty(); var17 = z)
+                for (; par5 != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(0.0D, -1.0D, par5)).isEmpty(); var17 = par5)
                 {
-                    if (z < var21 && z >= -var21)
+                    if (par5 < var21 && par5 >= -var21)
                     {
-                        z = 0.0D;
+                        par5 = 0.0D;
                     }
-                    else if (z > 0.0D)
+                    else if (par5 > 0.0D)
                     {
-                        z -= var21;
+                        par5 -= var21;
                     }
                     else
                     {
-                        z += var21;
+                        par5 += var21;
                     }
                 }
 
-                while (x != 0.0D && z != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(x, -1.0D, z)).isEmpty())
+                while (par1 != 0.0D && par5 != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(par1, -1.0D, par5)).isEmpty())
                 {
-                    if (x < var21 && x >= -var21)
+                    if (par1 < var21 && par1 >= -var21)
                     {
-                        x = 0.0D;
+                        par1 = 0.0D;
                     }
-                    else if (x > 0.0D)
+                    else if (par1 > 0.0D)
                     {
-                        x -= var21;
-                    }
-                    else
-                    {
-                        x += var21;
-                    }
-
-                    if (z < var21 && z >= -var21)
-                    {
-                        z = 0.0D;
-                    }
-                    else if (z > 0.0D)
-                    {
-                        z -= var21;
+                        par1 -= var21;
                     }
                     else
                     {
-                        z += var21;
+                        par1 += var21;
                     }
 
-                    var13 = x;
-                    var17 = z;
+                    if (par5 < var21 && par5 >= -var21)
+                    {
+                        par5 = 0.0D;
+                    }
+                    else if (par5 > 0.0D)
+                    {
+                        par5 -= var21;
+                    }
+                    else
+                    {
+                        par5 += var21;
+                    }
+
+                    var13 = par1;
+                    var17 = par5;
                 }
             }
 
-            List<AxisAlignedBB> var36 = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(x, y, z));
+            List var36 = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(par1, par3, par5));
 
-            for (AxisAlignedBB axisAlignedBB : var36) {
-                y = axisAlignedBB.calculateYOffset(this.boundingBox, y);
-            }
-
-            this.boundingBox.offset(0.0D, y, 0.0D);
-
-            if (!this.field_70135_K && var15 != y)
+            for (int var22 = 0; var22 < var36.size(); ++var22)
             {
-                z = 0.0D;
-                y = 0.0D;
-                x = 0.0D;
+                par3 = ((AxisAlignedBB)var36.get(var22)).calculateYOffset(this.boundingBox, par3);
             }
 
-            boolean var37 = this.onGround || var15 != y && var15 < 0.0D;
+            this.boundingBox.offset(0.0D, par3, 0.0D);
+
+            if (!this.field_70135_K && var15 != par3)
+            {
+                par5 = 0.0D;
+                par3 = 0.0D;
+                par1 = 0.0D;
+            }
+
+            boolean var37 = this.onGround || var15 != par3 && var15 < 0.0D;
             int var23;
 
             for (var23 = 0; var23 < var36.size(); ++var23)
             {
-                x = var36.get(var23).calculateXOffset(this.boundingBox, x);
+                par1 = ((AxisAlignedBB)var36.get(var23)).calculateXOffset(this.boundingBox, par1);
             }
 
-            this.boundingBox.offset(x, 0.0D, 0.0D);
+            this.boundingBox.offset(par1, 0.0D, 0.0D);
 
-            if (!this.field_70135_K && var13 != x)
+            if (!this.field_70135_K && var13 != par1)
             {
-                z = 0.0D;
-                y = 0.0D;
-                x = 0.0D;
+                par5 = 0.0D;
+                par3 = 0.0D;
+                par1 = 0.0D;
             }
 
             for (var23 = 0; var23 < var36.size(); ++var23)
             {
-                z = var36.get(var23).calculateZOffset(this.boundingBox, z);
+                par5 = ((AxisAlignedBB)var36.get(var23)).calculateZOffset(this.boundingBox, par5);
             }
 
-            this.boundingBox.offset(0.0D, 0.0D, z);
+            this.boundingBox.offset(0.0D, 0.0D, par5);
 
-            if (!this.field_70135_K && var17 != z)
+            if (!this.field_70135_K && var17 != par5)
             {
-                z = 0.0D;
-                y = 0.0D;
-                x = 0.0D;
+                par5 = 0.0D;
+                par3 = 0.0D;
+                par1 = 0.0D;
             }
 
             double var25;
@@ -770,83 +766,83 @@ public abstract class Entity
             int var30;
             double var38;
 
-            if (this.stepHeight > 0.0F && var37 && (var20 || this.ySize < 0.05F) && (var13 != x || var17 != z))
+            if (this.stepHeight > 0.0F && var37 && (var20 || this.ySize < 0.05F) && (var13 != par1 || var17 != par5))
             {
-                var38 = x;
-                var25 = y;
-                var27 = z;
-                x = var13;
-                y = this.stepHeight;
-                z = var17;
+                var38 = par1;
+                var25 = par3;
+                var27 = par5;
+                par1 = var13;
+                par3 = (double)this.stepHeight;
+                par5 = var17;
                 AxisAlignedBB var29 = this.boundingBox.copy();
-                this.boundingBox.setBB(bb);
-                var36 = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(var13, y, var17));
+                this.boundingBox.setBB(var19);
+                var36 = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.addCoord(var13, par3, var17));
 
                 for (var30 = 0; var30 < var36.size(); ++var30)
                 {
-                    y = var36.get(var30).calculateYOffset(this.boundingBox, y);
+                    par3 = ((AxisAlignedBB)var36.get(var30)).calculateYOffset(this.boundingBox, par3);
                 }
 
-                this.boundingBox.offset(0.0D, y, 0.0D);
+                this.boundingBox.offset(0.0D, par3, 0.0D);
 
-                if (!this.field_70135_K && var15 != y)
+                if (!this.field_70135_K && var15 != par3)
                 {
-                    z = 0.0D;
-                    y = 0.0D;
-                    x = 0.0D;
-                }
-
-                for (var30 = 0; var30 < var36.size(); ++var30)
-                {
-                    x = var36.get(var30).calculateXOffset(this.boundingBox, x);
-                }
-
-                this.boundingBox.offset(x, 0.0D, 0.0D);
-
-                if (!this.field_70135_K && var13 != x)
-                {
-                    z = 0.0D;
-                    y = 0.0D;
-                    x = 0.0D;
+                    par5 = 0.0D;
+                    par3 = 0.0D;
+                    par1 = 0.0D;
                 }
 
                 for (var30 = 0; var30 < var36.size(); ++var30)
                 {
-                    z = var36.get(var30).calculateZOffset(this.boundingBox, z);
+                    par1 = ((AxisAlignedBB)var36.get(var30)).calculateXOffset(this.boundingBox, par1);
                 }
 
-                this.boundingBox.offset(0.0D, 0.0D, z);
+                this.boundingBox.offset(par1, 0.0D, 0.0D);
 
-                if (!this.field_70135_K && var17 != z)
+                if (!this.field_70135_K && var13 != par1)
                 {
-                    z = 0.0D;
-                    y = 0.0D;
-                    x = 0.0D;
+                    par5 = 0.0D;
+                    par3 = 0.0D;
+                    par1 = 0.0D;
                 }
 
-                if (!this.field_70135_K && var15 != y)
+                for (var30 = 0; var30 < var36.size(); ++var30)
                 {
-                    z = 0.0D;
-                    y = 0.0D;
-                    x = 0.0D;
+                    par5 = ((AxisAlignedBB)var36.get(var30)).calculateZOffset(this.boundingBox, par5);
+                }
+
+                this.boundingBox.offset(0.0D, 0.0D, par5);
+
+                if (!this.field_70135_K && var17 != par5)
+                {
+                    par5 = 0.0D;
+                    par3 = 0.0D;
+                    par1 = 0.0D;
+                }
+
+                if (!this.field_70135_K && var15 != par3)
+                {
+                    par5 = 0.0D;
+                    par3 = 0.0D;
+                    par1 = 0.0D;
                 }
                 else
                 {
-                    y = -this.stepHeight;
+                    par3 = (double)(-this.stepHeight);
 
                     for (var30 = 0; var30 < var36.size(); ++var30)
                     {
-                        y = var36.get(var30).calculateYOffset(this.boundingBox, y);
+                        par3 = ((AxisAlignedBB)var36.get(var30)).calculateYOffset(this.boundingBox, par3);
                     }
 
-                    this.boundingBox.offset(0.0D, y, 0.0D);
+                    this.boundingBox.offset(0.0D, par3, 0.0D);
                 }
 
-                if (var38 * var38 + var27 * var27 >= x * x + z * z)
+                if (var38 * var38 + var27 * var27 >= par1 * par1 + par5 * par5)
                 {
-                    x = var38;
-                    y = var25;
-                    z = var27;
+                    par1 = var38;
+                    par3 = var25;
+                    par5 = var27;
                     this.boundingBox.setBB(var29);
                 }
             }
@@ -856,23 +852,23 @@ public abstract class Entity
             this.posX = (this.boundingBox.minX + this.boundingBox.maxX) / 2.0D;
             this.posY = this.boundingBox.minY + (double)this.yOffset - (double)this.ySize;
             this.posZ = (this.boundingBox.minZ + this.boundingBox.maxZ) / 2.0D;
-            this.isCollidedHorizontally = var13 != x || var17 != z;
-            this.isCollidedVertically = var15 != y;
-            this.onGround = var15 != y && var15 < 0.0D;
+            this.isCollidedHorizontally = var13 != par1 || var17 != par5;
+            this.isCollidedVertically = var15 != par3;
+            this.onGround = var15 != par3 && var15 < 0.0D;
             this.isCollided = this.isCollidedHorizontally || this.isCollidedVertically;
-            this.updateFallState(y, this.onGround);
+            this.updateFallState(par3, this.onGround);
 
-            if (var13 != x)
+            if (var13 != par1)
             {
                 this.motionX = 0.0D;
             }
 
-            if (var15 != y)
+            if (var15 != par3)
             {
                 this.motionY = 0.0D;
             }
 
-            if (var17 != z)
+            if (var17 != par5)
             {
                 this.motionZ = 0.0D;
             }
@@ -973,7 +969,6 @@ public abstract class Entity
 
     protected void func_145775_I()
     {
-
         int var1 = MathHelper.floor_double(this.boundingBox.minX + 0.001D);
         int var2 = MathHelper.floor_double(this.boundingBox.minY + 0.001D);
         int var3 = MathHelper.floor_double(this.boundingBox.minZ + 0.001D);
@@ -1177,7 +1172,7 @@ public abstract class Entity
 
         if (var7.getMaterial() == par1Material)
         {
-            float var8 = BlockLiquid.func_149801_b(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
+            float var8 = BlockLiquid.getFluidHeightPercent(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
             float var9 = (float)(var5 + 1) - var8;
             return var2 < (double)var9;
         }
@@ -1368,8 +1363,9 @@ public abstract class Entity
         if (par1Entity.riddenByEntity != this && par1Entity.ridingEntity != this)
         {
             final EntityCollisionEvent event = new EntityCollisionEvent(par1Entity);
-            EventBus.INSTANCE.post(event);
-            if (event.getCancelled()) return;
+            if (EventBus.INSTANCE.post(event)) {
+                return;
+            }
 
             double var2 = par1Entity.posX - this.posX;
             double var4 = par1Entity.posZ - this.posZ;
@@ -1599,7 +1595,7 @@ public abstract class Entity
             this.invulnerable = par1NBTTagCompound.getBoolean("Invulnerable");
             this.timeUntilPortal = par1NBTTagCompound.getInteger("PortalCooldown");
 
-            if (par1NBTTagCompound.func_150297_b("UUIDMost", 4) && par1NBTTagCompound.func_150297_b("UUIDLeast", 4))
+            if (par1NBTTagCompound.hasKey("UUIDMost", 4) && par1NBTTagCompound.hasKey("UUIDLeast", 4))
             {
                 this.entityUniqueID = new UUID(par1NBTTagCompound.getLong("UUIDMost"), par1NBTTagCompound.getLong("UUIDLeast"));
             }
@@ -2283,7 +2279,7 @@ public abstract class Entity
 
     public String toString()
     {
-        return String.format("%s[\'%s\'/%d, l=\'%s\', x=%.2f, y=%.2f, z=%.2f]", new Object[] {this.getClass().getSimpleName(), this.getCommandSenderName(), Integer.valueOf(this.field_145783_c), this.worldObj == null ? "~NULL~" : this.worldObj.getWorldInfo().getWorldName(), Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)});
+        return String.format("%s[\'%s\'/%d, l=\'%s\', x=%.2f, y=%.2f, z=%.2f]", new Object[] {this.getClass().getSimpleName(), this.getCommandSenderName(), Integer.valueOf(this.entityId), this.worldObj == null ? "~NULL~" : this.worldObj.getWorldInfo().getWorldName(), Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)});
     }
 
     /**
@@ -2300,11 +2296,6 @@ public abstract class Entity
     public void copyLocationAndAnglesFrom(Entity par1Entity)
     {
         this.setLocationAndAngles(par1Entity.posX, par1Entity.posY, par1Entity.posZ, par1Entity.rotationYaw, par1Entity.rotationPitch);
-    }
-
-    public void copyLocationAndAnglesFrom(Entity par1Entity, double customY)
-    {
-        this.setLocationAndAngles(par1Entity.posX, customY, par1Entity.posZ, par1Entity.rotationYaw, par1Entity.rotationPitch);
     }
 
     /**
@@ -2402,13 +2393,12 @@ public abstract class Entity
     {
         par1CrashReportCategory.addCrashSectionCallable("Entity Type", new Callable()
         {
-            private static final String __OBFID = "CL_00001534";
             public String call()
             {
                 return EntityList.getEntityString(Entity.this) + " (" + Entity.this.getClass().getCanonicalName() + ")";
             }
         });
-        par1CrashReportCategory.addCrashSection("Entity ID", this.field_145783_c);
+        par1CrashReportCategory.addCrashSection("Entity ID", Integer.valueOf(this.entityId));
         par1CrashReportCategory.addCrashSectionCallable("Entity Name", new Callable()
         {
             public String call()
@@ -2416,9 +2406,9 @@ public abstract class Entity
                 return Entity.this.getCommandSenderName();
             }
         });
-        par1CrashReportCategory.addCrashSection("Entity's Exact location", String.format("%.2f, %.2f, %.2f", this.posX, this.posY, this.posZ));
-        par1CrashReportCategory.addCrashSection("Entity's Block location", CrashReportCategory.getLocationInfo(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
-        par1CrashReportCategory.addCrashSection("Entity's Momentum", String.format("%.2f, %.2f, %.2f", this.motionX, this.motionY, this.motionZ));
+        par1CrashReportCategory.addCrashSection("Entity\'s Exact location", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)}));
+        par1CrashReportCategory.addCrashSection("Entity\'s Block location", CrashReportCategory.getLocationInfo(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)));
+        par1CrashReportCategory.addCrashSection("Entity\'s Momentum", String.format("%.2f, %.2f, %.2f", new Object[] {Double.valueOf(this.motionX), Double.valueOf(this.motionY), Double.valueOf(this.motionZ)}));
     }
 
     /**
@@ -2437,8 +2427,7 @@ public abstract class Entity
     public boolean isPushedByWater()
     {
         final WaterPushEvent event = new WaterPushEvent(this);
-        EventBus.INSTANCE.post(event);
-        return !event.getCancelled();
+        return !EventBus.INSTANCE.post(event);
     }
 
     public IChatComponent func_145748_c_()
@@ -2458,7 +2447,6 @@ public abstract class Entity
         SIZE_6("SIZE_6", 5);
 
         private static final Entity.EnumEntitySize[] $VALUES = new Entity.EnumEntitySize[]{SIZE_1, SIZE_2, SIZE_3, SIZE_4, SIZE_5, SIZE_6};
-        private static final String __OBFID = "CL_00001537";
 
         private EnumEntitySize(String par1Str, int par2) {}
 
@@ -2553,7 +2541,6 @@ public abstract class Entity
     static final class SwitchEnumEntitySize
     {
         static final int[] field_96565_a = new int[Entity.EnumEntitySize.values().length];
-        private static final String __OBFID = "CL_00001536";
 
         static
         {

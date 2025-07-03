@@ -10,18 +10,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.C12PacketUpdateSign;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 public class GuiEditSign extends GuiScreen
 {
     protected String field_146850_a = "Edit sign message:";
-    private TileEntitySign tileEntitySign;
+    private final TileEntitySign tileEntitySign;
     private int field_146849_g;
-    private int currentLine;
-    private GuiButton completeButton;
-    private static final String __OBFID = "CL_00000764";
+    private int field_146851_h;
+    private GuiButton field_146852_i;
 
     public GuiEditSign(TileEntitySign par1TileEntitySign)
     {
@@ -35,7 +33,7 @@ public class GuiEditSign extends GuiScreen
     {
         this.buttonList.clear();
         Keyboard.enableRepeatEvents(true);
-        this.buttonList.add(this.completeButton = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
+        this.buttonList.add(this.field_146852_i = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
         this.tileEntitySign.func_145913_a(false);
     }
 
@@ -55,7 +53,7 @@ public class GuiEditSign extends GuiScreen
                 }
             }
 
-            var1.addToSendQueue(new C12PacketUpdateSign(this.tileEntitySign.x, this.tileEntitySign.y, this.tileEntitySign.z, this.tileEntitySign.text));
+            var1.addToSendQueue(new C12PacketUpdateSign(this.tileEntitySign.xCoord, this.tileEntitySign.yCoord, this.tileEntitySign.zCoord, this.tileEntitySign.text));
         }
 
         this.tileEntitySign.func_145913_a(true);
@@ -76,7 +74,7 @@ public class GuiEditSign extends GuiScreen
             if (p_146284_1_.id == 0)
             {
                 this.tileEntitySign.onInventoryChanged();
-                this.mc.displayGuiScreen(null);
+                this.mc.displayGuiScreen((GuiScreen)null);
             }
         }
     }
@@ -84,41 +82,41 @@ public class GuiEditSign extends GuiScreen
     /**
      * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
      */
-    protected void keyTyped(char keyChar, int par2)
+    protected void keyTyped(char par1, int par2)
     {
-        if (par2 == Keyboard.KEY_UP)
+        if (par2 == 200)
         {
-            this.currentLine = this.currentLine - 1 & 3;
+            this.field_146851_h = this.field_146851_h - 1 & 3;
         }
 
-        if (par2 == Keyboard.KEY_DOWN || par2 == Keyboard.KEY_RETURN || par2 == Keyboard.KEY_NUMPADENTER)
+        if (par2 == 208 || par2 == 28 || par2 == 156)
         {
-            this.currentLine = this.currentLine + 1 & 3;
+            this.field_146851_h = this.field_146851_h + 1 & 3;
         }
 
-        if (par2 == Keyboard.KEY_BACK && !this.tileEntitySign.text[this.currentLine].isEmpty())
+        if (par2 == 14 && this.tileEntitySign.text[this.field_146851_h].length() > 0)
         {
-            this.tileEntitySign.text[this.currentLine] = this.tileEntitySign.text[this.currentLine].substring(0, this.tileEntitySign.text[this.currentLine].length() - 1);
+            this.tileEntitySign.text[this.field_146851_h] = this.tileEntitySign.text[this.field_146851_h].substring(0, this.tileEntitySign.text[this.field_146851_h].length() - 1);
         }
 
-        if (ChatAllowedCharacters.isAllowedCharacter(keyChar) && this.tileEntitySign.text[this.currentLine].length() < 15)
+        if (ChatAllowedCharacters.isAllowedCharacter(par1) && this.tileEntitySign.text[this.field_146851_h].length() < 15)
         {
-            this.tileEntitySign.text[this.currentLine] = this.tileEntitySign.text[this.currentLine] + keyChar;
+            this.tileEntitySign.text[this.field_146851_h] = this.tileEntitySign.text[this.field_146851_h] + par1;
         }
 
-        if (par2 == Keyboard.KEY_ESCAPE)
+        if (par2 == 1)
         {
-            this.actionPerformed(this.completeButton);
+            this.actionPerformed(this.field_146852_i);
         }
     }
 
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.field_146850_a, this.width / 2, 40, 16777215);
+        this.drawCenteredString(this.fontRenderer, this.field_146850_a, this.width / 2, 40, 16777215);
         GL11.glPushMatrix();
         GL11.glTranslatef((float)(this.width / 2), 0.0F, 50.0F);
         float var4 = 93.75F;
@@ -158,12 +156,12 @@ public class GuiEditSign extends GuiScreen
 
         if (this.field_146849_g / 6 % 2 == 0)
         {
-            this.tileEntitySign.field_145918_i = this.currentLine;
+            this.tileEntitySign.field_145918_i = this.field_146851_h;
         }
 
         TileEntityRendererDispatcher.instance.func_147549_a(this.tileEntitySign, -0.5D, -0.75D, -0.5D, 0.0F);
         this.tileEntitySign.field_145918_i = -1;
         GL11.glPopMatrix();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 }

@@ -12,7 +12,6 @@ public class WorldGenClay extends WorldGenerator
 
     /** The number of blocks to generate. */
     private int numberOfBlocks;
-    private static final String __OBFID = "CL_00000405";
 
     public WorldGenClay(int par1)
     {

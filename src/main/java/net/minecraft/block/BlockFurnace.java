@@ -25,7 +25,6 @@ public class BlockFurnace extends BlockContainer
     private static boolean field_149934_M;
     private IIcon field_149935_N;
     private IIcon field_149936_O;
-    private static final String __OBFID = "CL_00000248";
 
     protected BlockFurnace(boolean p_i45407_1_)
     {
@@ -86,7 +85,7 @@ public class BlockFurnace extends BlockContainer
         return p_149691_1_ == 1 ? this.field_149935_N : (p_149691_1_ == 0 ? this.field_149935_N : (p_149691_1_ != p_149691_2_ ? this.blockIcon : this.field_149936_O));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("furnace_side");
         this.field_149936_O = p_149651_1_.registerIcon(this.field_149932_b ? "furnace_front_on" : "furnace_front_off");
@@ -282,7 +281,7 @@ public class BlockFurnace extends BlockContainer
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemFromBlock(Blocks.furnace);
     }

@@ -35,7 +35,6 @@ public class ChunkProviderFlat implements IChunkProvider
     private final boolean hasDungeons;
     private WorldGenLakes waterLakeGenerator;
     private WorldGenLakes lavaLakeGenerator;
-    private static final String __OBFID = "CL_00000391";
 
     public ChunkProviderFlat(World par1World, long par2, boolean par4, String par5Str)
     {

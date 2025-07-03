@@ -17,7 +17,6 @@ public class SaveFormatComparator implements Comparable
     private final WorldSettings.GameType theEnumGameType;
     private final boolean hardcore;
     private final boolean cheatsEnabled;
-    private static final String __OBFID = "CL_00000601";
 
     public SaveFormatComparator(String par1Str, String par2Str, long par3, long par5, WorldSettings.GameType par7EnumGameType, boolean par8, boolean par9, boolean par10)
     {

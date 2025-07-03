@@ -20,7 +20,6 @@ public class MapGenVillage extends MapGenStructure
     private int terrainType;
     private int field_82665_g;
     private int field_82666_h;
-    private static final String __OBFID = "CL_00000514";
 
     public MapGenVillage()
     {
@@ -97,7 +96,6 @@ public class MapGenVillage extends MapGenStructure
     public static class Start extends StructureStart
     {
         private boolean hasMoreThanTwoComponents;
-        private static final String __OBFID = "CL_00000515";
 
         public Start() {}
 

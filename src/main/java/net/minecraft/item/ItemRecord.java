@@ -14,12 +14,11 @@ import net.minecraft.world.World;
 public class ItemRecord extends Item
 {
     private static final Map field_150928_b = new HashMap();
-    public final String field_150929_a;
-    private static final String __OBFID = "CL_00000057";
+    public final String recordName;
 
     protected ItemRecord(String p_i45350_1_)
     {
-        this.field_150929_a = p_i45350_1_;
+        this.recordName = p_i45350_1_;
         this.maxStackSize = 1;
         this.setCreativeTab(CreativeTabs.tabMisc);
         field_150928_b.put(p_i45350_1_, this);
@@ -37,19 +36,19 @@ public class ItemRecord extends Item
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        if (par3World.getBlock(par4, par5, par6) == Blocks.jukebox && par3World.getBlockMetadata(par4, par5, par6) == 0)
+        if (world.getBlock(par4, par5, par6) == Blocks.jukebox && world.getBlockMetadata(par4, par5, par6) == 0)
         {
-            if (par3World.isClient)
+            if (world.isClient)
             {
                 return true;
             }
             else
             {
-                ((BlockJukebox)Blocks.jukebox).func_149926_b(par3World, par4, par5, par6, par1ItemStack);
-                par3World.playAuxSFXAtEntity((EntityPlayer)null, 1005, par4, par5, par6, Item.getIdFromItem(this));
-                --par1ItemStack.stackSize;
+                ((BlockJukebox)Blocks.jukebox).func_149926_b(world, par4, par5, par6, stack);
+                world.playAuxSFXAtEntity((EntityPlayer)null, 1005, par4, par5, par6, Item.getIdFromItem(this));
+                --stack.stackSize;
                 return true;
             }
         }
@@ -64,12 +63,12 @@ public class ItemRecord extends Item
      */
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
     {
-        par3List.add(this.func_150927_i());
+        par3List.add(this.getRecordNameLocal());
     }
 
-    public String func_150927_i()
+    public String getRecordNameLocal()
     {
-        return StatCollector.translateToLocal("item.record." + this.field_150929_a + ".desc");
+        return StatCollector.translateToLocal("item.record." + this.recordName + ".desc");
     }
 
     /**

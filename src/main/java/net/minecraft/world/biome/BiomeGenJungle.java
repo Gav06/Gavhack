@@ -17,7 +17,6 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class BiomeGenJungle extends BiomeGenBase
 {
     private boolean field_150614_aC;
-    private static final String __OBFID = "CL_00000175";
 
     public BiomeGenJungle(int p_i45379_1_, boolean p_i45379_2_)
     {

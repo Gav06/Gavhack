@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 
 public class BlockDragonEgg extends Block
 {
-    private static final String __OBFID = "CL_00000232";
 
     public BlockDragonEgg()
     {
@@ -20,12 +19,12 @@ public class BlockDragonEgg extends Block
 
     public void onBlockAdded(World p_149726_1_, int p_149726_2_, int p_149726_3_, int p_149726_4_)
     {
-        p_149726_1_.scheduleBlockUpdate(p_149726_2_, p_149726_3_, p_149726_4_, this, this.func_149738_a(p_149726_1_));
+        p_149726_1_.scheduleBlockUpdate(p_149726_2_, p_149726_3_, p_149726_4_, this, this.tickRate(p_149726_1_));
     }
 
     public void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_)
     {
-        p_149695_1_.scheduleBlockUpdate(p_149695_2_, p_149695_3_, p_149695_4_, this, this.func_149738_a(p_149695_1_));
+        p_149695_1_.scheduleBlockUpdate(p_149695_2_, p_149695_3_, p_149695_4_, this, this.tickRate(p_149695_1_));
     }
 
     /**
@@ -121,7 +120,7 @@ public class BlockDragonEgg extends Block
         }
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 5;
     }
@@ -136,7 +135,7 @@ public class BlockDragonEgg extends Block
         return false;
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
         return true;
     }
@@ -152,7 +151,7 @@ public class BlockDragonEgg extends Block
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemById(0);
     }

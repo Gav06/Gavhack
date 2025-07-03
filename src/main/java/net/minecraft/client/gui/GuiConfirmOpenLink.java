@@ -8,7 +8,6 @@ public class GuiConfirmOpenLink extends GuiYesNo
     private String field_146362_s;
     private String field_146361_t;
     private boolean field_146360_u = true;
-    private static final String __OBFID = "CL_00000683";
 
     public GuiConfirmOpenLink(GuiScreen par1GuiScreen, String par2Str, int par3, boolean par4)
     {
@@ -48,13 +47,13 @@ public class GuiConfirmOpenLink extends GuiYesNo
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
 
         if (this.field_146360_u)
         {
-            this.drawCenteredString(this.fontRendererObj, this.field_146363_r, this.width / 2, 110, 16764108);
+            this.drawCenteredString(this.fontRenderer, this.field_146363_r, this.width / 2, 110, 16764108);
         }
     }
 

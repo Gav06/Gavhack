@@ -2,7 +2,6 @@ package net.minecraft.potion;
 
 public class PotionHealth extends Potion
 {
-    private static final String __OBFID = "CL_00001527";
 
     public PotionHealth(int par1, boolean par2, int par3)
     {

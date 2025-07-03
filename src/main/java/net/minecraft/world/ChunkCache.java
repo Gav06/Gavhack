@@ -19,7 +19,6 @@ public class ChunkCache implements IBlockAccess
 
     /** Reference to the World object. */
     private World worldObj;
-    private static final String __OBFID = "CL_00000155";
 
     public ChunkCache(World par1World, int par2, int par3, int par4, int par5, int par6, int par7, int par8)
     {

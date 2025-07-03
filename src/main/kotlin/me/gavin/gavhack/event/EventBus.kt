@@ -2,6 +2,10 @@ package me.gavin.gavhack.event
 
 import kotlin.reflect.KClass
 
+/**
+ * Super simple Event bus I like to use.
+ * Runs off of HashMaps & functional interfaces
+ */
 object EventBus {
 
     private val listenerMap = HashMap<KClass<out Event>, HashSet<Listener<Event>>>()
@@ -15,6 +19,7 @@ object EventBus {
         listenerMap[clazz]?.add(listener)
     }
 
+    // returns if event is cancelled
     fun <T : Event> post(event: T): Boolean {
         if (listenerMap.contains(event::class)) {
             listenerMap[event::class]?.forEach {
@@ -29,7 +34,7 @@ object EventBus {
         if (listenerMap.contains(clazz)) {
             listenerMap[clazz]?.remove(listener)
 
-            // Remove unnecessary set (we know our hashSet won't be null)
+            // Remove an unnecessary set (we know our hashSet won't be null)
             if (listenerMap[clazz]!!.isEmpty())
                 listenerMap.remove(clazz)
         }

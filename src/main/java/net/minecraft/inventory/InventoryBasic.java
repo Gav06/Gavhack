@@ -12,7 +12,6 @@ public class InventoryBasic implements IInventory
     private ItemStack[] inventoryContents;
     private List field_70480_d;
     private boolean field_94051_e;
-    private static final String __OBFID = "CL_00001514";
 
     public InventoryBasic(String par1Str, boolean par2, int par3)
     {

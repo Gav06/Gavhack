@@ -22,7 +22,6 @@ public class MerchantRecipe
 
     /** Maximum times this trade can be used. */
     private int maxTradeUses;
-    private static final String __OBFID = "CL_00000126";
 
     public MerchantRecipe(NBTTagCompound par1NBTTagCompound)
     {
@@ -122,17 +121,17 @@ public class MerchantRecipe
         NBTTagCompound var3 = par1NBTTagCompound.getCompoundTag("sell");
         this.itemToSell = ItemStack.loadItemStackFromNBT(var3);
 
-        if (par1NBTTagCompound.func_150297_b("buyB", 10))
+        if (par1NBTTagCompound.hasKey("buyB", 10))
         {
             this.secondItemToBuy = ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("buyB"));
         }
 
-        if (par1NBTTagCompound.func_150297_b("uses", 99))
+        if (par1NBTTagCompound.hasKey("uses", 99))
         {
             this.toolUses = par1NBTTagCompound.getInteger("uses");
         }
 
-        if (par1NBTTagCompound.func_150297_b("maxUses", 99))
+        if (par1NBTTagCompound.hasKey("maxUses", 99))
         {
             this.maxTradeUses = par1NBTTagCompound.getInteger("maxUses");
         }

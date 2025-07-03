@@ -9,7 +9,6 @@ import net.minecraft.util.ChatComponentTranslation;
 
 public class CommandListBans extends CommandBase
 {
-    private static final String __OBFID = "CL_00000596";
 
     public String getCommandName()
     {

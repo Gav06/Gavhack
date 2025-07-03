@@ -10,6 +10,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 
+import java.util.Objects;
+
 public class GuiOtherSettingsOF extends GuiScreen
 {
     private GuiScreen prevScreen;
@@ -63,8 +65,8 @@ public class GuiOtherSettingsOF extends GuiScreen
         {
             if (guibutton.id < 200 && guibutton instanceof GuiOptionButton)
             {
-                this.settings.setOptionValue(((GuiOptionButton)guibutton).func_146136_c(), 1);
-                guibutton.displayString = this.settings.getKeyBinding(GameSettings.Options.getEnumOptions(guibutton.id));
+                this.settings.setOptionValue(((GuiOptionButton)guibutton).returnEnumOptions(), 1);
+                guibutton.displayString = this.settings.getKeyBinding(Objects.requireNonNull(GameSettings.Options.getEnumOptions(guibutton.id)));
             }
 
             if (guibutton.id == 200)
@@ -106,7 +108,7 @@ public class GuiOtherSettingsOF extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, this.title, this.width / 2, 20, 16777215);
+        this.drawCenteredString(this.fontRenderer, this.title, this.width / 2, 20, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (Math.abs(mouseX - this.lastMouseX) <= 5 && Math.abs(mouseY - this.lastMouseY) <= 5)
@@ -142,7 +144,7 @@ public class GuiOtherSettingsOF extends GuiScreen
                     for (int i = 0; i < lines.length; ++i)
                     {
                         String line = lines[i];
-                        this.fontRendererObj.drawStringWithShadow(line, x1 + 5, y1 + 5 + i * 11, 14540253);
+                        this.fontRenderer.drawStringWithShadow(line, x1 + 5, y1 + 5 + i * 11, 14540253);
                     }
                 }
             }
@@ -173,7 +175,7 @@ public class GuiOtherSettingsOF extends GuiScreen
             GuiButton btn = (GuiButton)this.buttonList.get(k);
             int btnWidth = GuiVideoSettings.getButtonWidth(btn);
             int btnHeight = GuiVideoSettings.getButtonHeight(btn);
-            boolean flag = i >= btn.x && j >= btn.y && i < btn.x + btnWidth && j < btn.y + btnHeight;
+            boolean flag = i >= btn.xPosition && j >= btn.yPosition && i < btn.xPosition + btnWidth && j < btn.yPosition + btnHeight;
 
             if (flag)
             {

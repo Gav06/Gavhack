@@ -19,7 +19,6 @@ public class RenderHorse extends RenderLiving
     private static final ResourceLocation donkeyTextures = new ResourceLocation("textures/entity/horse/donkey.png");
     private static final ResourceLocation zombieHorseTextures = new ResourceLocation("textures/entity/horse/horse_zombie.png");
     private static final ResourceLocation skeletonHorseTextures = new ResourceLocation("textures/entity/horse/horse_skeleton.png");
-    private static final String __OBFID = "CL_00001000";
 
     public RenderHorse(ModelBase par1ModelBase, float par2)
     {

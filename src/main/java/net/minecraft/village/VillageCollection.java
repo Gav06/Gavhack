@@ -23,7 +23,6 @@ public class VillageCollection extends WorldSavedData
     private final List newDoors = new ArrayList();
     private final List villageList = new ArrayList();
     private int tickCounter;
-    private static final String __OBFID = "CL_00001635";
 
     public VillageCollection(String par1Str)
     {

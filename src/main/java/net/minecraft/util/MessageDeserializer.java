@@ -18,7 +18,6 @@ public class MessageDeserializer extends ByteToMessageDecoder
 {
     private static final Logger logger = LogManager.getLogger();
     private static final Marker field_150799_b = MarkerManager.getMarker("PACKET_RECEIVED", NetworkManager.logMarkerPackets);
-    private static final String __OBFID = "CL_00001252";
 
     protected void decode(ChannelHandlerContext p_decode_1_, ByteBuf p_decode_2_, List p_decode_3_) throws IOException
     {

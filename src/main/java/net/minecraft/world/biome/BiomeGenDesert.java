@@ -7,7 +7,6 @@ import net.minecraft.world.gen.feature.WorldGenDesertWells;
 
 public class BiomeGenDesert extends BiomeGenBase
 {
-    private static final String __OBFID = "CL_00000167";
 
     public BiomeGenDesert(int par1)
     {

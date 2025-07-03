@@ -9,7 +9,6 @@ import net.minecraft.client.settings.GameSettings;
 public class GuiOptionsRowList extends GuiListExtended
 {
     private final List field_148184_k = Lists.newArrayList();
-    private static final String __OBFID = "CL_00000677";
 
     public GuiOptionsRowList(Minecraft p_i45015_1_, int p_i45015_2_, int p_i45015_3_, int p_i45015_4_, int p_i45015_5_, int p_i45015_6_, GameSettings.Options ... p_i45015_7_)
     {
@@ -54,9 +53,9 @@ public class GuiOptionsRowList extends GuiListExtended
         return 400;
     }
 
-    protected int func_148137_d()
+    protected int getScrollBarX()
     {
-        return super.func_148137_d() + 32;
+        return super.getScrollBarX() + 32;
     }
 
     public static class Row implements GuiListExtended.IGuiListEntry
@@ -64,7 +63,6 @@ public class GuiOptionsRowList extends GuiListExtended
         private final Minecraft field_148325_a = Minecraft.getMinecraft();
         private final GuiButton field_148323_b;
         private final GuiButton field_148324_c;
-        private static final String __OBFID = "CL_00000678";
 
         public Row(GuiButton p_i45014_1_, GuiButton p_i45014_2_)
         {
@@ -76,13 +74,13 @@ public class GuiOptionsRowList extends GuiListExtended
         {
             if (this.field_148323_b != null)
             {
-                this.field_148323_b.y = p_148279_3_;
+                this.field_148323_b.yPosition = p_148279_3_;
                 this.field_148323_b.drawButton(this.field_148325_a, p_148279_7_, p_148279_8_);
             }
 
             if (this.field_148324_c != null)
             {
-                this.field_148324_c.y = p_148279_3_;
+                this.field_148324_c.yPosition = p_148279_3_;
                 this.field_148324_c.drawButton(this.field_148325_a, p_148279_7_, p_148279_8_);
             }
         }
@@ -93,7 +91,7 @@ public class GuiOptionsRowList extends GuiListExtended
             {
                 if (this.field_148323_b instanceof GuiOptionButton)
                 {
-                    this.field_148325_a.gameSettings.setOptionValue(((GuiOptionButton)this.field_148323_b).func_146136_c(), 1);
+                    this.field_148325_a.gameSettings.setOptionValue(((GuiOptionButton)this.field_148323_b).returnEnumOptions(), 1);
                     this.field_148323_b.displayString = this.field_148325_a.gameSettings.getKeyBinding(GameSettings.Options.getEnumOptions(this.field_148323_b.id));
                 }
 
@@ -103,7 +101,7 @@ public class GuiOptionsRowList extends GuiListExtended
             {
                 if (this.field_148324_c instanceof GuiOptionButton)
                 {
-                    this.field_148325_a.gameSettings.setOptionValue(((GuiOptionButton)this.field_148324_c).func_146136_c(), 1);
+                    this.field_148325_a.gameSettings.setOptionValue(((GuiOptionButton)this.field_148324_c).returnEnumOptions(), 1);
                     this.field_148324_c.displayString = this.field_148325_a.gameSettings.getKeyBinding(GameSettings.Options.getEnumOptions(this.field_148324_c.id));
                 }
 

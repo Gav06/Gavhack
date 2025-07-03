@@ -19,11 +19,10 @@ public class Framebuffer
     public int depthBuffer;
     public float[] framebufferColor;
     public int framebufferFilter;
-    private static final String __OBFID = "CL_00000959";
 
-    public Framebuffer(int width, int height, boolean useDepth)
+    public Framebuffer(int p_i45078_1_, int p_i45078_2_, boolean p_i45078_3_)
     {
-        this.useDepth = useDepth;
+        this.useDepth = p_i45078_3_;
         this.framebufferObject = -1;
         this.framebufferTexture = -1;
         this.depthBuffer = -1;
@@ -32,15 +31,15 @@ public class Framebuffer
         this.framebufferColor[1] = 1.0F;
         this.framebufferColor[2] = 1.0F;
         this.framebufferColor[3] = 0.0F;
-        this.createBindFramebuffer(width, height);
+        this.createBindFramebuffer(p_i45078_1_, p_i45078_2_);
     }
 
-    public void createBindFramebuffer(int width, int height)
+    public void createBindFramebuffer(int p_147613_1_, int p_147613_2_)
     {
         if (!OpenGlHelper.isFramebufferEnabled())
         {
-            this.framebufferWidth = width;
-            this.framebufferHeight = height;
+            this.framebufferWidth = p_147613_1_;
+            this.framebufferHeight = p_147613_2_;
         }
         else
         {
@@ -51,7 +50,7 @@ public class Framebuffer
                 this.deleteFramebuffer();
             }
 
-            this.createFramebuffer(width, height);
+            this.createFramebuffer(p_147613_1_, p_147613_2_);
             this.checkFramebufferComplete();
             EXTFramebufferObject.glBindFramebufferEXT(36160, 0);
         }
@@ -187,13 +186,13 @@ public class Framebuffer
         }
     }
 
-    public void bindFramebuffer(boolean setViewport)
+    public void bindFramebuffer(boolean p_147610_1_)
     {
         if (OpenGlHelper.isFramebufferEnabled())
         {
             EXTFramebufferObject.glBindFramebufferEXT(36160, this.framebufferObject);
 
-            if (setViewport)
+            if (p_147610_1_)
             {
                 GL11.glViewport(0, 0, this.framebufferWidth, this.framebufferHeight);
             }

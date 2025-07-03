@@ -20,7 +20,6 @@ public class Slot
 
     /** display position of the inventory slot on the screen y axis */
     public int yDisplayPosition;
-    private static final String __OBFID = "CL_00001762";
 
     public Slot(IInventory par1IInventory, int par2, int par3, int par4)
     {

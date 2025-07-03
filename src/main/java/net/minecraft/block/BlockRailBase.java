@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 public abstract class BlockRailBase extends Block
 {
     protected final boolean field_150053_a;
-    private static final String __OBFID = "CL_00000195";
 
     public static final boolean func_150049_b_(World p_150049_0_, int p_150049_1_, int p_150049_2_, int p_150049_3_)
     {
@@ -36,7 +35,7 @@ public abstract class BlockRailBase extends Block
         this.setCreativeTab(CreativeTabs.tabTransport);
     }
 
-    public boolean func_150050_e()
+    public boolean isPowered()
     {
         return this.field_150053_a;
     }
@@ -211,7 +210,6 @@ public abstract class BlockRailBase extends Block
         private int field_150659_e;
         private final boolean field_150656_f;
         private List field_150657_g = new ArrayList();
-        private static final String __OBFID = "CL_00000196";
 
         public Rail(World p_i45388_2_, int p_i45388_3_, int p_i45388_4_, int p_i45388_5_)
         {

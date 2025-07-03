@@ -75,7 +75,6 @@ public class Item
 
     /** The string associated with this Item's Icon. */
     protected String iconString;
-    private static final String __OBFID = "CL_00000041";
 
     public static int getIdFromItem(Item p_150891_0_)
     {
@@ -451,12 +450,12 @@ public class Item
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         return false;
     }
 
-    public float func_150893_a(ItemStack p_150893_1_, Block p_150893_2_)
+    public float func_150893_a(ItemStack stack, Block block)
     {
         return 1.0F;
     }
@@ -867,7 +866,6 @@ public class Item
         private final int enchantability;
 
         private static final Item.ToolMaterial[] $VALUES = new Item.ToolMaterial[]{WOOD, STONE, IRON, EMERALD, GOLD};
-        private static final String __OBFID = "CL_00000042";
 
         private ToolMaterial(String par1Str, int par2, int par3, int par4, float par5, float par6, int par7)
         {

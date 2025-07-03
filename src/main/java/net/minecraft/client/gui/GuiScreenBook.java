@@ -42,7 +42,6 @@ public class GuiScreenBook extends GuiScreen
     private GuiButton field_146465_D;
     private GuiButton field_146467_E;
     private GuiButton field_146469_F;
-    private static final String __OBFID = "CL_00000744";
 
     public GuiScreenBook(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack, boolean par3)
     {
@@ -121,15 +120,15 @@ public class GuiScreenBook extends GuiScreen
 
     private void func_146464_h()
     {
-        this.field_146470_A.field_146125_m = !this.field_146480_s && (this.field_146484_x < this.field_146476_w - 1 || this.field_146475_i);
-        this.field_146471_B.field_146125_m = !this.field_146480_s && this.field_146484_x > 0;
-        this.field_146472_C.field_146125_m = !this.field_146475_i || !this.field_146480_s;
+        this.field_146470_A.drawButton = !this.field_146480_s && (this.field_146484_x < this.field_146476_w - 1 || this.field_146475_i);
+        this.field_146471_B.drawButton = !this.field_146480_s && this.field_146484_x > 0;
+        this.field_146472_C.drawButton = !this.field_146475_i || !this.field_146480_s;
 
         if (this.field_146475_i)
         {
-            this.field_146465_D.field_146125_m = !this.field_146480_s;
-            this.field_146469_F.field_146125_m = this.field_146480_s;
-            this.field_146467_E.field_146125_m = this.field_146480_s;
+            this.field_146465_D.drawButton = !this.field_146480_s;
+            this.field_146469_F.drawButton = this.field_146480_s;
+            this.field_146467_E.drawButton = this.field_146480_s;
             this.field_146467_E.enabled = this.field_146482_z.trim().length() > 0;
         }
     }
@@ -359,7 +358,7 @@ public class GuiScreenBook extends GuiScreen
     {
         String var2 = this.func_146456_p();
         String var3 = var2 + p_146459_1_;
-        int var4 = this.fontRendererObj.splitStringWidth(var3 + "" + EnumChatFormatting.BLACK + "_", 118);
+        int var4 = this.fontRenderer.splitStringWidth(var3 + "" + EnumChatFormatting.BLACK + "_", 118);
 
         if (var4 <= 118 && var3.length() < 256)
         {
@@ -370,7 +369,7 @@ public class GuiScreenBook extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(field_146466_f);
@@ -398,15 +397,15 @@ public class GuiScreenBook extends GuiScreen
             }
 
             var7 = I18n.format("book.editTitle", new Object[0]);
-            var8 = this.fontRendererObj.getStringWidth(var7);
-            this.fontRendererObj.drawString(var7, var4 + 36 + (116 - var8) / 2, var5 + 16 + 16, 0);
-            int var9 = this.fontRendererObj.getStringWidth(var6);
-            this.fontRendererObj.drawString(var6, var4 + 36 + (116 - var9) / 2, var5 + 48, 0);
+            var8 = this.fontRenderer.getStringWidth(var7);
+            this.fontRenderer.drawString(var7, var4 + 36 + (116 - var8) / 2, var5 + 16 + 16, 0);
+            int var9 = this.fontRenderer.getStringWidth(var6);
+            this.fontRenderer.drawString(var6, var4 + 36 + (116 - var9) / 2, var5 + 48, 0);
             String var10 = I18n.format("book.byAuthor", new Object[] {this.field_146468_g.getCommandSenderName()});
-            int var11 = this.fontRendererObj.getStringWidth(var10);
-            this.fontRendererObj.drawString(EnumChatFormatting.DARK_GRAY + var10, var4 + 36 + (116 - var11) / 2, var5 + 48 + 10, 0);
+            int var11 = this.fontRenderer.getStringWidth(var10);
+            this.fontRenderer.drawString(EnumChatFormatting.DARK_GRAY + var10, var4 + 36 + (116 - var11) / 2, var5 + 48 + 10, 0);
             String var12 = I18n.format("book.finalizeWarning", new Object[0]);
-            this.fontRendererObj.drawSplitString(var12, var4 + 36, var5 + 80, 116, 0);
+            this.fontRenderer.drawSplitString(var12, var4 + 36, var5 + 80, 116, 0);
         }
         else
         {
@@ -420,7 +419,7 @@ public class GuiScreenBook extends GuiScreen
 
             if (this.field_146475_i)
             {
-                if (this.fontRendererObj.getBidiFlag())
+                if (this.fontRenderer.getBidiFlag())
                 {
                     var7 = var7 + "_";
                 }
@@ -434,18 +433,17 @@ public class GuiScreenBook extends GuiScreen
                 }
             }
 
-            var8 = this.fontRendererObj.getStringWidth(var6);
-            this.fontRendererObj.drawString(var6, var4 - var8 + this.field_146478_u - 44, var5 + 16, 0);
-            this.fontRendererObj.drawSplitString(var7, var4 + 36, var5 + 16 + 16, 116, 0);
+            var8 = this.fontRenderer.getStringWidth(var6);
+            this.fontRenderer.drawString(var6, var4 - var8 + this.field_146478_u - 44, var5 + 16, 0);
+            this.fontRenderer.drawSplitString(var7, var4 + 36, var5 + 16 + 16, 116, 0);
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(par1, par2, par3);
     }
 
     static class NextPageButton extends GuiButton
     {
         private final boolean field_146151_o;
-        private static final String __OBFID = "CL_00000745";
 
         public NextPageButton(int par1, int par2, int par3, boolean par4)
         {
@@ -455,9 +453,9 @@ public class GuiScreenBook extends GuiScreen
 
         public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_)
         {
-            if (this.field_146125_m)
+            if (this.drawButton)
             {
-                boolean var4 = p_146112_2_ >= this.x && p_146112_3_ >= this.y && p_146112_2_ < this.x + this.width && p_146112_3_ < this.y + this.height;
+                boolean var4 = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 p_146112_1_.getTextureManager().bindTexture(GuiScreenBook.field_146466_f);
                 int var5 = 0;
@@ -473,7 +471,7 @@ public class GuiScreenBook extends GuiScreen
                     var6 += 13;
                 }
 
-                this.drawTexturedModalRect(this.x, this.y, var5, var6, 23, 13);
+                this.drawTexturedModalRect(this.xPosition, this.yPosition, var5, var6, 23, 13);
             }
         }
     }

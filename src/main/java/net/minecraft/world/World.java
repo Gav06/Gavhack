@@ -62,7 +62,7 @@ public abstract class World implements IBlockAccess
     /** A list of all Entities in all currently-loaded chunks */
     public List<Entity> loadedEntityList = new ArrayList<>();
     protected List<Entity> unloadedEntityList = new ArrayList<>();
-    public List<TileEntity> tileEntities = new ArrayList<>();
+    public List field_147482_g = new ArrayList();
     private List field_147484_a = new ArrayList();
     private List field_147483_b = new ArrayList();
 
@@ -153,7 +153,6 @@ public abstract class World implements IBlockAccess
      * the original block, plus 32 (i.e. value of 31 would mean a -1 offset
      */
     int[] lightUpdateBlockList;
-    private static final String __OBFID = "CL_00000140";
 
     /**
      * Gets the biome for a given set of x/z coordinates
@@ -174,7 +173,6 @@ public abstract class World implements IBlockAccess
                 CrashReportCategory var6 = var5.makeCategory("Coordinates of biome request");
                 var6.addCrashSectionCallable("Location", new Callable()
                 {
-                    private static final String __OBFID = "CL_00000141";
                     public String call()
                     {
                         return CrashReportCategory.getLocationInfo(par1, 0, par2);
@@ -665,48 +663,48 @@ public abstract class World implements IBlockAccess
 
     public void notifyBlocksOfNeighborChange(int p_147459_1_, int p_147459_2_, int p_147459_3_, Block p_147459_4_)
     {
-        this.func_147460_e(p_147459_1_ - 1, p_147459_2_, p_147459_3_, p_147459_4_);
-        this.func_147460_e(p_147459_1_ + 1, p_147459_2_, p_147459_3_, p_147459_4_);
-        this.func_147460_e(p_147459_1_, p_147459_2_ - 1, p_147459_3_, p_147459_4_);
-        this.func_147460_e(p_147459_1_, p_147459_2_ + 1, p_147459_3_, p_147459_4_);
-        this.func_147460_e(p_147459_1_, p_147459_2_, p_147459_3_ - 1, p_147459_4_);
-        this.func_147460_e(p_147459_1_, p_147459_2_, p_147459_3_ + 1, p_147459_4_);
+        this.notifyBlockOfNeighborChange(p_147459_1_ - 1, p_147459_2_, p_147459_3_, p_147459_4_);
+        this.notifyBlockOfNeighborChange(p_147459_1_ + 1, p_147459_2_, p_147459_3_, p_147459_4_);
+        this.notifyBlockOfNeighborChange(p_147459_1_, p_147459_2_ - 1, p_147459_3_, p_147459_4_);
+        this.notifyBlockOfNeighborChange(p_147459_1_, p_147459_2_ + 1, p_147459_3_, p_147459_4_);
+        this.notifyBlockOfNeighborChange(p_147459_1_, p_147459_2_, p_147459_3_ - 1, p_147459_4_);
+        this.notifyBlockOfNeighborChange(p_147459_1_, p_147459_2_, p_147459_3_ + 1, p_147459_4_);
     }
 
-    public void func_147441_b(int p_147441_1_, int p_147441_2_, int p_147441_3_, Block p_147441_4_, int p_147441_5_)
+    public void notifyBlocksOfNeighborChange(int p_147441_1_, int p_147441_2_, int p_147441_3_, Block p_147441_4_, int p_147441_5_)
     {
         if (p_147441_5_ != 4)
         {
-            this.func_147460_e(p_147441_1_ - 1, p_147441_2_, p_147441_3_, p_147441_4_);
+            this.notifyBlockOfNeighborChange(p_147441_1_ - 1, p_147441_2_, p_147441_3_, p_147441_4_);
         }
 
         if (p_147441_5_ != 5)
         {
-            this.func_147460_e(p_147441_1_ + 1, p_147441_2_, p_147441_3_, p_147441_4_);
+            this.notifyBlockOfNeighborChange(p_147441_1_ + 1, p_147441_2_, p_147441_3_, p_147441_4_);
         }
 
         if (p_147441_5_ != 0)
         {
-            this.func_147460_e(p_147441_1_, p_147441_2_ - 1, p_147441_3_, p_147441_4_);
+            this.notifyBlockOfNeighborChange(p_147441_1_, p_147441_2_ - 1, p_147441_3_, p_147441_4_);
         }
 
         if (p_147441_5_ != 1)
         {
-            this.func_147460_e(p_147441_1_, p_147441_2_ + 1, p_147441_3_, p_147441_4_);
+            this.notifyBlockOfNeighborChange(p_147441_1_, p_147441_2_ + 1, p_147441_3_, p_147441_4_);
         }
 
         if (p_147441_5_ != 2)
         {
-            this.func_147460_e(p_147441_1_, p_147441_2_, p_147441_3_ - 1, p_147441_4_);
+            this.notifyBlockOfNeighborChange(p_147441_1_, p_147441_2_, p_147441_3_ - 1, p_147441_4_);
         }
 
         if (p_147441_5_ != 3)
         {
-            this.func_147460_e(p_147441_1_, p_147441_2_, p_147441_3_ + 1, p_147441_4_);
+            this.notifyBlockOfNeighborChange(p_147441_1_, p_147441_2_, p_147441_3_ + 1, p_147441_4_);
         }
     }
 
-    public void func_147460_e(int p_147460_1_, int p_147460_2_, int p_147460_3_, final Block p_147460_4_)
+    public void notifyBlockOfNeighborChange(int p_147460_1_, int p_147460_2_, int p_147460_3_, final Block p_147460_4_)
     {
         if (!this.isClient)
         {
@@ -733,7 +731,6 @@ public abstract class World implements IBlockAccess
 
                 var8.addCrashSectionCallable("Source block type", new Callable()
                 {
-                    private static final String __OBFID = "CL_00000142";
                     public String call()
                     {
                         try
@@ -752,7 +749,7 @@ public abstract class World implements IBlockAccess
         }
     }
 
-    public boolean func_147477_a(int p_147477_1_, int p_147477_2_, int p_147477_3_, Block p_147477_4_)
+    public boolean isBlockTickScheduledThisTick(int p_147477_1_, int p_147477_2_, int p_147477_3_, Block p_147477_4_)
     {
         return false;
     }
@@ -1503,7 +1500,7 @@ public abstract class World implements IBlockAccess
      * Returns a list of bounding boxes that collide with aabb excluding the passed in entity's collision. Args: entity,
      * aabb
      */
-    public List<AxisAlignedBB> getCollidingBoundingBoxes(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
+    public List getCollidingBoundingBoxes(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB)
     {
         this.collidingBoundingBoxes.clear();
         int var3 = MathHelper.floor_double(par2AxisAlignedBB.minX);
@@ -1863,7 +1860,7 @@ public abstract class World implements IBlockAccess
      */
     public void scheduleBlockUpdate(int p_147464_1_, int p_147464_2_, int p_147464_3_, Block p_147464_4_, int p_147464_5_) {}
 
-    public void func_147454_a(int p_147454_1_, int p_147454_2_, int p_147454_3_, Block p_147454_4_, int p_147454_5_, int p_147454_6_) {}
+    public void scheduleBlockUpdateWithPriority(int p_147454_1_, int p_147454_2_, int p_147454_3_, Block p_147454_4_, int p_147454_5_, int p_147454_6_) {}
 
     public void func_147446_b(int p_147446_1_, int p_147446_2_, int p_147446_3_, Block p_147446_4_, int p_147446_5_, int p_147446_6_) {}
 
@@ -1990,13 +1987,13 @@ public abstract class World implements IBlockAccess
 
         this.theProfiler.endStartSection("blockEntities");
         this.field_147481_N = true;
-        Iterator var14 = this.tileEntities.iterator();
+        Iterator var14 = this.field_147482_g.iterator();
 
         while (var14.hasNext())
         {
             TileEntity var9 = (TileEntity)var14.next();
 
-            if (!var9.isInvalid() && var9.hasWorldObj() && this.blockExists(var9.x, var9.y, var9.z))
+            if (!var9.isInvalid() && var9.hasWorldObj() && this.blockExists(var9.xCoord, var9.yCoord, var9.zCoord))
             {
                 try
                 {
@@ -2015,13 +2012,13 @@ public abstract class World implements IBlockAccess
             {
                 var14.remove();
 
-                if (this.chunkExists(var9.x >> 4, var9.z >> 4))
+                if (this.chunkExists(var9.xCoord >> 4, var9.zCoord >> 4))
                 {
-                    Chunk var11 = this.getChunkFromChunkCoords(var9.x >> 4, var9.z >> 4);
+                    Chunk var11 = this.getChunkFromChunkCoords(var9.xCoord >> 4, var9.zCoord >> 4);
 
                     if (var11 != null)
                     {
-                        var11.removeTileEntity(var9.x & 15, var9.y, var9.z & 15);
+                        var11.removeTileEntity(var9.xCoord & 15, var9.yCoord, var9.zCoord & 15);
                     }
                 }
             }
@@ -2031,7 +2028,7 @@ public abstract class World implements IBlockAccess
 
         if (!this.field_147483_b.isEmpty())
         {
-            this.tileEntities.removeAll(this.field_147483_b);
+            this.field_147482_g.removeAll(this.field_147483_b);
             this.field_147483_b.clear();
         }
 
@@ -2045,22 +2042,22 @@ public abstract class World implements IBlockAccess
 
                 if (!var12.isInvalid())
                 {
-                    if (!this.tileEntities.contains(var12))
+                    if (!this.field_147482_g.contains(var12))
                     {
-                        this.tileEntities.add(var12);
+                        this.field_147482_g.add(var12);
                     }
 
-                    if (this.chunkExists(var12.x >> 4, var12.z >> 4))
+                    if (this.chunkExists(var12.xCoord >> 4, var12.zCoord >> 4))
                     {
-                        Chunk var15 = this.getChunkFromChunkCoords(var12.x >> 4, var12.z >> 4);
+                        Chunk var15 = this.getChunkFromChunkCoords(var12.xCoord >> 4, var12.zCoord >> 4);
 
                         if (var15 != null)
                         {
-                            var15.func_150812_a(var12.x & 15, var12.y, var12.z & 15, var12);
+                            var15.func_150812_a(var12.xCoord & 15, var12.yCoord, var12.zCoord & 15, var12);
                         }
                     }
 
-                    this.func_147471_g(var12.x, var12.y, var12.z);
+                    this.func_147471_g(var12.xCoord, var12.yCoord, var12.zCoord);
                 }
             }
 
@@ -2079,7 +2076,7 @@ public abstract class World implements IBlockAccess
         }
         else
         {
-            this.tileEntities.addAll(p_147448_1_);
+            this.field_147482_g.addAll(p_147448_1_);
         }
     }
 
@@ -2371,7 +2368,7 @@ public abstract class World implements IBlockAccess
 
                         if (var15.getMaterial() == par2Material)
                         {
-                            double var16 = (double)((float)(var13 + 1) - BlockLiquid.func_149801_b(this.getBlockMetadata(var12, var13, var14)));
+                            double var16 = (double)((float)(var13 + 1) - BlockLiquid.getFluidHeightPercent(this.getBlockMetadata(var12, var13, var14)));
 
                             if ((double)var7 >= var16)
                             {
@@ -2600,7 +2597,7 @@ public abstract class World implements IBlockAccess
                 {
                     var6 = (TileEntity)this.field_147484_a.get(var5);
 
-                    if (!var6.isInvalid() && var6.x == p_147438_1_ && var6.y == p_147438_2_ && var6.z == p_147438_3_)
+                    if (!var6.isInvalid() && var6.xCoord == p_147438_1_ && var6.yCoord == p_147438_2_ && var6.zCoord == p_147438_3_)
                     {
                         var4 = var6;
                         break;
@@ -2624,7 +2621,7 @@ public abstract class World implements IBlockAccess
                 {
                     var6 = (TileEntity)this.field_147484_a.get(var5);
 
-                    if (!var6.isInvalid() && var6.x == p_147438_1_ && var6.y == p_147438_2_ && var6.z == p_147438_3_)
+                    if (!var6.isInvalid() && var6.xCoord == p_147438_1_ && var6.yCoord == p_147438_2_ && var6.zCoord == p_147438_3_)
                     {
                         var4 = var6;
                         break;
@@ -2646,16 +2643,16 @@ public abstract class World implements IBlockAccess
         {
             if (this.field_147481_N)
             {
-                p_147455_4_.x = p_147455_1_;
-                p_147455_4_.y = p_147455_2_;
-                p_147455_4_.z = p_147455_3_;
+                p_147455_4_.xCoord = p_147455_1_;
+                p_147455_4_.yCoord = p_147455_2_;
+                p_147455_4_.zCoord = p_147455_3_;
                 Iterator var5 = this.field_147484_a.iterator();
 
                 while (var5.hasNext())
                 {
                     TileEntity var6 = (TileEntity)var5.next();
 
-                    if (var6.x == p_147455_1_ && var6.y == p_147455_2_ && var6.z == p_147455_3_)
+                    if (var6.xCoord == p_147455_1_ && var6.yCoord == p_147455_2_ && var6.zCoord == p_147455_3_)
                     {
                         var6.invalidate();
                         var5.remove();
@@ -2666,7 +2663,7 @@ public abstract class World implements IBlockAccess
             }
             else
             {
-                this.tileEntities.add(p_147455_4_);
+                this.field_147482_g.add(p_147455_4_);
                 Chunk var7 = this.getChunkFromChunkCoords(p_147455_1_ >> 4, p_147455_3_ >> 4);
 
                 if (var7 != null)
@@ -2691,7 +2688,7 @@ public abstract class World implements IBlockAccess
             if (var4 != null)
             {
                 this.field_147484_a.remove(var4);
-                this.tileEntities.remove(var4);
+                this.field_147482_g.remove(var4);
             }
 
             Chunk var5 = this.getChunkFromChunkCoords(p_147475_1_ >> 4, p_147475_3_ >> 4);
@@ -3792,7 +3789,7 @@ public abstract class World implements IBlockAccess
         return this.chunkProvider;
     }
 
-    public void func_147452_c(int p_147452_1_, int p_147452_2_, int p_147452_3_, Block p_147452_4_, int p_147452_5_, int p_147452_6_)
+    public void addBlockEvent(int p_147452_1_, int p_147452_2_, int p_147452_3_, Block p_147452_4_, int p_147452_5_, int p_147452_6_)
     {
         p_147452_4_.onBlockEventReceived(this, p_147452_1_, p_147452_2_, p_147452_3_, p_147452_5_, p_147452_6_);
     }
@@ -4032,7 +4029,6 @@ public abstract class World implements IBlockAccess
         var2.addCrashSection("Level name", this.worldInfo == null ? "????" : this.worldInfo.getWorldName());
         var2.addCrashSectionCallable("All players", new Callable()
         {
-            private static final String __OBFID = "CL_00000143";
             public String call()
             {
                 return World.this.playerEntities.size() + " total; " + World.this.playerEntities.toString();
@@ -4040,7 +4036,6 @@ public abstract class World implements IBlockAccess
         });
         var2.addCrashSectionCallable("Chunk stats", new Callable()
         {
-            private static final String __OBFID = "CL_00000144";
             public String call()
             {
                 return World.this.chunkProvider.makeString();

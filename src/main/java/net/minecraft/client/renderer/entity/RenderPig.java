@@ -10,7 +10,6 @@ public class RenderPig extends RenderLiving
 {
     private static final ResourceLocation saddledPigTextures = new ResourceLocation("textures/entity/pig/pig_saddle.png");
     private static final ResourceLocation pigTextures = new ResourceLocation("textures/entity/pig/pig.png");
-    private static final String __OBFID = "CL_00001019";
 
     public RenderPig(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3)
     {

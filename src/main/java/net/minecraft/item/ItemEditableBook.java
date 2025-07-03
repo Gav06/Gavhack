@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 
 public class ItemEditableBook extends Item
 {
-    private static final String __OBFID = "CL_00000077";
 
     public ItemEditableBook()
     {
@@ -23,14 +22,14 @@ public class ItemEditableBook extends Item
         {
             return false;
         }
-        else if (!par0NBTTagCompound.func_150297_b("title", 8))
+        else if (!par0NBTTagCompound.hasKey("title", 8))
         {
             return false;
         }
         else
         {
             String var1 = par0NBTTagCompound.getString("title");
-            return var1 != null && var1.length() <= 16 ? par0NBTTagCompound.func_150297_b("author", 8) : false;
+            return var1 != null && var1.length() <= 16 ? par0NBTTagCompound.hasKey("author", 8) : false;
         }
     }
 

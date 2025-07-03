@@ -12,7 +12,6 @@ import net.minecraft.util.StatCollector;
 public class ItemFireworkCharge extends Item
 {
     private IIcon field_150904_a;
-    private static final String __OBFID = "CL_00000030";
 
     /**
      * Gets an icon index based on an item's damage value and the given render pass
@@ -147,7 +146,7 @@ public class ItemFireworkCharge extends Item
                     if (var9 == ItemDye.field_150922_c[var11])
                     {
                         var10 = true;
-                        var5 = var5 + StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.field_150923_a[var11]);
+                        var5 = var5 + StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.dyeNames[var11]);
                         break;
                     }
                 }
@@ -188,7 +187,7 @@ public class ItemFireworkCharge extends Item
                     if (var18 == ItemDye.field_150922_c[var12])
                     {
                         var19 = true;
-                        var14 = var14 + StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.field_150923_a[var12]);
+                        var14 = var14 + StatCollector.translateToLocal("item.fireworksCharge." + ItemDye.dyeNames[var12]);
                         break;
                     }
                 }

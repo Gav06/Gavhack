@@ -2,12 +2,12 @@ package net.minecraft.util;
 
 public enum EnumFacing
 {
-    DOWN(0, 1, 0, -1, 0), // 0
-    UP(1, 0, 0, 1, 0), // 1
-    NORTH(2, 3, 0, 0, -1), // 2
-    SOUTH(3, 2, 0, 0, 1), // 3
-    EAST(4, 5, -1, 0, 0), // 4
-    WEST(5, 4, 1, 0, 0); // 5
+    DOWN(0, 1, 0, -1, 0),
+    UP(1, 0, 0, 1, 0),
+    NORTH(2, 3, 0, 0, -1),
+    SOUTH(3, 2, 0, 0, 1),
+    EAST(4, 5, -1, 0, 0),
+    WEST(5, 4, 1, 0, 0);
 
     /** Face order for D-U-N-S-E-W. */
     private final int order_a;
@@ -20,7 +20,6 @@ public enum EnumFacing
 
     /** List of all values in EnumFacing. Order is D-U-N-S-E-W. */
     private static final EnumFacing[] faceList = new EnumFacing[6];
-    private static final String __OBFID = "CL_00001201";
 
     private EnumFacing(int par3, int par4, int par5, int par6, int par7)
     {

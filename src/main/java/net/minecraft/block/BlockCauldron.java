@@ -23,7 +23,6 @@ public class BlockCauldron extends Block
     private IIcon field_150029_a;
     private IIcon field_150028_b;
     private IIcon field_150030_M;
-    private static final String __OBFID = "CL_00000213";
 
     public BlockCauldron()
     {
@@ -38,7 +37,7 @@ public class BlockCauldron extends Block
         return p_149691_1_ == 1 ? this.field_150028_b : (p_149691_1_ == 0 ? this.field_150030_M : this.blockIcon);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.field_150029_a = p_149651_1_.registerIcon(this.getTextureName() + "_" + "inner");
         this.field_150028_b = p_149651_1_.registerIcon(this.getTextureName() + "_top");
@@ -46,7 +45,7 @@ public class BlockCauldron extends Block
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
     }
 
-    public static IIcon func_150026_e(String p_150026_0_)
+    public static IIcon getCauldronIcon(String p_150026_0_)
     {
         return p_150026_0_.equals("inner") ? Blocks.cauldron.field_150029_a : (p_150026_0_.equals("bottom") ? Blocks.cauldron.field_150030_M : null);
     }
@@ -215,7 +214,7 @@ public class BlockCauldron extends Block
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.cauldron;
     }
@@ -236,7 +235,7 @@ public class BlockCauldron extends Block
         return p_150027_0_;
     }
 
-    public static float func_150025_c(int p_150025_0_)
+    public static float getRenderFluidLevel(int p_150025_0_)
     {
         int var1 = MathHelper.clamp_int(p_150025_0_, 0, 3);
         return (float)(6 + 3 * var1) / 16.0F;

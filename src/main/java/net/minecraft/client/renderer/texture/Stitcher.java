@@ -23,7 +23,6 @@ public class Stitcher
 
     /** Max size (width or height) of a single tile */
     private final int maxTileDimension;
-    private static final String __OBFID = "CL_00001054";
 
     public Stitcher(int p_i45095_1_, int p_i45095_2_, boolean p_i45095_3_, int p_i45095_4_, int p_i45095_5_)
     {
@@ -107,7 +106,7 @@ public class Stitcher
         return var71;
     }
 
-    private static int func_147969_b(int p_147969_0_, int p_147969_1_)
+    private static int getMipmapDimension(int p_147969_0_, int p_147969_1_)
     {
         return (p_147969_0_ >> p_147969_1_) + ((p_147969_0_ & (1 << p_147969_1_) - 1) == 0 ? 0 : 1) << p_147969_1_;
     }
@@ -231,7 +230,6 @@ public class Stitcher
         private final int height;
         private List subSlots;
         private Stitcher.Holder holder;
-        private static final String __OBFID = "CL_00001056";
 
         public Slot(int par1, int par2, int par3, int par4)
         {
@@ -363,7 +361,6 @@ public class Stitcher
         private final int mipmapLevelHolder;
         private boolean rotated;
         private float scaleFactor = 1.0F;
-        private static final String __OBFID = "CL_00001055";
 
         public Holder(TextureAtlasSprite p_i45094_1_, int p_i45094_2_)
         {
@@ -371,7 +368,7 @@ public class Stitcher
             this.width = p_i45094_1_.getIconWidth();
             this.height = p_i45094_1_.getIconHeight();
             this.mipmapLevelHolder = p_i45094_2_;
-            this.rotated = Stitcher.func_147969_b(this.height, p_i45094_2_) > Stitcher.func_147969_b(this.width, p_i45094_2_);
+            this.rotated = Stitcher.getMipmapDimension(this.height, p_i45094_2_) > Stitcher.getMipmapDimension(this.width, p_i45094_2_);
         }
 
         public TextureAtlasSprite getAtlasSprite()
@@ -381,12 +378,12 @@ public class Stitcher
 
         public int getWidth()
         {
-            return this.rotated ? Stitcher.func_147969_b((int)((float)this.height * this.scaleFactor), this.mipmapLevelHolder) : Stitcher.func_147969_b((int)((float)this.width * this.scaleFactor), this.mipmapLevelHolder);
+            return this.rotated ? Stitcher.getMipmapDimension((int)((float)this.height * this.scaleFactor), this.mipmapLevelHolder) : Stitcher.getMipmapDimension((int)((float)this.width * this.scaleFactor), this.mipmapLevelHolder);
         }
 
         public int getHeight()
         {
-            return this.rotated ? Stitcher.func_147969_b((int)((float)this.width * this.scaleFactor), this.mipmapLevelHolder) : Stitcher.func_147969_b((int)((float)this.height * this.scaleFactor), this.mipmapLevelHolder);
+            return this.rotated ? Stitcher.getMipmapDimension((int)((float)this.width * this.scaleFactor), this.mipmapLevelHolder) : Stitcher.getMipmapDimension((int)((float)this.height * this.scaleFactor), this.mipmapLevelHolder);
         }
 
         public void rotate()

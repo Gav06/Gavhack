@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 public class WorldGenForest extends WorldGenAbstractTree
 {
     private boolean field_150531_a;
-    private static final String __OBFID = "CL_00000401";
 
     public WorldGenForest(boolean p_i45449_1_, boolean p_i45449_2_)
     {

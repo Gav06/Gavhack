@@ -9,7 +9,6 @@ public class WorldTemplate extends ValueObject
     public String field_148785_b;
     public String field_148786_c;
     public String field_148784_d;
-    private static final String __OBFID = "CL_00001174";
 
     public static WorldTemplate func_148783_a(JsonObject p_148783_0_)
     {

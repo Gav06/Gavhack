@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 
 public class EntityMinecartChest extends EntityMinecartContainer
 {
-    private static final String __OBFID = "CL_00001671";
 
     public EntityMinecartChest(World par1World)
     {

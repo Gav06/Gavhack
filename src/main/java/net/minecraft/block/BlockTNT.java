@@ -18,7 +18,6 @@ public class BlockTNT extends Block
 {
     private IIcon field_150116_a;
     private IIcon field_150115_b;
-    private static final String __OBFID = "CL_00000324";
 
     public BlockTNT()
     {
@@ -133,7 +132,7 @@ public class BlockTNT extends Block
         return false;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.getTextureName() + "_side");
         this.field_150116_a = p_149651_1_.registerIcon(this.getTextureName() + "_top");

@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 public abstract class BlockBasePressurePlate extends Block
 {
     private String field_150067_a;
-    private static final String __OBFID = "CL_00000194";
 
     protected BlockBasePressurePlate(String p_i45387_1_, Material p_i45387_2_)
     {
@@ -43,7 +42,7 @@ public abstract class BlockBasePressurePlate extends Block
         }
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 20;
     }
@@ -67,7 +66,7 @@ public abstract class BlockBasePressurePlate extends Block
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
     {
         return true;
     }
@@ -146,7 +145,7 @@ public abstract class BlockBasePressurePlate extends Block
 
         if (var8)
         {
-            p_150062_1_.scheduleBlockUpdate(p_150062_2_, p_150062_3_, p_150062_4_, this, this.func_149738_a(p_150062_1_));
+            p_150062_1_.scheduleBlockUpdate(p_150062_2_, p_150062_3_, p_150062_4_, this, this.tickRate(p_150062_1_));
         }
     }
 
@@ -212,7 +211,7 @@ public abstract class BlockBasePressurePlate extends Block
 
     protected abstract int func_150066_d(int var1);
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon(this.field_150067_a);
     }

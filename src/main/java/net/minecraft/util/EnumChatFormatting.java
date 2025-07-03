@@ -48,7 +48,7 @@ public enum EnumChatFormatting
     private static final Pattern formattingCodePattern = Pattern.compile("(?i)" + String.valueOf('\u00a7') + "[0-9A-FK-OR]");
 
     /** The formatting code that produces this format. */
-    public final char formattingCode;
+    private final char formattingCode;
     private final boolean fancyStyling;
 
     /**
@@ -56,7 +56,6 @@ public enum EnumChatFormatting
      * subsequent text in this format.
      */
     private final String controlString;
-    private static final String __OBFID = "CL_00000342";
 
     private EnumChatFormatting(char par3)
     {

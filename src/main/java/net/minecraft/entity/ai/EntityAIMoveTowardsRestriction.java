@@ -11,7 +11,6 @@ public class EntityAIMoveTowardsRestriction extends EntityAIBase
     private double movePosY;
     private double movePosZ;
     private double movementSpeed;
-    private static final String __OBFID = "CL_00001598";
 
     public EntityAIMoveTowardsRestriction(EntityCreature par1EntityCreature, double par2)
     {

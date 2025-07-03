@@ -20,10 +20,9 @@ import net.minecraft.world.World;
 public class BlockDoublePlant extends BlockBush implements IGrowable
 {
     public static final String[] field_149892_a = new String[] {"sunflower", "syringa", "grass", "fern", "rose", "paeonia"};
-    private IIcon[] field_149893_M;
-    private IIcon[] field_149894_N;
-    public IIcon[] field_149891_b;
-    private static final String __OBFID = "CL_00000231";
+    private IIcon[] doublePlantBottomIcons;
+    private IIcon[] doublePlantTopIcons;
+    public IIcon[] sunflowerIcons;
 
     public BlockDoublePlant()
     {
@@ -122,12 +121,12 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
      */
     public IIcon getIcon(int p_149691_1_, int p_149691_2_)
     {
-        return func_149887_c(p_149691_2_) ? this.field_149893_M[0] : this.field_149893_M[p_149691_2_ & 7];
+        return func_149887_c(p_149691_2_) ? this.doublePlantBottomIcons[0] : this.doublePlantBottomIcons[p_149691_2_ & 7];
     }
 
     public IIcon func_149888_a(boolean p_149888_1_, int p_149888_2_)
     {
-        return p_149888_1_ ? this.field_149894_N[p_149888_2_] : this.field_149893_M[p_149888_2_];
+        return p_149888_1_ ? this.doublePlantTopIcons[p_149888_2_] : this.doublePlantBottomIcons[p_149888_2_];
     }
 
     /**
@@ -228,25 +227,25 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
-        this.field_149893_M = new IIcon[field_149892_a.length];
-        this.field_149894_N = new IIcon[field_149892_a.length];
+        this.doublePlantBottomIcons = new IIcon[field_149892_a.length];
+        this.doublePlantTopIcons = new IIcon[field_149892_a.length];
 
-        for (int var2 = 0; var2 < this.field_149893_M.length; ++var2)
+        for (int var2 = 0; var2 < this.doublePlantBottomIcons.length; ++var2)
         {
-            this.field_149893_M[var2] = p_149651_1_.registerIcon("double_plant_" + field_149892_a[var2] + "_bottom");
-            this.field_149894_N[var2] = p_149651_1_.registerIcon("double_plant_" + field_149892_a[var2] + "_top");
+            this.doublePlantBottomIcons[var2] = p_149651_1_.registerIcon("double_plant_" + field_149892_a[var2] + "_bottom");
+            this.doublePlantTopIcons[var2] = p_149651_1_.registerIcon("double_plant_" + field_149892_a[var2] + "_top");
         }
 
-        this.field_149891_b = new IIcon[2];
-        this.field_149891_b[0] = p_149651_1_.registerIcon("double_plant_sunflower_front");
-        this.field_149891_b[1] = p_149651_1_.registerIcon("double_plant_sunflower_back");
+        this.sunflowerIcons = new IIcon[2];
+        this.sunflowerIcons[0] = p_149651_1_.registerIcon("double_plant_sunflower_front");
+        this.sunflowerIcons[1] = p_149651_1_.registerIcon("double_plant_sunflower_back");
     }
 
     public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List p_149666_3_)
     {
-        for (int var4 = 0; var4 < this.field_149893_M.length; ++var4)
+        for (int var4 = 0; var4 < this.doublePlantBottomIcons.length; ++var4)
         {
             p_149666_3_.add(new ItemStack(p_149666_1_, 1, var4));
         }

@@ -9,67 +9,67 @@ import java.util.PriorityQueue;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.shader.TesselatorVertexState;
 import net.minecraft.client.util.QuadComparator;
-import optifine.Config;
-import optifine.VertexData;
-
+import net.minecraft.src.Config;
+import net.minecraft.src.VertexData;
 import org.lwjgl.opengl.GL11;
+import shadersmod.client.ShadersTess;
 
 public class Tessellator
 {
     /** The byte buffer used for GL allocation. */
-    private ByteBuffer byteBuffer;
+    public ByteBuffer byteBuffer;
 
     /** The same memory as byteBuffer, but referenced as an integer buffer. */
-    private IntBuffer intBuffer;
+    public IntBuffer intBuffer;
 
     /** The same memory as byteBuffer, but referenced as an float buffer. */
-    private FloatBuffer floatBuffer;
+    public FloatBuffer floatBuffer;
 
     /** The same memory as byteBuffer, but referenced as an short buffer. */
-    private ShortBuffer shortBuffer;
+    public ShortBuffer shortBuffer;
 
     /** Raw integer array. */
-    private int[] rawBuffer;
+    public int[] rawBuffer;
 
     /**
      * The number of vertices to be drawn in the next draw call. Reset to 0 between draw calls.
      */
-    private int vertexCount;
+    public int vertexCount;
 
     /** The first coordinate to be used for the texture. */
-    private double textureU;
+    public double textureU;
 
     /** The second coordinate to be used for the texture. */
-    private double textureV;
-    private int brightness;
+    public double textureV;
+    public int brightness;
 
     /** The color (RGBA) value to be used for the following draw call. */
-    private int color;
+    public int color;
 
     /**
      * Whether the current draw object for this tessellator has color values.
      */
-    private boolean hasColor;
+    public boolean hasColor;
 
     /**
      * Whether the current draw object for this tessellator has texture coordinates.
      */
-    private boolean hasTexture;
-    private boolean hasBrightness;
+    public boolean hasTexture;
+    public boolean hasBrightness;
 
     /**
      * Whether the current draw object for this tessellator has normal values.
      */
-    private boolean hasNormals;
+    public boolean hasNormals;
 
     /** The index into the raw buffer to be used for the next data. */
-    private int rawBufferIndex;
+    public int rawBufferIndex;
 
     /**
      * The number of vertices manually added to the given draw call. This differs from vertexCount because it adds extra
      * vertices when converting quads to triangles.
      */
-    private int addedVertices;
+    public int addedVertices;
 
     /** Disables all color information for the following draw call. */
     private boolean isColorDisabled;
@@ -102,7 +102,7 @@ public class Tessellator
     public boolean isDrawing;
 
     /** The size of the buffers used (in integers). */
-    private int bufferSize;
+    public int bufferSize;
     private boolean renderingChunk;
     private static boolean littleEndianByteOrder = ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN;
     public static boolean renderingWorldRenderer = false;
@@ -112,7 +112,7 @@ public class Tessellator
     private VertexData[] vertexDatas;
     private boolean[] drawnIcons;
     private TextureAtlasSprite[] vertexQuadIcons;
-    private static final String __OBFID = "CL_00000960";
+    public ShadersTess shadersTess;
 
     public Tessellator()
     {
@@ -141,6 +141,8 @@ public class Tessellator
         {
             this.vertexDatas[ix] = new VertexData();
         }
+
+        this.shadersTess = new ShadersTess();
     }
 
     /**
@@ -148,83 +150,95 @@ public class Tessellator
      */
     public int draw()
     {
-        if (!this.isDrawing)
+        if (Config.isShaders())
         {
-            throw new IllegalStateException("Not tesselating!");
+            return ShadersTess.draw(this);
         }
         else
         {
-            this.isDrawing = false;
-
-            if (this.vertexCount > 0 && (!this.renderingChunk || !Config.isMultiTexture()))
+            if (Config.isFastRender() && OpenGlHelper.glBlendFuncZero && !this.hasTexture && !this.renderingChunk && this.hasColor && this.color == -1 && this.vertexCount == 4)
             {
-                this.intBuffer.clear();
-                this.intBuffer.put(this.rawBuffer, 0, this.rawBufferIndex);
-                this.byteBuffer.position(0);
-                this.byteBuffer.limit(this.rawBufferIndex * 4);
-
-                if (this.hasTexture)
-                {
-                    this.floatBuffer.position(3);
-                    GL11.glTexCoordPointer(2, 32, this.floatBuffer);
-                    GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-                }
-
-                if (this.hasBrightness)
-                {
-                    OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapTexUnit);
-                    this.shortBuffer.position(14);
-                    GL11.glTexCoordPointer(2, 32, this.shortBuffer);
-                    GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-                    OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
-                }
-
-                if (this.hasColor)
-                {
-                    this.byteBuffer.position(20);
-                    GL11.glColorPointer(4, true, 32, this.byteBuffer);
-                    GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
-                }
-
-                if (this.hasNormals)
-                {
-                    this.byteBuffer.position(24);
-                    GL11.glNormalPointer(32, this.byteBuffer);
-                    GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
-                }
-
-                this.floatBuffer.position(0);
-                GL11.glVertexPointer(3, 32, this.floatBuffer);
-                GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-                GL11.glDrawArrays(this.drawMode, 0, this.vertexCount);
-                GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
-
-                if (this.hasTexture)
-                {
-                    GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-                }
-
-                if (this.hasBrightness)
-                {
-                    OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapTexUnit);
-                    GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-                    OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
-                }
-
-                if (this.hasColor)
-                {
-                    GL11.glDisableClientState(GL11.GL_COLOR_ARRAY);
-                }
-
-                if (this.hasNormals)
-                {
-                    GL11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
-                }
+                this.vertexCount = 0;
             }
 
-            int var1 = this.rawBufferIndex * 4;
-            this.reset();
-            return var1;
+            if (!this.isDrawing)
+            {
+                throw new IllegalStateException("Not tesselating!");
+            }
+            else
+            {
+                this.isDrawing = false;
+
+                if (this.vertexCount > 0 && (!this.renderingChunk || !Config.isMultiTexture()))
+                {
+                    this.intBuffer.clear();
+                    this.intBuffer.put(this.rawBuffer, 0, this.rawBufferIndex);
+                    this.byteBuffer.position(0);
+                    this.byteBuffer.limit(this.rawBufferIndex * 4);
+
+                    if (this.hasTexture)
+                    {
+                        this.floatBuffer.position(3);
+                        GL11.glTexCoordPointer(2, 32, this.floatBuffer);
+                        GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+                    }
+
+                    if (this.hasBrightness)
+                    {
+                        OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapTexUnit);
+                        this.shortBuffer.position(14);
+                        GL11.glTexCoordPointer(2, 32, this.shortBuffer);
+                        GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+                        OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
+                    }
+
+                    if (this.hasColor)
+                    {
+                        this.byteBuffer.position(20);
+                        GL11.glColorPointer(4, true, 32, this.byteBuffer);
+                        GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
+                    }
+
+                    if (this.hasNormals)
+                    {
+                        this.byteBuffer.position(24);
+                        GL11.glNormalPointer(32, this.byteBuffer);
+                        GL11.glEnableClientState(GL11.GL_NORMAL_ARRAY);
+                    }
+
+                    this.floatBuffer.position(0);
+                    GL11.glVertexPointer(3, 32, this.floatBuffer);
+                    GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+                    GL11.glDrawArrays(this.drawMode, 0, this.vertexCount);
+                    GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
+
+                    if (this.hasTexture)
+                    {
+                        GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+                    }
+
+                    if (this.hasBrightness)
+                    {
+                        OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapTexUnit);
+                        GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+                        OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
+                    }
+
+                    if (this.hasColor)
+                    {
+                        GL11.glDisableClientState(GL11.GL_COLOR_ARRAY);
+                    }
+
+                    if (this.hasNormals)
+                    {
+                        GL11.glDisableClientState(GL11.GL_NORMAL_ARRAY);
+                    }
+                }
+
+                int var1 = this.rawBufferIndex * 4;
+                this.reset();
+                return var1;
+            }
         }
     }
 
@@ -239,6 +253,12 @@ public class Tessellator
             int[] var4 = new int[this.rawBufferIndex];
             PriorityQueue var5 = new PriorityQueue(this.rawBufferIndex, new QuadComparator(this.rawBuffer, p_147564_1_ + (float)this.xOffset, p_147564_2_ + (float)this.yOffset, p_147564_3_ + (float)this.zOffset));
             byte var6 = 32;
+
+            if (Config.isShaders())
+            {
+                var6 = 72;
+            }
+
             int var7;
 
             for (var7 = 0; var7 < this.rawBufferIndex; var7 += var6)
@@ -275,7 +295,7 @@ public class Tessellator
     /**
      * Clears the tessellator state in preparation for new drawing.
      */
-    private void reset()
+    public void reset()
     {
         this.vertexCount = 0;
         this.byteBuffer.clear();
@@ -428,59 +448,66 @@ public class Tessellator
      */
     public void addVertex(double par1, double par3, double par5)
     {
-        if (this.autoGrow && this.rawBufferIndex >= this.bufferSize - 32)
+        if (Config.isShaders())
         {
-            Config.dbg("Expand tessellator buffer, old: " + this.bufferSize + ", new: " + this.bufferSize * 2);
-            this.bufferSize *= 2;
-            int[] newRawBuffer = new int[this.bufferSize];
-            System.arraycopy(this.rawBuffer, 0, newRawBuffer, 0, this.rawBuffer.length);
-            this.rawBuffer = newRawBuffer;
-            this.byteBuffer = GLAllocation.createDirectByteBuffer(this.bufferSize * 4);
-            this.intBuffer = this.byteBuffer.asIntBuffer();
-            this.floatBuffer = this.byteBuffer.asFloatBuffer();
-            this.shortBuffer = this.byteBuffer.asShortBuffer();
-
-            if (this.vertexQuadIcons != null)
+            ShadersTess.addVertex(this, par1, par3, par5);
+        }
+        else
+        {
+            if (this.autoGrow && this.rawBufferIndex >= this.bufferSize - 32)
             {
-                TextureAtlasSprite[] newVertexQuadIcons = new TextureAtlasSprite[this.bufferSize / 4];
-                System.arraycopy(this.vertexQuadIcons, 0, newVertexQuadIcons, 0, this.vertexQuadIcons.length);
-                this.vertexQuadIcons = newVertexQuadIcons;
+                Config.dbg("Expand tessellator buffer, old: " + this.bufferSize + ", new: " + this.bufferSize * 2);
+                this.bufferSize *= 2;
+                int[] newRawBuffer = new int[this.bufferSize];
+                System.arraycopy(this.rawBuffer, 0, newRawBuffer, 0, this.rawBuffer.length);
+                this.rawBuffer = newRawBuffer;
+                this.byteBuffer = GLAllocation.createDirectByteBuffer(this.bufferSize * 4);
+                this.intBuffer = this.byteBuffer.asIntBuffer();
+                this.floatBuffer = this.byteBuffer.asFloatBuffer();
+                this.shortBuffer = this.byteBuffer.asShortBuffer();
+
+                if (this.vertexQuadIcons != null)
+                {
+                    TextureAtlasSprite[] newVertexQuadIcons = new TextureAtlasSprite[this.bufferSize / 4];
+                    System.arraycopy(this.vertexQuadIcons, 0, newVertexQuadIcons, 0, this.vertexQuadIcons.length);
+                    this.vertexQuadIcons = newVertexQuadIcons;
+                }
             }
-        }
 
-        ++this.addedVertices;
+            ++this.addedVertices;
 
-        if (this.hasTexture)
-        {
-            this.rawBuffer[this.rawBufferIndex + 3] = Float.floatToRawIntBits((float)this.textureU);
-            this.rawBuffer[this.rawBufferIndex + 4] = Float.floatToRawIntBits((float)this.textureV);
-        }
+            if (this.hasTexture)
+            {
+                this.rawBuffer[this.rawBufferIndex + 3] = Float.floatToRawIntBits((float)this.textureU);
+                this.rawBuffer[this.rawBufferIndex + 4] = Float.floatToRawIntBits((float)this.textureV);
+            }
 
-        if (this.hasBrightness)
-        {
-            this.rawBuffer[this.rawBufferIndex + 7] = this.brightness;
-        }
+            if (this.hasBrightness)
+            {
+                this.rawBuffer[this.rawBufferIndex + 7] = this.brightness;
+            }
 
-        if (this.hasColor)
-        {
-            this.rawBuffer[this.rawBufferIndex + 5] = this.color;
-        }
+            if (this.hasColor)
+            {
+                this.rawBuffer[this.rawBufferIndex + 5] = this.color;
+            }
 
-        if (this.hasNormals)
-        {
-            this.rawBuffer[this.rawBufferIndex + 6] = this.normal;
-        }
+            if (this.hasNormals)
+            {
+                this.rawBuffer[this.rawBufferIndex + 6] = this.normal;
+            }
 
-        this.rawBuffer[this.rawBufferIndex + 0] = Float.floatToRawIntBits((float)(par1 + this.xOffset));
-        this.rawBuffer[this.rawBufferIndex + 1] = Float.floatToRawIntBits((float)(par3 + this.yOffset));
-        this.rawBuffer[this.rawBufferIndex + 2] = Float.floatToRawIntBits((float)(par5 + this.zOffset));
-        this.rawBufferIndex += 8;
-        ++this.vertexCount;
+            this.rawBuffer[this.rawBufferIndex + 0] = Float.floatToRawIntBits((float)(par1 + this.xOffset));
+            this.rawBuffer[this.rawBufferIndex + 1] = Float.floatToRawIntBits((float)(par3 + this.yOffset));
+            this.rawBuffer[this.rawBufferIndex + 2] = Float.floatToRawIntBits((float)(par5 + this.zOffset));
+            this.rawBufferIndex += 8;
+            ++this.vertexCount;
 
-        if (!this.autoGrow && this.addedVertices % 4 == 0 && this.rawBufferIndex >= this.bufferSize - 32)
-        {
-            this.draw();
-            this.isDrawing = true;
+            if (!this.autoGrow && this.addedVertices % 4 == 0 && this.rawBufferIndex >= this.bufferSize - 32)
+            {
+                this.draw();
+                this.isDrawing = true;
+            }
         }
     }
 
@@ -519,11 +546,19 @@ public class Tessellator
      */
     public void setNormal(float par1, float par2, float par3)
     {
+        if (Config.isShaders())
+        {
+            ShadersTess var4 = this.shadersTess;
+            var4.normalX = par1;
+            var4.normalY = par2;
+            var4.normalZ = par3;
+        }
+
         this.hasNormals = true;
-        byte var4 = (byte)((int)(par1 * 127.0F));
+        byte var41 = (byte)((int)(par1 * 127.0F));
         byte var5 = (byte)((int)(par2 * 127.0F));
         byte var6 = (byte)((int)(par3 * 127.0F));
-        this.normal = var4 & 255 | (var5 & 255) << 8 | (var6 & 255) << 16;
+        this.normal = var41 & 255 | (var5 & 255) << 8 | (var6 & 255) << 16;
     }
 
     /**

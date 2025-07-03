@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 public class RecipesIngots
 {
     private Object[][] recipeItems;
-    private static final String __OBFID = "CL_00000089";
 
     public RecipesIngots()
     {

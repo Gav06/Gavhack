@@ -10,7 +10,6 @@ import org.apache.commons.lang3.Validate;
 
 public class FontMetadataSectionSerializer extends BaseMetadataSectionSerializer
 {
-    private static final String __OBFID = "CL_00001109";
 
     public FontMetadataSection deserialize(JsonElement par1JsonElement, Type par2Type, JsonDeserializationContext par3JsonDeserializationContext)
     {

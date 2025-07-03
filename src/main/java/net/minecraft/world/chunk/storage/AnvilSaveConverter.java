@@ -29,7 +29,6 @@ import org.apache.logging.log4j.Logger;
 public class AnvilSaveConverter extends SaveFormatOld
 {
     private static final Logger logger = LogManager.getLogger();
-    private static final String __OBFID = "CL_00000582";
 
     public AnvilSaveConverter(File par1File)
     {
@@ -273,7 +272,6 @@ public class AnvilSaveConverter extends SaveFormatOld
         File var3 = new File(par1File, "region");
         File[] var4 = var3.listFiles(new FilenameFilter()
         {
-            private static final String __OBFID = "CL_00000583";
             public boolean accept(File par1File, String par2Str)
             {
                 return par2Str.endsWith(".mcr");
@@ -284,10 +282,5 @@ public class AnvilSaveConverter extends SaveFormatOld
         {
             Collections.addAll(par2Collection, var4);
         }
-    }
-
-    public int getAnvilSaveVersion()
-    {
-        return this.getSaveVersion();
     }
 }

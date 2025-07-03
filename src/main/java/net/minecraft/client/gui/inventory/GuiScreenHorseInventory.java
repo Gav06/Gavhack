@@ -15,7 +15,6 @@ public class GuiScreenHorseInventory extends GuiContainer
     private EntityHorse field_147034_x;
     private float field_147033_y;
     private float field_147032_z;
-    private static final String __OBFID = "CL_00000760";
 
     public GuiScreenHorseInventory(IInventory par1IInventory, IInventory par2IInventory, EntityHorse par3EntityHorse)
     {
@@ -23,13 +22,13 @@ public class GuiScreenHorseInventory extends GuiContainer
         this.field_147030_v = par1IInventory;
         this.field_147029_w = par2IInventory;
         this.field_147034_x = par3EntityHorse;
-        this.field_146291_p = false;
+        this.allowUserInput = false;
     }
 
     protected void func_146979_b(int p_146979_1_, int p_146979_2_)
     {
-        this.fontRendererObj.drawString(this.field_147029_w.isInventoryNameLocalized() ? this.field_147029_w.getInventoryName() : I18n.format(this.field_147029_w.getInventoryName(), new Object[0]), 8, 6, 4210752);
-        this.fontRendererObj.drawString(this.field_147030_v.isInventoryNameLocalized() ? this.field_147030_v.getInventoryName() : I18n.format(this.field_147030_v.getInventoryName(), new Object[0]), 8, this.field_147000_g - 96 + 2, 4210752);
+        this.fontRenderer.drawString(this.field_147029_w.isInventoryNameLocalized() ? this.field_147029_w.getInventoryName() : I18n.format(this.field_147029_w.getInventoryName(), new Object[0]), 8, 6, 4210752);
+        this.fontRenderer.drawString(this.field_147030_v.isInventoryNameLocalized() ? this.field_147030_v.getInventoryName() : I18n.format(this.field_147030_v.getInventoryName(), new Object[0]), 8, this.field_147000_g - 96 + 2, 4210752);
     }
 
     protected void func_146976_a(float p_146976_1_, int p_146976_2_, int p_146976_3_)
@@ -50,16 +49,16 @@ public class GuiScreenHorseInventory extends GuiContainer
             this.drawTexturedModalRect(var4 + 7, var5 + 35, 0, this.field_147000_g + 54, 18, 18);
         }
 
-        GuiInventory.drawEntityInGui(var4 + 51, var5 + 60, 17, (float)(var4 + 51) - this.field_147033_y, (float)(var5 + 75 - 50) - this.field_147032_z, this.field_147034_x);
+        GuiInventory.func_147046_a(var4 + 51, var5 + 60, 17, (float)(var4 + 51) - this.field_147033_y, (float)(var5 + 75 - 50) - this.field_147032_z, this.field_147034_x);
     }
 
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
-        this.field_147033_y = (float) mouseX;
-        this.field_147032_z = (float) mouseY;
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.field_147033_y = (float)par1;
+        this.field_147032_z = (float)par2;
+        super.drawScreen(par1, par2, par3);
     }
 }

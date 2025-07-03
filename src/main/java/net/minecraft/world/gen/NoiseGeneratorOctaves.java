@@ -10,7 +10,6 @@ public class NoiseGeneratorOctaves extends NoiseGenerator
      */
     private NoiseGeneratorImproved[] generatorCollection;
     private int octaves;
-    private static final String __OBFID = "CL_00000535";
 
     public NoiseGeneratorOctaves(Random par1Random, int par2)
     {

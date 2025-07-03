@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 
 public class EnchantmentDurability extends Enchantment
 {
-    private static final String __OBFID = "CL_00000103";
 
     protected EnchantmentDurability(int par1, int par2)
     {

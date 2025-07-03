@@ -27,7 +27,6 @@ public class GuiScreenMcoWorldTemplate extends GuiScreen
     private GuiScreenMcoWorldTemplate.SelectionList field_146957_r;
     private int field_146956_s = -1;
     private GuiButton field_146955_t;
-    private static final String __OBFID = "CL_00000786";
 
     public GuiScreenMcoWorldTemplate(ScreenWithCallback par1ScreenWithCallback, WorldTemplate par2WorldTemplate)
     {
@@ -45,7 +44,6 @@ public class GuiScreenMcoWorldTemplate extends GuiScreen
         this.field_146957_r = new GuiScreenMcoWorldTemplate.SelectionList();
         (new Thread("MCO World Creator #" + field_146958_a.incrementAndGet())
         {
-            private static final String __OBFID = "CL_00000787";
             public void run()
             {
                 Session var1 = GuiScreenMcoWorldTemplate.this.mc.getSession();
@@ -110,17 +108,16 @@ public class GuiScreenMcoWorldTemplate extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.field_146957_r.func_148350_a(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.template.title", new Object[0]), this.width / 2, 20, 16777215);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.field_146957_r.func_148350_a(par1, par2, par3);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.template.title", new Object[0]), this.width / 2, 20, 16777215);
+        super.drawScreen(par1, par2, par3);
     }
 
     class SelectionList extends GuiScreenSelectLocation
     {
-        private static final String __OBFID = "CL_00000788";
 
         public SelectionList()
         {
@@ -172,9 +169,9 @@ public class GuiScreenMcoWorldTemplate extends GuiScreen
         private void func_148387_b(int p_148387_1_, int p_148387_2_, int p_148387_3_, int p_148387_4_, Tessellator p_148387_5_)
         {
             WorldTemplate var6 = (WorldTemplate)GuiScreenMcoWorldTemplate.this.field_146960_i.get(p_148387_1_);
-            GuiScreenMcoWorldTemplate.this.drawString(GuiScreenMcoWorldTemplate.this.fontRendererObj, var6.field_148785_b, p_148387_2_ + 2, p_148387_3_ + 1, 16777215);
-            GuiScreenMcoWorldTemplate.this.drawString(GuiScreenMcoWorldTemplate.this.fontRendererObj, var6.field_148784_d, p_148387_2_ + 2, p_148387_3_ + 12, 7105644);
-            GuiScreenMcoWorldTemplate.this.drawString(GuiScreenMcoWorldTemplate.this.fontRendererObj, var6.field_148786_c, p_148387_2_ + 2 + 207 - GuiScreenMcoWorldTemplate.this.fontRendererObj.getStringWidth(var6.field_148786_c), p_148387_3_ + 1, 5000268);
+            GuiScreenMcoWorldTemplate.this.drawString(GuiScreenMcoWorldTemplate.this.fontRenderer, var6.field_148785_b, p_148387_2_ + 2, p_148387_3_ + 1, 16777215);
+            GuiScreenMcoWorldTemplate.this.drawString(GuiScreenMcoWorldTemplate.this.fontRenderer, var6.field_148784_d, p_148387_2_ + 2, p_148387_3_ + 12, 7105644);
+            GuiScreenMcoWorldTemplate.this.drawString(GuiScreenMcoWorldTemplate.this.fontRenderer, var6.field_148786_c, p_148387_2_ + 2 + 207 - GuiScreenMcoWorldTemplate.this.fontRenderer.getStringWidth(var6.field_148786_c), p_148387_3_ + 1, 5000268);
         }
     }
 }

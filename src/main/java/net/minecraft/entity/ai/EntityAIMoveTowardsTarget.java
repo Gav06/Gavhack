@@ -17,7 +17,6 @@ public class EntityAIMoveTowardsTarget extends EntityAIBase
      * If the distance to the target entity is further than this, this AI task will not run.
      */
     private float maxTargetDistance;
-    private static final String __OBFID = "CL_00001599";
 
     public EntityAIMoveTowardsTarget(EntityCreature par1EntityCreature, double par2, float par4)
     {

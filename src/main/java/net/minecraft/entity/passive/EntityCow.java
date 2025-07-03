@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 
 public class EntityCow extends EntityAnimal
 {
-    private static final String __OBFID = "CL_00001640";
 
     public EntityCow(World par1World)
     {

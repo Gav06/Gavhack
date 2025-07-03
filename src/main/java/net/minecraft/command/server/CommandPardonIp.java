@@ -10,7 +10,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandPardonIp extends CommandBase
 {
-    private static final String __OBFID = "CL_00000720";
 
     public String getCommandName()
     {

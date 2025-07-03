@@ -11,7 +11,6 @@ public class RenderSlime extends RenderLiving
 {
     private static final ResourceLocation slimeTextures = new ResourceLocation("textures/entity/slime/slime.png");
     private ModelBase scaleAmount;
-    private static final String __OBFID = "CL_00001024";
 
     public RenderSlime(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3)
     {

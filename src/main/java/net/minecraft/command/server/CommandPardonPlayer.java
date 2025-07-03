@@ -8,7 +8,6 @@ import net.minecraft.server.MinecraftServer;
 
 public class CommandPardonPlayer extends CommandBase
 {
-    private static final String __OBFID = "CL_00000747";
 
     public String getCommandName()
     {

@@ -28,7 +28,6 @@ public class RenderPlayer extends RendererLivingEntity
     private ModelBiped modelBipedMain;
     private ModelBiped modelArmorChestplate;
     private ModelBiped modelArmor;
-    private static final String __OBFID = "CL_00001020";
 
     public RenderPlayer()
     {
@@ -191,7 +190,7 @@ public class RenderPlayer extends RendererLivingEntity
                 GL11.glScalef(var4, -var4, -var4);
                 String var5 = "";
 
-                if (var3.hasTagCompound() && var3.getTagCompound().func_150297_b("SkullOwner", 8))
+                if (var3.hasTagCompound() && var3.getTagCompound().hasKey("SkullOwner", 8))
                 {
                     var5 = var3.getTagCompound().getString("SkullOwner");
                 }
@@ -400,11 +399,11 @@ public class RenderPlayer extends RendererLivingEntity
 
                 if (par1AbstractClientPlayer.isPlayerSleeping())
                 {
-                    this.func_147906_a(par1AbstractClientPlayer, var14.getScorePoints() + " " + var13.getDisplayName(), par2, par4 - 1.5D, par6, 64);
+                    this.drawNametag(par1AbstractClientPlayer, var14.getScorePoints() + " " + var13.getDisplayName(), par2, par4 - 1.5D, par6, 64);
                 }
                 else
                 {
-                    this.func_147906_a(par1AbstractClientPlayer, var14.getScorePoints() + " " + var13.getDisplayName(), par2, par4, par6, 64);
+                    this.drawNametag(par1AbstractClientPlayer, var14.getScorePoints() + " " + var13.getDisplayName(), par2, par4, par6, 64);
                 }
 
                 par4 += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * par9);

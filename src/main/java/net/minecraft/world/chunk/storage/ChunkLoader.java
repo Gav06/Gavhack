@@ -7,7 +7,6 @@ import net.minecraft.world.chunk.NibbleArray;
 
 public class ChunkLoader
 {
-    private static final String __OBFID = "CL_00000379";
 
     public static ChunkLoader.AnvilConverterData load(NBTTagCompound par0NBTTagCompound)
     {
@@ -155,7 +154,6 @@ public class ChunkLoader
         public NBTTagList field_151563_j;
         public final int x;
         public final int z;
-        private static final String __OBFID = "CL_00000380";
 
         public AnvilConverterData(int par1, int par2)
         {

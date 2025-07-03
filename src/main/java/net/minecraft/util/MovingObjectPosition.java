@@ -27,7 +27,6 @@ public class MovingObjectPosition
 
     /** The hit entity */
     public Entity entityHit;
-    private static final String __OBFID = "CL_00000610";
 
     public MovingObjectPosition(int par1, int par2, int par3, int par4, Vec3 par5Vec3)
     {
@@ -68,7 +67,6 @@ public class MovingObjectPosition
         ENTITY("ENTITY", 2);
 
         private static final MovingObjectPosition.MovingObjectType[] $VALUES = new MovingObjectPosition.MovingObjectType[]{MISS, BLOCK, ENTITY};
-        private static final String __OBFID = "CL_00000611";
 
         private MovingObjectType(String par1Str, int par2) {}
     }

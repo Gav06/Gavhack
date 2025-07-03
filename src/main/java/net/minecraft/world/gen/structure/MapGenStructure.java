@@ -27,7 +27,6 @@ public abstract class MapGenStructure extends MapGenBase
      * placed.
      */
     protected Map structureMap = new HashMap();
-    private static final String __OBFID = "CL_00000505";
 
     public abstract String func_143025_a();
 
@@ -54,7 +53,6 @@ public abstract class MapGenStructure extends MapGenBase
                 CrashReportCategory var9 = var8.makeCategory("Feature being prepared");
                 var9.addCrashSectionCallable("Is feature chunk", new Callable()
                 {
-                    private static final String __OBFID = "CL_00000506";
                     public String call()
                     {
                         return MapGenStructure.this.canSpawnStructureAtCoords(p_151538_2_, p_151538_3_) ? "True" : "False";
@@ -63,7 +61,6 @@ public abstract class MapGenStructure extends MapGenBase
                 var9.addCrashSection("Chunk location", String.format("%d,%d", new Object[] {Integer.valueOf(p_151538_2_), Integer.valueOf(p_151538_3_)}));
                 var9.addCrashSectionCallable("Chunk pos hash", new Callable()
                 {
-                    private static final String __OBFID = "CL_00000507";
                     public String call()
                     {
                         return String.valueOf(ChunkCoordIntPair.chunkXZ2Int(p_151538_2_, p_151538_3_));
@@ -71,7 +68,6 @@ public abstract class MapGenStructure extends MapGenBase
                 });
                 var9.addCrashSectionCallable("Structure type", new Callable()
                 {
-                    private static final String __OBFID = "CL_00000508";
                     public String call()
                     {
                         return MapGenStructure.this.getClass().getCanonicalName();

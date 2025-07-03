@@ -5,7 +5,6 @@ public class ExceptionMcoService extends Exception
     public final int field_148831_a;
     public final String field_148829_b;
     public final int field_148830_c;
-    private static final String __OBFID = "CL_00001177";
 
     public ExceptionMcoService(int par1, String par2Str, int par3)
     {

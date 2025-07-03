@@ -14,7 +14,6 @@ public class EntityAILeapAtTarget extends EntityAIBase
 
     /** The entity's motionY after leaping. */
     float leapMotionY;
-    private static final String __OBFID = "CL_00001591";
 
     public EntityAILeapAtTarget(EntityLiving par1EntityLiving, float par2)
     {

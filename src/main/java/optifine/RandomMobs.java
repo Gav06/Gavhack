@@ -37,7 +37,7 @@ public class RandomMobs
             if (world != null)
             {
                 EntityLiving el = (EntityLiving)entity;
-                el.spawnPosition = new BlockPos((int)el.posX, (int)el.posY, (int)el.posZ);
+                el.spawnPosition = new net.minecraft.src.BlockPos((int)el.posX, (int)el.posY, (int)el.posZ);
                 el.spawnBiome = world.getBiomeGenForCoords((int)el.posX, (int)el.posZ);
                 WorldServer ws = Config.getWorldServer();
 

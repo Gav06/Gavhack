@@ -12,7 +12,6 @@ public class EntityAIPlay extends EntityAIBase
     private EntityLivingBase targetVillager;
     private double field_75261_c;
     private int playTime;
-    private static final String __OBFID = "CL_00001605";
 
     public EntityAIPlay(EntityVillager par1EntityVillager, double par2)
     {

@@ -72,7 +72,6 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 
     /** The current endercrystal that is healing this dragon */
     public EntityEnderCrystal healingEnderCrystal;
-    private static final String __OBFID = "CL_00001659";
 
     public EntityDragon(World par1World)
     {

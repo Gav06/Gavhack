@@ -25,7 +25,6 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
     private int field_146858_u;
     private int field_146856_v;
     private GuiScreenOnlineServersSubscreen field_146854_w;
-    private static final String __OBFID = "CL_00000779";
 
     public GuiScreenEditOnlineWorld(GuiScreen par1GuiScreen, GuiScreen par2GuiScreen, McoServer par3McoServer)
     {
@@ -55,11 +54,11 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
         this.buttonList.clear();
         this.buttonList.add(this.field_146860_s = new GuiButton(0, this.field_146859_t, this.height / 4 + 120 + 22, this.field_146858_u, 20, I18n.format("mco.configure.world.buttons.done", new Object[0])));
         this.buttonList.add(new GuiButton(1, this.field_146856_v, this.height / 4 + 120 + 22, this.field_146858_u, 20, I18n.format("gui.cancel", new Object[0])));
-        this.field_146864_i = new GuiTextField(this.fontRendererObj, this.field_146859_t, 56, 212, 20);
+        this.field_146864_i = new GuiTextField(this.fontRenderer, this.field_146859_t, 56, 212, 20);
         this.field_146864_i.setFocused(true);
         this.field_146864_i.func_146203_f(32);
         this.field_146864_i.setText(this.field_146861_r.func_148801_b());
-        this.field_146863_h = new GuiTextField(this.fontRendererObj, this.field_146859_t, 96, 212, 20);
+        this.field_146863_h = new GuiTextField(this.fontRenderer, this.field_146859_t, 96, 212, 20);
         this.field_146863_h.func_146203_f(32);
         this.field_146863_h.setText(this.field_146861_r.func_148800_a());
         this.field_146854_w = new GuiScreenOnlineServersSubscreen(this.width, this.height, this.field_146859_t, 122, this.field_146861_r.field_148820_i, this.field_146861_r.field_148817_j);
@@ -157,15 +156,15 @@ public class GuiScreenEditOnlineWorld extends GuiScreen
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, I18n.format("mco.configure.world.edit.title", new Object[0]), this.width / 2, 17, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.name", new Object[0]), this.field_146859_t, 43, 10526880);
-        this.drawString(this.fontRendererObj, I18n.format("mco.configure.world.description", new Object[0]), this.field_146859_t, 84, 10526880);
+        this.drawCenteredString(this.fontRenderer, I18n.format("mco.configure.world.edit.title", new Object[0]), this.width / 2, 17, 16777215);
+        this.drawString(this.fontRenderer, I18n.format("mco.configure.world.name", new Object[0]), this.field_146859_t, 43, 10526880);
+        this.drawString(this.fontRenderer, I18n.format("mco.configure.world.description", new Object[0]), this.field_146859_t, 84, 10526880);
         this.field_146864_i.drawTextBox();
         this.field_146863_h.drawTextBox();
-        this.field_146854_w.func_148394_a(this, this.fontRendererObj);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.field_146854_w.func_148394_a(this, this.fontRenderer);
+        super.drawScreen(par1, par2, par3);
     }
 }

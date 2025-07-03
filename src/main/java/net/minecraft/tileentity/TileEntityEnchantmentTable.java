@@ -18,25 +18,24 @@ public class TileEntityEnchantmentTable extends TileEntity
     public float field_145924_q;
     private static Random field_145923_r = new Random();
     private String field_145922_s;
-    private static final String __OBFID = "CL_00000354";
 
-    public void writeToNBT(NBTTagCompound tag)
+    public void writeToNBT(NBTTagCompound p_145841_1_)
     {
-        super.writeToNBT(tag);
+        super.writeToNBT(p_145841_1_);
 
         if (this.func_145921_b())
         {
-            tag.setString("CustomName", this.field_145922_s);
+            p_145841_1_.setString("CustomName", this.field_145922_s);
         }
     }
 
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(NBTTagCompound p_145839_1_)
     {
-        super.readFromNBT(tag);
+        super.readFromNBT(p_145839_1_);
 
-        if (tag.func_150297_b("CustomName", 8))
+        if (p_145839_1_.hasKey("CustomName", 8))
         {
-            this.field_145922_s = tag.getString("CustomName");
+            this.field_145922_s = p_145839_1_.getString("CustomName");
         }
     }
 
@@ -45,12 +44,12 @@ public class TileEntityEnchantmentTable extends TileEntity
         super.updateEntity();
         this.field_145927_n = this.field_145930_m;
         this.field_145925_p = this.field_145928_o;
-        EntityPlayer var1 = this.worldObj.getClosestPlayer((double)((float)this.x + 0.5F), (double)((float)this.y + 0.5F), (double)((float)this.z + 0.5F), 3.0D);
+        EntityPlayer var1 = this.worldObj.getClosestPlayer((double)((float)this.xCoord + 0.5F), (double)((float)this.yCoord + 0.5F), (double)((float)this.zCoord + 0.5F), 3.0D);
 
         if (var1 != null)
         {
-            double var2 = var1.posX - (double)((float)this.x + 0.5F);
-            double var4 = var1.posZ - (double)((float)this.z + 0.5F);
+            double var2 = var1.posX - (double)((float)this.xCoord + 0.5F);
+            double var4 = var1.posZ - (double)((float)this.zCoord + 0.5F);
             this.field_145924_q = (float)Math.atan2(var4, var2);
             this.field_145930_m += 0.1F;
 

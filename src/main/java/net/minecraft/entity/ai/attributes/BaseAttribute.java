@@ -5,7 +5,6 @@ public abstract class BaseAttribute implements IAttribute
     private final String unlocalizedName;
     private final double defaultValue;
     private boolean shouldWatch;
-    private static final String __OBFID = "CL_00001565";
 
     protected BaseAttribute(String par1Str, double par2)
     {

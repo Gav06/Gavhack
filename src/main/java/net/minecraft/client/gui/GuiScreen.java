@@ -7,6 +7,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
@@ -24,7 +25,7 @@ public class GuiScreen extends Gui
     /**
      * Holds a instance of RenderItem, used to draw the achievement icons on screen (is based on ItemStack)
      */
-    protected static RenderItem itemRender = new RenderItem();
+    protected static RenderItem renderItemGs = new RenderItem();
 
     /** Reference to the Minecraft object. */
     protected Minecraft mc;
@@ -40,33 +41,32 @@ public class GuiScreen extends Gui
 
     /** A list of all the labels in this container. */
     protected List labelList = new ArrayList();
-    public boolean field_146291_p;
+    public boolean allowUserInput;
 
     /** The FontRenderer used by GuiScreen */
-    protected FontRenderer fontRendererObj;
+    protected FontRenderer fontRenderer;
 
     /** The button that was just pressed. */
     private GuiButton selectedButton;
     private int eventButton;
     private long lastMouseEvent;
     private int field_146298_h;
-    private static final String __OBFID = "CL_00000710";
 
     /**
      * Draws the screen and all the components in it.
      */
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void drawScreen(int par1, int par2, float par3)
     {
         int var4;
 
         for (var4 = 0; var4 < this.buttonList.size(); ++var4)
         {
-            ((GuiButton)this.buttonList.get(var4)).drawButton(this.mc, mouseX, mouseY);
+            ((GuiButton)this.buttonList.get(var4)).drawButton(this.mc, par1, par2);
         }
 
         for (var4 = 0; var4 < this.labelList.size(); ++var4)
         {
-            ((GuiLabel)this.labelList.get(var4)).func_146159_a(this.mc, mouseX, mouseY);
+            ((GuiLabel)this.labelList.get(var4)).func_146159_a(this.mc, par1, par2);
         }
     }
 
@@ -136,29 +136,33 @@ public class GuiScreen extends Gui
             }
         }
 
-        this.drawToolTipBox(var4, p_146285_2_, p_146285_3_);
+        this.drawTooltipBox(var4, p_146285_2_, p_146285_3_);
     }
 
     protected void func_146279_a(String p_146279_1_, int p_146279_2_, int p_146279_3_)
     {
-        this.drawToolTipBox(Arrays.asList(new String[] {p_146279_1_}), p_146279_2_, p_146279_3_);
+        this.drawTooltipBox(Arrays.asList(new String[] {p_146279_1_}), p_146279_2_, p_146279_3_);
     }
 
-    protected void drawToolTipBox(List<String> list, int p_146283_2_, int p_146283_3_)
+    protected void drawTooltipBox(List p_146283_1_, int p_146283_2_, int p_146283_3_)
     {
-        if (!list.isEmpty())
+        if (!p_146283_1_.isEmpty())
         {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             RenderHelper.disableStandardItemLighting();
             GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            int n = 0;
+            int var4 = 0;
+            Iterator var5 = p_146283_1_.iterator();
 
-            for (String str : list) {
-                int w = this.fontRendererObj.getStringWidth(str);
+            while (var5.hasNext())
+            {
+                String var6 = (String)var5.next();
+                int var7 = this.fontRenderer.getStringWidth(var6);
 
-                if (w > n) {
-                    n = w;
+                if (var7 > var4)
+                {
+                    var4 = var7;
                 }
             }
 
@@ -166,14 +170,14 @@ public class GuiScreen extends Gui
             int var15 = p_146283_3_ - 12;
             int var8 = 8;
 
-            if (list.size() > 1)
+            if (p_146283_1_.size() > 1)
             {
-                var8 += 2 + (list.size() - 1) * 10;
+                var8 += 2 + (p_146283_1_.size() - 1) * 10;
             }
 
-            if (var14 + n > this.width)
+            if (var14 + var4 > this.width)
             {
-                var14 -= 28 + n;
+                var14 -= 28 + var4;
             }
 
             if (var15 + var8 + 6 > this.height)
@@ -182,24 +186,24 @@ public class GuiScreen extends Gui
             }
 
             this.zLevel = 300.0F;
-            itemRender.zLevel = 300.0F;
+            renderItemGs.zLevel = 300.0F;
             int var9 = -267386864;
-            this.drawGradientRect(var14 - 3, var15 - 4, var14 + n + 3, var15 - 3, var9, var9);
-            this.drawGradientRect(var14 - 3, var15 + var8 + 3, var14 + n + 3, var15 + var8 + 4, var9, var9);
-            this.drawGradientRect(var14 - 3, var15 - 3, var14 + n + 3, var15 + var8 + 3, var9, var9);
+            this.drawGradientRect(var14 - 3, var15 - 4, var14 + var4 + 3, var15 - 3, var9, var9);
+            this.drawGradientRect(var14 - 3, var15 + var8 + 3, var14 + var4 + 3, var15 + var8 + 4, var9, var9);
+            this.drawGradientRect(var14 - 3, var15 - 3, var14 + var4 + 3, var15 + var8 + 3, var9, var9);
             this.drawGradientRect(var14 - 4, var15 - 3, var14 - 3, var15 + var8 + 3, var9, var9);
-            this.drawGradientRect(var14 + n + 3, var15 - 3, var14 + n + 4, var15 + var8 + 3, var9, var9);
+            this.drawGradientRect(var14 + var4 + 3, var15 - 3, var14 + var4 + 4, var15 + var8 + 3, var9, var9);
             int var10 = 1347420415;
             int var11 = (var10 & 16711422) >> 1 | var10 & -16777216;
             this.drawGradientRect(var14 - 3, var15 - 3 + 1, var14 - 3 + 1, var15 + var8 + 3 - 1, var10, var11);
-            this.drawGradientRect(var14 + n + 2, var15 - 3 + 1, var14 + n + 3, var15 + var8 + 3 - 1, var10, var11);
-            this.drawGradientRect(var14 - 3, var15 - 3, var14 + n + 3, var15 - 3 + 1, var10, var10);
-            this.drawGradientRect(var14 - 3, var15 + var8 + 2, var14 + n + 3, var15 + var8 + 3, var11, var11);
+            this.drawGradientRect(var14 + var4 + 2, var15 - 3 + 1, var14 + var4 + 3, var15 + var8 + 3 - 1, var10, var11);
+            this.drawGradientRect(var14 - 3, var15 - 3, var14 + var4 + 3, var15 - 3 + 1, var10, var10);
+            this.drawGradientRect(var14 - 3, var15 + var8 + 2, var14 + var4 + 3, var15 + var8 + 3, var11, var11);
 
-            for (int var12 = 0; var12 < list.size(); ++var12)
+            for (int var12 = 0; var12 < p_146283_1_.size(); ++var12)
             {
-                String var13 = (String)list.get(var12);
-                this.fontRendererObj.drawStringWithShadow(var13, var14, var15, -1);
+                String var13 = (String)p_146283_1_.get(var12);
+                this.fontRenderer.drawStringWithShadow(var13, var14, var15, -1);
 
                 if (var12 == 0)
                 {
@@ -210,7 +214,7 @@ public class GuiScreen extends Gui
             }
 
             this.zLevel = 0.0F;
-            itemRender.zLevel = 0.0F;
+            renderItemGs.zLevel = 0.0F;
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             RenderHelper.enableStandardItemLighting();
@@ -259,7 +263,7 @@ public class GuiScreen extends Gui
     public void setWorldAndResolution(Minecraft p_146280_1_, int p_146280_2_, int p_146280_3_)
     {
         this.mc = p_146280_1_;
-        this.fontRendererObj = p_146280_1_.fontRenderer;
+        this.fontRenderer = p_146280_1_.fontRenderer;
         this.width = p_146280_2_;
         this.height = p_146280_3_;
         this.buttonList.clear();
@@ -367,10 +371,10 @@ public class GuiScreen extends Gui
 
     public void drawDefaultBackground()
     {
-        this.func_146270_b(0);
+        this.drawWorldBackground(0);
     }
 
-    public void func_146270_b(int p_146270_1_)
+    public void drawWorldBackground(int p_146270_1_)
     {
         if (this.mc.theWorld != null)
         {
@@ -378,11 +382,11 @@ public class GuiScreen extends Gui
         }
         else
         {
-            this.func_146278_c(p_146270_1_);
+            this.drawBackground(p_146270_1_);
         }
     }
 
-    public void func_146278_c(int p_146278_1_)
+    public void drawBackground(int p_146278_1_)
     {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_FOG);

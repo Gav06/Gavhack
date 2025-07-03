@@ -19,7 +19,6 @@ public abstract class CommandBlockLogic implements ICommandSender
     private IChatComponent field_145762_d = null;
     private String field_145763_e = "";
     private String field_145761_f = "@";
-    private static final String __OBFID = "CL_00000128";
 
     public int func_145760_g()
     {
@@ -50,17 +49,17 @@ public abstract class CommandBlockLogic implements ICommandSender
         this.field_145763_e = p_145759_1_.getString("Command");
         this.field_145764_b = p_145759_1_.getInteger("SuccessCount");
 
-        if (p_145759_1_.func_150297_b("CustomName", 8))
+        if (p_145759_1_.hasKey("CustomName", 8))
         {
             this.field_145761_f = p_145759_1_.getString("CustomName");
         }
 
-        if (p_145759_1_.func_150297_b("LastOutput", 8))
+        if (p_145759_1_.hasKey("LastOutput", 8))
         {
             this.field_145762_d = IChatComponent.Serializer.func_150699_a(p_145759_1_.getString("LastOutput"));
         }
 
-        if (p_145759_1_.func_150297_b("TrackOutput", 1))
+        if (p_145759_1_.hasKey("TrackOutput", 1))
         {
             this.field_145765_c = p_145759_1_.getBoolean("TrackOutput");
         }

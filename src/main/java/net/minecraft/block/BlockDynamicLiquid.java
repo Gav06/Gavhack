@@ -10,7 +10,6 @@ public class BlockDynamicLiquid extends BlockLiquid
     int field_149815_a;
     boolean[] field_149814_b = new boolean[4];
     int[] field_149816_M = new int[4];
-    private static final String __OBFID = "CL_00000234";
 
     protected BlockDynamicLiquid(Material p_i45403_1_)
     {
@@ -37,7 +36,7 @@ public class BlockDynamicLiquid extends BlockLiquid
         }
 
         boolean var8 = true;
-        int var9 = this.func_149738_a(p_149674_1_);
+        int var9 = this.tickRate(p_149674_1_);
         int var11;
 
         if (var6 > 0)
@@ -346,7 +345,7 @@ public class BlockDynamicLiquid extends BlockLiquid
 
         if (p_149726_1_.getBlock(p_149726_2_, p_149726_3_, p_149726_4_) == this)
         {
-            p_149726_1_.scheduleBlockUpdate(p_149726_2_, p_149726_3_, p_149726_4_, this, this.func_149738_a(p_149726_1_));
+            p_149726_1_.scheduleBlockUpdate(p_149726_2_, p_149726_3_, p_149726_4_, this, this.tickRate(p_149726_1_));
         }
     }
 

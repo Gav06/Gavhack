@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 public class BlockWall extends Block
 {
     public static final String[] field_150092_a = new String[] {"normal", "mossy"};
-    private static final String __OBFID = "CL_00000331";
 
     public BlockWall(Block p_i45435_1_)
     {
@@ -47,7 +46,7 @@ public class BlockWall extends Block
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
     {
         return false;
     }
@@ -59,10 +58,10 @@ public class BlockWall extends Block
 
     public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
     {
-        boolean var5 = this.func_150091_e(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_ - 1);
-        boolean var6 = this.func_150091_e(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_ + 1);
-        boolean var7 = this.func_150091_e(p_149719_1_, p_149719_2_ - 1, p_149719_3_, p_149719_4_);
-        boolean var8 = this.func_150091_e(p_149719_1_, p_149719_2_ + 1, p_149719_3_, p_149719_4_);
+        boolean var5 = this.canConnectWallTo(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_ - 1);
+        boolean var6 = this.canConnectWallTo(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_ + 1);
+        boolean var7 = this.canConnectWallTo(p_149719_1_, p_149719_2_ - 1, p_149719_3_, p_149719_4_);
+        boolean var8 = this.canConnectWallTo(p_149719_1_, p_149719_2_ + 1, p_149719_3_, p_149719_4_);
         float var9 = 0.25F;
         float var10 = 0.75F;
         float var11 = 0.25F;
@@ -112,11 +111,11 @@ public class BlockWall extends Block
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_)
     {
         this.setBlockBoundsBasedOnState(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
-        this.field_149756_F = 1.5D;
+        this.maxY = 1.5D;
         return super.getCollisionBoundingBoxFromPool(p_149668_1_, p_149668_2_, p_149668_3_, p_149668_4_);
     }
 
-    public boolean func_150091_e(IBlockAccess p_150091_1_, int p_150091_2_, int p_150091_3_, int p_150091_4_)
+    public boolean canConnectWallTo(IBlockAccess p_150091_1_, int p_150091_2_, int p_150091_3_, int p_150091_4_)
     {
         Block var5 = p_150091_1_.getBlock(p_150091_2_, p_150091_3_, p_150091_4_);
         return var5 != this && var5 != Blocks.fence_gate ? (var5.blockMaterial.isOpaque() && var5.renderAsNormalBlock() ? var5.blockMaterial != Material.field_151572_C : false) : true;
@@ -136,10 +135,10 @@ public class BlockWall extends Block
         return p_149692_1_;
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
-        return side == 0 ? super.shouldSideBeRendered(blockAccess, x, y, z, side) : true;
+        return p_149646_5_ == 0 ? super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_) : true;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerIcons(IIconRegister p_149651_1_) {}
 }

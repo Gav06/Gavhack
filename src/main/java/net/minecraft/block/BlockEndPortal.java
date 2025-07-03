@@ -16,12 +16,11 @@ import net.minecraft.world.World;
 public class BlockEndPortal extends BlockContainer
 {
     public static boolean field_149948_a;
-    private static final String __OBFID = "CL_00000236";
 
     protected BlockEndPortal(Material p_i45404_1_)
     {
         super(p_i45404_1_);
-        this.setLightLevel(1.0F);
+        this.setLightValue(1.0F);
     }
 
     /**
@@ -38,9 +37,9 @@ public class BlockEndPortal extends BlockContainer
         this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, var5, 1.0F);
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
-        return side != 0 ? false : super.shouldSideBeRendered(blockAccess, x, y, z, side);
+        return p_149646_5_ != 0 ? false : super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_, p_149646_5_);
     }
 
     public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_) {}
@@ -107,17 +106,17 @@ public class BlockEndPortal extends BlockContainer
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemById(0);
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("portal");
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
         return MapColor.field_151654_J;
     }

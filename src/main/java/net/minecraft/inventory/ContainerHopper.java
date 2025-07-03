@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 public class ContainerHopper extends Container
 {
     private final IInventory field_94538_a;
-    private static final String __OBFID = "CL_00001750";
 
     public ContainerHopper(InventoryPlayer par1InventoryPlayer, IInventory par2IInventory)
     {

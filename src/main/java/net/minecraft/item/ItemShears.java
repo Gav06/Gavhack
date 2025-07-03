@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 public class ItemShears extends Item
 {
-    private static final String __OBFID = "CL_00000062";
 
     public ItemShears()
     {
@@ -36,8 +35,8 @@ public class ItemShears extends Item
         return p_150897_1_ == Blocks.web || p_150897_1_ == Blocks.redstone_wire || p_150897_1_ == Blocks.tripwire;
     }
 
-    public float func_150893_a(ItemStack p_150893_1_, Block p_150893_2_)
+    public float func_150893_a(ItemStack stack, Block block)
     {
-        return p_150893_2_ != Blocks.web && p_150893_2_.getMaterial() != Material.leaves ? (p_150893_2_ == Blocks.wool ? 5.0F : super.func_150893_a(p_150893_1_, p_150893_2_)) : 15.0F;
+        return block != Blocks.web && block.getMaterial() != Material.leaves ? (block == Blocks.wool ? 5.0F : super.func_150893_a(stack, block)) : 15.0F;
     }
 }

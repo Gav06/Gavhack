@@ -13,7 +13,6 @@ public class IntegratedPlayerList extends ServerConfigurationManager
      * Holds the NBT data for the host player's save file, so this can be written to level.dat.
      */
     private NBTTagCompound hostPlayerData;
-    private static final String __OBFID = "CL_00001128";
 
     public IntegratedPlayerList(IntegratedServer par1IntegratedServer)
     {
@@ -35,9 +34,9 @@ public class IntegratedPlayerList extends ServerConfigurationManager
         super.writePlayerData(par1EntityPlayerMP);
     }
 
-    public String func_148542_a(SocketAddress p_148542_1_, GameProfile p_148542_2_)
+    public String allowUserToConnect(SocketAddress p_148542_1_, GameProfile p_148542_2_)
     {
-        return p_148542_2_.getName().equalsIgnoreCase(this.getServerInstance().getServerOwner()) && this.getPlayerForUsername(p_148542_2_.getName()) != null ? "That name is already taken." : super.func_148542_a(p_148542_1_, p_148542_2_);
+        return p_148542_2_.getName().equalsIgnoreCase(this.getServerInstance().getServerOwner()) && this.getPlayerForUsername(p_148542_2_.getName()) != null ? "That name is already taken." : super.allowUserToConnect(p_148542_1_, p_148542_2_);
     }
 
     public IntegratedServer getServerInstance()

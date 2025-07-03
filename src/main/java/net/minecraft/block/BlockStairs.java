@@ -26,7 +26,6 @@ public class BlockStairs extends Block
     private final int field_150151_M;
     private boolean field_150152_N;
     private int field_150153_O;
-    private static final String __OBFID = "CL_00000314";
 
     protected BlockStairs(Block p_i45428_1_, int p_i45428_2_)
     {
@@ -400,9 +399,9 @@ public class BlockStairs extends Block
         return this.field_150149_b.getIcon(p_149691_1_, this.field_150151_M);
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
-        return this.field_150149_b.func_149738_a(p_149738_1_);
+        return this.field_150149_b.tickRate(p_149738_1_);
     }
 
     /**
@@ -477,7 +476,7 @@ public class BlockStairs extends Block
         this.field_150149_b.onBlockDestroyedByExplosion(p_149723_1_, p_149723_2_, p_149723_3_, p_149723_4_, p_149723_5_);
     }
 
-    public MapColor getMapColor(int color)
+    public MapColor getMapColor(int p_149728_1_)
     {
         return this.field_150149_b.getMapColor(this.field_150151_M);
     }
@@ -580,5 +579,5 @@ public class BlockStairs extends Block
         return var22;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerIcons(IIconRegister p_149651_1_) {}
 }

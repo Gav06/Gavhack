@@ -9,7 +9,6 @@ import net.minecraft.util.DamageSource;
 
 public class EnchantmentThorns extends Enchantment
 {
-    private static final String __OBFID = "CL_00000122";
 
     public EnchantmentThorns(int par1, int par2)
     {

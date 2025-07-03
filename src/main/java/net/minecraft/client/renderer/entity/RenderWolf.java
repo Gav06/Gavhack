@@ -14,7 +14,6 @@ public class RenderWolf extends RenderLiving
     private static final ResourceLocation tamedWolfTextures = new ResourceLocation("textures/entity/wolf/wolf_tame.png");
     private static final ResourceLocation anrgyWolfTextures = new ResourceLocation("textures/entity/wolf/wolf_angry.png");
     private static final ResourceLocation wolfCollarTextures = new ResourceLocation("textures/entity/wolf/wolf_collar.png");
-    private static final String __OBFID = "CL_00001036";
 
     public RenderWolf(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3)
     {

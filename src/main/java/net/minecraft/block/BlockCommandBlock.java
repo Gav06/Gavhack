@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 
 public class BlockCommandBlock extends BlockContainer
 {
-    private static final String __OBFID = "CL_00000219";
 
     public BlockCommandBlock()
     {
@@ -38,7 +37,7 @@ public class BlockCommandBlock extends BlockContainer
             if (var6 && !var8)
             {
                 p_149695_1_.setBlockMetadataWithNotify(p_149695_2_, p_149695_3_, p_149695_4_, var7 | 1, 4);
-                p_149695_1_.scheduleBlockUpdate(p_149695_2_, p_149695_3_, p_149695_4_, this, this.func_149738_a(p_149695_1_));
+                p_149695_1_.scheduleBlockUpdate(p_149695_2_, p_149695_3_, p_149695_4_, this, this.tickRate(p_149695_1_));
             }
             else if (!var6 && var8)
             {
@@ -62,7 +61,7 @@ public class BlockCommandBlock extends BlockContainer
         }
     }
 
-    public int func_149738_a(World p_149738_1_)
+    public int tickRate(World p_149738_1_)
     {
         return 1;
     }

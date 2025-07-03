@@ -18,11 +18,10 @@ import net.minecraft.world.World;
 
 public class ItemDye extends Item
 {
-    public static final String[] field_150923_a = new String[] {"black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"};
+    public static final String[] dyeNames = new String[] {"black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "lightBlue", "magenta", "orange", "white"};
     public static final String[] field_150921_b = new String[] {"black", "red", "green", "brown", "blue", "purple", "cyan", "silver", "gray", "pink", "lime", "yellow", "light_blue", "magenta", "orange", "white"};
     public static final int[] field_150922_c = new int[] {1973019, 11743532, 3887386, 5320730, 2437522, 8073150, 2651799, 11250603, 4408131, 14188952, 4312372, 14602026, 6719955, 12801229, 15435844, 15790320};
     private IIcon[] field_150920_d;
-    private static final String __OBFID = "CL_00000022";
 
     public ItemDye()
     {
@@ -47,37 +46,37 @@ public class ItemDye extends Item
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
         int var2 = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, 15);
-        return super.getUnlocalizedName() + "." + field_150923_a[var2];
+        return super.getUnlocalizedName() + "." + dyeNames[var2];
     }
 
     /**
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
+        if (!player.canPlayerEdit(par4, par5, par6, par7, stack))
         {
             return false;
         }
         else
         {
-            if (par1ItemStack.getItemDamage() == 15)
+            if (stack.getItemDamage() == 15)
             {
-                if (func_150919_a(par1ItemStack, par3World, par4, par5, par6))
+                if (func_150919_a(stack, world, par4, par5, par6))
                 {
-                    if (!par3World.isClient)
+                    if (!world.isClient)
                     {
-                        par3World.playAuxSFX(2005, par4, par5, par6, 0);
+                        world.playAuxSFX(2005, par4, par5, par6, 0);
                     }
 
                     return true;
                 }
             }
-            else if (par1ItemStack.getItemDamage() == 3)
+            else if (stack.getItemDamage() == 3)
             {
-                Block var11 = par3World.getBlock(par4, par5, par6);
-                int var12 = par3World.getBlockMetadata(par4, par5, par6);
+                Block var11 = world.getBlock(par4, par5, par6);
+                int var12 = world.getBlockMetadata(par4, par5, par6);
 
                 if (var11 == Blocks.log && BlockLog.func_150165_c(var12) == 3)
                 {
@@ -111,14 +110,14 @@ public class ItemDye extends Item
                         ++par4;
                     }
 
-                    if (par3World.isAirBlock(par4, par5, par6))
+                    if (world.isAirBlock(par4, par5, par6))
                     {
-                        int var13 = Blocks.cocoa.onBlockPlaced(par3World, par4, par5, par6, par7, par8, par9, par10, 0);
-                        par3World.setBlock(par4, par5, par6, Blocks.cocoa, var13, 2);
+                        int var13 = Blocks.cocoa.onBlockPlaced(world, par4, par5, par6, par7, par8, par9, par10, 0);
+                        world.setBlock(par4, par5, par6, Blocks.cocoa, var13, 2);
 
-                        if (!par2EntityPlayer.capabilities.isCreativeMode)
+                        if (!player.capabilities.isCreativeMode)
                         {
-                            --par1ItemStack.stackSize;
+                            --stack.stackSize;
                         }
                     }
 

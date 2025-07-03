@@ -5,14 +5,15 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import shadersmod.client.Shaders;
 
 public class RenderSpider extends RenderLiving
 {
     private static final ResourceLocation spiderEyesTextures = new ResourceLocation("textures/entity/spider_eyes.png");
     private static final ResourceLocation spiderTextures = new ResourceLocation("textures/entity/spider/spider.png");
-    private static final String __OBFID = "CL_00001027";
 
     public RenderSpider()
     {
@@ -55,6 +56,12 @@ public class RenderSpider extends RenderLiving
             int var6 = var4 / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var5 / 1.0F, (float)var6 / 1.0F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+            if (Config.isShaders())
+            {
+                Shaders.beginSpiderEyes();
+            }
+
             return 1;
         }
     }

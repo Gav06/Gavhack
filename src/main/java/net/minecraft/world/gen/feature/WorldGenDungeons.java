@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 public class WorldGenDungeons extends WorldGenerator
 {
     private static final WeightedRandomChestContent[] field_111189_a = new WeightedRandomChestContent[] {new WeightedRandomChestContent(Items.saddle, 0, 1, 1, 10), new WeightedRandomChestContent(Items.iron_ingot, 0, 1, 4, 10), new WeightedRandomChestContent(Items.bread, 0, 1, 1, 10), new WeightedRandomChestContent(Items.wheat, 0, 1, 4, 10), new WeightedRandomChestContent(Items.gunpowder, 0, 1, 4, 10), new WeightedRandomChestContent(Items.string, 0, 1, 4, 10), new WeightedRandomChestContent(Items.bucket, 0, 1, 1, 10), new WeightedRandomChestContent(Items.golden_apple, 0, 1, 1, 1), new WeightedRandomChestContent(Items.redstone, 0, 1, 4, 10), new WeightedRandomChestContent(Items.record_13, 0, 1, 1, 10), new WeightedRandomChestContent(Items.record_cat, 0, 1, 1, 10), new WeightedRandomChestContent(Items.name_tag, 0, 1, 1, 10), new WeightedRandomChestContent(Items.golden_horse_armor, 0, 1, 1, 2), new WeightedRandomChestContent(Items.iron_horse_armor, 0, 1, 1, 5), new WeightedRandomChestContent(Items.diamond_horse_armor, 0, 1, 1, 1)};
-    private static final String __OBFID = "CL_00000425";
 
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
     {
@@ -91,7 +90,7 @@ public class WorldGenDungeons extends WorldGenerator
                 {
                     if (var11 < 3)
                     {
-                        label197:
+                        label101:
                         {
                             var12 = par3 + par2Random.nextInt(var7 * 2 + 1) - var7;
                             int var14 = par5 + par2Random.nextInt(var8 * 2 + 1) - var8;
@@ -131,7 +130,7 @@ public class WorldGenDungeons extends WorldGenerator
                                         WeightedRandomChestContent.generateChestContents(par2Random, var16, var17, 8);
                                     }
 
-                                    break label197;
+                                    break label101;
                                 }
                             }
 

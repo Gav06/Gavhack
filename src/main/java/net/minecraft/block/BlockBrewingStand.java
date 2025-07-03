@@ -22,8 +22,7 @@ import net.minecraft.world.World;
 public class BlockBrewingStand extends BlockContainer
 {
     private Random field_149961_a = new Random();
-    private IIcon field_149960_b;
-    private static final String __OBFID = "CL_00000207";
+    private IIcon iconBrewingStandBase;
 
     public BlockBrewingStand()
     {
@@ -166,7 +165,7 @@ public class BlockBrewingStand extends BlockContainer
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.brewing_stand;
     }
@@ -181,14 +180,14 @@ public class BlockBrewingStand extends BlockContainer
         return Container.calcRedstoneFromInventory((IInventory)p_149736_1_.getTileEntity(p_149736_2_, p_149736_3_, p_149736_4_));
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
-        super.registerBlockIcons(p_149651_1_);
-        this.field_149960_b = p_149651_1_.registerIcon(this.getTextureName() + "_base");
+        super.registerIcons(p_149651_1_);
+        this.iconBrewingStandBase = p_149651_1_.registerIcon(this.getTextureName() + "_base");
     }
 
-    public IIcon func_149959_e()
+    public IIcon getIconBrewingStandBase()
     {
-        return this.field_149960_b;
+        return this.iconBrewingStandBase;
     }
 }

@@ -20,7 +20,6 @@ public class ServerList
 
     /** List of ServerData instances. */
     private final List servers = new ArrayList();
-    private static final String __OBFID = "CL_00000891";
 
     public ServerList(Minecraft par1Minecraft)
     {

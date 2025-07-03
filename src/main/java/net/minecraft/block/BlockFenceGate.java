@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 
 public class BlockFenceGate extends BlockDirectional
 {
-    private static final String __OBFID = "CL_00000243";
 
     public BlockFenceGate()
     {
@@ -48,7 +47,7 @@ public class BlockFenceGate extends BlockDirectional
 
     public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_, int p_149719_3_, int p_149719_4_)
     {
-        int var5 = func_149895_l(p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_));
+        int var5 = getDirection(p_149719_1_.getBlockMetadata(p_149719_2_, p_149719_3_, p_149719_4_));
 
         if (var5 != 2 && var5 != 0)
         {
@@ -70,9 +69,9 @@ public class BlockFenceGate extends BlockDirectional
         return false;
     }
 
-    public boolean getBlocksMovement(IBlockAccess access, int x, int y, int z)
+    public boolean getBlocksMovement(IBlockAccess p_149655_1_, int p_149655_2_, int p_149655_3_, int p_149655_4_)
     {
-        return isFenceGateOpen(access.getBlockMetadata(x, y, z));
+        return isFenceGateOpen(p_149655_1_.getBlockMetadata(p_149655_2_, p_149655_3_, p_149655_4_));
     }
 
     /**
@@ -106,7 +105,7 @@ public class BlockFenceGate extends BlockDirectional
         else
         {
             int var11 = (MathHelper.floor_double((double)(p_149727_5_.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) % 4;
-            int var12 = func_149895_l(var10);
+            int var12 = getDirection(var10);
 
             if (var12 == (var11 + 2) % 4)
             {
@@ -151,10 +150,10 @@ public class BlockFenceGate extends BlockDirectional
         return (p_149896_0_ & 4) != 0;
     }
 
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side)
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
     {
         return true;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerIcons(IIconRegister p_149651_1_) {}
 }

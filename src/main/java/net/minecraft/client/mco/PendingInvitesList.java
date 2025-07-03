@@ -13,7 +13,6 @@ import net.minecraft.util.ValueObject;
 public class PendingInvitesList extends ValueObject
 {
     public List field_148768_a = Lists.newArrayList();
-    private static final String __OBFID = "CL_00001171";
 
     public static PendingInvitesList func_148767_a(String p_148767_0_)
     {

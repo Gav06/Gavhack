@@ -13,7 +13,6 @@ public class BlockStainedGlassPane extends BlockPane
 {
     private static final IIcon[] field_150106_a = new IIcon[16];
     private static final IIcon[] field_150105_b = new IIcon[16];
-    private static final String __OBFID = "CL_00000313";
 
     public BlockStainedGlassPane()
     {
@@ -68,9 +67,9 @@ public class BlockStainedGlassPane extends BlockPane
         return 1;
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_)
+    public void registerIcons(IIconRegister p_149651_1_)
     {
-        super.registerBlockIcons(p_149651_1_);
+        super.registerIcons(p_149651_1_);
 
         for (int var2 = 0; var2 < field_150106_a.length; ++var2)
         {

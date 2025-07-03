@@ -8,7 +8,7 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 
 public class C0CPacketInput extends Packet
 {
-    public float moveStrafe;
+    public float moveStrafing;
     public float moveForward;
     public boolean jump;
     public boolean sneak;
@@ -17,7 +17,7 @@ public class C0CPacketInput extends Packet
 
     public C0CPacketInput(float moveStrafing, float moveForward, boolean jump, boolean sneak)
     {
-        this.moveStrafe = moveStrafing;
+        this.moveStrafing = moveStrafing;
         this.moveForward = moveForward;
         this.jump = jump;
         this.sneak = sneak;
@@ -26,12 +26,12 @@ public class C0CPacketInput extends Packet
     /**
      * Reads the raw packet data from the data stream.
      */
-    public void readPacketData(PacketBuffer p_148837_1_) throws IOException
+    public void readPacketData(PacketBuffer buf) throws IOException
     {
-        this.moveStrafe = p_148837_1_.readFloat();
-        this.moveForward = p_148837_1_.readFloat();
-        this.jump = p_148837_1_.readBoolean();
-        this.sneak = p_148837_1_.readBoolean();
+        this.moveStrafing = buf.readFloat();
+        this.moveForward = buf.readFloat();
+        this.jump = buf.readBoolean();
+        this.sneak = buf.readBoolean();
     }
 
     /**
@@ -39,39 +39,39 @@ public class C0CPacketInput extends Packet
      */
     public void writePacketData(PacketBuffer buf) throws IOException
     {
-        buf.writeFloat(this.moveStrafe);
+        buf.writeFloat(this.moveStrafing);
         buf.writeFloat(this.moveForward);
         buf.writeBoolean(this.jump);
         buf.writeBoolean(this.sneak);
     }
 
-    public void processPacket(INetHandlerPlayServer p_149619_1_)
+    public void processPacket(INetHandlerPlayServer handler)
     {
-        p_149619_1_.processInput(this);
+        handler.processInput(this);
     }
 
-    public float func_149620_c()
+    public float getMoveStrafe()
     {
-        return this.moveStrafe;
+        return this.moveStrafing;
     }
 
-    public float func_149616_d()
+    public float getMoveForward()
     {
         return this.moveForward;
     }
 
-    public boolean func_149618_e()
+    public boolean isJumping()
     {
         return this.jump;
     }
 
-    public boolean func_149617_f()
+    public boolean isSneaking()
     {
         return this.sneak;
     }
 
-    public void processPacket(INetHandler p_148833_1_)
+    public void processPacket(INetHandler handler)
     {
-        this.processPacket((INetHandlerPlayServer)p_148833_1_);
+        this.processPacket((INetHandlerPlayServer)handler);
     }
 }

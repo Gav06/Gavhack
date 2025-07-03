@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 public class EntityDamageSource extends DamageSource
 {
     protected Entity damageSourceEntity;
-    private static final String __OBFID = "CL_00001522";
 
     public EntityDamageSource(String par1Str, Entity par2Entity)
     {

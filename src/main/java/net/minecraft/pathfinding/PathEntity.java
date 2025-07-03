@@ -13,7 +13,6 @@ public class PathEntity
 
     /** The total length of the path */
     private int pathLength;
-    private static final String __OBFID = "CL_00000575";
 
     public PathEntity(PathPoint[] par1ArrayOfPathPoint)
     {

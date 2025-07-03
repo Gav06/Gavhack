@@ -37,8 +37,6 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
         if (mc.thePlayer != null && mc.theWorld != null) {
             stopFreecam()
         }
-
-
     }
 
     private fun startFreecam() {
@@ -78,14 +76,16 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
         mc.thePlayer.onGround = false
         mc.thePlayer.isSprinting = false
         mc.thePlayer.capabilities.flySpeed = speed.getValue() / 100.0f
-
-        if (mc.currentScreen != null) return@Listener
+      
+        if (mc.currentScreen != null) {
+            return@Listener
+        }
 
         if (Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode)) {
-            mc.thePlayer.motionY += speed.getValue() / 100.0f
+            mc.thePlayer.motionY += speed.getValue() / 50.0f
         }
         if (Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode)) {
-            mc.thePlayer.motionY -= speed.getValue() / 100.0f
+            mc.thePlayer.motionY -= speed.getValue() / 50.0f
         }
     }
 

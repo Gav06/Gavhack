@@ -30,7 +30,6 @@ public class EnchantmentProtection extends Enchantment
      * 4 = projectile.
      */
     public final int protectionType;
-    private static final String __OBFID = "CL_00000121";
 
     public EnchantmentProtection(int par1, int par2, int par3)
     {

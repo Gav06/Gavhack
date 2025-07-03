@@ -2,7 +2,6 @@ package net.minecraft.enchantment;
 
 public class EnchantmentKnockback extends Enchantment
 {
-    private static final String __OBFID = "CL_00000118";
 
     protected EnchantmentKnockback(int par1, int par2)
     {

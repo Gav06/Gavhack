@@ -52,7 +52,7 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
         intArrayOf(-2, 0, 1),
         intArrayOf(-2, 0, 0),
         intArrayOf(-2, 0, -1),
-        intArrayOf(-2, 0, -2),
+        intArrayOf(-2, 0, -2)
     )
 
     private fun getStartingPosition(entity: Entity): BPos {
@@ -94,13 +94,12 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
         val placePos = placement.pos
         val placeBlock = mc.theWorld.getBlock(placePos.x, placePos.y, placePos.z)
         val prevSneak = mc.thePlayer.movementInput.sneak
-        val shouldSneak = autoSneak.value && !prevSneak && placeBlock
-            .onBlockActivated(
+        val shouldSneak = autoSneak.value && !prevSneak && placeBlock.onBlockActivated(
                 mc.theWorld,
                 placePos.x, placePos.y, placePos.z,
                 mc.thePlayer, placement.side,
                 0f, 0f, 0f
-            )
+        )
 
 
         if (shouldSneak) {
@@ -115,7 +114,7 @@ object AutoBuild: Module("AutoBuild", "Builds stuff automatically", ModCategory.
 
         if (shouldSneak) {
             mc.thePlayer.sendQueue.addToSendQueue(C0BPacketEntityAction(mc.thePlayer, 2))
-            mc.thePlayer.movementInput.sneak = prevSneak
+            mc.thePlayer.movementInput.sneak = false
         }
     }
 

@@ -36,7 +36,6 @@ public class ItemPotion extends Item
     private IIcon field_94591_c;
     private IIcon field_94590_d;
     private IIcon field_94592_ct;
-    private static final String __OBFID = "CL_00000055";
 
     public ItemPotion()
     {
@@ -51,7 +50,7 @@ public class ItemPotion extends Item
      */
     public List getEffects(ItemStack par1ItemStack)
     {
-        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().func_150297_b("CustomPotionEffects", 9))
+        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("CustomPotionEffects", 9))
         {
             ArrayList var7 = new ArrayList();
             NBTTagList var3 = par1ItemStack.getTagCompound().getTagList("CustomPotionEffects", 10);
@@ -183,7 +182,7 @@ public class ItemPotion extends Item
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         return false;
     }

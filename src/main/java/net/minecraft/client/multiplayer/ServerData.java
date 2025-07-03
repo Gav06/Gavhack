@@ -33,7 +33,6 @@ public class ServerData
     /** Whether to hide the IP address for this server. */
     private boolean hideAddress;
     private String field_147411_m;
-    private static final String __OBFID = "CL_00000890";
 
     public ServerData(String par1Str, String par2Str)
     {
@@ -98,12 +97,12 @@ public class ServerData
         ServerData var1 = new ServerData(par0NBTTagCompound.getString("name"), par0NBTTagCompound.getString("ip"));
         var1.hideAddress = par0NBTTagCompound.getBoolean("hideAddress");
 
-        if (par0NBTTagCompound.func_150297_b("icon", 8))
+        if (par0NBTTagCompound.hasKey("icon", 8))
         {
             var1.func_147407_a(par0NBTTagCompound.getString("icon"));
         }
 
-        if (par0NBTTagCompound.func_150297_b("acceptTextures", 99))
+        if (par0NBTTagCompound.hasKey("acceptTextures", 99))
         {
             var1.setAcceptsTextures(par0NBTTagCompound.getBoolean("acceptTextures"));
         }

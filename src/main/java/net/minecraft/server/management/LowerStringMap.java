@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 public class LowerStringMap implements Map
 {
     private final Map internalMap = new LinkedHashMap();
-    private static final String __OBFID = "CL_00001488";
 
     public int size()
     {

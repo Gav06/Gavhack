@@ -26,7 +26,6 @@ public class ContainerRepair extends Container
      */
     private IInventory inputSlots = new InventoryBasic("Repair", true, 2)
     {
-        private static final String __OBFID = "CL_00001733";
         public void onInventoryChanged()
         {
             super.onInventoryChanged();
@@ -47,7 +46,6 @@ public class ContainerRepair extends Container
 
     /** The player that has this container open. */
     private final EntityPlayer thePlayer;
-    private static final String __OBFID = "CL_00001732";
 
     public ContainerRepair(InventoryPlayer par1InventoryPlayer, final World par2World, final int par3, final int par4, final int par5, EntityPlayer par6EntityPlayer)
     {
@@ -60,7 +58,6 @@ public class ContainerRepair extends Container
         this.addSlotToContainer(new Slot(this.inputSlots, 1, 76, 47));
         this.addSlotToContainer(new Slot(this.outputSlot, 2, 134, 47)
         {
-            private static final String __OBFID = "CL_00001734";
             public boolean isItemValid(ItemStack par1ItemStack)
             {
                 return false;

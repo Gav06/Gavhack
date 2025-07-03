@@ -12,18 +12,17 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.src.Reflector;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
-import optifine.Reflector;
 
 public final class SpawnerAnimals
 {
     /** The 17x17 area around the player where mobs can spawn */
     private HashMap eligibleChunksForSpawning = new HashMap();
-    private static final String __OBFID = "CL_00000152";
     private Map mapSampleEntitiesByClass = new HashMap();
     private int lastPlayerChunkX = Integer.MAX_VALUE;
     private int lastPlayerChunkZ = Integer.MAX_VALUE;

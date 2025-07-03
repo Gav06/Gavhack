@@ -10,7 +10,6 @@ import net.minecraft.util.IChatComponent;
 
 public class CommandEmote extends CommandBase
 {
-    private static final String __OBFID = "CL_00000351";
 
     public String getCommandName()
     {
@@ -35,7 +34,7 @@ public class CommandEmote extends CommandBase
         if (par2ArrayOfStr.length > 0)
         {
             IChatComponent var3 = func_147176_a(par1ICommandSender, par2ArrayOfStr, 0, par1ICommandSender.canCommandSenderUseCommand(1, "me"));
-            MinecraftServer.getServer().getConfigurationManager().func_148539_a(new ChatComponentTranslation("chat.type.emote", new Object[] {par1ICommandSender.func_145748_c_(), var3}));
+            MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentTranslation("chat.type.emote", new Object[] {par1ICommandSender.func_145748_c_(), var3}));
         }
         else
         {

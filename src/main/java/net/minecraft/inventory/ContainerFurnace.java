@@ -12,7 +12,6 @@ public class ContainerFurnace extends Container
     private int lastCookTime;
     private int lastBurnTime;
     private int lastItemBurnTime;
-    private static final String __OBFID = "CL_00001748";
 
     public ContainerFurnace(InventoryPlayer par1InventoryPlayer, TileEntityFurnace par2TileEntityFurnace)
     {

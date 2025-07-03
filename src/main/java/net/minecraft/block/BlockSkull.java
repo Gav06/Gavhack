@@ -25,7 +25,6 @@ import net.minecraft.world.World;
 
 public class BlockSkull extends BlockContainer
 {
-    private static final String __OBFID = "CL_00000307";
 
     protected BlockSkull()
     {
@@ -109,7 +108,7 @@ public class BlockSkull extends BlockContainer
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Items.skull;
     }
@@ -305,7 +304,7 @@ public class BlockSkull extends BlockContainer
         }
     }
 
-    public void registerBlockIcons(IIconRegister p_149651_1_) {}
+    public void registerIcons(IIconRegister p_149651_1_) {}
 
     /**
      * Gets the block's texture. Args: side, meta

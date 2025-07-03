@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 public abstract class TileEntitySpecialRenderer
 {
     protected TileEntityRendererDispatcher field_147501_a;
-    private static final String __OBFID = "CL_00000964";
 
     public abstract void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8);
 
@@ -32,6 +31,6 @@ public abstract class TileEntitySpecialRenderer
 
     public FontRenderer func_147498_b()
     {
-        return this.field_147501_a.func_147548_a();
+        return this.field_147501_a.getFontRenderer();
     }
 }

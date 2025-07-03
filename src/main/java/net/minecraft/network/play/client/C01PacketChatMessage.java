@@ -9,7 +9,6 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 public class C01PacketChatMessage extends Packet
 {
     private String field_149440_a;
-    private static final String __OBFID = "CL_00001347";
 
     public C01PacketChatMessage() {}
 

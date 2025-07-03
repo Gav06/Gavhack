@@ -14,7 +14,6 @@ public class EntityAIAvoidEntity extends EntityAIBase
 {
     public final IEntitySelector field_98218_a = new IEntitySelector()
     {
-        private static final String __OBFID = "CL_00001575";
         public boolean isEntityApplicable(Entity par1Entity)
         {
             return par1Entity.isEntityAlive() && EntityAIAvoidEntity.this.theEntity.getEntitySenses().canSee(par1Entity);
@@ -36,7 +35,6 @@ public class EntityAIAvoidEntity extends EntityAIBase
 
     /** The class of the entity we should avoid */
     private Class targetEntityClass;
-    private static final String __OBFID = "CL_00001574";
 
     public EntityAIAvoidEntity(EntityCreature par1EntityCreature, Class par2Class, float par3, double par4, double par6)
     {

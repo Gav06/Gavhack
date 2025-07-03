@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 public class GuiButtonLink extends GuiButton
 {
     private static final Logger logger = LogManager.getLogger();
-    private static final String __OBFID = "CL_00000673";
 
     public GuiButtonLink(int par1, int par2, int par3, int par4, int par5, String par6Str)
     {

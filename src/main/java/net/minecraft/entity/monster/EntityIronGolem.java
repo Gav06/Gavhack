@@ -35,7 +35,6 @@ public class EntityIronGolem extends EntityGolem
     Village villageObj;
     private int attackTimer;
     private int holdRoseTick;
-    private static final String __OBFID = "CL_00001652";
 
     public EntityIronGolem(World par1World)
     {

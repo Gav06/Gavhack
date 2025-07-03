@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 
 public class BlockMobSpawner extends BlockContainer
 {
-    private static final String __OBFID = "CL_00000269";
 
     protected BlockMobSpawner()
     {
@@ -55,7 +54,7 @@ public class BlockMobSpawner extends BlockContainer
     /**
      * Gets an item for the block being called on. Args: world, x, y, z
      */
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
+    public Item getItemPicked(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_)
     {
         return Item.getItemById(0);
     }

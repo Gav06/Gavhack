@@ -13,7 +13,6 @@ import net.minecraft.util.ValueObject;
 public class WorldTemplateList extends ValueObject
 {
     public List field_148782_a;
-    private static final String __OBFID = "CL_00001175";
 
     public static WorldTemplateList func_148781_a(String p_148781_0_)
     {

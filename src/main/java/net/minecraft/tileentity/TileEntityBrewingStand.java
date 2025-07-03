@@ -20,7 +20,6 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
     private int field_145943_l;
     private Item field_145944_m;
     private String field_145942_n;
-    private static final String __OBFID = "CL_00000345";
 
     /**
      * Returns the name of the inventory
@@ -84,7 +83,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
         if (var1 != this.field_145943_l)
         {
             this.field_145943_l = var1;
-            this.worldObj.setBlockMetadataWithNotify(this.x, this.y, this.z, var1, 2);
+            this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, var1, 2);
         }
 
         super.updateEntity();
@@ -192,10 +191,10 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
         return p_145936_2_ == null ? p_145936_1_ : (p_145936_2_.getItem().isPotionIngredient(p_145936_2_) ? PotionHelper.applyIngredient(p_145936_1_, p_145936_2_.getItem().getPotionEffect(p_145936_2_)) : p_145936_1_);
     }
 
-    public void readFromNBT(NBTTagCompound tag)
+    public void readFromNBT(NBTTagCompound p_145839_1_)
     {
-        super.readFromNBT(tag);
-        NBTTagList var2 = tag.getTagList("Items", 10);
+        super.readFromNBT(p_145839_1_);
+        NBTTagList var2 = p_145839_1_.getTagList("Items", 10);
         this.field_145945_j = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -209,18 +208,18 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
             }
         }
 
-        this.field_145946_k = tag.getShort("BrewTime");
+        this.field_145946_k = p_145839_1_.getShort("BrewTime");
 
-        if (tag.func_150297_b("CustomName", 8))
+        if (p_145839_1_.hasKey("CustomName", 8))
         {
-            this.field_145942_n = tag.getString("CustomName");
+            this.field_145942_n = p_145839_1_.getString("CustomName");
         }
     }
 
-    public void writeToNBT(NBTTagCompound tag)
+    public void writeToNBT(NBTTagCompound p_145841_1_)
     {
-        super.writeToNBT(tag);
-        tag.setShort("BrewTime", (short)this.field_145946_k);
+        super.writeToNBT(p_145841_1_);
+        p_145841_1_.setShort("BrewTime", (short)this.field_145946_k);
         NBTTagList var2 = new NBTTagList();
 
         for (int var3 = 0; var3 < this.field_145945_j.length; ++var3)
@@ -234,11 +233,11 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
             }
         }
 
-        tag.setTag("Items", var2);
+        p_145841_1_.setTag("Items", var2);
 
         if (this.isInventoryNameLocalized())
         {
-            tag.setString("CustomName", this.field_145942_n);
+            p_145841_1_.setString("CustomName", this.field_145942_n);
         }
     }
 
@@ -310,7 +309,7 @@ public class TileEntityBrewingStand extends TileEntity implements ISidedInventor
      */
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.x, this.y, this.z) != this ? false : par1EntityPlayer.getDistanceSq((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D) <= 64.0D;
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
     }
 
     public void openInventory() {}

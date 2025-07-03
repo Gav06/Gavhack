@@ -33,7 +33,6 @@ public class PathFinder
 
     /** tells the FathFinder to not stop pathing underwater */
     private boolean canEntityDrown;
-    private static final String __OBFID = "CL_00000576";
 
     public PathFinder(IBlockAccess par1IBlockAccess, boolean par2, boolean par3, boolean par4, boolean par5)
     {

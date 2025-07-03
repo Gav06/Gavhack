@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 public abstract class EntityTameable extends EntityAnimal implements IEntityOwnable
 {
     protected EntityAISit aiSit = new EntityAISit(this);
-    private static final String __OBFID = "CL_00001561";
 
     public EntityTameable(World par1World)
     {

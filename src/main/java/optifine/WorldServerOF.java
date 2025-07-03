@@ -223,9 +223,9 @@ public class WorldServerOF extends WorldServer
             this.worldInfo.setThunderTime(0);
             this.worldInfo.setThundering(false);
             this.setThunderStrength(0.0F);
-            this.func_73046_m().getConfigurationManager().func_148540_a(new S2BPacketChangeGameState(2, 0.0F));
-            this.func_73046_m().getConfigurationManager().func_148540_a(new S2BPacketChangeGameState(7, 0.0F));
-            this.func_73046_m().getConfigurationManager().func_148540_a(new S2BPacketChangeGameState(8, 0.0F));
+            this.func_73046_m().getConfigurationManager().sendPacketToAllPlayers(new S2BPacketChangeGameState(2, 0.0F));
+            this.func_73046_m().getConfigurationManager().sendPacketToAllPlayers(new S2BPacketChangeGameState(7, 0.0F));
+            this.func_73046_m().getConfigurationManager().sendPacketToAllPlayers(new S2BPacketChangeGameState(8, 0.0F));
         }
     }
 

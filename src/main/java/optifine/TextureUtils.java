@@ -20,6 +20,7 @@ import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
+import shadersmod.client.MultiTexID;
 
 public class TextureUtils
 {
@@ -277,10 +278,15 @@ public class TextureUtils
             {
                 TextureAnimations.updateCustomAnimations();
             }
-            public void loadTexture(IResourceManager var1) throws IOException {}
+            public void loadTexture(IResourceManager var1) {}
             public int getGlTextureId()
             {
                 return 0;
+            }
+
+            @Override
+            public MultiTexID getMultiTexID() {
+                return null;
             }
         };
         ResourceLocation ttol1 = new ResourceLocation("optifine/TickableTextures");

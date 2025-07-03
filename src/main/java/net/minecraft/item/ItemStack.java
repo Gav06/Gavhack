@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Map.Entry;
 
-import me.gavin.gavhack.module.impl.ESP;
 import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -57,7 +56,6 @@ public final class ItemStack
 
     /** Item frame this stack is on, or null if not on an item frame. */
     private EntityItemFrame itemFrame;
-    private static final String __OBFID = "CL_00000043";
 
     public ItemStack(Block par1Block)
     {
@@ -142,22 +140,22 @@ public final class ItemStack
         return this.getItem().getSpriteNumber();
     }
 
-    public boolean tryPlaceItemIntoWorld(EntityPlayer par1EntityPlayer, World par2World, int par3, int par4, int par5, int par6, float par7, float par8, float par9)
+    public boolean tryPlaceItemIntoWorld(EntityPlayer player, World world, int par3, int par4, int par5, int par6, float par7, float par8, float par9)
     {
-        boolean var10 = this.getItem().onItemUse(this, par1EntityPlayer, par2World, par3, par4, par5, par6, par7, par8, par9);
+        boolean var10 = this.getItem().onItemUse(this, player, world, par3, par4, par5, par6, par7, par8, par9);
 
         if (var10)
         {
-            par1EntityPlayer.addStat(StatList.objectUseStats[Item.getIdFromItem(this.field_151002_e)], 1);
+            player.addStat(StatList.objectUseStats[Item.getIdFromItem(this.field_151002_e)], 1);
         }
 
         return var10;
     }
 
-    // possibly the function we need?
-    public float getDiggingSpeed(Block p_150997_1_)
+    // digging speed?
+    public float getDiggingSpeed(Block block)
     {
-        return this.getItem().func_150893_a(this, p_150997_1_);
+        return this.getItem().func_150893_a(this, block);
     }
 
     /**
@@ -205,7 +203,7 @@ public final class ItemStack
             this.itemDamage = 0;
         }
 
-        if (par1NBTTagCompound.func_150297_b("tag", 10))
+        if (par1NBTTagCompound.hasKey("tag", 10))
         {
             this.stackTagCompound = par1NBTTagCompound.getCompoundTag("tag");
         }
@@ -531,11 +529,11 @@ public final class ItemStack
     {
         String var1 = this.getItem().getItemStackDisplayName(this);
 
-        if (this.stackTagCompound != null && this.stackTagCompound.func_150297_b("display", 10))
+        if (this.stackTagCompound != null && this.stackTagCompound.hasKey("display", 10))
         {
             NBTTagCompound var2 = this.stackTagCompound.getCompoundTag("display");
 
-            if (var2.func_150297_b("Name", 8))
+            if (var2.hasKey("Name", 8))
             {
                 var1 = var2.getString("Name");
             }
@@ -551,7 +549,7 @@ public final class ItemStack
             this.stackTagCompound = new NBTTagCompound();
         }
 
-        if (!this.stackTagCompound.func_150297_b("display", 10))
+        if (!this.stackTagCompound.hasKey("display", 10))
         {
             this.stackTagCompound.setTag("display", new NBTTagCompound());
         }
@@ -564,7 +562,7 @@ public final class ItemStack
     {
         if (this.stackTagCompound != null)
         {
-            if (this.stackTagCompound.func_150297_b("display", 10))
+            if (this.stackTagCompound.hasKey("display", 10))
             {
                 NBTTagCompound var1 = this.stackTagCompound.getCompoundTag("display");
                 var1.removeTag("Name");
@@ -587,7 +585,7 @@ public final class ItemStack
      */
     public boolean hasDisplayName()
     {
-        return this.stackTagCompound == null ? false : (!this.stackTagCompound.func_150297_b("display", 10) ? false : this.stackTagCompound.getCompoundTag("display").func_150297_b("Name", 8));
+        return this.stackTagCompound == null ? false : (!this.stackTagCompound.hasKey("display", 10) ? false : this.stackTagCompound.getCompoundTag("display").hasKey("Name", 8));
     }
 
     /**
@@ -652,11 +650,11 @@ public final class ItemStack
                 }
             }
 
-            if (this.stackTagCompound.func_150297_b("display", 10))
+            if (this.stackTagCompound.hasKey("display", 10))
             {
                 NBTTagCompound var15 = this.stackTagCompound.getCompoundTag("display");
 
-                if (var15.func_150297_b("color", 3))
+                if (var15.hasKey("color", 3))
                 {
                     if (par2)
                     {
@@ -733,8 +731,9 @@ public final class ItemStack
 
     public boolean hasEffect()
     {
-        if (RenderUtils.INSTANCE.getShouldCancelEnchant())
+        if (RenderUtils.INSTANCE.getShouldCancelEnchant()) {
             return false;
+        }
 
         return this.getItem().hasEffect(this);
     }
@@ -762,7 +761,7 @@ public final class ItemStack
             this.setTagCompound(new NBTTagCompound());
         }
 
-        if (!this.stackTagCompound.func_150297_b("ench", 9))
+        if (!this.stackTagCompound.hasKey("ench", 9))
         {
             this.stackTagCompound.setTag("ench", new NBTTagList());
         }
@@ -779,7 +778,7 @@ public final class ItemStack
      */
     public boolean isItemEnchanted()
     {
-        return this.stackTagCompound != null && this.stackTagCompound.func_150297_b("ench", 9);
+        return this.stackTagCompound != null && this.stackTagCompound.hasKey("ench", 9);
     }
 
     public void setTagInfo(String par1Str, NBTBase par2NBTBase)
@@ -826,7 +825,7 @@ public final class ItemStack
      */
     public int getRepairCost()
     {
-        return this.hasTagCompound() && this.stackTagCompound.func_150297_b("RepairCost", 3) ? this.stackTagCompound.getInteger("RepairCost") : 0;
+        return this.hasTagCompound() && this.stackTagCompound.hasKey("RepairCost", 3) ? this.stackTagCompound.getInteger("RepairCost") : 0;
     }
 
     /**
@@ -850,7 +849,7 @@ public final class ItemStack
     {
         Object var1;
 
-        if (this.hasTagCompound() && this.stackTagCompound.func_150297_b("AttributeModifiers", 9))
+        if (this.hasTagCompound() && this.stackTagCompound.hasKey("AttributeModifiers", 9))
         {
             var1 = HashMultimap.create();
             NBTTagList var2 = this.stackTagCompound.getTagList("AttributeModifiers", 10);

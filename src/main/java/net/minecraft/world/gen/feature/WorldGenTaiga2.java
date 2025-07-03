@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 
 public class WorldGenTaiga2 extends WorldGenAbstractTree
 {
-    private static final String __OBFID = "CL_00000435";
 
     public WorldGenTaiga2(boolean par1)
     {
