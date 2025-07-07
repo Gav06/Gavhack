@@ -115,20 +115,23 @@ class Window(x: Int, y: Int, w: Int, h: Int,
     }
 
     override fun toJsonObj(): JsonObject {
+
         val jsonObj = JsonObject()
-        jsonObj.addProperty("x", this.x)
-        jsonObj.addProperty("y", this.y)
+        jsonObj.addProperty("x", this.handle.x)
+        jsonObj.addProperty("y", this.handle.y)
         jsonObj.addProperty("open", this.open)
+
+        println("Writing window: $title to jsonObj: $jsonObj")
 
         return jsonObj
     }
 
     override fun fromJsonObj(jsonObj: JsonObject) {
-        println("Loading window: $title from jsonObj: $jsonObj")
-        if (jsonObj.has("x")) {
-            this.handle.x = jsonObj.get("x").asInt
-            this.handle.y = jsonObj.get("y").asInt
-            this.open = jsonObj.get("open").asBoolean
-        }
+
+        println("Reading window: $title from jsonObj: $jsonObj")
+
+        this.handle.x = jsonObj.get("x").asInt
+        this.handle.y = jsonObj.get("y").asInt
+        this.open = jsonObj.get("open").asBoolean
     }
 }

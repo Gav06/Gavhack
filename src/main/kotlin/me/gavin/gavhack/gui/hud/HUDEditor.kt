@@ -37,6 +37,7 @@ object HUDEditor: GuiScreen() {
         ConfigManager.addConfig(window)
 
         EventBus.addListener(overlayListener, RenderOverlayEvent::class)
+
         for (mod in hudMods) {
             window.components.add(WindowButton(mod, 0, 0, window.w, window.handle.h - 2))
         }

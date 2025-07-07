@@ -19,27 +19,25 @@ object ConfigManager {
     /* Detected to be true if the gavhack data folder doesn't already exist, used for default settings */
     private var firstTimeRunningGavhack = false
 
-    private fun setupFolder(name: String) {
+    private fun setupFolder(name: String): File {
         val file = File(folder, name)
         if (!file.exists()) {
             file.mkdir()
         }
+
+        return file;
     }
 
     private fun setupConfigFolder() {
         if (!folder.exists()) {
             folder.mkdir()
             this.firstTimeRunningGavhack = true
-            // default configs
             ModuleManager.mods.forEach { it.firstTimeSetup() }
         }
     }
 
     private fun getConfigFile(config: IConfigurable): File {
-        val configFolder = File(folder, config.getConfigGroup())
-        if (!configFolder.exists())
-            configFolder.mkdir()
-
+        val configFolder = setupFolder(config.getConfigGroup());
         return File(configFolder, "${config.getConfigName()}.json")
     }
 
