@@ -2485,51 +2485,51 @@ public class RenderGlobal implements IWorldAccess
     /**
      * Draws lines for the edges of the bounding box.
      */
-    public static void drawOutlinedBoundingBox(AxisAlignedBB p_147590_0_, int p_147590_1_)
+    public static void drawOutlinedBoundingBox(AxisAlignedBB aabb, int color)
     {
-        Tessellator var2 = Tessellator.instance;
-        var2.startDrawing(3);
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawing(3);
 
-        if (p_147590_1_ != -1)
+        if (color != -1)
         {
-            var2.setColorOpaque_I(p_147590_1_);
+            tessellator.setColorOpaque_I(color);
         }
 
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.minY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.draw();
-        var2.startDrawing(3);
+        tessellator.addVertex(aabb.minX, aabb.minY, aabb.minZ);
+        tessellator.addVertex(aabb.maxX, aabb.minY, aabb.minZ);
+        tessellator.addVertex(aabb.maxX, aabb.minY, aabb.maxZ);
+        tessellator.addVertex(aabb.minX, aabb.minY, aabb.maxZ);
+        tessellator.addVertex(aabb.minX, aabb.minY, aabb.minZ);
+        tessellator.draw();
+        tessellator.startDrawing(3);
 
-        if (p_147590_1_ != -1)
+        if (color != -1)
         {
-            var2.setColorOpaque_I(p_147590_1_);
+            tessellator.setColorOpaque_I(color);
         }
 
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.maxY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.draw();
-        var2.startDrawing(1);
+        tessellator.addVertex(aabb.minX, aabb.maxY, aabb.minZ);
+        tessellator.addVertex(aabb.maxX, aabb.maxY, aabb.minZ);
+        tessellator.addVertex(aabb.maxX, aabb.maxY, aabb.maxZ);
+        tessellator.addVertex(aabb.minX, aabb.maxY, aabb.maxZ);
+        tessellator.addVertex(aabb.minX, aabb.maxY, aabb.minZ);
+        tessellator.draw();
+        tessellator.startDrawing(1);
 
-        if (p_147590_1_ != -1)
+        if (color != -1)
         {
-            var2.setColorOpaque_I(p_147590_1_);
+            tessellator.setColorOpaque_I(color);
         }
 
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.minY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.maxY, p_147590_0_.minZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.minY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.maxX, p_147590_0_.maxY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.minY, p_147590_0_.maxZ);
-        var2.addVertex(p_147590_0_.minX, p_147590_0_.maxY, p_147590_0_.maxZ);
-        var2.draw();
+        tessellator.addVertex(aabb.minX, aabb.minY, aabb.minZ);
+        tessellator.addVertex(aabb.minX, aabb.maxY, aabb.minZ);
+        tessellator.addVertex(aabb.maxX, aabb.minY, aabb.minZ);
+        tessellator.addVertex(aabb.maxX, aabb.maxY, aabb.minZ);
+        tessellator.addVertex(aabb.maxX, aabb.minY, aabb.maxZ);
+        tessellator.addVertex(aabb.maxX, aabb.maxY, aabb.maxZ);
+        tessellator.addVertex(aabb.minX, aabb.minY, aabb.maxZ);
+        tessellator.addVertex(aabb.minX, aabb.maxY, aabb.maxZ);
+        tessellator.draw();
     }
 
     /**
@@ -2588,9 +2588,9 @@ public class RenderGlobal implements IWorldAccess
      * On the client, re-renders the block. On the server, sends the block to the client (which will re-render it),
      * including the tile entity description packet if applicable. Args: x, y, z
      */
-    public void markBlockForUpdate(int p_147586_1_, int p_147586_2_, int p_147586_3_)
+    public void markBlockForUpdate(int x, int y, int z)
     {
-        this.markBlocksForUpdate(p_147586_1_ - 1, p_147586_2_ - 1, p_147586_3_ - 1, p_147586_1_ + 1, p_147586_2_ + 1, p_147586_3_ + 1);
+        this.markBlocksForUpdate(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1);
     }
 
     /**

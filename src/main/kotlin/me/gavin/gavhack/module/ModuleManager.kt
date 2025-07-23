@@ -19,7 +19,6 @@ object ModuleManager {
         HUD,
         ConsoleModule,
         KillAura,
-        ChestESP,
         NoRender,
         ESP,
         FastPlace,
@@ -39,6 +38,7 @@ object ModuleManager {
         ViewClip,
         IceSpeed,
         TimerMod,
+        Nametags,
         // hud modules
         Watermark,
         Position,

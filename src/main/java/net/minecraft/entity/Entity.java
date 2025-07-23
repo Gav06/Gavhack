@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 import me.gavin.gavhack.event.EventBus;
 import me.gavin.gavhack.event.events.EntityCollisionEvent;
 import me.gavin.gavhack.event.events.WaterPushEvent;
+import me.gavin.gavhack.module.impl.SafeWalk;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -643,8 +644,14 @@ public abstract class Entity
             double var15 = par3;
             double var17 = par5;
             AxisAlignedBB var19 = this.boundingBox.copy();
-            boolean var20 = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
+//            boolean var20 = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
+            boolean isSneak = this.isSneaking();
 
+            if (SafeWalk.INSTANCE.isEnabled()) {
+                isSneak = true;
+            }
+
+            boolean var20 = this.onGround && isSneak && this instanceof EntityPlayer;
             if (var20)
             {
                 double var21;

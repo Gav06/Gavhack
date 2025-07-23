@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.EntityNametagRenderEvent;
 import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -348,10 +350,7 @@ public abstract class Render
 
     protected void drawNametag(Entity entity, String text, double x, double y, double z, int maxDist)
     {
-        // TODO: Make this global variable shit into an event
-        if (RenderUtils.INSTANCE.getShouldCancelNameTagRender()) {
-            return;
-        }
+
 
         double var10 = entity.getDistanceSqToEntity(this.renderManager.livingPlayer);
 

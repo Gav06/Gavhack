@@ -2,7 +2,7 @@ package me.gavin.gavhack.module.impl
 
 import me.gavin.gavhack.event.Listener
 import me.gavin.gavhack.event.events.RenderOverlayEvent
-import me.gavin.gavhack.gui.api.Visibility
+import me.gavin.gavhack.event.events.RenderWorldLastEvent
 import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.module.setting.EnumSetting
@@ -14,6 +14,7 @@ import me.gavin.gavhack.utilities.RenderUtils
 import me.gavin.gavhack.utilities.shaders.ESPColorShader
 import me.gavin.gavhack.utilities.shaders.OutlineShader
 import net.minecraft.client.gui.ScaledResolution
+import net.minecraft.client.renderer.RenderGlobal
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.client.renderer.culling.Frustum
 import net.minecraft.client.renderer.entity.RenderManager
@@ -53,6 +54,7 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
     val hostiles = addSetting(BooleanSetting("Hostiles", true))
     val passive = addSetting(BooleanSetting("Animals", true))
     val items = addSetting(BooleanSetting("Items", true))
+    val storage = addSetting(BooleanSetting("Storage", true))
     val other = addSetting(BooleanSetting("Others", false))
 
     // buffer for coloring entities how we want them
@@ -68,11 +70,95 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
         frustum.setPosition(mc.renderViewEntity.posX, mc.renderViewEntity.posY, mc.renderViewEntity.posZ)
 
-        if (mode.enumValue() == Mode.CSGO) {
-            drawCSGOEsp(it)
-        } else if (mode.enumValue() == Mode.SHADER) {
-            drawShaderESP(it)
+        when (mode.enumValue()) {
+            Mode.CSGO -> drawCSGOEsp(it)
+            Mode.SHADER -> drawShaderESP(it)
+            else -> {}
         }
+    }
+
+    private val renderWorldListener = Listener<RenderWorldLastEvent> { it as RenderWorldLastEvent
+        if (mode.enumValue() != Mode.SHADER) {
+            RenderUtils.prepare3d()
+
+            drawBoxESPStorage(it)
+
+            if (mode.enumValue() == Mode.BOX) {
+                drawBoxESPEntity(it)
+            }
+
+            RenderUtils.release3d()
+        }
+    }
+
+    private fun drawBoxESPEntity(event: RenderWorldLastEvent) {
+        for (e in mc.theWorld.loadedEntityList) {
+            if (e == mc.renderViewEntity) continue
+
+            if (!entityCheck(e)) continue
+
+            val pos = MathUtils.lerpEntity(e, event.partialTicks).addVector(
+                -RenderManager.renderPosX,
+                -RenderManager.renderPosY,
+                -RenderManager.renderPosZ
+            )
+
+            val hWidth = e.width / 2.0
+
+            val aabb = AxisAlignedBB.getAABBPool().getAABB(
+                pos.xCoord - hWidth, pos.yCoord, pos.zCoord - hWidth,
+                pos.xCoord + hWidth, pos.yCoord + e.height, pos.zCoord + hWidth
+            )
+
+            val lerpYaw = MathUtils.lerpf(e.prevRotationYaw, e.rotationYaw, event.partialTicks)
+
+            GL11.glPushMatrix()
+
+            GL11.glTranslated(pos.xCoord, pos.yCoord, pos.zCoord)
+            GL11.glRotatef(-lerpYaw, 0.0f, 1.0f, 0.0f)
+            GL11.glTranslated(-pos.xCoord, -pos.yCoord, -pos.zCoord)
+
+            RenderGlobal.drawOutlinedBoundingBox(
+                aabb,
+                MathUtils.vec3ToIntColor(entityColor(e))
+            )
+
+            GL11.glPopMatrix()
+        }
+    }
+
+    private fun drawBoxESPStorage(it: RenderWorldLastEvent) {
+        for (tile in mc.renderGlobal.tileEntities) {
+            if (tile is TileEntityEnderChest || tile is TileEntityChest) {
+
+
+                val color = if (tile is TileEntityChest) 0xf99c04 else 0x7443f9
+
+                val aabb = AxisAlignedBB.getBoundingBox(
+                    tile.xCoord.toDouble(),
+                    tile.yCoord.toDouble(),
+                    tile.zCoord.toDouble(),
+                    tile.xCoord.toDouble() + 1.0,
+                    tile.yCoord.toDouble() + 1.0,
+                    tile.zCoord.toDouble() + 1.0
+                )
+
+
+                if (!frustum.isBoundingBoxInFrustum(aabb))
+                    continue
+
+                RenderGlobal.drawOutlinedBoundingBox(
+                    aabb.offset(
+                        -RenderManager.instance.viewerPosX,
+                        -RenderManager.instance.viewerPosY,
+                        -RenderManager.instance.viewerPosZ
+                    ),
+                    color
+                )
+            }
+        }
+
+
     }
 
     private fun drawShaderESP(it: RenderOverlayEvent) {
@@ -152,30 +238,32 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
             RenderManager.instance.renderEntityStatic(e, partialTicks, true)
         }
 
-        RenderUtils.shouldCancelTileDistanceCheck = true
+        if (storage.value) {
 
-        // make a copy of the tileEntity list to prevent any weird concurrency issues
-        for (tile in ArrayList<TileEntity>(mc.renderGlobal.tileEntities)) {
+            RenderUtils.shouldCancelTileDistanceCheck = true
 
-            val aabb = AxisAlignedBB.getBoundingBox(
-                tile.xCoord.toDouble(), tile.yCoord.toDouble(), tile.zCoord.toDouble(),
-                tile.xCoord + 1.0, tile.yCoord + 1.0, tile.zCoord + 1.0
-            )
+            // make a copy of the tileEntity list to prevent any weird concurrency issues
+            for (tile in ArrayList<TileEntity>(mc.renderGlobal.tileEntities)) {
 
-            if (!frustum.isBoundingBoxInFrustum(aabb)) continue
+                val aabb = AxisAlignedBB.getBoundingBox(
+                    tile.xCoord.toDouble(), tile.yCoord.toDouble(), tile.zCoord.toDouble(),
+                    tile.xCoord + 1.0, tile.yCoord + 1.0, tile.zCoord + 1.0
+                )
+
+                if (!frustum.isBoundingBoxInFrustum(aabb)) continue
 
 
-            if (tile is TileEntityChest) {
-                GL20.glUniform3f(uniform, 0.9764706f, 0.6117647f, 0.015686275f)
-                TileEntityRendererDispatcher.instance.renderTileEntity(tile, partialTicks)
-            } else if (tile is TileEntityEnderChest) {
-                GL20.glUniform3f(uniform, 0.45490196f, 0.2627451f, 0.9764706f)
-                TileEntityRendererDispatcher.instance.renderTileEntity(tile, partialTicks)
-
+                if (tile is TileEntityChest) {
+                    GL20.glUniform3f(uniform, 0.9764706f, 0.6117647f, 0.015686275f)
+                    TileEntityRendererDispatcher.instance.renderTileEntity(tile, partialTicks)
+                } else if (tile is TileEntityEnderChest) {
+                    GL20.glUniform3f(uniform, 0.45490196f, 0.2627451f, 0.9764706f)
+                    TileEntityRendererDispatcher.instance.renderTileEntity(tile, partialTicks)
+                }
             }
-        }
 
-        RenderUtils.shouldCancelTileDistanceCheck = false
+            RenderUtils.shouldCancelTileDistanceCheck = false
+        }
 
         colorFramebuffer.shader.stopShader()
     }
@@ -286,5 +374,6 @@ object ESP : Module("ESP", "See entities through walls", ModCategory.RENDER) {
 
     init {
         addEventListener(renderOverlayEvent, RenderOverlayEvent::class)
+        addEventListener(renderWorldListener, RenderWorldLastEvent::class)
     }
 }

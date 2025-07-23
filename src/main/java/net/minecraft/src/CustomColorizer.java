@@ -929,6 +929,11 @@ public class CustomColorizer
                 }
             }
 
+            // fix weird div by zero bug
+            if (count == 0) {
+                count = 1;
+            }
+
             r = sumRed / count;
             g = sumGreen / count;
             b = sumBlue / count;

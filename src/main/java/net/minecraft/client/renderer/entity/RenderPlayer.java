@@ -388,6 +388,9 @@ public class RenderPlayer extends RendererLivingEntity
 
     protected void func_96449_a(AbstractClientPlayer par1AbstractClientPlayer, double par2, double par4, double par6, String par8Str, float par9, double par10)
     {
+        if (true) {
+            return;
+        }
         if (par10 < 100.0D)
         {
             Scoreboard var12 = par1AbstractClientPlayer.getWorldScoreboard();

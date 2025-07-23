@@ -9,7 +9,7 @@ uniform int fill;
 uniform int dots;
 
 int mod(int x, int y) {
-    return x - y * int(floor(x / y));
+    return x - y * int(floor(float(x) / float(y)));
 }
 
 void main(void) {

@@ -1862,9 +1862,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 RenderHelper.enableStandardItemLighting();
                 this.mc.mcProfiler.endStartSection("entities");
-                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(1)});
+                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, 1);
                 this.mc.renderGlobal.renderEntities(var4, var14, par1);
-                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, new Object[] {Integer.valueOf(-1)});
+                Reflector.callVoid(Reflector.ForgeHooksClient_setRenderPass, -1);
                 RenderHelper.disableStandardItemLighting();
             }
 

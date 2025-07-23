@@ -33,6 +33,10 @@ public class AxisAlignedBB
         return (AABBPool)theAABBLocalPool.get();
     }
 
+    public AxisAlignedBB(AxisAlignedBB aabbIn) {
+        this(aabbIn.minX, aabbIn.minY, aabbIn.minZ, aabbIn.maxX, aabbIn.maxY, aabbIn.maxZ);
+    }
+
     protected AxisAlignedBB(double par1, double par3, double par5, double par7, double par9, double par11)
     {
         this.minX = par1;

@@ -129,11 +129,11 @@ public class EntityList
 
         try
         {
-            Class var3 = (Class)stringToClassMapping.get(par0Str);
+            Class<Entity> var3 = (Class<Entity>)stringToClassMapping.get(par0Str);
 
             if (var3 != null)
             {
-                var2 = (Entity)var3.getConstructor(new Class[] {World.class}).newInstance(new Object[] {par1World});
+                var2 = var3.getConstructor(World.class).newInstance(par1World);
             }
         }
         catch (Exception var4)

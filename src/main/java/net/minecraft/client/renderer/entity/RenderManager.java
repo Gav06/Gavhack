@@ -292,13 +292,13 @@ public class RenderManager
         return this.func_147939_a(p_147940_1_, p_147940_2_, p_147940_4_, p_147940_6_, p_147940_8_, p_147940_9_, false);
     }
 
-    public boolean func_147939_a(Entity p_147939_1_, double p_147939_2_, double p_147939_4_, double p_147939_6_, float p_147939_8_, float p_147939_9_, boolean p_147939_10_)
+    public boolean func_147939_a(Entity entity, double p_147939_2_, double p_147939_4_, double p_147939_6_, float p_147939_8_, float p_147939_9_, boolean p_147939_10_)
     {
         Render var11 = null;
 
         try
         {
-            var11 = this.getEntityRenderObject(p_147939_1_);
+            var11 = this.getEntityRenderObject(entity);
 
             if (var11 != null && this.renderEngine != null)
             {
@@ -306,7 +306,7 @@ public class RenderManager
                 {
                     try
                     {
-                        var11.doRender(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
+                        var11.doRender(entity, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
                     }
                     catch (Throwable var18)
                     {
@@ -315,18 +315,19 @@ public class RenderManager
 
                     try
                     {
-                        var11.doRenderShadowAndFire(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
+                        var11.doRenderShadowAndFire(entity, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
                     }
                     catch (Throwable var17)
                     {
                         throw new ReportedException(CrashReport.makeCrashReport(var17, "Post-rendering entity in world"));
                     }
 
-                    if (field_85095_o && !p_147939_1_.isInvisible() && !p_147939_10_)
+                    if (field_85095_o && !entity.isInvisible() && !p_147939_10_)
                     {
                         try
                         {
-                            this.func_85094_b(p_147939_1_, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
+                            // draw hitbox
+                            this.func_85094_b(entity, p_147939_2_, p_147939_4_, p_147939_6_, p_147939_8_, p_147939_9_);
                         }
                         catch (Throwable var16)
                         {
@@ -346,7 +347,7 @@ public class RenderManager
         {
             CrashReport var13 = CrashReport.makeCrashReport(var19, "Rendering entity in world");
             CrashReportCategory var14 = var13.makeCategory("Entity being rendered");
-            p_147939_1_.addEntityCrashInfo(var14);
+            entity.addEntityCrashInfo(var14);
             CrashReportCategory var15 = var13.makeCategory("Renderer details");
             var15.addCrashSection("Assigned renderer", var11);
             var15.addCrashSection("Location", CrashReportCategory.func_85074_a(p_147939_2_, p_147939_4_, p_147939_6_));
@@ -356,16 +357,16 @@ public class RenderManager
         }
     }
 
-    private void func_85094_b(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    private void func_85094_b(Entity entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDisable(GL11.GL_BLEND);
-        float var10 = par1Entity.width / 2.0F;
-        AxisAlignedBB var11 = AxisAlignedBB.getAABBPool().getAABB(par2 - (double)var10, par4, par6 - (double)var10, par2 + (double)var10, par4 + (double)par1Entity.height, par6 + (double)var10);
-        RenderGlobal.drawOutlinedBoundingBox(var11, 16777215);
+        float var10 = entity.width / 2.0F;
+        AxisAlignedBB aabb = AxisAlignedBB.getAABBPool().getAABB(par2 - (double)var10, par4, par6 - (double)var10, par2 + (double)var10, par4 + (double)entity.height, par6 + (double)var10);
+        RenderGlobal.drawOutlinedBoundingBox(aabb, 16777215);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_CULL_FACE);

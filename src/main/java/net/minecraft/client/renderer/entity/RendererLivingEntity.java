@@ -1,6 +1,10 @@
 package net.minecraft.client.renderer.entity;
 
 import java.util.Random;
+
+import me.gavin.gavhack.event.EventBus;
+import me.gavin.gavhack.event.events.EntityNametagRenderEvent;
+import me.gavin.gavhack.utilities.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBase;
@@ -528,65 +532,68 @@ public abstract class RendererLivingEntity extends Render
     /**
      * Passes the specialRender and renders it
      */
-    protected void passSpecialRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6)
+    protected void passSpecialRender(EntityLivingBase entityLivingBase, double x, double y, double z)
     {
-        if (!Reflector.RenderLivingEvent_Specials_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Pre_Constructor, new Object[] {par1EntityLivingBase, this, Double.valueOf(par2), Double.valueOf(par4), Double.valueOf(par6)}))
+        if (!Reflector.RenderLivingEvent_Specials_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Pre_Constructor, new Object[] {entityLivingBase, this, Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)}))
         {
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 
-            if (this.func_110813_b(par1EntityLivingBase))
+            if (this.func_110813_b(entityLivingBase))
             {
                 float var8 = 1.6F;
                 float var9 = 0.016666668F * var8;
-                double var10 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
-                float var12 = par1EntityLivingBase.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
+                double var10 = entityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
+                float var12 = entityLivingBase.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
 
                 if (var10 < (double)(var12 * var12))
                 {
-                    String var13 = par1EntityLivingBase.func_145748_c_().getFormattedText();
-
-                    if (par1EntityLivingBase.isSneaking())
-                    {
-                        FontRenderer var14 = this.getFontRendererFromRenderManager();
-                        GL11.glPushMatrix();
-                        GL11.glTranslatef((float)par2 + 0.0F, (float)par4 + par1EntityLivingBase.height + 0.5F, (float)par6);
-                        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-                        GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-                        GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-                        GL11.glScalef(-var9, -var9, var9);
-                        GL11.glDisable(GL11.GL_LIGHTING);
-                        GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
-                        GL11.glDepthMask(false);
-                        GL11.glEnable(GL11.GL_BLEND);
-                        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-                        Tessellator var15 = Tessellator.instance;
-                        GL11.glDisable(GL11.GL_TEXTURE_2D);
-                        var15.startDrawingQuads();
-                        int var16 = var14.getStringWidth(var13) / 2;
-                        var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-                        var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
-                        var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
-                        var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
-                        var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
-                        var15.draw();
-                        GL11.glEnable(GL11.GL_TEXTURE_2D);
-                        GL11.glDepthMask(true);
-                        var14.drawString(var13, -var14.getStringWidth(var13) / 2, 0, 553648127);
-                        GL11.glEnable(GL11.GL_LIGHTING);
-                        GL11.glDisable(GL11.GL_BLEND);
-                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                        GL11.glPopMatrix();
-                    }
-                    else
-                    {
-                        this.func_96449_a(par1EntityLivingBase, par2, par4, par6, var13, var9, var10);
+                    String text = entityLivingBase.func_145748_c_().getFormattedText();
+                    // TODO: Make this global variable shit into an event
+                    final EntityNametagRenderEvent event = new EntityNametagRenderEvent(entityLivingBase, text, x, y, z);
+                    if (!RenderUtils.INSTANCE.getShouldCancelNameTagRender() || !EventBus.INSTANCE.post(event))  {
+                        if (entityLivingBase.isSneaking())
+                        {
+                            FontRenderer var14 = this.getFontRendererFromRenderManager();
+                            GL11.glPushMatrix();
+                            GL11.glTranslatef((float)x + 0.0F, (float)y + entityLivingBase.height + 0.5F, (float)z);
+                            GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+                            GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+                            GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+                            GL11.glScalef(-var9, -var9, var9);
+                            GL11.glDisable(GL11.GL_LIGHTING);
+                            GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
+                            GL11.glDepthMask(false);
+                            GL11.glEnable(GL11.GL_BLEND);
+                            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+                            Tessellator var15 = Tessellator.instance;
+                            GL11.glDisable(GL11.GL_TEXTURE_2D);
+                            var15.startDrawingQuads();
+                            int var16 = var14.getStringWidth(text) / 2;
+                            var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+                            var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
+                            var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
+                            var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
+                            var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
+                            var15.draw();
+                            GL11.glEnable(GL11.GL_TEXTURE_2D);
+                            GL11.glDepthMask(true);
+                            var14.drawString(text, -var14.getStringWidth(text) / 2, 0, 553648127);
+                            GL11.glEnable(GL11.GL_LIGHTING);
+                            GL11.glDisable(GL11.GL_BLEND);
+                            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                            GL11.glPopMatrix();
+                        }
+                        else
+                        {
+                            this.func_96449_a(entityLivingBase, x, y, z, text, var9, var10);
+                        }
                     }
                 }
             }
 
             if (Reflector.RenderLivingEvent_Specials_Post_Constructor.exists())
             {
-                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Post_Constructor, new Object[] {par1EntityLivingBase, this, Double.valueOf(par2), Double.valueOf(par4), Double.valueOf(par6)});
+                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Post_Constructor, new Object[] {entityLivingBase, this, Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)});
             }
         }
     }
