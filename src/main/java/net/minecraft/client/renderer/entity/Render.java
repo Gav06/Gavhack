@@ -351,7 +351,6 @@ public abstract class Render
     protected void drawNametag(Entity entity, String text, double x, double y, double z, int maxDist)
     {
 
-
         double var10 = entity.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
         // maxDist is always 64 but we will leave it for some reason ig

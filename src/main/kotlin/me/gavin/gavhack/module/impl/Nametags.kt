@@ -15,14 +15,13 @@ import org.lwjgl.opengl.GL11
 object Nametags: Module("Nametags", "Better player name tags", ModCategory.RENDER) {
 
     private val renderListener = Listener<RenderWorldLastEvent> { it as RenderWorldLastEvent
-
         RenderUtils.prepare3d()
         GL11.glEnable(GL11.GL_TEXTURE_2D)
 
         for (player in mc.theWorld.playerEntities) {
             if (player == mc.thePlayer) continue
 
-            val lerpPos = MathUtils.lerpEntity(player, it.partialTicks).addVector(0.0, player.height + 0.75, 0.0)
+            val lerpPos = MathUtils.lerpEntity(player, it.partialTicks).addVector(0.0, player.height + 0.5, 0.0)
 
             val flipPitch = if (mc.gameSettings.thirdPersonView == 2) -1 else 1
 
@@ -48,7 +47,7 @@ object Nametags: Module("Nametags", "Better player name tags", ModCategory.RENDE
 
             GL11.glTranslated(-(texWidth / 2.0), 0.0, 0.0)
 
-            mc.fontRenderer.drawStringWithShadow(text, 0, -2, -1)
+            mc.fontRenderer.drawStringWithShadow(text, 0, -mc.fontRenderer.FONT_HEIGHT, -1)
             GL11.glPopMatrix()
         }
 

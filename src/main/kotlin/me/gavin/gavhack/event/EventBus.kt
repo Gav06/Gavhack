@@ -19,7 +19,7 @@ object EventBus {
         listenerMap[clazz]?.add(listener)
     }
 
-    // returns if event is cancelled
+    // returns true if event is cancelled
     fun <T : Event> post(event: T): Boolean {
         if (listenerMap.contains(event::class)) {
             listenerMap[event::class]?.forEach {

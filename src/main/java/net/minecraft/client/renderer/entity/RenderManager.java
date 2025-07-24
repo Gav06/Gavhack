@@ -282,7 +282,7 @@ public class RenderManager
 
         int var12 = var11 % 65536;
         int var13 = var11 / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var12 / 1.0F, (float)var13 / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var12, (float) var13);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         return this.func_147939_a(p_147936_1_, var4 - renderPosX, var6 - renderPosY, var8 - renderPosZ, var10, p_147936_2_, p_147936_3_);
     }

@@ -534,7 +534,11 @@ public abstract class RendererLivingEntity extends Render
      */
     protected void passSpecialRender(EntityLivingBase entityLivingBase, double x, double y, double z)
     {
-        if (!Reflector.RenderLivingEvent_Specials_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Pre_Constructor, new Object[] {entityLivingBase, this, Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)}))
+        String text = entityLivingBase.func_145748_c_().getFormattedText();
+        final EntityNametagRenderEvent event = new EntityNametagRenderEvent(entityLivingBase, text, x, y, z);
+        if (EventBus.INSTANCE.post(event)) return;
+
+        if (!Reflector.RenderLivingEvent_Specials_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Pre_Constructor, entityLivingBase, this, x, y, z))
         {
             GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
 
@@ -547,53 +551,48 @@ public abstract class RendererLivingEntity extends Render
 
                 if (var10 < (double)(var12 * var12))
                 {
-                    String text = entityLivingBase.func_145748_c_().getFormattedText();
-                    // TODO: Make this global variable shit into an event
-                    final EntityNametagRenderEvent event = new EntityNametagRenderEvent(entityLivingBase, text, x, y, z);
-                    if (!RenderUtils.INSTANCE.getShouldCancelNameTagRender() || !EventBus.INSTANCE.post(event))  {
-                        if (entityLivingBase.isSneaking())
-                        {
-                            FontRenderer var14 = this.getFontRendererFromRenderManager();
-                            GL11.glPushMatrix();
-                            GL11.glTranslatef((float)x + 0.0F, (float)y + entityLivingBase.height + 0.5F, (float)z);
-                            GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-                            GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-                            GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-                            GL11.glScalef(-var9, -var9, var9);
-                            GL11.glDisable(GL11.GL_LIGHTING);
-                            GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
-                            GL11.glDepthMask(false);
-                            GL11.glEnable(GL11.GL_BLEND);
-                            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-                            Tessellator var15 = Tessellator.instance;
-                            GL11.glDisable(GL11.GL_TEXTURE_2D);
-                            var15.startDrawingQuads();
-                            int var16 = var14.getStringWidth(text) / 2;
-                            var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-                            var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
-                            var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
-                            var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
-                            var15.addVertex((double)(var16 + 1), -1.0D, 0.0D);
-                            var15.draw();
-                            GL11.glEnable(GL11.GL_TEXTURE_2D);
-                            GL11.glDepthMask(true);
-                            var14.drawString(text, -var14.getStringWidth(text) / 2, 0, 553648127);
-                            GL11.glEnable(GL11.GL_LIGHTING);
-                            GL11.glDisable(GL11.GL_BLEND);
-                            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                            GL11.glPopMatrix();
-                        }
-                        else
-                        {
-                            this.func_96449_a(entityLivingBase, x, y, z, text, var9, var10);
-                        }
+                    if (entityLivingBase.isSneaking())
+                    {
+                        FontRenderer var14 = this.getFontRendererFromRenderManager();
+                        GL11.glPushMatrix();
+                        GL11.glTranslatef((float)x + 0.0F, (float)y + entityLivingBase.height + 0.5F, (float)z);
+                        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+                        GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+                        GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+                        GL11.glScalef(-var9, -var9, var9);
+                        GL11.glDisable(GL11.GL_LIGHTING);
+                        GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
+                        GL11.glDepthMask(false);
+                        GL11.glEnable(GL11.GL_BLEND);
+                        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+                        Tessellator var15 = Tessellator.instance;
+                        GL11.glDisable(GL11.GL_TEXTURE_2D);
+                        var15.startDrawingQuads();
+                        int var16 = var14.getStringWidth(text) / 2;
+                        var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+                        var15.addVertex((double)(-var16 - 1), -1.0D, 0.0D);
+                        var15.addVertex((double)(-var16 - 1), 8.0D, 0.0D);
+                        var15.addVertex((double)(var16 + 1), 8.0D, 0.0D);
+                        var15.addVertex(var16 + 1, -1.0D, 0.0D);
+                        var15.draw();
+                        GL11.glEnable(GL11.GL_TEXTURE_2D);
+                        GL11.glDepthMask(true);
+                        var14.drawString(text, -var14.getStringWidth(text) / 2, 0, 553648127);
+                        GL11.glEnable(GL11.GL_LIGHTING);
+                        GL11.glDisable(GL11.GL_BLEND);
+                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                        GL11.glPopMatrix();
+                    }
+                    else
+                    {
+                        this.func_96449_a(entityLivingBase, x, y, z, text, var9, var10);
                     }
                 }
             }
 
             if (Reflector.RenderLivingEvent_Specials_Post_Constructor.exists())
             {
-                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Post_Constructor, new Object[] {entityLivingBase, this, Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)});
+                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Post_Constructor, entityLivingBase, this, x, y, z);
             }
         }
     }
