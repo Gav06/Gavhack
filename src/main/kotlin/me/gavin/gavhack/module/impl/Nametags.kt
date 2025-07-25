@@ -7,6 +7,7 @@ import me.gavin.gavhack.module.ModCategory
 import me.gavin.gavhack.module.Module
 import me.gavin.gavhack.utilities.MathUtils
 import me.gavin.gavhack.utilities.RenderUtils
+import net.minecraft.client.gui.Gui
 import net.minecraft.client.renderer.entity.RenderManager
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.Vec3
@@ -45,9 +46,10 @@ object Nametags: Module("Nametags", "Better player name tags", ModCategory.RENDE
             val text = player.commandSenderName
             val texWidth = mc.fontRenderer.getStringWidth(text)
 
-            GL11.glTranslated(-(texWidth / 2.0), 0.0, 0.0)
+            GL11.glTranslated(-(texWidth / 2.0), -mc.fontRenderer.FONT_HEIGHT.toDouble(), 0.0)
 
-            mc.fontRenderer.drawStringWithShadow(text, 0, -mc.fontRenderer.FONT_HEIGHT, -1)
+            Gui.drawRect(-1, -1, texWidth + 1, mc.fontRenderer.FONT_HEIGHT + 1, 0x80000000.toInt()   )
+            mc.fontRenderer.drawStringWithShadow(text, 0, 0, -1)
             GL11.glPopMatrix()
         }
 

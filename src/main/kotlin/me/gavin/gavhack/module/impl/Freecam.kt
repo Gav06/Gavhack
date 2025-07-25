@@ -21,6 +21,7 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
     private var yaw = 0.0f
     private var pitch = 0.0f
 
+    private var preFlySpeed = 0.0f
     private var allowFly = false
     private var isFlying = false
     private var ridingEntity: Entity? = null
@@ -45,6 +46,7 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
         this.pitch = mc.thePlayer.rotationPitch
         this.allowFly = mc.thePlayer.capabilities.allowFlying
         this.isFlying = mc.thePlayer.capabilities.isFlying
+        this.preFlySpeed = mc.thePlayer.capabilities.flySpeed
 
         if (mc.thePlayer.ridingEntity != null) {
             this.ridingEntity = mc.thePlayer.ridingEntity
@@ -53,10 +55,12 @@ object Freecam: Module("Freecam", "Look around freely client-side", ModCategory.
     }
 
     private fun stopFreecam() {
-        mc.thePlayer.setPositionAndRotation(startPos.xCoord, startPos.yCoord, startPos.zCoord, yaw, pitch)
+        // add a small amount to the Y value so the player doesn't get clipped into the ground accidentally
+        mc.thePlayer.setPositionAndRotation(startPos.xCoord, startPos.yCoord + 0.15, startPos.zCoord, yaw, pitch)
         mc.thePlayer.isSprinting = false
         mc.thePlayer.capabilities.isFlying = isFlying
         mc.thePlayer.capabilities.allowFlying = allowFly
+        mc.thePlayer.capabilities.flySpeed = preFlySpeed
         mc.thePlayer.noClip = false
 
         mc.thePlayer.motionX = 0.0
